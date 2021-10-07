@@ -1,5 +1,12 @@
+let result;
+let elem;
+
+function init() {
+    elem = document.getElementById("output");
+    result = getData(-1);
+}
+
 function exec() {
-    var result = getData(4);
-    var elem = document.getElementById("output");
-    elem.innerHTML = result;
+    result = getData(result);
+    elem.innerHTML = "結果" + result;
 }
