@@ -3,10 +3,10 @@ let elem;
 
 function init() {
     elem = document.getElementById("output");
-    result = getData(-1);
+    result = [0]
 }
 
 function exec() {
-    result = getData(result);
+    getData(result);
     elem.innerHTML = "結果" + result;
 }

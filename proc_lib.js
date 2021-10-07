@@ -1,5 +1,5 @@
 
 function getData(value) {
-    value++;
-    return value;
+    value[0]++;
+    return;
 }
