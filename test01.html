@@ -3,12 +3,19 @@
 <head>
     <meta charset="utf-8" />
     <title>あいうえお</title>
+    <script src="C:\Users\17T2088B\js_lib\SVGGraph.js"></script>
     <script src="proc_if.js"></script>
     <script src="proc_lib.js"></script>
-</head>
 <body onload="init();">
     <input id="Button1" type="button" value="button" onclick="exec();" />
     <input id="Button2" type="button" value="reset" onclick="reset();" />
     <div id="output"></div>
+    <svg width="200" height="200" script="
+        setRange(-6, 6, -6, 6);
+        axis('full', 2, 2, 0, 0);
+        style.stroke = 'blue';
+        plot('3cos(x)');
+    "/>
+</head>
 </body>
 </html>
