@@ -4,7 +4,6 @@ let elem;
 function init() {
     elem = document.getElementById("output");
     result = [0];
-    init2();
 }
 
 function exec() {
