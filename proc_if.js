@@ -1,9 +1,14 @@
 let result;
 let elem;
+let graph;
 
 function init() {
     elem = document.getElementById("output");
+    graph = document.getElementById("Graph1");
+    console.log(graph);
     result = [0];
+    
+
 }
 
 function exec() {
