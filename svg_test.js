@@ -7,8 +7,8 @@ function hogeFunc(x, y) {
 }
 
 function main() {
-    setRange(-6, 10, -6, 6);
-    axis('full',2,2,0,0);
+    setRange(-6, 10, -4, 4);
+    axis('full',1,1,0,0);
     // Macro.myCommand(3, 4);
     style.stroke = 'red';
     style.strokeWidth = 3;
