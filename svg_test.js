@@ -16,8 +16,6 @@ function main() {
     style.strokeWidth = 2;
     let tmp_array = [1, 1, 0, 0, 0, 1];
     let vertices = code2vertices(tmp_array);
-    // console.log(1, 2);
-    line(0, 0, 2, 2);
     for (let i = 0; i < vertices.length; i++) {
         const [x1, y1, x2, y2] = vertices[i];
         // console.log(x1, y1, x2, y2);
@@ -27,7 +25,7 @@ function main() {
 
 function code2vertices(code) {
     console.log(code.length);
-    let vertices = [[0, 0, 0, code[0]], [0, code[0], 1, code[0]]];
+    let vertices = [[0, code[0], 1, code[0]]];
     for (let i = 1; i < code.length; i++) {
         vertices.push([i, code[i - 1], i, code[i]]);
         vertices.push([i, code[i], i + 1, code[i]]);
