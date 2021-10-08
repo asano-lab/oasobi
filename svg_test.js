@@ -1,4 +1,5 @@
 let num_input;
+let test_button;
 
 // 適当な関数
 function hogeFunc(x, y) {
@@ -8,9 +9,12 @@ function hogeFunc(x, y) {
 }
 
 function main() {
-    let num_input = document.getElementById("num1");
-    console.log(typeof(num_input.value));
+    num_input = document.getElementById("num1");
+    test_button = document.getElementById("Button3");
+    // test_button.onclick = Macro.myCommand(2, 3);
     
+    console.log(typeof(num_input.value));
+
     setRange(-6, 10, -4, 4);
     axis('full', 1, 1, 0, 0);
     // Macro.myCommand(3, 4);
