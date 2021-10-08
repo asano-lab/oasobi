@@ -9,8 +9,17 @@ let first = true;
 
 // 適当な関数
 function hogeFunc() {
+    // rmvAll();
+    for (let i = 0; i < vertices.length; i++) {
+        const tmp = document.getElementById("line" + i);
+        // console.log(tmp);
+        if (tmp != null) {
+            tmp.remove();
+        }
+    }
+
     const tmp_array = str2bin(num_input.value);
-    
+
     vertices = code2vertices(tmp_array);
 
     console.log(tmp_array);
@@ -29,16 +38,19 @@ function main() {
         test_button = document.getElementById("Button3");
         graph = document.getElementById("Graph1");
 
-        console.log(graph);
+        // console.log(graph);
 
         test_button.onclick = Macro.hogeFunc;
 
+        const tmp_array = str2bin(num_input.value);
+        vertices = code2vertices(tmp_array);
+    
         first = false;
     }
     style.stroke = 'red';
     style.strokeWidth = 3;
 
-    setRange(-6, 10, -4, 4);
+    setRange(-6, 12, -4, 4);
     axis('full', 1, 1, 0, 0);
 
     Macro.hogeFunc();
