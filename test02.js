@@ -8,14 +8,17 @@ let myChart = new Chart(graphID, {
     datasets: [{
         label: 'Data 1',
         fill: false,
+        steppedLine: true,
         lineTension: 0,
         borderWidth: 1,
         borderColor: 'red',
         backgroundColor: 'yellow',
         data: [1,4,2,7,1,6],
     }, {
-    label: 'Data 2',
+        label: 'Data 2',
         data: [5,2,9,4,1,2],
+        lineTension: 0,
+        steppedLine: true,
     }]
     },
     options: {
