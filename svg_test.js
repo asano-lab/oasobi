@@ -3,20 +3,19 @@ let test_button;
 
 // 適当な関数
 function hogeFunc() {
-    let x = 2;
-    let y = 3;
-    let vx = fix(x, 0);
-    let vy = fix(y, 0);
-    dot(m.round(vx,2), m.round(vy,2), "dot", "("+x+","+y+")");
+    const tmp_array = str2bin(num_input.value);
+    const vertices = code2vertices(tmp_array);
+    
+    for (let i = 0; i < vertices.length; i++) {
+        const [x1, y1, x2, y2] = vertices[i];
+        line(x1, y1, x2, y2);
+    }
 }
 
 function main() {
     num_input = document.getElementById("num1");
     test_button = document.getElementById("Button3");
     test_button.onclick = Macro.myCommand;
-    
-    console.log(typeof(num_input.value));
-    console.log(num_input.value.length);
 
     setRange(-6, 10, -4, 4);
     axis('full', 1, 1, 0, 0);
