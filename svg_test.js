@@ -1,5 +1,6 @@
 let num_input;
 let test_button;
+let random_button;
 
 let line_arr;
 
@@ -29,9 +30,11 @@ function main() {
     random = new Random(123);
     num_input = document.getElementById("num1");
     test_button = document.getElementById("Button1");
+    random_button = document.getElementById("Button2");
 
     // クリック時のアクションにマクロを登録
     test_button.onclick = Macro.hogeFunc;
+    random_button.onclick = Macro.drawRandom;
 
     style.stroke = 'red';
     style.strokeWidth = 3;
@@ -75,7 +78,13 @@ function str2bin(str) {
     return bin_arr;
 }
 
+// ランダムな波形を描画
+function drawRandom() {
+    console.log("あいうえお");
+}
+
 (function() {
 	SVGGraph.registerMacro("hogeFunc", hogeFunc);
     SVGGraph.registerMacro("main", main);
+    SVGGraph.registerMacro("drawRandom", drawRandom);
 })();
