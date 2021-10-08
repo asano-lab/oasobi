@@ -7,7 +7,6 @@ function hogeFunc(x, y) {
 }
 
 function main() {
-    // console.log(setRange);
     setRange(-6, 6, -6, 6);
     axis('full',2,2,0,0);
     style.stroke = 'blue';
@@ -16,13 +15,27 @@ function main() {
     style.stroke = 'red';
     style.strokeWidth = 2;
     let tmp_array = [0, 1, 0, 1, 0, 1];
-    code2vertices(tmp_array);
+    let vertices = code2vertices(tmp_array);
     // console.log(1, 2);
     line(0, 0, 2, 2);
+    for (let i = 0; i < vertices.length; i++) {
+        const [x1, y1, x2, y2] = vertices[i];
+        // console.log(x1, y1, x2, y2);
+        line(x1, y1, x2, y2);
+    }
 }
 
 function code2vertices(code) {
     console.log(code.length);
+    let vertices = [[0, 0, 0, code[0]], [0, code[0], 1, code[0]]];
+    for (let i = 1; i < code.length; i++) {
+        vertices.push([i, code[i - 1], i, code[i]]);
+        vertices.push([i, code[i], i + 1, code[i]]);
+    }
+    for (let i = 0; i < vertices.length; i++) {
+        console.log(vertices[i]);
+    }
+    return vertices;
 }
 
 (function() {

@@ -2,7 +2,7 @@ const hoge = "ほげ";
 
 function getData(value) {
     value[0]++;
-    console.log(elem);
+    // console.log(elem);
     testFunc();
 }
 
