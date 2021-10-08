@@ -4,59 +4,59 @@ let graphID = document.getElementById("graph");
 let myChart = new Chart(graphID, {
     type: 'line',
     data: {
-    labels: [0,2,4,6,8,10],
-    datasets: [{
-        label: 'Data 1',
-        fill: false,
-        steppedLine: true,
-        lineTension: 0,
-        borderWidth: 1,
-        borderColor: 'red',
-        backgroundColor: 'yellow',
-        data: [1,4,2,7,1,6],
-    }, {
-        label: 'Data 2',
-        data: [5,2,9,4,1,2],
-        lineTension: 0,
-        steppedLine: true,
-    }]
-    },
-    options: {
-    responsive: false,
-    animation: {
-        duration: 0,
-    },
-    title: {
-        display: true,
-        fontSize: 14,
-        fontColor: '#23993d',
-        text: 'Graph Title',
-    },
-    tooltips: {
-        mode: 'index',
-        intersect: false,
-    },
-    scales: {
-        xAxes: [{
-        scaleLabel: {
+        labels: [0,2,4,6,8,10],
+        datasets: [{
+            label: 'Data 1',
+            fill: false,
+            steppedLine: true,
+            lineTension: 0,
+            borderWidth: 1,
+            borderColor: 'red',
+            backgroundColor: 'yellow',
+            data: [1,4,2,7,1,6],
+        }, {
+            label: 'Data 2',
+            data: [5,2,9,4,1,2],
+            lineTension: 0,
+            steppedLine: true,
+        }]
+        },
+        options: {
+        responsive: false,
+        animation: {
+            duration: 0,
+        },
+        title: {
             display: true,
             fontSize: 14,
-            fontColor: 'blue',
-            labelString: 'Time',
+            fontColor: '#23993d',
+            text: 'Graph Title',
         },
-        }],
-        yAxes: [{
-        scaleLabel: {
-            display: true,
-            labelString: 'Value',
+        tooltips: {
+            mode: 'index',
+            intersect: false,
         },
-        ticks: {
-            min: 0,
-            max: 10,
-            stepSize: 2,
+        scales: {
+            xAxes: [{
+                scaleLabel: {
+                    display: true,
+                    fontSize: 14,
+                    fontColor: 'blue',
+                    labelString: 'Time',
+                },
+            }],
+            yAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Value',
+                },
+                ticks: {
+                    min: 0,
+                    max: 10,
+                    stepSize: 2,
+                }
+            }]
         }
-        }]
-    }
     }
 });
 
