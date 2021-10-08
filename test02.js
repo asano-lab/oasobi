@@ -6,8 +6,8 @@ let data = {
     datasets: [{
         label: 'Data 1',
         fill: false,
-        steppedLine: 'before',
-        lineTension: 0,
+        // steppedLine: true,
+        lineTention: 2,
         borderWidth: 1,
         borderColor: 'red',
         backgroundColor: 'yellow',
