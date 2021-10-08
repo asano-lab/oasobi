@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/asano-lab/oasobi/issues"
   },
-  "homepage": "https://github.com/asano-lab/oasobi#readme"
+  "homepage": "https://github.com/asano-lab/oasobi#readme",
+  "dependencies": {
+    "chart.js": "^3.5.1"
+  }
 }
