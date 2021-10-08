@@ -1,3 +1,4 @@
+// 参考：https://sbfl.net/blog/2017/06/01/javascript-reproducible-random/
 class Random {
     constructor(seed = 88675123) {
         this.x = 123456789;
@@ -9,7 +10,6 @@ class Random {
     // XorShift
     next() {
         const t = this.x ^ (this.x << 11);
-        
         this.x = this.y;
         this.y = this.z;
         this.z = this.w;

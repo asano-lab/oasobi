@@ -36,7 +36,7 @@ function main() {
     style.stroke = 'red';
     style.strokeWidth = 3;
 
-    setRange(-6, 12, -4, 4);
+    setRange(-1, 20, -3, 3);
     axis('full', 1, 1, 0, 0);
 
     line_arr = [];
