@@ -9,7 +9,8 @@ function hogeFunc(x, y) {
 
 function main() {
     let num_input = document.getElementById("num1");
-    console.log(num_input);
+    console.log(typeof(num_input.value));
+    
     setRange(-6, 10, -4, 4);
     axis('full', 1, 1, 0, 0);
     // Macro.myCommand(3, 4);
