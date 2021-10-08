@@ -5,18 +5,11 @@ let data = {
     labels: [0,2,4,6,8,10],
     datasets: [{
         label: 'Data 1',
-        fill: false,
-        // steppedLine: true,
-        lineTention: 2,
-        borderWidth: 1,
-        borderColor: 'red',
-        backgroundColor: 'yellow',
         data: [1,4,2,7,1,6],
+        steppedLine: true
     }, {
-        label: 'Data 2',
-        data: [5,2,9,4,1,2],
-        steppedLine: true,
-    }]
+        label: 'Data 2'
+    }] 
 }
 
 let options = {
