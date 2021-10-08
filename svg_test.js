@@ -26,8 +26,6 @@ function hogeFunc() {
         const [x1, y1, x2, y2] = vertices[i];
         line_arr.push(line(x1, y1, x2, y2));
     }
-    // console.log(line_arr);
-    // console.log(vertices.length);
 }
 
 // htmlではこれだけ呼び出せばよい?
