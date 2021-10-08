@@ -11,14 +11,7 @@
     <input id="Button1" type="button" value="button" onclick="exec();" />
     <input id="Button2" type="button" value="reset" onclick="reset();" />
     <div id="output"></div>
-    <svg id="Graph1" width="200" height="200" script="
-        console.log(setRange);
-        setRange(-6, 6, -6, 6);
-        axis('full',2,2,0,0);
-        style.stroke = 'blue';
-        plot('3cos(x)');
-        Macro.myCommand(3, 4);
-    "\></svg>
+    <svg id="Graph1" width="200" height="200" script="Macro.main()"\></svg>
 </head>
 </body>
 </html>
