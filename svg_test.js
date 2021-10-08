@@ -10,6 +10,7 @@ function hogeFunc() {
     const vertices = code2vertices(tmp_array);
 
     console.log(tmp_array);
+
     for (let i = 0; i < vertices.length; i++) {
         const [x1, y1, x2, y2] = vertices[i];
         line(x1, y1, x2, y2);
