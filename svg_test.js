@@ -1,3 +1,4 @@
+
 // 適当な関数
 function hogeFunc(x, y) {
     let vx = fix(x, 0);
@@ -12,6 +13,7 @@ function main() {
     style.stroke = 'blue';
     plot('3cos(x)');
     Macro.myCommand(3, 4);
+    line(0, 0, 0, 1);
 }
 
 (function() {
