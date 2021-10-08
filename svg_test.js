@@ -13,7 +13,7 @@ function main() {
     plot('3cos(x)');
     Macro.myCommand(3, 4);
     style.stroke = 'red';
-    style.strokeWidth = 2;
+    style.strokeWidth = 3;
     let tmp_array = [1, 1, 0, 0, 0, 1];
     let vertices = code2vertices(tmp_array);
     for (let i = 0; i < vertices.length; i++) {
