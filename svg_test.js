@@ -2,7 +2,9 @@ let num_input;
 let test_button;
 
 // 適当な関数
-function hogeFunc(x, y) {
+function hogeFunc() {
+    let x = 2;
+    let y = 3;
     let vx = fix(x, 0);
     let vy = fix(y, 0);
     dot(m.round(vx,2), m.round(vy,2), "dot", "("+x+","+y+")");
@@ -11,7 +13,7 @@ function hogeFunc(x, y) {
 function main() {
     num_input = document.getElementById("num1");
     test_button = document.getElementById("Button3");
-    // test_button.onclick = Macro.myCommand(2, 3);
+    test_button.onclick = Macro.myCommand;
     
     console.log(typeof(num_input.value));
 
