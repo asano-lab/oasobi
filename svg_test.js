@@ -1,8 +1,6 @@
 let num_input;
 let test_button;
 
-let vertices;
-
 let line_arr = [];
 
 // let first = true;
@@ -12,15 +10,11 @@ function hogeFunc() {
     for (let i = 0; i < line_arr.length; i++) {
         line_arr[i].remove();
     }
+    line_arr = [];
     // console.log(vertices.length);
 
     const tmp_array = str2bin(num_input.value);
-
-    vertices = code2vertices(tmp_array);
-
-    // console.log(tmp_array);
-
-    line_arr = [];
+    const vertices = code2vertices(tmp_array);
 
     for (let i = 0; i < vertices.length; i++) {
         const [x1, y1, x2, y2] = vertices[i];
@@ -28,15 +22,13 @@ function hogeFunc() {
     }
 }
 
-// htmlではこれだけ呼び出せばよい?
+// htmlではこれだけ呼び出せばよい(?)
 function main() {
     num_input = document.getElementById("num1");
-    test_button = document.getElementById("Button3");
+    test_button = document.getElementById("Button1");
 
+    // クリック時のアクションにマクロを登録
     test_button.onclick = Macro.hogeFunc;
-
-    // const tmp_array = str2bin(num_input.value);
-    // vertices = code2vertices(tmp_array);
 
     style.stroke = 'red';
     style.strokeWidth = 3;
@@ -49,7 +41,10 @@ function main() {
 
 // 符号を頂点の座標に変換
 function code2vertices(code) {
-    // console.log(code.length);
+    if (!code.length) {
+        console.log("yeah");
+        return [];
+    }
     let vertices = [[0, code[0], 1, code[0]]];
     for (let i = 1; i < code.length; i++) {
         vertices.push([i, code[i - 1], i, code[i]]);
