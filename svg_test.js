@@ -18,7 +18,6 @@ function hogeFunc() {
 
 // htmlではこれだけ呼び出せばよい?
 function main() {
-    console.log(first);
 
     num_input = document.getElementById("num1");
     test_button = document.getElementById("Button3");
