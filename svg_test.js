@@ -3,9 +3,12 @@ let test_button;
 
 // 適当な関数
 function hogeFunc() {
+    // setRange(-6, 10, -4, 4);
+    // axis('full', 1, 1, 0, 0);
+
     const tmp_array = str2bin(num_input.value);
     const vertices = code2vertices(tmp_array);
-    
+
     for (let i = 0; i < vertices.length; i++) {
         const [x1, y1, x2, y2] = vertices[i];
         line(x1, y1, x2, y2);
@@ -15,22 +18,23 @@ function hogeFunc() {
 function main() {
     num_input = document.getElementById("num1");
     test_button = document.getElementById("Button3");
-    test_button.onclick = Macro.myCommand;
+    test_button.onclick = Macro.hogeFunc;
 
     setRange(-6, 10, -4, 4);
     axis('full', 1, 1, 0, 0);
-    // Macro.myCommand(3, 4);
+
     style.stroke = 'red';
     style.strokeWidth = 3;
-    let tmp_array = str2bin(num_input.value);
-    let vertices = code2vertices(tmp_array);
+
+    const tmp_array = str2bin(num_input.value);
+    const vertices = code2vertices(tmp_array);
     for (let i = 0; i < vertices.length; i++) {
         const [x1, y1, x2, y2] = vertices[i];
-        // console.log(x1, y1, x2, y2);
         line(x1, y1, x2, y2);
     }
 }
 
+// 符号を頂点の座標に変換
 function code2vertices(code) {
     console.log(code.length);
     let vertices = [[0, code[0], 1, code[0]]];
@@ -60,6 +64,6 @@ function str2bin(str) {
 }
 
 (function() {
-	SVGGraph.registerMacro("myCommand", hogeFunc);
+	SVGGraph.registerMacro("hogeFunc", hogeFunc);
     SVGGraph.registerMacro("main", main);
 })();
