@@ -4,6 +4,7 @@ let graph;
 
 // 適当な関数
 function hogeFunc() {
+    // graph.update();
 
     const tmp_array = str2bin(num_input.value);
     const vertices = code2vertices(tmp_array);
