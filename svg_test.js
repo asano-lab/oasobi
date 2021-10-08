@@ -1,7 +1,7 @@
 let num_input;
 let test_button;
 
-let line_arr = [];
+let line_arr;
 
 // let first = true;
 
@@ -11,7 +11,6 @@ function hogeFunc() {
         line_arr[i].remove();
     }
     line_arr = [];
-    // console.log(vertices.length);
 
     const tmp_array = str2bin(num_input.value);
     const vertices = code2vertices(tmp_array);
@@ -36,13 +35,14 @@ function main() {
     setRange(-6, 12, -4, 4);
     axis('full', 1, 1, 0, 0);
 
+    line_arr = [];
+
     Macro.hogeFunc();
 }
 
 // 符号を頂点の座標に変換
 function code2vertices(code) {
     if (!code.length) {
-        console.log("yeah");
         return [];
     }
     let vertices = [[0, code[0], 1, code[0]]];
@@ -55,7 +55,7 @@ function code2vertices(code) {
 
 // 01の文字列を配列に変換
 function str2bin(str) {
-    bin_arr = [];
+    let bin_arr = [];
     for (let i = 0; i < str.length; i++) {
         if (str[i] == '0') {
             bin_arr.push(0);
