@@ -1,4 +1,5 @@
 let num_input;
+let rand_num_view;
 let test_button;
 let random_button;
 
@@ -29,6 +30,7 @@ function hogeFunc() {
 function main() {
     random = new Random(123);
     num_input = document.getElementById("num1");
+    rand_num_view = document.getElementById("num2");
     test_button = document.getElementById("Button1");
     random_button = document.getElementById("Button2");
 
@@ -85,7 +87,20 @@ function drawRandom() {
     for (let i = r_str.length; i < 20; i++) {
         r_str = "0" + r_str;
     }
-    console.log(r_str, r_str.length);
+    rand_num_view.value = r_str;
+    
+    for (let i = 0; i < line_arr.length; i++) {
+        line_arr[i].remove();
+    }
+    line_arr = [];
+
+    const tmp_array = str2bin(r_str);
+    const vertices = code2vertices(tmp_array);
+
+    for (let i = 0; i < vertices.length; i++) {
+        const [x1, y1, x2, y2] = vertices[i];
+        line_arr.push(line(x1, y1, x2, y2));
+    }
 }
 
 (function() {
