@@ -1,3 +1,4 @@
+let num_input;
 
 // 適当な関数
 function hogeFunc(x, y) {
@@ -7,8 +8,10 @@ function hogeFunc(x, y) {
 }
 
 function main() {
+    let num_input = document.getElementById("num1");
+    console.log(num_input);
     setRange(-6, 10, -4, 4);
-    axis('full',1,1,0,0);
+    axis('full', 1, 1, 0, 0);
     // Macro.myCommand(3, 4);
     style.stroke = 'red';
     style.strokeWidth = 3;
