@@ -17,6 +17,7 @@ function hogeFunc() {
             tmp.remove();
         }
     }
+    console.log(vertices.length);
 
     const tmp_array = str2bin(num_input.value);
 
@@ -28,6 +29,7 @@ function hogeFunc() {
         const [x1, y1, x2, y2] = vertices[i];
         line(x1, y1, x2, y2).id = "line" + i;
     }
+    console.log(vertices.length);
 }
 
 // htmlではこれだけ呼び出せばよい?
