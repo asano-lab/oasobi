@@ -6,11 +6,18 @@
     <script src="C:\Users\17T2088B\js_lib\SVGGraph.js"></script>
     <script src="proc_if.js"></script>
     <script src="proc_lib.js"></script>
+    <script src="svg_test.js"></script>
 <body onload="init();">
     <input id="Button1" type="button" value="button" onclick="exec();" />
     <input id="Button2" type="button" value="reset" onclick="reset();" />
     <div id="output"></div>
-    <svg  id="Graph1" width="200" height="200">
+    <svg id="Graph1" width="200" height="200" script="
+        console.log(setRange);
+        setRange(-6, 6, -6, 6);
+        axis('full',2,2,0,0);
+        style.stroke = 'blue';
+        plot('3cos(x)');
+    "\></svg>
 </head>
 </body>
 </html>
