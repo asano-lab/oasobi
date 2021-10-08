@@ -1,20 +1,23 @@
 let num_input;
 let test_button;
 
+let graph;
+
+let vertices;
+
 let first = true;
 
 // 適当な関数
 function hogeFunc() {
-    // graph.update();
-
     const tmp_array = str2bin(num_input.value);
-    const vertices = code2vertices(tmp_array);
+    
+    vertices = code2vertices(tmp_array);
 
     console.log(tmp_array);
 
     for (let i = 0; i < vertices.length; i++) {
         const [x1, y1, x2, y2] = vertices[i];
-        line(x1, y1, x2, y2);
+        line(x1, y1, x2, y2).id = "line" + i;
     }
 }
 
@@ -24,6 +27,10 @@ function main() {
     if (first) {
         num_input = document.getElementById("num1");
         test_button = document.getElementById("Button3");
+        graph = document.getElementById("Graph1");
+
+        console.log(graph);
+
         test_button.onclick = Macro.hogeFunc;
 
         first = false;
