@@ -11,6 +11,9 @@ function init() {
 function exec() {
     getData(result);
     elem.innerHTML = "結果" + result;
+    for (let i = 0; i < vertices.length; i++) {
+        console.log(document.getElementById("line" + i));
+    }
 }
 
 function testFunc() {
