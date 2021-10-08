@@ -82,7 +82,7 @@ function str2bin(str) {
 function drawRandom() {
     const r = random.next() & 0xfffff;
     let r_str = r.toString(2);
-    console.log(r_str);
+    console.log(r, r_str, r_str.length);
 }
 
 (function() {
