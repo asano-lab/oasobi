@@ -3,6 +3,8 @@ let test_button;
 
 let line_arr;
 
+let random;
+
 // let first = true;
 
 // 適当な関数
@@ -19,10 +21,12 @@ function hogeFunc() {
         const [x1, y1, x2, y2] = vertices[i];
         line_arr.push(line(x1, y1, x2, y2));
     }
+    console.log(random.next());
 }
 
 // htmlではこれだけ呼び出せばよい(?)
 function main() {
+    random = new Random(123);
     num_input = document.getElementById("num1");
     test_button = document.getElementById("Button1");
 
