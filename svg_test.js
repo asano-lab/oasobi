@@ -9,9 +9,7 @@ function hogeFunc(x, y) {
 function main() {
     setRange(-6, 10, -6, 6);
     axis('full',2,2,0,0);
-    style.stroke = 'blue';
-    plot('3cos(x)');
-    Macro.myCommand(3, 4);
+    // Macro.myCommand(3, 4);
     style.stroke = 'red';
     style.strokeWidth = 3;
     let tmp_array = [1, 1, 0, 0, 0, 1];
