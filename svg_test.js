@@ -14,13 +14,13 @@ function hogeFunc() {
     for (let i = 0; i < line_arr.length; i++) {
         line_arr[i].remove();
     }
-    console.log(vertices.length);
+    // console.log(vertices.length);
 
     const tmp_array = str2bin(num_input.value);
 
     vertices = code2vertices(tmp_array);
 
-    console.log(tmp_array);
+    // console.log(tmp_array);
 
     line_arr = [];
 
@@ -28,7 +28,7 @@ function hogeFunc() {
         const [x1, y1, x2, y2] = vertices[i];
         line_arr.push(line(x1, y1, x2, y2));
     }
-    console.log(line_arr);
+    // console.log(line_arr);
     // console.log(vertices.length);
 }
 
