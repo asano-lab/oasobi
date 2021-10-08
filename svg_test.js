@@ -7,7 +7,7 @@ let vertices;
 
 let line_arr = [];
 
-let first = true;
+// let first = true;
 
 // 適当な関数
 function hogeFunc() {
@@ -34,21 +34,15 @@ function hogeFunc() {
 
 // htmlではこれだけ呼び出せばよい?
 function main() {
-    console.log(first);
-    if (first) {
-        num_input = document.getElementById("num1");
-        test_button = document.getElementById("Button3");
-        graph = document.getElementById("Graph1");
+    num_input = document.getElementById("num1");
+    test_button = document.getElementById("Button3");
+    graph = document.getElementById("Graph1");
 
-        // console.log(graph);
+    test_button.onclick = Macro.hogeFunc;
 
-        test_button.onclick = Macro.hogeFunc;
+    const tmp_array = str2bin(num_input.value);
+    vertices = code2vertices(tmp_array);
 
-        const tmp_array = str2bin(num_input.value);
-        vertices = code2vertices(tmp_array);
-    
-        first = false;
-    }
     style.stroke = 'red';
     style.strokeWidth = 3;
 
