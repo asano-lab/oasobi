@@ -16,6 +16,7 @@ function main() {
     test_button.onclick = Macro.myCommand;
     
     console.log(typeof(num_input.value));
+    console.log(num_input.value.length);
 
     setRange(-6, 10, -4, 4);
     axis('full', 1, 1, 0, 0);
