@@ -9,12 +9,14 @@ function hogeFunc() {
     const tmp_array = str2bin(num_input.value);
     const vertices = code2vertices(tmp_array);
 
+    console.log(tmp_array);
     for (let i = 0; i < vertices.length; i++) {
         const [x1, y1, x2, y2] = vertices[i];
         line(x1, y1, x2, y2);
     }
 }
 
+// htmlではこれだけ呼び出せばよい?
 function main() {
     num_input = document.getElementById("num1");
     test_button = document.getElementById("Button3");
@@ -36,7 +38,7 @@ function main() {
 
 // 符号を頂点の座標に変換
 function code2vertices(code) {
-    console.log(code.length);
+    // console.log(code.length);
     let vertices = [[0, code[0], 1, code[0]]];
     for (let i = 1; i < code.length; i++) {
         vertices.push([i, code[i - 1], i, code[i]]);
