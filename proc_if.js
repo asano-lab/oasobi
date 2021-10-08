@@ -1,9 +1,12 @@
 let result;
 let elem;
+let first;
 
 function init() {
     elem = document.getElementById("output");
     result = [0];
+    first = true;
+    console.log(first);
 }
 
 function exec() {
