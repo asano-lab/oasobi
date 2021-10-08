@@ -1,6 +1,8 @@
 let num_input;
 let test_button;
 
+let first = true;
+
 // 適当な関数
 function hogeFunc() {
     // graph.update();
@@ -18,16 +20,20 @@ function hogeFunc() {
 
 // htmlではこれだけ呼び出せばよい?
 function main() {
+    console.log(first);
+    if (first) {
+        num_input = document.getElementById("num1");
+        test_button = document.getElementById("Button3");
+        test_button.onclick = Macro.hogeFunc;
 
-    num_input = document.getElementById("num1");
-    test_button = document.getElementById("Button3");
-    test_button.onclick = Macro.hogeFunc;
-    setRange(-6, 10, -4, 4);
-    axis('full', 1, 1, 0, 0);
+        first = false;
+    }
     style.stroke = 'red';
     style.strokeWidth = 3;
 
-    // hogeFunc();
+    setRange(-6, 10, -4, 4);
+    axis('full', 1, 1, 0, 0);
+
     Macro.hogeFunc();
 }
 
