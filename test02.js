@@ -1,26 +1,28 @@
 
 let graphID = document.getElementById("graph");
 
+let data = {
+    labels: [0,2,4,6,8,10],
+    datasets: [{
+        label: 'Data 1',
+        fill: false,
+        steppedLine: 'before',
+        lineTension: 0,
+        borderWidth: 1,
+        borderColor: 'red',
+        backgroundColor: 'yellow',
+        data: [1,4,2,7,1,6],
+    }, {
+        label: 'Data 2',
+        data: [5,2,9,4,1,2],
+        steppedLine: true,
+    }]
+}
+
 let myChart = new Chart(graphID, {
     type: 'line',
-    data: {
-        labels: [0,2,4,6,8,10],
-        datasets: [{
-            label: 'Data 1',
-            fill: true,
-            steppedLine: true,
-            lineTension: 0,
-            borderWidth: 1,
-            borderColor: 'red',
-            backgroundColor: 'yellow',
-            data: [1,4,2,7,1,6],
-        }, {
-            label: 'Data 2',
-            data: [5,2,9,4,1,2],
-            steppedLine: true,
-        }]
-        },
-        options: {
+    data: data,
+    options: {
         responsive: false,
         animation: {
             duration: 0,
@@ -52,7 +54,7 @@ let myChart = new Chart(graphID, {
                 ticks: {
                     min: 0,
                     max: 10,
-                    stepSize: 2,
+                    stepSize: 3,
                 }
             }]
         }
