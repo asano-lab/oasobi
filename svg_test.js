@@ -7,13 +7,22 @@ function hogeFunc(x, y) {
 }
 
 function main() {
-    console.log(setRange);
+    // console.log(setRange);
     setRange(-6, 6, -6, 6);
     axis('full',2,2,0,0);
     style.stroke = 'blue';
     plot('3cos(x)');
     Macro.myCommand(3, 4);
-    line(0, 0, 0, 1);
+    style.stroke = 'red';
+    style.strokeWidth = 2;
+    let tmp_array = [0, 1, 0, 1, 0, 1];
+    code2vertices(tmp_array);
+    // console.log(1, 2);
+    line(0, 0, 2, 2);
+}
+
+function code2vertices(code) {
+    console.log(code.length);
 }
 
 (function() {
