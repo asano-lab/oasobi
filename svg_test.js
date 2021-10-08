@@ -1,8 +1,6 @@
 let num_input;
 let test_button;
 
-let graph;
-
 let vertices;
 
 let line_arr = [];
@@ -36,12 +34,11 @@ function hogeFunc() {
 function main() {
     num_input = document.getElementById("num1");
     test_button = document.getElementById("Button3");
-    graph = document.getElementById("Graph1");
 
     test_button.onclick = Macro.hogeFunc;
 
-    const tmp_array = str2bin(num_input.value);
-    vertices = code2vertices(tmp_array);
+    // const tmp_array = str2bin(num_input.value);
+    // vertices = code2vertices(tmp_array);
 
     style.stroke = 'red';
     style.strokeWidth = 3;
