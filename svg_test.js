@@ -5,17 +5,14 @@ let graph;
 
 let vertices;
 
+let line_arr = [];
+
 let first = true;
 
 // 適当な関数
 function hogeFunc() {
-    // rmvAll();
-    for (let i = 0; i < vertices.length; i++) {
-        const tmp = document.getElementById("line" + i);
-        // console.log(tmp);
-        if (tmp != null) {
-            tmp.remove();
-        }
+    for (let i = 0; i < line_arr.length; i++) {
+        line_arr[i].remove();
     }
     console.log(vertices.length);
 
@@ -25,11 +22,14 @@ function hogeFunc() {
 
     console.log(tmp_array);
 
+    line_arr = [];
+
     for (let i = 0; i < vertices.length; i++) {
         const [x1, y1, x2, y2] = vertices[i];
-        line(x1, y1, x2, y2).id = "line" + i;
+        line_arr.push(line(x1, y1, x2, y2));
     }
-    console.log(vertices.length);
+    console.log(line_arr);
+    // console.log(vertices.length);
 }
 
 // htmlではこれだけ呼び出せばよい?
