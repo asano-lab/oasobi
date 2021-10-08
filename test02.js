@@ -19,46 +19,48 @@ let data = {
     }]
 }
 
+let options = {
+    responsive: false,
+    animation: {
+        duration: 0,
+    },
+    title: {
+        display: true,
+        fontSize: 14,
+        fontColor: '#23993d',
+        text: 'Graph Title',
+    },
+    tooltips: {
+        mode: 'index',
+        intersect: false,
+    },
+    scales: {
+        xAxes: [{
+            scaleLabel: {
+                display: true,
+                fontSize: 14,
+                fontColor: 'blue',
+                labelString: 'Time',
+            },
+        }],
+        yAxes: [{
+            scaleLabel: {
+                display: true,
+                labelString: 'Value',
+            },
+            ticks: {
+                min: 0,
+                max: 10,
+                stepSize: 3,
+            }
+        }]
+    }
+}
+
 let myChart = new Chart(graphID, {
     type: 'line',
     data: data,
-    options: {
-        responsive: false,
-        animation: {
-            duration: 0,
-        },
-        title: {
-            display: true,
-            fontSize: 14,
-            fontColor: '#23993d',
-            text: 'Graph Title',
-        },
-        tooltips: {
-            mode: 'index',
-            intersect: false,
-        },
-        scales: {
-            xAxes: [{
-                scaleLabel: {
-                    display: true,
-                    fontSize: 14,
-                    fontColor: 'blue',
-                    labelString: 'Time',
-                },
-            }],
-            yAxes: [{
-                scaleLabel: {
-                    display: true,
-                    labelString: 'Value',
-                },
-                ticks: {
-                    min: 0,
-                    max: 10,
-                    stepSize: 3,
-                }
-            }]
-        }
-    }
+    options: options,
 });
 
 function addData() {
