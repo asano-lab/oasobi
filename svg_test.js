@@ -17,14 +17,13 @@ function main() {
     
     console.log(typeof(num_input.value));
     console.log(num_input.value.length);
-    str2bin(num_input.value);
 
     setRange(-6, 10, -4, 4);
     axis('full', 1, 1, 0, 0);
     // Macro.myCommand(3, 4);
     style.stroke = 'red';
     style.strokeWidth = 3;
-    let tmp_array = [1, 1, 0, 0, 0, 1];
+    let tmp_array = str2bin(num_input.value);
     let vertices = code2vertices(tmp_array);
     for (let i = 0; i < vertices.length; i++) {
         const [x1, y1, x2, y2] = vertices[i];
@@ -58,7 +57,6 @@ function str2bin(str) {
             break;
         }
     }
-    console.log(bin_arr);
     return bin_arr;
 }
 
