@@ -1,8 +1,10 @@
 let num_input;
 let test_button;
+let graph;
 
 // 適当な関数
 function hogeFunc() {
+    // graph.update();
     // setRange(-6, 10, -4, 4);
     // axis('full', 1, 1, 0, 0);
 
@@ -20,6 +22,8 @@ function hogeFunc() {
 function main() {
     num_input = document.getElementById("num1");
     test_button = document.getElementById("Button3");
+    graph = document.getElementById("Graph1");
+
     test_button.onclick = Macro.hogeFunc;
 
     setRange(-6, 10, -4, 4);
@@ -30,6 +34,7 @@ function main() {
 
     const tmp_array = str2bin(num_input.value);
     const vertices = code2vertices(tmp_array);
+
     for (let i = 0; i < vertices.length; i++) {
         const [x1, y1, x2, y2] = vertices[i];
         line(x1, y1, x2, y2);
@@ -56,7 +61,7 @@ function str2bin(str) {
         } else if (str[i] == '1') {
             bin_arr.push(1);
         }
-        // 01以外が含まれていたら終了
+        // 01以外が含まれていたら空配列を返す
         else {
             bin_arr = [];
             break;

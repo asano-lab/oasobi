@@ -5,7 +5,6 @@ let elem;
 
 function init() {
     elem = document.getElementById("output");
-    graph = document.getElementById("Graph1");
     result = [0];
 }
 
