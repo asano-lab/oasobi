@@ -4,9 +4,6 @@ let graph;
 
 // 適当な関数
 function hogeFunc() {
-    // graph.update();
-    // setRange(-6, 10, -4, 4);
-    // axis('full', 1, 1, 0, 0);
 
     const tmp_array = str2bin(num_input.value);
     const vertices = code2vertices(tmp_array);
@@ -32,13 +29,7 @@ function main() {
     style.stroke = 'red';
     style.strokeWidth = 3;
 
-    const tmp_array = str2bin(num_input.value);
-    const vertices = code2vertices(tmp_array);
-
-    for (let i = 0; i < vertices.length; i++) {
-        const [x1, y1, x2, y2] = vertices[i];
-        line(x1, y1, x2, y2);
-    }
+    Macro.hogeFunc();
 }
 
 // 符号を頂点の座標に変換
