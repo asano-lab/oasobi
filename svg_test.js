@@ -80,7 +80,9 @@ function str2bin(str) {
 
 // ランダムな波形を描画
 function drawRandom() {
-    console.log("あいうえお");
+    const r = random.next() & 0xfffff;
+    let r_str = r.toString(2);
+    console.log(r_str);
 }
 
 (function() {
