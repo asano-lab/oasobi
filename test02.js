@@ -7,7 +7,7 @@ let myChart = new Chart(graphID, {
         labels: [0,2,4,6,8,10],
         datasets: [{
             label: 'Data 1',
-            fill: false,
+            fill: true,
             steppedLine: true,
             lineTension: 0,
             borderWidth: 1,
