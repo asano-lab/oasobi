@@ -17,7 +17,6 @@ let myChart = new Chart(graphID, {
         }, {
             label: 'Data 2',
             data: [5,2,9,4,1,2],
-            lineTension: 0,
             steppedLine: true,
         }]
         },
