@@ -17,6 +17,7 @@ function main() {
     
     console.log(typeof(num_input.value));
     console.log(num_input.value.length);
+    str2bin(num_input.value);
 
     setRange(-6, 10, -4, 4);
     axis('full', 1, 1, 0, 0);
@@ -40,6 +41,25 @@ function code2vertices(code) {
         vertices.push([i, code[i], i + 1, code[i]]);
     }
     return vertices;
+}
+
+// 01の文字列を配列に変換
+function str2bin(str) {
+    bin_arr = [];
+    for (let i = 0; i < str.length; i++) {
+        if (str[i] == '0') {
+            bin_arr.push(0);
+        } else if (str[i] == '1') {
+            bin_arr.push(1);
+        }
+        // 01以外が含まれていたら終了
+        else {
+            bin_arr = [];
+            break;
+        }
+    }
+    console.log(bin_arr);
+    return bin_arr;
 }
 
 (function() {
