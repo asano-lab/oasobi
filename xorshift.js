@@ -59,18 +59,25 @@ class RandomMT {
 
     // MT で乱数を生成
     next() {
+        let a, b, c, d, y, z;
         // Step.1
-        let z = this.x[this.i] & this.UPPER_MASK | this.x[(this.i + 1) % this.N] & this.LOWER_MASK;
+        a = this.x[this.i] & this.UPPER_MASK;
+        b = this.x[(this.i + 1) % this.N] & this.LOWER_MASK;
+        z = a | b;
 
         // Step.2
-        this.x[this.i] = this.x[(this.i + this.M) % this.N] ^ (z >>> 1) ^ (z & 1 == 0 ? 0 : this.A);
+        c = this.x[(this.i + this.M) % this.N] ^ (z >>> 1);
+        d = (z & 1) == 0 ? 0 : this.A;
+        this.x[this.i] = c ^ d;
 
         // Step.3
-        let y = this.x[this.i];
-        y = y ^ (y >>> this.U);
-        y = y ^ ((y << this.S) & this.B);
-        y = y ^ ((y << this.T) & this.C);
-        y = y ^ (y >>> this.L);
+        y = this.x[this.i];
+        console.log(a, b, z, c, d, y);
+
+        y ^= (y >>> this.U);
+        y ^= ((y << this.S) & this.B);
+        y ^= ((y << this.T) & this.C);
+        y ^= (y >>> this.L);
 
         this.i = (this.i + 1) % this.N;
         return y;
