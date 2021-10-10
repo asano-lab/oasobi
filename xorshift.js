@@ -50,7 +50,7 @@ class RandomMT {
             c = (1812433253 * (a ^ b)) + j;
             d = c & this.WHOLE_MASK;
             if (d < 0) {
-                d = this.WHOLE_MASK + 1 + d;
+                d = this.WHOLE_MASK + d + 1;
             }
             this.x.push(d);
             if (j < 10) {
