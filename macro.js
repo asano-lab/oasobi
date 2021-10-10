@@ -1,5 +1,5 @@
 (function() {
-	SVGGraph.registerMacro("hogeFunc", _hogeFunc);
+	SVGGraph.registerMacro("drawGraph", _drawGraph);
     SVGGraph.registerMacro("main", _main);
     SVGGraph.registerMacro("drawRandom", _drawRandom);
 })();

@@ -19,7 +19,7 @@ function _main() {
     random_button = document.getElementById("Button2");
 
     // クリック時のアクションにマクロを登録
-    test_button.onclick = Macro.hogeFunc;
+    test_button.onclick =  Macro.drawGraph;
     random_button.onclick = Macro.drawRandom;
 
     style.stroke = 'red';
@@ -29,8 +29,7 @@ function _main() {
     axis('full', 1, 1, 0, 0);
 
     line_arr = [];
-
-    Macro.hogeFunc();
+    Macro.drawGraph();
 
     for (let i = 0; i < 10000; i++) {
         let rd = random.next();
@@ -38,23 +37,6 @@ function _main() {
             console.log(i, rd);
         }
     }
-}
-
-// 適当な関数
-function _hogeFunc() {
-    for (let i = 0; i < line_arr.length; i++) {
-        line_arr[i].remove();
-    }
-    line_arr = [];
-
-    const tmp_array = str2bin(num_input.value);
-    const vertices = code2vertices(tmp_array);
-
-    for (let i = 0; i < vertices.length; i++) {
-        const [x1, y1, x2, y2] = vertices[i];
-        line_arr.push(line(x1, y1, x2, y2));
-    }
-    // console.log(random.next());
 }
 
 // 符号を頂点の座標に変換
@@ -88,26 +70,34 @@ function str2bin(str) {
     return bin_arr;
 }
 
-// ランダムな波形を描画
-function _drawRandom() {
-    const r = random.next() & 0xfffff;
-    let r_str = r.toString(2);
-
-    for (let i = r_str.length; i < 20; i++) {
-        r_str = "0" + r_str;
-    }
-    num_input.value = r_str;
-    
+// グラフ描画
+function _drawGraph() {
+    // 直前のグラフを削除
     for (let i = 0; i < line_arr.length; i++) {
         line_arr[i].remove();
     }
     line_arr = [];
 
-    const tmp_array = str2bin(r_str);
+    const tmp_array = str2bin(num_input.value);
     const vertices = code2vertices(tmp_array);
+    let x1, y1, x2, y2;
 
     for (let i = 0; i < vertices.length; i++) {
-        const [x1, y1, x2, y2] = vertices[i];
+        [x1, y1, x2, y2] = vertices[i]; // アンパック代入
         line_arr.push(line(x1, y1, x2, y2));
     }
+}
+
+// ランダムな波形を描画
+function _drawRandom() {
+    const r = random.next() & 0xfffff; // 20bit
+    let r_str = r.toString(2);
+
+    // 0埋め
+    for (let i = r_str.length; i < 20; i++) {
+        r_str = "0" + r_str;
+    }
+    num_input.value = r_str;
+
+    Macro.drawGraph();
 }
