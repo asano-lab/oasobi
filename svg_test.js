@@ -49,8 +49,11 @@ function _main() {
 
     Macro.hogeFunc();
 
-    for (let i = 0; i < 10; i++) {
-        console.log(r.next());
+    for (let i = 0; i < 10000; i++) {
+        r.next();
+        if (i >= 9990) {
+            console.log(r.next());
+        }
     }
 }
 

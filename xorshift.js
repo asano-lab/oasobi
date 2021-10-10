@@ -62,10 +62,10 @@ class RandomMT {
         let a, b, c, d, y, z;
         // Step.1
         a = this.x[this.i] & this.UPPER_MASK;
-        a = a < 0 ? this.WHOLE_MASK + a + 1 : a;
+        // a = a < 0 ? this.WHOLE_MASK + a + 1 : a;
         b = this.x[(this.i + 1) % this.N] & this.LOWER_MASK;
         z = a | b;
-        z = z < 0 ? this.WHOLE_MASK + z + 1 : z;
+        // z = z < 0 ? this.WHOLE_MASK + z + 1 : z;
 
         // Step.2
         c = this.x[(this.i + this.M) % this.N] ^ (z >>> 1);
@@ -74,7 +74,7 @@ class RandomMT {
 
         // Step.3
         y = this.x[this.i];
-        console.log(a, b, z, c, d, y);
+        // console.log(a, b, z, c, d, y);
 
         y ^= (y >>> this.U);
         y ^= ((y << this.S) & this.B);
