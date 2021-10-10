@@ -30,10 +30,6 @@ function _hogeFunc() {
 function _main() {
     random = new Random(123);
     let r = new RandomMT(123);
-    // r.W = 5;
-    console.log(r.W);
-    console.log(r.seed);
-    console.log(r.UPPER_MASK.toString(2), r.LOWER_MASK.toString(2));
 
     num_input = document.getElementById("num1");
     test_button = document.getElementById("Button1");

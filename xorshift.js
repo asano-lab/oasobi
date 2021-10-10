@@ -40,7 +40,7 @@ class RandomMT {
 
         // MT 内部状態
         this.x = [this.seed & this.WHOLE_MASK];
-        console.log(this.WHOLE_MASK, this.UPPER_MASK);
+        // console.log(this.WHOLE_MASK, this.UPPER_MASK);
         for (let i = 1; i < this.N; i++) {
             this.x.push((1812433253 * (this.x[i - 1] ^ (this.x[i - 1] >>> 30)) + i) & this.WHOLE_MASK);
             if (i < 10) {
