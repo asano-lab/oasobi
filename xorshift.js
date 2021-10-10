@@ -51,14 +51,8 @@ class RandomMT {
                 b += this.WHOLE_MASK + 1;
             }
             c = 1406077 * b & this.WHOLE_MASK;
-            // if (c < 0) {
-            //     c += this.WHOLE_MASK + 1;
-            // }
             c *= 1289;
             c &= this.WHOLE_MASK;
-            if (c < 0) {
-                c += this.WHOLE_MASK + 1;
-            }
             d = c + j;
             e = d & this.WHOLE_MASK;
             if (e < 0) {
