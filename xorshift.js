@@ -19,7 +19,10 @@ class Random {
 
 class RandomMT {
     constructor(seed = 123) {
-        this.W = 32;
+        Object.defineProperty(
+            this,
+            "W", {value: 32}
+        );
         this.N = 624;
         this.R = 31;
         this.U = 11;
@@ -33,5 +36,3 @@ class RandomMT {
         console.log(this.W);
     }
 }
-
-RandomMT.W = 32;
