@@ -8,11 +8,11 @@ let random; // 乱数生成インスタンス
 
 // htmlではこれだけ呼び出せばよい (多分)
 function _main() {
+    // シードに時刻を設定
     const now = new Date();
-    const t0 = now.getTime();
-    console.log(t0);
-    random = new RandomMT(t0);
+    random = new RandomMT(now.getTime());
 
+    // ボタンなどを取得
     num_input = document.getElementById("num1");
     draw_button = document.getElementById("Button1");
     random_button = document.getElementById("Button2");
@@ -29,13 +29,6 @@ function _main() {
 
     line_arr = [];
     Macro.drawGraph();
-
-    for (let i = 0; i < 10000; i++) {
-        let rd = random.next();
-        if (i >= 9990) {
-            console.log(i, rd);
-        }
-    }
 }
 
 // 符号を頂点の座標に変換

@@ -59,7 +59,6 @@ class RandomMT {
             }
             this.x.push(c);
         }
-        console.log(this.x.slice(this.N - 10));
     }
 
     // MT で乱数を生成
