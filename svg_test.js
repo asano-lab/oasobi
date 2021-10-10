@@ -84,10 +84,12 @@ function str2bin(str) {
 function drawRandom() {
     const r = random.next() & 0xfffff;
     let r_str = r.toString(2);
+
     for (let i = r_str.length; i < 20; i++) {
         r_str = "0" + r_str;
     }
     rand_num_view.value = r_str;
+    num_input.value = r_str;
     
     for (let i = 0; i < line_arr.length; i++) {
         line_arr[i].remove();
