@@ -7,31 +7,12 @@ let line_arr;
 
 let random;
 
-// let first = true;
-
-// 適当な関数
-function _hogeFunc() {
-    for (let i = 0; i < line_arr.length; i++) {
-        line_arr[i].remove();
-    }
-    line_arr = [];
-
-    const tmp_array = str2bin(num_input.value);
-    const vertices = code2vertices(tmp_array);
-
-    for (let i = 0; i < vertices.length; i++) {
-        const [x1, y1, x2, y2] = vertices[i];
-        line_arr.push(line(x1, y1, x2, y2));
-    }
-    // console.log(random.next());
-}
-
-// htmlではこれだけ呼び出せばよい(?)
+// htmlではこれだけ呼び出せばよい (多分)
 function _main() {
     const now = new Date();
     const t0 = now.getTime();
     console.log(t0);
-    let r = new RandomMT(t0);
+    random = new RandomMT(t0);
 
     num_input = document.getElementById("num1");
     test_button = document.getElementById("Button1");
@@ -52,11 +33,28 @@ function _main() {
     Macro.hogeFunc();
 
     for (let i = 0; i < 10000; i++) {
-        let rd = r.next();
+        let rd = random.next();
         if (i >= 9990) {
             console.log(i, rd);
         }
     }
+}
+
+// 適当な関数
+function _hogeFunc() {
+    for (let i = 0; i < line_arr.length; i++) {
+        line_arr[i].remove();
+    }
+    line_arr = [];
+
+    const tmp_array = str2bin(num_input.value);
+    const vertices = code2vertices(tmp_array);
+
+    for (let i = 0; i < vertices.length; i++) {
+        const [x1, y1, x2, y2] = vertices[i];
+        line_arr.push(line(x1, y1, x2, y2));
+    }
+    // console.log(random.next());
 }
 
 // 符号を頂点の座標に変換
