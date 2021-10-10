@@ -29,7 +29,7 @@ function _hogeFunc() {
 // htmlではこれだけ呼び出せばよい(?)
 function _main() {
     random = new Random(123);
-    let r = new RandomMT(123);
+    let r = new RandomMT(20211010);
 
     num_input = document.getElementById("num1");
     test_button = document.getElementById("Button1");
@@ -50,9 +50,9 @@ function _main() {
     Macro.hogeFunc();
 
     for (let i = 0; i < 10000; i++) {
-        r.next();
+        let rd = r.next();
         if (i >= 9990) {
-            console.log(i, r.next());
+            console.log(i, rd);
         }
     }
 }
