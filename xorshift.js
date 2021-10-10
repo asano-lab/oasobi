@@ -29,6 +29,7 @@ class RandomMT {
         this.A = 0x9908B0DF;
         this.B = 0x9D2C5680;
         this.C = 0xEFC60000;
+
         console.log(this.W);
     }
 }
