@@ -29,7 +29,7 @@ function _hogeFunc() {
 // htmlではこれだけ呼び出せばよい(?)
 function _main() {
     random = new Random(123);
-    let r = new RandomMT(34234);
+    let r = new RandomMT(123);
     // r.W = 5;
     console.log(r.W);
     console.log(r.seed);
