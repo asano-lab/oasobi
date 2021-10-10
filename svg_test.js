@@ -28,8 +28,10 @@ function _hogeFunc() {
 
 // htmlではこれだけ呼び出せばよい(?)
 function _main() {
-    random = new Random(123);
-    let r = new RandomMT(20211010);
+    const now = new Date();
+    const t0 = now.getTime();
+    console.log(t0);
+    let r = new RandomMT(t0);
 
     num_input = document.getElementById("num1");
     test_button = document.getElementById("Button1");
