@@ -30,7 +30,6 @@ function hogeFunc() {
 function main() {
     random = new Random(123);
     num_input = document.getElementById("num1");
-    rand_num_view = document.getElementById("num2");
     test_button = document.getElementById("Button1");
     random_button = document.getElementById("Button2");
 
@@ -88,7 +87,6 @@ function drawRandom() {
     for (let i = r_str.length; i < 20; i++) {
         r_str = "0" + r_str;
     }
-    rand_num_view.value = r_str;
     num_input.value = r_str;
     
     for (let i = 0; i < line_arr.length; i++) {
