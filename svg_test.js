@@ -33,6 +33,7 @@ function _main() {
     // r.W = 5;
     console.log(r.W);
     console.log(r.seed);
+    console.log(r.UPPER_MASK, r.LOWER_MASK);
 
     num_input = document.getElementById("num1");
     test_button = document.getElementById("Button1");

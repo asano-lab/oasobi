@@ -19,6 +19,7 @@ class Random {
 
 class RandomMT {
     constructor(seed = 123) {
+        // MT19937
         Object.defineProperty(this, "W", {value: 32});
         Object.defineProperty(this, "N", {value: 624});
         Object.defineProperty(this, "M", {value: 397});
@@ -31,5 +32,10 @@ class RandomMT {
         Object.defineProperty(this, "B", {value: 0x9D2C5680});
         Object.defineProperty(this, "C", {value: 0xEFC60000});
         Object.defineProperty(this, "seed", {value: seed});
+
+        // ビットマスク用
+        Object.defineProperty(this, "WHOLE_MASK", {value: 0xffffffff});
+        Object.defineProperty(this, "UPPER_MASK", {value: 0x80000000});
+        Object.defineProperty(this, "LOWER_MASK", {value: 0x7fffffff});
     }
 }
