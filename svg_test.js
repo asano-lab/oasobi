@@ -1,11 +1,10 @@
-let num_input;
-let rand_num_view;
-let test_button;
+let num_input; // 2進数入力欄
+let draw_button;
 let random_button;
 
 let line_arr;
 
-let random;
+let random; // 乱数生成インスタンス
 
 // htmlではこれだけ呼び出せばよい (多分)
 function _main() {
@@ -15,11 +14,11 @@ function _main() {
     random = new RandomMT(t0);
 
     num_input = document.getElementById("num1");
-    test_button = document.getElementById("Button1");
+    draw_button = document.getElementById("Button1");
     random_button = document.getElementById("Button2");
 
     // クリック時のアクションにマクロを登録
-    test_button.onclick =  Macro.drawGraph;
+    draw_button.onclick =  Macro.drawGraph;
     random_button.onclick = Macro.drawRandom;
 
     style.stroke = 'red';
@@ -52,7 +51,7 @@ function code2vertices(code) {
     return vertices;
 }
 
-// 01の文字列を配列に変換
+// 「01」の文字列を配列に変換
 function str2bin(str) {
     let bin_arr = [];
     for (let i = 0; i < str.length; i++) {
