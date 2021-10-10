@@ -48,9 +48,18 @@ class RandomMT {
             a = this.x[j - 1];
             b = a ^ (a >>> 30);
             if (b < 0) {
-                b = this.WHOLE_MASK + b + 1;
+                b += this.WHOLE_MASK + 1;
             }
-            c = 1406077 * 1289 * b;
+            c = 1406077 * b;
+            c &= this.WHOLE_MASK;
+            if (c < 0) {
+                c += this.WHOLE_MASK + 1;
+            }
+            c *= 1289;
+            c &= this.WHOLE_MASK;
+            if (c < 0) {
+                c += this.WHOLE_MASK + 1;
+            }
             d = c + j;
             e = d & this.WHOLE_MASK;
             if (e < 0) {
