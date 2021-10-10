@@ -50,7 +50,7 @@ class RandomMT {
             if (b < 0) {
                 b = this.WHOLE_MASK + b + 1;
             }
-            c = 1812433253 * b;
+            c = 1406077 * 1289 * b;
             d = c + j;
             e = d & this.WHOLE_MASK;
             if (e < 0) {
@@ -64,6 +64,7 @@ class RandomMT {
             }
         }
         console.log(2 ** 53);
+        console.log(1289 * 1406077);
         // console.log(this.x);
     }
 }
