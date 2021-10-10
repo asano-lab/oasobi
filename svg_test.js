@@ -102,9 +102,3 @@ function drawRandom() {
         line_arr.push(line(x1, y1, x2, y2));
     }
 }
-
-(function() {
-	SVGGraph.registerMacro("hogeFunc", hogeFunc);
-    SVGGraph.registerMacro("main", main);
-    SVGGraph.registerMacro("drawRandom", drawRandom);
-})();
