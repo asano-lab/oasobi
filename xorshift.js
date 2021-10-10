@@ -44,6 +44,7 @@ class RandomMT {
 
         let a, b, c;
 
+        // 初期化
         for (let j = 1; j < this.N; j++) {
             a = this.x[j - 1] ^ (this.x[j - 1] >>> 30);
             b = (1406077 * a & this.WHOLE_MASK) * 1289 & this.WHOLE_MASK;
@@ -54,5 +55,24 @@ class RandomMT {
             this.x.push(c);
         }
         console.log(this.x.slice(this.N - 10));
+    }
+
+    // MT で乱数を生成
+    next() {
+        // Step.1
+        let z = this.x[this.i] & this.UPPER_MASK | this.x[(this.i + 1) % this.N] & this.LOWER_MASK;
+
+        // Step.2
+        this.x[this.i] = this.x[(this.i + this.M) % this.N] ^ (z >>> 1) ^ (z & 1 == 0 ? 0 : this.A);
+
+        // Step.3
+        let y = this.x[this.i];
+        y = y ^ (y >>> this.U);
+        y = y ^ ((y << this.S) & this.B);
+        y = y ^ ((y << this.T) & this.C);
+        y = y ^ (y >>> this.L);
+
+        this.i = (this.i + 1) % this.N;
+        return y;
     }
 }

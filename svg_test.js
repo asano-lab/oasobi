@@ -48,6 +48,10 @@ function _main() {
     line_arr = [];
 
     Macro.hogeFunc();
+
+    for (let i = 0; i < 10; i++) {
+        console.log(r.next());
+    }
 }
 
 // 符号を頂点の座標に変換
