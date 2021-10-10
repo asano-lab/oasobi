@@ -65,6 +65,7 @@ class RandomMT {
         a = a < 0 ? this.WHOLE_MASK + a + 1 : a;
         b = this.x[(this.i + 1) % this.N] & this.LOWER_MASK;
         z = a | b;
+        z = z < 0 ? this.WHOLE_MASK + z + 1 : z;
 
         // Step.2
         c = this.x[(this.i + this.M) % this.N] ^ (z >>> 1);
