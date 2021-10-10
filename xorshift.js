@@ -33,3 +33,5 @@ class RandomMT {
         console.log(this.W);
     }
 }
+
+RandomMT.W = 32;

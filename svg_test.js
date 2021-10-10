@@ -32,6 +32,7 @@ function _main() {
     let r = new RandomMT();
     r.W = 5;
     console.log(r.W);
+    console.log(RandomMT.W);
 
     num_input = document.getElementById("num1");
     test_button = document.getElementById("Button1");
