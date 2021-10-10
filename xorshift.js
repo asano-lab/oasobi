@@ -47,6 +47,9 @@ class RandomMT {
         for (let j = 1; j < this.N; j++) {
             a = this.x[j - 1];
             b = a ^ (a >>> 30);
+            if (b < 0) {
+                b = this.WHOLE_MASK + b + 1;
+            }
             c = 1812433253 * b;
             d = c + j;
             e = d & this.WHOLE_MASK;
