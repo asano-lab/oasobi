@@ -19,20 +19,17 @@ class Random {
 
 class RandomMT {
     constructor(seed = 123) {
-        Object.defineProperty(
-            this,
-            "W", {value: 32}
-        );
-        this.N = 624;
-        this.R = 31;
-        this.U = 11;
-        this.S = 7;
-        this.T = 15;
-        this.L = 18;
-        this.A = 0x9908B0DF;
-        this.B = 0x9D2C5680;
-        this.C = 0xEFC60000;
-
-        console.log(this.W);
+        Object.defineProperty(this, "W", {value: 32});
+        Object.defineProperty(this, "N", {value: 624});
+        Object.defineProperty(this, "M", {value: 397});
+        Object.defineProperty(this, "R", {value: 31});
+        Object.defineProperty(this, "U", {value: 11});
+        Object.defineProperty(this, "S", {value: 7});
+        Object.defineProperty(this, "T", {value: 15});
+        Object.defineProperty(this, "L", {value: 18});
+        Object.defineProperty(this, "A", {value: 0x9908B0DF});
+        Object.defineProperty(this, "B", {value: 0x9D2C5680});
+        Object.defineProperty(this, "C", {value: 0xEFC60000});
+        Object.defineProperty(this, "seed", {value: seed});
     }
 }
