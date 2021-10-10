@@ -10,7 +10,7 @@ let random;
 // let first = true;
 
 // 適当な関数
-function hogeFunc() {
+function _hogeFunc() {
     for (let i = 0; i < line_arr.length; i++) {
         line_arr[i].remove();
     }
@@ -27,7 +27,7 @@ function hogeFunc() {
 }
 
 // htmlではこれだけ呼び出せばよい(?)
-function main() {
+function _main() {
     random = new Random(123);
     num_input = document.getElementById("num1");
     test_button = document.getElementById("Button1");
@@ -80,7 +80,7 @@ function str2bin(str) {
 }
 
 // ランダムな波形を描画
-function drawRandom() {
+function _drawRandom() {
     const r = random.next() & 0xfffff;
     let r_str = r.toString(2);
 
