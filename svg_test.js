@@ -23,7 +23,7 @@ function _hogeFunc() {
         const [x1, y1, x2, y2] = vertices[i];
         line_arr.push(line(x1, y1, x2, y2));
     }
-    console.log(random.next());
+    // console.log(random.next());
 }
 
 // htmlではこれだけ呼び出せばよい(?)
@@ -52,7 +52,7 @@ function _main() {
     for (let i = 0; i < 10000; i++) {
         r.next();
         if (i >= 9990) {
-            console.log(r.next());
+            console.log(i, r.next());
         }
     }
 }
