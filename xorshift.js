@@ -37,5 +37,10 @@ class RandomMT {
         Object.defineProperty(this, "WHOLE_MASK", {value: 0xffffffff});
         Object.defineProperty(this, "UPPER_MASK", {value: 0x80000000});
         Object.defineProperty(this, "LOWER_MASK", {value: 0x7fffffff});
+
+        // MT 内部状態
+        this.i = 0;
+        this.x = [this.seed & this.WHOLE_MASK];
+        console.log(this.x);
     }
 }
