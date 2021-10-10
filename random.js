@@ -1,3 +1,5 @@
+// XorShiftで乱数生成
+// そこそこの精度の乱数を高速で計算できるらしい
 // 参考：https://sbfl.net/blog/2017/06/01/javascript-reproducible-random/
 class Random {
     constructor(seed = 88675123) {
@@ -18,6 +20,7 @@ class Random {
 }
 
 // メルセンヌツイスタで乱数生成
+// 乱数の精度は良いが計算量が多いらしい
 // 参考：https://6715.jp/posts/5/
 class RandomMT {
     constructor(seed = 123) {
