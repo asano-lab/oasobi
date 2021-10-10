@@ -42,15 +42,19 @@ class RandomMT {
         this.i = 0;
         this.x = [this.seed & this.WHOLE_MASK];
 
-        let a, b, c;
+        let a, b, c, d;
 
         for (let j = 1; j < this.N; j++) {
             a = this.x[j - 1];
             b = a >>> 30;
-            c = (a ^ b) + j;
-            this.x.push((1812433253 * c) & this.WHOLE_MASK);
+            c = 1812433253 * (a ^ b);
+            d = (c + j) & this.WHOLE_MASK;
+            if (d < 0) {
+                d = (d ^ this.WHOLE_MASK) + 1;
+            }
+            this.x.push(d);
             if (j < 10) {
-                console.log(a, b, c);
+                console.log(a, b, c, d);
                 console.log(this.x);
             }
         }
