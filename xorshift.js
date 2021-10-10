@@ -42,17 +42,17 @@ class RandomMT {
         this.i = 0;
         this.x = [this.seed & this.WHOLE_MASK];
 
-        let a, b, c, d, e;
+        let a, b, c;
 
         for (let j = 1; j < this.N; j++) {
-            b = this.x[j - 1] ^ (this.x[j - 1] >>> 30);
-            c = (1406077 * b & this.WHOLE_MASK) * 1289 & this.WHOLE_MASK;
-            e = (c + j) & this.WHOLE_MASK;
-            if (e < 0) {
-                e += this.WHOLE_MASK + 1;
+            a = this.x[j - 1] ^ (this.x[j - 1] >>> 30);
+            b = (1406077 * a & this.WHOLE_MASK) * 1289 & this.WHOLE_MASK;
+            c = (b + j) & this.WHOLE_MASK;
+            if (c < 0) {
+                c += this.WHOLE_MASK + 1;
             }
-            this.x.push(e);
+            this.x.push(c);
         }
-        console.log(this.x[this.N - 1]);
+        console.log(this.x.slice(this.N - 10));
     }
 }
