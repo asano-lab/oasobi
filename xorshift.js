@@ -48,7 +48,7 @@ class RandomMT {
             a = this.x[j - 1];
             b = a >>> 30;
             c = 1812433253 * (a ^ b);
-            d = (c + j) & this.WHOLE_MASK;
+            d = (c + j) & 0xffffffff;
             if (d < 0) {
                 d = (d ^ this.WHOLE_MASK) + 1;
             }
