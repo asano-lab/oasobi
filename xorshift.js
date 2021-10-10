@@ -72,8 +72,6 @@ class RandomMT {
                 console.log(this.x);
             }
         }
-        console.log(2 ** 53);
-        console.log(1289 * 1406077);
-        // console.log(this.x);
+        console.log(this.x[this.N - 1]);
     }
 }
