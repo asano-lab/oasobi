@@ -17,6 +17,8 @@ class Random {
     }
 }
 
+// メルセンヌツイスタで乱数生成
+// 参考：https://6715.jp/posts/5/
 class RandomMT {
     constructor(seed = 123) {
         // MT19937
