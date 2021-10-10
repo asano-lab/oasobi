@@ -29,6 +29,8 @@ function _hogeFunc() {
 // htmlではこれだけ呼び出せばよい(?)
 function _main() {
     random = new Random(123);
+    new RandomMT();
+    
     num_input = document.getElementById("num1");
     test_button = document.getElementById("Button1");
     random_button = document.getElementById("Button2");

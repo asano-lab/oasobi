@@ -16,3 +16,19 @@ class Random {
         return this.w = (this.w ^ (this.w >>> 19)) ^ (t ^ (t >>> 8)); 
     }
 }
+
+class RandomMT {
+    constructor(seed = 123) {
+        this.W = 32;
+        this.N = 624;
+        this.R = 31;
+        this.U = 11;
+        this.S = 7;
+        this.T = 15;
+        this.L = 18;
+        this.A = 0x9908B0DF;
+        this.B = 0x9D2C5680;
+        this.C = 0xEFC60000;
+        console.log(this.W);
+    }
+}
