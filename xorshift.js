@@ -51,7 +51,7 @@ class RandomMT {
             d = c + j;
             e = d & this.WHOLE_MASK;
             if (e < 0) {
-                e = this.WHOLE_MASK + e + 1;
+                e += this.WHOLE_MASK + 1;
             }
             this.x.push(e);
             if (j < 10) {
