@@ -39,16 +39,18 @@ class RandomMT {
         Object.defineProperty(this, "LOWER_MASK", {value: 0x7fffffff});
 
         // MT 内部状態
+        this.i = 0;
         this.x = [this.seed & this.WHOLE_MASK];
 
-        for (let i = 1; i < this.N; i++) {
-            this.x.push((1812433253 * (this.x[i - 1] ^ (this.x[i - 1] >>> 30)) + i) & this.WHOLE_MASK);
-            if (i < 10) {
-                let a = this.x[i - 1];
-                let b = this.x[i - 1] >>> 30;
-                let c = a ^ b;
-                console.log(a.toString(2), b.toString(2));
-                console.log(c);
+        let a, b, c;
+
+        for (let j = 1; j < this.N; j++) {
+            a = this.x[j - 1];
+            b = a >>> 30;
+            c = a ^ b + j;
+            this.x.push((1812433253 * c) & this.WHOLE_MASK);
+            if (j < 10) {
+                console.log(a, b, c);
                 console.log(this.x);
             }
         }
