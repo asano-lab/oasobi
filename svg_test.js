@@ -66,12 +66,11 @@ function str2bin(str) {
 
 // グラフ描画
 function _drawGraph() {
-    console.log(signal_path);
     // 直前のグラフを削除
     if (signal_path != null) {
         signal_path.remove();
+        console.log(signal_path);
     }
-    console.log(signal_path);
 
     const tmp_array = str2bin(num_input.value);
     const vertices = code2vertices(tmp_array);
