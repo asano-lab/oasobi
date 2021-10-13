@@ -76,9 +76,7 @@ function _drawGraph() {
     const tmp_array = str2bin(num_input.value);
     const vertices = code2vertices(tmp_array);
 
-    for (let i = 0; i < vertices.length; i++) {
-        signal_path = path(vertices);
-    }
+    signal_path = path(vertices);
 }
 
 // ランダムな波形を描画
