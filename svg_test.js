@@ -2,7 +2,7 @@ let num_input; // 2進数入力欄
 let draw_button;
 let random_button;
 
-let line_arr;
+let signal_path;
 
 let random; // 乱数生成インスタンス
 
@@ -27,7 +27,7 @@ function _main() {
     setRange(-1, 20, -3, 3);
     axis('full', 1, 1, 0, 0);
 
-    line_arr = [];
+    signal_path = [];
     Macro.drawGraph();
 }
 
@@ -36,10 +36,13 @@ function code2vertices(code) {
     if (!code.length) {
         return [];
     }
-    let vertices = [[0, code[0], 1, code[0]]];
+    let vertices = [[0, code[0]], [1, code[0]]];
+
     for (let i = 1; i < code.length; i++) {
-        vertices.push([i, code[i - 1], i, code[i]]);
-        vertices.push([i, code[i], i + 1, code[i]]);
+        if (code[i - 1] != code[i]) {
+            vertices.push([i, code[i]]);
+        }
+        vertices.push([i + 1, code[i]]);
     }
     return vertices;
 }
@@ -64,19 +67,17 @@ function str2bin(str) {
 
 // グラフ描画
 function _drawGraph() {
+    console.log(signal_path);
     // 直前のグラフを削除
-    for (let i = 0; i < line_arr.length; i++) {
-        line_arr[i].remove();
+    if (signal_path.length != 0) {
+        signal_path[0].remove();
     }
-    line_arr = [];
 
     const tmp_array = str2bin(num_input.value);
     const vertices = code2vertices(tmp_array);
-    let x1, y1, x2, y2;
 
     for (let i = 0; i < vertices.length; i++) {
-        [x1, y1, x2, y2] = vertices[i]; // アンパック代入
-        line_arr.push(line(x1, y1, x2, y2));
+        signal_path = [path(vertices)];
     }
 }
 
