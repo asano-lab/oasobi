@@ -27,7 +27,6 @@ function _main() {
     setRange(-1, 20, -3, 3);
     axis('full', 1, 1, 0, 0);
 
-    signal_path = [];
     Macro.drawGraph();
 }
 
@@ -69,15 +68,16 @@ function str2bin(str) {
 function _drawGraph() {
     console.log(signal_path);
     // 直前のグラフを削除
-    if (signal_path.length != 0) {
-        signal_path[0].remove();
+    if (signal_path != null) {
+        signal_path.remove();
     }
+    console.log(signal_path);
 
     const tmp_array = str2bin(num_input.value);
     const vertices = code2vertices(tmp_array);
 
     for (let i = 0; i < vertices.length; i++) {
-        signal_path = [path(vertices)];
+        signal_path = path(vertices);
     }
 }
 
