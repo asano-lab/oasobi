@@ -49,13 +49,14 @@ function code2vertices(code) {
 // 「01」の文字列を配列に変換
 function str2bin(str) {
     let bin_arr = [];
+    
     for (let i = 0; i < str.length; i++) {
         if (str[i] == '0') {
             bin_arr.push(0);
         } else if (str[i] == '1') {
             bin_arr.push(1);
         }
-        // 01以外が含まれていたら空配列を返す
+        // 「01」以外が含まれていたら空配列を返す
         else {
             bin_arr = [];
             break;
