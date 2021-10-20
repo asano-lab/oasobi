@@ -1,9 +1,12 @@
 
 let _main = () => {
-    setRange(-1.1, 1.1, -1.1, 1.1);
+    let x, y;
+    setRange(-0.1, 1.1, -0.1, 1.1);
     axis('full', 0.5, 0.5, 0, 0);
     for (let i = 0; i < 10; i++) {
-        console.log(Math.random());
+        x = Math.random();
+        y = Math.random();
+        dot(x, y);
     }
     return 0;
 }
