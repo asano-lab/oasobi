@@ -1,8 +1,8 @@
 
 let _main = () => {
     console.log("yeah");
-    setRange(-1.1, 1.1, -2.2, 2.2);
-    axis('full', 1, 1, 0, 0);
+    setRange(-1.1, 1.1, -1.1, 1.1);
+    axis('full', 0.5, 0.5, 0, 0);
     return 0;
 }
 
