@@ -1,8 +1,10 @@
 
 let _main = () => {
-    console.log("yeah");
     setRange(-1.1, 1.1, -1.1, 1.1);
     axis('full', 0.5, 0.5, 0, 0);
+    for (let i = 0; i < 10; i++) {
+        console.log(Math.random());
+    }
     return 0;
 }
 
