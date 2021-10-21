@@ -16,6 +16,9 @@
     }
     
     let hashCheck = () => {
-        console.log(FIELD.value);
+        let _text = FIELD.value;
+        SHA_OBJ.update(_text);
+        console.log(_text);
+        console.log(SHA_OBJ.getHash("HEX"));
     }
 }
