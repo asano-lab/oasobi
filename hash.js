@@ -16,9 +16,10 @@
     }
     
     let hashCheck = () => {
-        let _text = FIELD.value;
-        SHA_OBJ.update(_text);
+        const _sha_obj = new jsSHA("SHA-256","TEXT");
+        const _text = FIELD.value;
+        _sha_obj.update(_text);
         console.log(_text);
-        console.log(SHA_OBJ.getHash("HEX"));
+        console.log(_sha_obj.getHash("HEX"));
     }
 }
