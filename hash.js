@@ -16,6 +16,6 @@
     }
     
     let hashCheck = () => {
-        console.log("あ");
+        console.log(FIELD.value);
     }
 }
