@@ -9,17 +9,22 @@
         FIELD = document.getElementById("field");
         FIELD.addEventListener("input", hashCheck);
 
-        let _text = "ハッシュ関数";
+        // let _text = "ハッシュ関数";
+        // SHA_OBJ.update(_text);
+        // TEST.textContent = SHA_OBJ.getHash("HEX");
 
-        SHA_OBJ.update(_text);
-        TEST.textContent = SHA_OBJ.getHash("HEX");
+        // ハッシュ値を予め計算して記録
+        TEST.textContent = "105c60d27a2bc2266c55b6a22e5c1bdbfbc1ef084dac2d1b07eccd3be76e47f8";
     }
     
     let hashCheck = () => {
         const _sha_obj = new jsSHA("SHA-256","TEXT");
-        const _text = FIELD.value;
-        _sha_obj.update(_text);
-        console.log(_text);
-        console.log(_sha_obj.getHash("HEX"));
+        _sha_obj.update(FIELD.value);
+        const _hash = _sha_obj.getHash("HEX");
+
+        console.log(TEST.textContent);
+        if (TEST.textContent == _hash) {
+            console.log("正解");
+        }
     }
 }
