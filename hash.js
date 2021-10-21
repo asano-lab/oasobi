@@ -5,10 +5,6 @@
     const TEST = document.getElementById("test");
     let FIELD;
 
-    let hashCheck = () => {
-        console.log("あ");
-    }
-
     window.onload = () => {
         FIELD = document.getElementById("field");
         FIELD.addEventListener("input", hashCheck);
@@ -17,5 +13,9 @@
 
         SHA_OBJ.update(_text);
         TEST.textContent = SHA_OBJ.getHash("HEX");
+    }
+    
+    let hashCheck = () => {
+        console.log("あ");
     }
 }
