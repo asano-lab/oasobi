@@ -1,7 +1,6 @@
 "use strict"; // 厳格なエラーチェック?
 
 {
-    const SHA_OBJ = new jsSHA("SHA-256","TEXT");
     const TEST = document.getElementById("test");
     let FIELD;
 
@@ -22,9 +21,11 @@
         _sha_obj.update(FIELD.value);
         const _hash = _sha_obj.getHash("HEX");
 
-        console.log(TEST.textContent);
+        // console.log(TEST.textContent);
         if (TEST.textContent == _hash) {
             console.log("正解");
+        } else {
+            console.log("不正解");
         }
     }
 }
