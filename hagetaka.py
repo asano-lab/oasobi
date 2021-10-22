@@ -14,10 +14,12 @@ class Game:
         self.place_card = []
     
     def step(self):
+
+        # 各プレイヤーがカードを出す
         self.place_card = []
         for i in range(self.population):
-            self.place_card.append(0)
-            print(self.p_list[i].selectCard())
+            self.place_card.append(self.p_list[i].selectCard())
+        print(self.place_card)
 
     def __str__(self):
         moji = "remain: "
