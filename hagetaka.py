@@ -8,7 +8,8 @@ POINTS = [-5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 class Game:
 
     def __init__(self, p_list):
-        self.hagetaka = [True] * 15
+        self.flag_hagetaka = [True] * 15
+        self.num_hagetaka = 15
         self.p_list = p_list
         self.population = len(self.p_list)
         self.place_card = []
@@ -23,7 +24,7 @@ class Game:
 
     def __str__(self):
         moji = "remain: "
-        for i, j in enumerate(self.hagetaka):
+        for i, j in enumerate(self.flag_hagetaka):
             if j:
                 moji += "{:2d}".format(POINTS[i])
                 if i != 14:
