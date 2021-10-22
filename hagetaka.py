@@ -12,9 +12,6 @@ class Game:
         self.p_list = p_list
         self.population = len(p_list)
         self.place_card = []
-
-        for i in p_list:
-            print(i)
     
     def step(self):
         self.place_card = []
@@ -29,6 +26,9 @@ class Game:
                 moji += "{:2d}".format(POINTS[i])
                 if i != 14:
                     moji += ", "
+        moji += "\n"
+        for i in self.p_list:
+            moji += i.__str__()
         return moji
 
 class Player:
@@ -40,11 +40,12 @@ class Player:
         self.num_cards = 15
         self.hagetaka = [False] * 15
         self.point = 0
-        print(self.flag_cards)
     
     def selectCard(self):
         ind = rd.randint(0, self.num_cards - 1)
-        
+        selected = self.cards.pop(ind)
+        self.flag_cards[selected - 1] = False
+        self.num_cards -= 1
         return ind
     
     def __str__(self):
@@ -58,7 +59,7 @@ class Player:
                 moji += "{:2d}".format(POINTS[i])
                 if i != 14:
                     moji += ", "
-        moji += "\npoint: {:3d}".format(self.point)
+        moji += "\npoint: {:3d}\n".format(self.point)
         return moji
 
 def main():
@@ -68,6 +69,7 @@ def main():
     g = Game(p)
     print(g)
     g.step()
+    print(g)
 
 if __name__ == "__main__":
     main()
