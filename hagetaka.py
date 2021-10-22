@@ -2,9 +2,10 @@
 
 class Game:
 
-    def __init__(self):
+    def __init__(self, p_list):
         self.hagetaka = [True] * 15
         print(self.hagetaka)
+        print(p_list)
 
 class Player:
 
@@ -13,8 +14,9 @@ class Player:
         print(self.cards)
 
 def main():
-    g = Game()
     p1 = Player()
+    p2 = Player()
+    g = Game([p1, p2])
 
 if __name__ == "__main__":
     main()
