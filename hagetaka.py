@@ -17,7 +17,7 @@ class Game:
     
     def step(self):
         ind = rd.randint(0, self.num_hagetaka - 1)
-        selected = self.hagetaka.pop()
+        selected = self.hagetaka.pop(ind)
         self.flag_hagetaka[selected] = False
         self.num_hagetaka -= 1
         reward = POINTS[selected]
@@ -26,7 +26,7 @@ class Game:
         self.place_card = []
         for i in range(self.population):
             self.place_card.append(self.p_list[i].selectCard())
-        # print(reward)
+        print(reward)
         print(self.place_card)
 
     def __str__(self):
