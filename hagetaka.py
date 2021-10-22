@@ -15,7 +15,12 @@ class Player:
         print(self.cards)
     
     def __str__(self):
-        return self.name
+        moji = self.name
+        for i, j in enumerate(self.cards):
+            if i:
+                moji += ", " + str(i)
+        moji += "\n"
+        return moji
 
 def main():
     p = []
