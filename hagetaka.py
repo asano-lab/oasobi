@@ -24,10 +24,15 @@ class Game:
 
         # 各プレイヤーがカードを出す
         self.place_card = []
+
         for i in range(self.population):
-            self.place_card.append(self.p_list[i].selectCard())
+            if reward > 0:
+                self.place_card.append(self.p_list[i].selectCard())
+            else:
+                self.place_card.append(-self.p_list[i].selectCard())
         print(reward)
         print(self.place_card)
+
 
     def __str__(self):
         moji = "remain: "
