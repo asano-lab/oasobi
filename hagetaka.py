@@ -26,6 +26,7 @@ class Player:
         self.name = name
         self.cards = [True] * 15
         self.hagetaka = [False] * 15
+        self.point = 0
     
     def __str__(self):
         moji = self.name + "\ncards: "
@@ -36,11 +37,13 @@ class Player:
                     moji += ", "
 
         moji += "\nhagetaka:"
+
         for i, j in enumerate(self.hagetaka):
             if j:
                 moji += "{:2d}".format(POINTS[i])
                 if i != 14:
                     moji += ", "
+        moji += "\npoint: {:3d}".format(self.point)
         return moji
 
 def main():
