@@ -14,6 +14,7 @@ class Game:
         self.p_list = p_list
         self.population = len(self.p_list)
         self.place_card = []
+        self.carry_over = 0
     
     def step(self):
         ind = rd.randint(0, self.num_hagetaka - 1)
@@ -30,13 +31,12 @@ class Game:
 
         for i in range(self.population):
             if reward > 0:
-                self.place_card.append(self.p_list[i].selectCard())
+                self.place_card.append((self.p_list[i].selectCard(), i))
             else:
-                self.place_card.append(-self.p_list[i].selectCard())
+                self.place_card.append((-self.p_list[i].selectCard(), i))
             
         print(reward)
         print(self.place_card)
-        
 
     def __str__(self):
         moji = "remain: "
