@@ -36,7 +36,12 @@ class Game:
                 self.place_card.append((-self.p_list[i].selectCard(), i))
             
         print(reward)
+
+        # 降順ソート
+        self.place_card.sort(reverse=True)
         print(self.place_card)
+
+        
 
     def __str__(self):
         moji = "remain: "
