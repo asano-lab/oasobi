@@ -35,22 +35,21 @@ class Player:
 
     def __init__(self, name):
         self.name = name
-        self.cards = [True] * 15
+        self.flag_cards = [True] * 15
+        self.cards = [i for i in range(1, 16)]
         self.num_cards = 15
         self.hagetaka = [False] * 15
         self.point = 0
+        print(self.flag_cards)
     
     def selectCard(self):
         ind = rd.randint(0, self.num_cards - 1)
+        
         return ind
     
     def __str__(self):
         moji = self.name + "\ncards: "
-        for i, j in enumerate(self.cards):
-            if j:
-                moji += "{:2d}".format(i + 1)
-                if i != 14:
-                    moji += ", "
+        moji += str(self.cards)
 
         moji += "\nhagetaka:"
 
