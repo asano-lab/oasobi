@@ -9,26 +9,32 @@ class Game:
 
     def __init__(self, p_list):
         self.flag_hagetaka = [True] * 15
+        self.hagetaka = [i for i in range(15)]
         self.num_hagetaka = 15
         self.p_list = p_list
         self.population = len(self.p_list)
         self.place_card = []
     
     def step(self):
+        ind = rd.randint(0, self.num_hagetaka - 1)
+        selected = self.hagetaka.pop()
+        self.flag_hagetaka[selected] = False
+        self.num_hagetaka -= 1
+        reward = POINTS[selected]
 
         # 各プレイヤーがカードを出す
         self.place_card = []
         for i in range(self.population):
             self.place_card.append(self.p_list[i].selectCard())
+        # print(reward)
         print(self.place_card)
 
     def __str__(self):
         moji = "remain: "
-        for i, j in enumerate(self.flag_hagetaka):
-            if j:
-                moji += "{:2d}".format(POINTS[i])
-                if i != 14:
-                    moji += ", "
+        for i, j in enumerate(self.hagetaka):
+            moji += "{:2d}".format(POINTS[j])
+            if i != self.num_hagetaka - 1:
+                moji += ", "
         moji += "\n"
         for i in self.p_list:
             moji += i.__str__()
