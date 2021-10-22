@@ -10,7 +10,7 @@ class Game:
     def __init__(self, p_list):
         self.hagetaka = [True] * 15
         self.p_list = p_list
-        self.population = len(p_list)
+        self.population = len(self.p_list)
         self.place_card = []
     
     def step(self):
@@ -46,7 +46,7 @@ class Player:
         selected = self.cards.pop(ind)
         self.flag_cards[selected - 1] = False
         self.num_cards -= 1
-        return ind
+        return selected
     
     def __str__(self):
         moji = self.name + "\ncards: "
