@@ -22,6 +22,9 @@ class Game:
         self.num_hagetaka -= 1
         reward = POINTS[selected]
 
+        if reward == 0:
+            return
+
         # 各プレイヤーがカードを出す
         self.place_card = []
 
@@ -30,9 +33,10 @@ class Game:
                 self.place_card.append(self.p_list[i].selectCard())
             else:
                 self.place_card.append(-self.p_list[i].selectCard())
+            
         print(reward)
         print(self.place_card)
-
+        
 
     def __str__(self):
         moji = "remain: "
