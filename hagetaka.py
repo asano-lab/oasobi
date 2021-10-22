@@ -5,18 +5,23 @@ class Game:
     def __init__(self, p_list):
         self.hagetaka = [True] * 15
         print(self.hagetaka)
-        print(p_list)
+        print(*p_list)
 
 class Player:
 
-    def __init__(self):
+    def __init__(self, name):
+        self.name = name
         self.cards = [True] * 15
         print(self.cards)
+    
+    def __str__(self):
+        return self.name
 
 def main():
-    p1 = Player()
-    p2 = Player()
-    g = Game([p1, p2])
+    p = []
+    for i in range(2):
+        p.append(Player("p{:1d}".format(i)))
+    g = Game(p)
 
 if __name__ == "__main__":
     main()
