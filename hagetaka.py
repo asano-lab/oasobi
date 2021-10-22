@@ -1,8 +1,9 @@
 # はげたかのえじきを定式化してみたい
 
+# はげたかの得点
+POINTS = [-5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
 class Game:
-    # はげたかの得点
-    POINTS = [-5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
     def __init__(self, p_list):
         self.hagetaka = [True] * 15
@@ -14,7 +15,7 @@ class Game:
         moji = "remain: "
         for i, j in enumerate(self.hagetaka):
             if j:
-                moji += "{:2d}".format(self.POINTS[i])
+                moji += "{:2d}".format(POINTS[i])
             if i != 14:
                 moji += ", "
         return moji
@@ -24,7 +25,7 @@ class Player:
     def __init__(self, name):
         self.name = name
         self.cards = [True] * 15
-        # print(self.cards)
+        self.hagetaka = [False] * 15
     
     def __str__(self):
         moji = self.name + "\ncards: "
@@ -33,6 +34,8 @@ class Player:
                 moji += "{:2d}".format(i + 1)
             if i != 14:
                 moji += ", "
+        for i, j in enumerate(self.hagetaka):
+            pass
         # moji += "\n"
         return moji
 
