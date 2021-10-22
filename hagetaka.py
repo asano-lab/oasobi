@@ -16,8 +16,8 @@ class Game:
         for i, j in enumerate(self.hagetaka):
             if j:
                 moji += "{:2d}".format(POINTS[i])
-            if i != 14:
-                moji += ", "
+                if i != 14:
+                    moji += ", "
         return moji
 
 class Player:
@@ -32,11 +32,15 @@ class Player:
         for i, j in enumerate(self.cards):
             if j:
                 moji += "{:2d}".format(i + 1)
-            if i != 14:
-                moji += ", "
+                if i != 14:
+                    moji += ", "
+
+        moji += "\nhagetaka:"
         for i, j in enumerate(self.hagetaka):
-            pass
-        # moji += "\n"
+            if j:
+                moji += "{:2d}".format(POINTS[i])
+                if i != 14:
+                    moji += ", "
         return moji
 
 def main():
