@@ -157,8 +157,11 @@ class Example(QWidget):
         
         # 古い形式の方がなんだかんだ見やすい
         moji += "\n[答えを表示する](javascript:void(0)){{: #ansbtn}}\n>"
-        moji += "未発表"
-        moji += "\n{{: #answer}}\n"
+        
+        ans = self.ans_input.toPlainText()
+        if not ans:
+            ans = "未発表"
+        moji += ans + "\n{{: #answer}}\n"
         print(moji)
 
 if __name__ == '__main__':
