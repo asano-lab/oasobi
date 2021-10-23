@@ -11,12 +11,9 @@ import re
 import datetime
 from PyQt5.QtWidgets import (
     QWidget, QPushButton, QApplication, QFileDialog,
-    QTextEdit, QMessageBox
+    QTextEdit, QMessageBox, QLabel
 )
 from PyQt5.QtGui import (QIcon)
-
-HINAGATA = """
-"""
 
 class MyTextEdit(QTextEdit):
 
@@ -40,8 +37,17 @@ class Example(QWidget):
         self.mkbtn.move(500, 300)
         self.mkbtn.clicked.connect(self.makeQuestionFiles)
 
+        # 画像ファイルのパス入力欄
         self.textEdit = MyTextEdit(self)
-        self.textEdit.setGeometry(200, 40, 400, 100)
+        self.textEdit.setGeometry(200, 40, 400, 80)
+
+        # 問題文入力欄
+        self.prob_stat = MyTextEdit(self)
+        self.prob_stat.setGeometry(200, 130, 400, 80)
+
+        self.prob_label = QLabel(self)
+        self.prob_label.setText("問題文を記入")
+        self.prob_label.move(60, 130)
 
         self.setGeometry(300, 300, 1000, 600)
 
@@ -82,7 +88,7 @@ class Example(QWidget):
         moji = "---\nlayout: post\ntitle \"第{:d}回\"\ndate: ".format(self.q_id)
         moji += self.now.strftime('%Y-%m-%d %H:%M:%S +0900\n')
         moji += "categories: question\n---\n\n"
-        moji += "![第{:d}回　写真](/kokodoko/{:s})".format(self.q_id, self.fname_img)
+        moji += "![第{:d}回　写真](/kokodoko/{:s})\n\n".format(self.q_id, self.fname_img)
         print(moji)
     
 
