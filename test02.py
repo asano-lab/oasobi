@@ -11,6 +11,14 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import (QIcon)
 
+class MyTextEdit(QTextEdit):
+
+    def __init__(self, obj):
+        super().__init__(obj)
+
+    def dropEvent(self, e):
+        print(e)
+        return super().dropEvent(e)
 
 class Example(QWidget):
 
@@ -19,12 +27,12 @@ class Example(QWidget):
         self.initUI()
 
     def initUI(self):
-        self.idbtn = QPushButton('File Dialog', self)
+        self.idbtn = QPushButton("画像ファイルを選択", self)
         self.idbtn.move(20, 40)
         self.idbtn.clicked.connect(self.showFileDialog)
 
-        self.textEdit = QTextEdit(self)
-        self.textEdit.setGeometry(100, 100, 100, 100)
+        self.textEdit = MyTextEdit(self)
+        self.textEdit.setGeometry(200, 40, 400, 100)
 
         self.setGeometry(300, 300, 1000, 600)
         self.setWindowTitle("問題追加")
@@ -34,10 +42,8 @@ class Example(QWidget):
         fname = QFileDialog.getOpenFileName(self, 'Open file', '.')
 
         if fname[0]:
-            f = open(fname[0], 'r')
-            with f:
-                data = f.read()
-                self.textEdit.setText(data)
+            self.textEdit.setText(fname[0])
+            print(fname[0])
 
 
 if __name__ == '__main__':
