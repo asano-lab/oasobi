@@ -127,10 +127,16 @@ class Example(QWidget):
         moji += self.prob_input.toPlainText() + "\n\n"
 
         hints = self.csv2list(self.hint_input.toPlainText())
-
         for i, j in enumerate(hints):
             moji += "- [ヒント{:d}](javascript:void(0)){{: .hint}}\n".format(i + 1)
             moji += "   - " + j + "\n"
+        
+        cands = self.csv2list(self.cand_input.toPlainText())
+        if cands:
+            moji += "\n<label>解答入力欄 <input type=\"text\" id=\"ans_col\"></label>\n\n"
+            moji += "- [判定](javascript:void(0)){{: #judge_but}}\n"
+            for i, j in enumerate(cands):
+                moji += "   - " + j + "\n"
 
         print(moji)
 
