@@ -8,6 +8,7 @@ import sys
 import os
 import shutil
 import re
+import datetime
 from PyQt5.QtWidgets import (
     QWidget, QPushButton, QApplication, QFileDialog,
     QTextEdit, QMessageBox
@@ -65,9 +66,10 @@ class Example(QWidget):
     def makeNewMdFileName(self):
         m_list = [re.search(r'q(\d{3}).md', i) for i in os.listdir(path="./_posts")]
         latest = max(int(m.group(1)) for m in m_list if m)
-        print(latest)
-        return "a"
-
+        today = datetime.datetime.now()
+        fnamew = today.strftime('%Y-%m-%d') + "-q{:03d}.md".format(latest + 1)
+        print(fnamew)
+        return fnamew
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
