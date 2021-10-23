@@ -28,6 +28,7 @@ class Example(QWidget):
 
     def __init__(self):
         super().__init__()
+        self.calcQuestionId()
         self.initUI()
 
     def initUI(self):
@@ -53,16 +54,24 @@ class Example(QWidget):
 
         # ヒント入力欄
         self.hint_input = MyTextEdit(self)
-        self.hint_input.setGeometry(self.X1, 260, 400, 80)
+        self.hint_input.setGeometry(self.X1, 220, 400, 80)
 
         self.hint_label = QLabel(self)
         self.hint_label.setText("ヒントを記入\n(複数ある場合はcsv形式)")
-        self.hint_label.move(30, 260)
+        self.hint_label.move(30, 220)
         self.hint_label.setAlignment(Qt.AlignCenter)
+        
+        # 正誤判定用文字列入力欄
+        self.cand_input = MyTextEdit(self)
+        self.cand_input.setGeometry(self.X1, 310, 400, 80)
+
+        self.cand_label = QLabel(self)
+        self.cand_label.setText("解答の候補を記入\n(複数ある場合はcsv形式)")
+        self.cand_label.move(30, 310)
+        self.cand_label.setAlignment(Qt.AlignCenter)
 
         self.setGeometry(300, 300, 1000, 600)
 
-        self.calcQuestionId()
         self.setWindowTitle("第{:d}問の作成".format(self.q_id))
         self.show()
 
@@ -118,8 +127,6 @@ class Example(QWidget):
             moji += "   - " + j + "\n"
 
         print(moji)
-        print(hints)
-    
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
