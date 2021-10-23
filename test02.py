@@ -137,10 +137,12 @@ class Example(QWidget):
             moji += "\n<label>解答入力欄 <input type=\"text\" id=\"ans_col\"></label>\n\n"
             moji += "- [判定](javascript:void(0)){{: #judge_but}}\n"
             for i, j in enumerate(cands):
+                j = "第42回" + j
                 h = hashlib.sha256(j.encode("utf-8")).hexdigest()
                 moji += "   - " + h + "\n"
 
         print(moji)
+        print(cands)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
