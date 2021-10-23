@@ -145,7 +145,11 @@ class Example(QWidget):
                 h_arg = "第{:d}回".format(self.q_id) + j
                 h = hashlib.sha256(h_arg.encode("utf-8")).hexdigest()
                 moji += "   - " + h + "\n"
-
+        
+        # 古い形式の方がなんだかんだ見やすい
+        moji += "\n[答えを表示する](javascript:void(0)){{: #ansbtn}}\n>"
+        moji += "未発表"
+        moji += "\n{{: #answer}}\n"
         print(moji)
 
 if __name__ == '__main__':
