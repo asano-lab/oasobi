@@ -15,8 +15,7 @@ class MyTextEdit(QTextEdit):
 
     def dropEvent(self, e):
         urls = e.mimeData().urls()
-        print(urls[0].toLocalFile())
-        return super().dropEvent(e)
+        self.setText(urls[0].toLocalFile())
 
 class Example(QWidget):
 
