@@ -9,7 +9,7 @@ import os
 import shutil
 from PyQt5.QtWidgets import (
     QWidget, QPushButton, QApplication, QFileDialog,
-    QTextEdit
+    QTextEdit, QMessageBox
 )
 from PyQt5.QtGui import (QIcon)
 
@@ -51,8 +51,10 @@ class Example(QWidget):
     
     def makeQuestionFiles(self):
         fnamer = self.textEdit.toPlainText()
-        if os.path.exists(fnamer):
-            print("ある")
+        if not os.path.exists(fnamer):
+            reply = QMessageBox.question(self, "Menu Text", "Question", QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+            if reply == QMessageBox.Yes:
+                print('Yes clicked.')
         else:
             print("ない")
 
