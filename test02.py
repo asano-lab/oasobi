@@ -51,6 +51,7 @@ class Example(QWidget):
             # print(fname[0])
     
     def makeQuestionFiles(self):
+        self.makeNewMdFileName()
         fnamer = self.textEdit.toPlainText()
         if not os.path.exists(fnamer):
             reply = QMessageBox.question(self, "エラー", "パスが存在しません。", QMessageBox.Ok, QMessageBox.Ok)
@@ -59,15 +60,12 @@ class Example(QWidget):
             reply = QMessageBox.question(self, "エラー", "ディレクトリです。", QMessageBox.Ok, QMessageBox.Ok)
             return
         # shutil.copy2(fnamer, "Images")
-        self.makeNewMdFileName()
         print("ある")
     
     def makeNewMdFileName(self):
-        fname_list = os.listdir(path="./_posts")
-        for i in fname_list:
-            m = re.search(r'q(\d{3}).md', i)
-            if m:
-                print(m.group(1))
+        m_list = [re.search(r'q(\d{3}).md', i) for i in os.listdir(path="./_posts")]
+        latest = max(int(m.group(1)) for m in m_list if m)
+        print(latest)
         return "a"
 
 
