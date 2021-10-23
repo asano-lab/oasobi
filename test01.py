@@ -31,9 +31,7 @@ class Example(QMainWindow):
         self.cdbtn.clicked.connect(self.showColorDialog)
 
         self.textEdit = QTextEdit()
-        # self.setCentralWidget(self.textEdit)
-        # self.textEdit.setGeometry(200, 20, 300, 100)
-        self.textEdit.setGeometry(100, 100, 100, 100)
+        self.setCentralWidget(self.textEdit)
         
         self.statusBar()
 
