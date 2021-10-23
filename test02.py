@@ -57,7 +57,8 @@ class Example(QWidget):
             # print(fname[0])
     
     def makeQuestionFiles(self):
-        fnamew = self.makeMdFileName()
+        self.now = datetime.datetime.now()
+        fnamew = "_posts/" + self.now.strftime('%Y-%m-%d') + "-q{:03d}.md".format(self.q_id)
         self.makeMdFile()
         fnamer = self.textEdit.toPlainText()
         if not os.path.exists(fnamer):
@@ -69,13 +70,10 @@ class Example(QWidget):
         # shutil.copy2(fnamer, "Images")
         print("ある")
     
-    def makeMdFileName(self):
-        today = datetime.datetime.now()
-        fnamew = "_posts/" + today.strftime('%Y-%m-%d') + "-q{:03d}.md".format(self.q_id)
-        return fnamew
-    
+    # ファイルの中身を作成
     def makeMdFile(self):
-        moji = "---\nlayout: post\ntitle \"第{:d}回\"".format(self.q_id)
+        moji = "---\nlayout: post\ntitle \"第{:d}回\"\ndate: ".format(self.q_id)
+        moji += self.now.strftime('%Y-%m-%d %H:%M:%S +0900')
         print(moji)
     
     # 最新の問題番号を取得し, 次の問題番号を設定
