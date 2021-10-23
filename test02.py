@@ -58,7 +58,7 @@ class Example(QWidget):
     
     def makeQuestionFiles(self):
         fnamew = self.makeMdFileName()
-        print(fnamew)
+        self.makeMdFile()
         fnamer = self.textEdit.toPlainText()
         if not os.path.exists(fnamer):
             reply = QMessageBox.question(self, "エラー", "パスが存在しません。", QMessageBox.Ok, QMessageBox.Ok)
@@ -73,6 +73,10 @@ class Example(QWidget):
         today = datetime.datetime.now()
         fnamew = "_posts/" + today.strftime('%Y-%m-%d') + "-q{:03d}.md".format(self.q_id)
         return fnamew
+    
+    def makeMdFile(self):
+        moji = "---\nlayout: post\ntitle \"第{:d}回\"".format(self.q_id)
+        print(moji)
     
     # 最新の問題番号を取得し, 次の問題番号を設定
     def calcQuestionId(self):
