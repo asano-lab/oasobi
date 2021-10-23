@@ -13,11 +13,9 @@ from PyQt5.QtGui import (QIcon)
 
 class MyTextEdit(QTextEdit):
 
-    def __init__(self, obj):
-        super().__init__(obj)
-
     def dropEvent(self, e):
-        print(e)
+        urls = e.mimeData().urls()
+        print(urls[0].toLocalFile())
         return super().dropEvent(e)
 
 class Example(QWidget):
