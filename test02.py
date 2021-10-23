@@ -13,7 +13,7 @@ from PyQt5.QtWidgets import (
     QWidget, QPushButton, QApplication, QFileDialog,
     QTextEdit, QMessageBox, QLabel
 )
-from PyQt5.QtGui import (QIcon)
+from PyQt5.QtCore import Qt
 
 class MyTextEdit(QTextEdit):
 
@@ -23,6 +23,7 @@ class MyTextEdit(QTextEdit):
         # print(self.toPlainText())
 
 class Example(QWidget):
+    X1 = 230
 
     def __init__(self):
         super().__init__()
@@ -34,20 +35,29 @@ class Example(QWidget):
         self.fdbtn.clicked.connect(self.showFileDialog)
         
         self.mkbtn = QPushButton("作成", self)
-        self.mkbtn.move(500, 300)
+        self.mkbtn.move(500, 500)
         self.mkbtn.clicked.connect(self.makeQuestionFiles)
 
         # 画像ファイルのパス入力欄
         self.textEdit = MyTextEdit(self)
-        self.textEdit.setGeometry(200, 40, 400, 80)
+        self.textEdit.setGeometry(self.X1, 40, 400, 80)
 
         # 問題文入力欄
-        self.prob_stat = MyTextEdit(self)
-        self.prob_stat.setGeometry(200, 130, 400, 80)
+        self.prob_input = MyTextEdit(self)
+        self.prob_input.setGeometry(self.X1, 130, 400, 80)
 
         self.prob_label = QLabel(self)
         self.prob_label.setText("問題文を記入")
         self.prob_label.move(60, 130)
+
+        # ヒント入力欄
+        self.hint_input = MyTextEdit(self)
+        self.hint_input.setGeometry(self.X1, 260, 400, 80)
+
+        self.hint_label = QLabel(self)
+        self.hint_label.setText("ヒントを記入\n(複数ある場合はcsv形式)")
+        self.hint_label.move(30, 260)
+        self.hint_label.setAlignment(Qt.AlignCenter)
 
         self.setGeometry(300, 300, 1000, 600)
 
@@ -89,7 +99,7 @@ class Example(QWidget):
         moji += self.now.strftime('%Y-%m-%d %H:%M:%S +0900\n')
         moji += "categories: question\n---\n\n"
         moji += "![第{:d}回　写真](/kokodoko/{:s})\n\n".format(self.q_id, self.fname_img)
-        moji += self.prob_stat.toPlainText()
+        moji += self.prob_input.toPlainText()
         print(moji)
     
 
