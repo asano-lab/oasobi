@@ -71,6 +71,15 @@ class Example(QWidget):
         self.cand_label.move(30, 310)
         self.cand_label.setAlignment(Qt.AlignCenter)
 
+        # 解答入力欄
+        self.ans_input = MyTextEdit(self)
+        self.ans_input.setGeometry(self.X1, 400, 400, 80)
+
+        self.ans_label = QLabel(self)
+        self.ans_label.setText("正確な解答を記入\n(空なら「未発表」扱い)")
+        self.ans_label.move(40, 400)
+        self.ans_label.setAlignment(Qt.AlignCenter)
+
         self.setGeometry(300, 300, 1000, 600)
 
         self.setWindowTitle("第{:d}問の作成".format(self.q_id))
