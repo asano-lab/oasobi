@@ -57,6 +57,7 @@ class Example(QWidget):
         if os.path.isdir(fnamer):
             reply = QMessageBox.question(self, "エラー", "ディレクトリです。", QMessageBox.Ok, QMessageBox.Ok)
             return
+        shutil.copy2(fnamer, "Images")
         print("ある")
 
 
