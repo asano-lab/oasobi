@@ -30,8 +30,11 @@ class Example(QMainWindow):
         self.cdbtn.move(20, 80)
         self.cdbtn.clicked.connect(self.showColorDialog)
 
-        self.textEdit = QTextEdit()
-        self.setCentralWidget(self.textEdit)
+        self.textEdit = QTextEdit(self)
+        # self.setCentralWidget(self.textEdit)
+
+        self.textEdit.move(200, 200)
+        self.textEdit.resize(100, 100)
         
         self.statusBar()
 
