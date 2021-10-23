@@ -19,6 +19,10 @@ from PyQt5.QtCore import Qt
 
 class MyTextEdit(QTextEdit):
 
+    def __init__(self, obj):
+        self.obj = obj # 引数を保存
+        super().__init__(obj)
+
     def dropEvent(self, e):
         urls = e.mimeData().urls()
         self.setText(urls[0].toLocalFile())
@@ -103,6 +107,7 @@ class Example(QWidget):
             self.textEdit.setText(fname[0])
             # print(fname[0])
     
+    # ファイル作成
     def makeQuestionFiles(self):
         self.now = datetime.datetime.now()
         fnamew = "_posts/" + self.now.strftime('%Y-%m-%d') + "-q{:03d}.md".format(self.q_id)
@@ -114,8 +119,7 @@ class Example(QWidget):
         if os.path.isdir(fnamer):
             reply = QMessageBox.question(self, "エラー", "ディレクトリです。", QMessageBox.Ok, QMessageBox.Ok)
             return
-        # shutil.copy2(fnamer, "Images")
-        print("ある")
+        
     
     # csv形式の文字列をリストに変換
     # 一次元配列で返す
