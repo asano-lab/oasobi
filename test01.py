@@ -74,7 +74,13 @@ class Example(QMainWindow):
             self.frm.setStyleSheet("QWidget { background-color: %s }" % col.name())
 
     def showFileDialog(self):
-        pass
+        fname = QFileDialog.getOpenFileName(self, 'Open file', '.')
+
+        if fname[0]:
+            f = open(fname[0], 'r')
+            with f:
+                data = f.read()
+                self.textEdit.setText(data)
 
 
 if __name__ == '__main__':
