@@ -23,18 +23,18 @@ class Example(QWidget):
         self.idbtn.clicked.connect(self.showDialog)
 
         self.cdbtn = QPushButton('Color Dialog', self)
-        self.cdbtn.move(20, 40)
+        self.cdbtn.move(20, 60)
         self.cdbtn.clicked.connect(self.showColorDialog)
 
         self.frm = QFrame(self)
         print("QWidget { background-color: %s }" % col.name)
         self.frm.setStyleSheet("QWidget { background-color: %s }" % col.name())
-        self.frm.setGeometry(130, 22, 100, 100)
+        self.frm.setGeometry(150, 60, 100, 100)
 
         self.le = QLineEdit(self)
-        self.le.move(130, 22)
+        self.le.move(150, 22)
 
-        self.setGeometry(300, 300, 290, 150)
+        self.setGeometry(300, 300, 400, 200)
         self.setWindowTitle('dialog')
         self.show()
 
@@ -52,7 +52,6 @@ class Example(QWidget):
 
 
 if __name__ == '__main__':
-
     app = QApplication(sys.argv)
     ex = Example()
     sys.exit(app.exec_())
