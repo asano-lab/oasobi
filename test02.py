@@ -15,9 +15,6 @@ from PyQt5.QtGui import (QIcon)
 
 class MyTextEdit(QTextEdit):
 
-    def __init__(self, obj):
-        super().__init__(obj)
-
     def dropEvent(self, e):
         urls = e.mimeData().urls()
         self.setText(urls[0].toLocalFile())
@@ -53,7 +50,7 @@ class Example(QWidget):
             print(fname[0])
     
     def makeQuestionFiles(self):
-        print("あいうえお")
+        print(self.textEdit.toPlainText())
 
 
 if __name__ == '__main__':
