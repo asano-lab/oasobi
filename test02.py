@@ -65,9 +65,9 @@ class Example(QWidget):
     def makeNewMdFileName(self):
         fname_list = os.listdir(path="./_posts")
         for i in fname_list:
-            result = re.match(r'.*q(\d{3}).md', i)
-            if result:
-                print(i)
+            m = re.search(r'q(\d{3}).md', i)
+            if m:
+                print(m.group(1))
         return "a"
 
 
