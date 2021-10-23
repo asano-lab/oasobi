@@ -30,9 +30,13 @@ class Example(QWidget):
         self.initUI()
 
     def initUI(self):
-        self.idbtn = QPushButton("画像ファイルを選択", self)
-        self.idbtn.move(20, 40)
-        self.idbtn.clicked.connect(self.showFileDialog)
+        self.fdbtn = QPushButton("画像ファイルを選択", self)
+        self.fdbtn.move(20, 40)
+        self.fdbtn.clicked.connect(self.showFileDialog)
+        
+        self.mkbtn = QPushButton("作成", self)
+        self.mkbtn.move(500, 300)
+        self.mkbtn.clicked.connect(self.makeQuestionFiles)
 
         self.textEdit = MyTextEdit(self)
         self.textEdit.setGeometry(200, 40, 400, 100)
@@ -47,6 +51,9 @@ class Example(QWidget):
         if fname[0]:
             self.textEdit.setText(fname[0])
             print(fname[0])
+    
+    def makeQuestionFiles(self):
+        print("あいうえお")
 
 
 if __name__ == '__main__':
