@@ -7,6 +7,7 @@
 import sys
 import os
 import shutil
+import re
 from PyQt5.QtWidgets import (
     QWidget, QPushButton, QApplication, QFileDialog,
     QTextEdit, QMessageBox
@@ -57,12 +58,20 @@ class Example(QWidget):
         if os.path.isdir(fnamer):
             reply = QMessageBox.question(self, "エラー", "ディレクトリです。", QMessageBox.Ok, QMessageBox.Ok)
             return
-        shutil.copy2(fnamer, "Images")
+        # shutil.copy2(fnamer, "Images")
+        self.makeNewMdFileName()
         print("ある")
+    
+    def makeNewMdFileName(self):
+        fname_list = os.listdir(path="./_posts")
+        for i in fname_list:
+            result = re.match(r'.*q(\d{3}).md', i)
+            if result:
+                print(i)
+        return "a"
 
 
 if __name__ == '__main__':
-    print(os.listdir(path="./_posts"))
     app = QApplication(sys.argv)
     ex = Example()
     sys.exit(app.exec_())
