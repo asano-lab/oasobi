@@ -113,6 +113,10 @@ class Example(QWidget):
 
         f.close()
 
+        for i, j in enumerate(hints):
+            moji += "- [ヒント{:d}](javascript:void(0)){{: .hint}}\n".format(i + 1)
+            moji += "   - " + j + "\n"
+
         print(moji)
         print(hints)
     
