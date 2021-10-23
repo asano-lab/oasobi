@@ -5,6 +5,8 @@
 
 
 import sys
+import os
+import shutil
 from PyQt5.QtWidgets import (
     QWidget, QPushButton, QApplication, QFileDialog,
     QTextEdit
@@ -13,9 +15,13 @@ from PyQt5.QtGui import (QIcon)
 
 class MyTextEdit(QTextEdit):
 
+    def __init__(self, obj):
+        super().__init__(obj)
+
     def dropEvent(self, e):
         urls = e.mimeData().urls()
         self.setText(urls[0].toLocalFile())
+        print(self.toPlainText())
 
 class Example(QWidget):
 
