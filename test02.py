@@ -62,6 +62,7 @@ class Example(QWidget):
 
 
 if __name__ == '__main__':
+    print(os.listdir(path="./_posts"))
     app = QApplication(sys.argv)
     ex = Example()
     sys.exit(app.exec_())
