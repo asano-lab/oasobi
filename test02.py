@@ -103,6 +103,21 @@ class Example(QWidget):
         # shutil.copy2(fnamer, "Images")
         print("ある")
     
+    # csv形式の文字列をリストに変換
+    # 一次元配列で返す
+    def csv2list(self, csv_str):
+        f = csv.StringIO()
+        f.write(csv_str)
+        f.seek(0)
+
+        reader = csv.reader(f)
+        l = []
+        for i in reader:
+            l += i
+
+        f.close()
+        return l
+    
     # ファイルの中身を作成
     def makeMdFile(self):
         moji = "---\nlayout: post\ntitle \"第{:d}回\"\ndate: ".format(self.q_id)
@@ -111,16 +126,7 @@ class Example(QWidget):
         moji += "![第{:d}回　写真](/kokodoko/{:s})\n\n".format(self.q_id, self.fname_img)
         moji += self.prob_input.toPlainText() + "\n\n"
 
-        f = csv.StringIO()
-        f.write(self.hint_input.toPlainText())
-        f.seek(0)
-
-        reader = csv.reader(f)
-        hints = []
-        for i in reader:
-            hints += i
-
-        f.close()
+        hints = self.csv2list(self.hint_input.toPlainText())
 
         for i, j in enumerate(hints):
             moji += "- [ヒント{:d}](javascript:void(0)){{: .hint}}\n".format(i + 1)
