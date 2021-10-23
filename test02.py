@@ -121,28 +121,32 @@ class Example(QWidget):
     
     # ファイルの中身を作成
     def makeMdFile(self):
+        # ヘッダの作成
         moji = "---\nlayout: post\ntitle \"第{:d}回\"\ndate: ".format(self.q_id)
         moji += self.now.strftime('%Y-%m-%d %H:%M:%S +0900\n')
         moji += "categories: question\n---\n\n"
         moji += "![第{:d}回　写真](/kokodoko/{:s})\n\n".format(self.q_id, self.fname_img)
+
+        # 問題文
         moji += self.prob_input.toPlainText() + "\n\n"
 
+        # ヒント
         hints = self.csv2list(self.hint_input.toPlainText())
         for i, j in enumerate(hints):
             moji += "- [ヒント{:d}](javascript:void(0)){{: .hint}}\n".format(i + 1)
             moji += "   - " + j + "\n"
         
+        # 正誤判定用ハッシュ
         cands = self.csv2list(self.cand_input.toPlainText())
         if cands:
             moji += "\n<label>解答入力欄 <input type=\"text\" id=\"ans_col\"></label>\n\n"
             moji += "- [判定](javascript:void(0)){{: #judge_but}}\n"
             for i, j in enumerate(cands):
-                h_arg = "第{:d}回".format(42) + j
+                h_arg = "第{:d}回".format(self.q_id) + j
                 h = hashlib.sha256(h_arg.encode("utf-8")).hexdigest()
                 moji += "   - " + h + "\n"
 
         print(moji)
-        print(cands)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
