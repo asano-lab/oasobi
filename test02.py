@@ -18,7 +18,7 @@ class MyTextEdit(QTextEdit):
     def dropEvent(self, e):
         urls = e.mimeData().urls()
         self.setText(urls[0].toLocalFile())
-        print(self.toPlainText())
+        # print(self.toPlainText())
 
 class Example(QWidget):
 
@@ -47,16 +47,14 @@ class Example(QWidget):
 
         if fname[0]:
             self.textEdit.setText(fname[0])
-            print(fname[0])
+            # print(fname[0])
     
     def makeQuestionFiles(self):
         fnamer = self.textEdit.toPlainText()
         if not os.path.exists(fnamer):
-            reply = QMessageBox.question(self, "Menu Text", "Question", QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
-            if reply == QMessageBox.Yes:
-                print('Yes clicked.')
-        else:
-            print("ない")
+            reply = QMessageBox.question(self, "エラー", "パスが存在しません。", QMessageBox.Ok, QMessageBox.Ok)
+            return
+        print("ある")
 
 
 if __name__ == '__main__':
