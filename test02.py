@@ -54,6 +54,9 @@ class Example(QWidget):
         if not os.path.exists(fnamer):
             reply = QMessageBox.question(self, "エラー", "パスが存在しません。", QMessageBox.Ok, QMessageBox.Ok)
             return
+        if os.path.isdir(fnamer):
+            reply = QMessageBox.question(self, "エラー", "ディレクトリです。", QMessageBox.Ok, QMessageBox.Ok)
+            return
         print("ある")
 
 
