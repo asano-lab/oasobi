@@ -23,25 +23,25 @@ class Example(QWidget):
         self.btn.clicked.connect(self.showDialog)
 
         self.frm = QFrame(self)
-        self.frm.setStyleSheet("QWidget { background-color: %s }" % col.name)
+        print("QWidget { background-color: %s }" % col.name)
+        self.frm.setStyleSheet("QWidget { background-color: %s }" % col.name())
         self.frm.setGeometry(130, 22, 100, 100)
 
         self.le = QLineEdit(self)
         self.le.move(130, 22)
 
         self.setGeometry(300, 300, 290, 150)
-        self.setWindowTitle('Input dialog')
+        # self.setWindowTitle('Input dialog')
+        self.setWindowTitle('Color dialog')
         self.show()
 
-
     def showDialog(self):
-
-        # ダイアログ表示
+        # 入力ダイアログ
         text, ok = QInputDialog.getText(self, '---Input Dialog---', 'Enter your name:')
-
-        # 入力されたテキストをleオブジェクトへセット
         if ok:
             self.le.setText(str(text))
+        
+
 
 
 if __name__ == '__main__':
