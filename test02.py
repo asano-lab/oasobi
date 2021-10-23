@@ -49,6 +49,13 @@ class Example(QWidget):
         self.setWindowTitle("第{:d}問の作成".format(self.q_id))
         self.show()
 
+    # 最新の問題番号を取得し, 次の問題番号を設定
+    # ついでに画像ファイルのパスも
+    def calcQuestionId(self):
+        m_list = [re.search(r'q(\d{3}).md', i) for i in os.listdir(path="./_posts")]
+        self.q_id = max(int(m.group(1)) for m in m_list if m) + 1
+        self.fname_img = "images/q{:d}.jpg".format(self.q_id)
+
     def showFileDialog(self):
         fname = QFileDialog.getOpenFileName(self, 'Open file', '.')
 
@@ -75,14 +82,9 @@ class Example(QWidget):
         moji = "---\nlayout: post\ntitle \"第{:d}回\"\ndate: ".format(self.q_id)
         moji += self.now.strftime('%Y-%m-%d %H:%M:%S +0900\n')
         moji += "categories: question\n---\n\n"
+        moji += "![第{:d}回　写真](/kokodoko/{:s})".format(self.q_id, self.fname_img)
         print(moji)
     
-    # 最新の問題番号を取得し, 次の問題番号を設定
-    def calcQuestionId(self):
-        m_list = [re.search(r'q(\d{3}).md', i) for i in os.listdir(path="./_posts")]
-        self.q_id = max(int(m.group(1)) for m in m_list if m) + 1
-        self.fname_img = "./images/q{:d}.jpg".format(self.q_id)
-        print(self.fname_img)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
