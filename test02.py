@@ -10,6 +10,7 @@ import shutil
 import re
 import datetime
 import csv
+import hashlib
 from PyQt5.QtWidgets import (
     QWidget, QPushButton, QApplication, QFileDialog,
     QTextEdit, QMessageBox, QLabel
@@ -136,7 +137,8 @@ class Example(QWidget):
             moji += "\n<label>解答入力欄 <input type=\"text\" id=\"ans_col\"></label>\n\n"
             moji += "- [判定](javascript:void(0)){{: #judge_but}}\n"
             for i, j in enumerate(cands):
-                moji += "   - " + j + "\n"
+                h = hashlib.sha256(j.encode("utf-8")).hexdigest()
+                moji += "   - " + h + "\n"
 
         print(moji)
 
