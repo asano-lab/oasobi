@@ -15,6 +15,9 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import (QIcon)
 
+HINAGATA = """
+"""
+
 class MyTextEdit(QTextEdit):
 
     def dropEvent(self, e):
@@ -54,7 +57,7 @@ class Example(QWidget):
             # print(fname[0])
     
     def makeQuestionFiles(self):
-        fnamew = self.makeNewMdFileName()
+        fnamew = self.makeMdFileName()
         print(fnamew)
         fnamer = self.textEdit.toPlainText()
         if not os.path.exists(fnamer):
@@ -66,11 +69,12 @@ class Example(QWidget):
         # shutil.copy2(fnamer, "Images")
         print("ある")
     
-    def makeNewMdFileName(self):
+    def makeMdFileName(self):
         today = datetime.datetime.now()
-        fnamew = today.strftime('%Y-%m-%d') + "-q{:03d}.md".format(self.q_id)
+        fnamew = "_posts/" + today.strftime('%Y-%m-%d') + "-q{:03d}.md".format(self.q_id)
         return fnamew
     
+    # 最新の問題番号を取得し, 次の問題番号を設定
     def calcQuestionId(self):
         m_list = [re.search(r'q(\d{3}).md', i) for i in os.listdir(path="./_posts")]
         self.q_id = max(int(m.group(1)) for m in m_list if m) + 1
