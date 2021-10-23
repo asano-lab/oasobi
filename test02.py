@@ -50,7 +50,11 @@ class Example(QWidget):
             print(fname[0])
     
     def makeQuestionFiles(self):
-        print(self.textEdit.toPlainText())
+        fnamer = self.textEdit.toPlainText()
+        if os.path.exists(fnamer):
+            print("ある")
+        else:
+            print("ない")
 
 
 if __name__ == '__main__':
