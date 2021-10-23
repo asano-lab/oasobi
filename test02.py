@@ -9,6 +9,7 @@ import os
 import shutil
 import re
 import datetime
+import csv
 from PyQt5.QtWidgets import (
     QWidget, QPushButton, QApplication, QFileDialog,
     QTextEdit, QMessageBox, QLabel
@@ -99,8 +100,18 @@ class Example(QWidget):
         moji += self.now.strftime('%Y-%m-%d %H:%M:%S +0900\n')
         moji += "categories: question\n---\n\n"
         moji += "![第{:d}回　写真](/kokodoko/{:s})\n\n".format(self.q_id, self.fname_img)
-        moji += self.prob_input.toPlainText()
+        moji += self.prob_input.toPlainText() + "\n\n"
+
+        f = csv.StringIO()
+        f.write(self.hint_input.toPlainText())
+        f.seek(0)
+
+        reader = csv.reader(f)
+        read_data = [i for i in reader]
+
+        f.close()
         print(moji)
+        print(read_data)
     
 
 if __name__ == '__main__':
