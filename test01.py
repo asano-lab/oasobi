@@ -10,9 +10,7 @@ class Example(QWidget):
 
     def __init__(self):
         super().__init__()
-
         self.initUI()
-
 
     def initUI(self):      
 
@@ -31,8 +29,7 @@ class Example(QWidget):
     def showDialog(self):
 
         # ダイアログ表示
-        text, ok = QInputDialog.getText(self, '---Input Dialog---', 
-            'Enter your name:')
+        text, ok = QInputDialog.getText(self, '---Input Dialog---', 'Enter your name:')
 
         # 入力されたテキストをleオブジェクトへセット
         if ok:
