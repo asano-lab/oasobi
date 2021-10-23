@@ -89,6 +89,7 @@ class Example(QWidget):
         moji += self.now.strftime('%Y-%m-%d %H:%M:%S +0900\n')
         moji += "categories: question\n---\n\n"
         moji += "![第{:d}回　写真](/kokodoko/{:s})\n\n".format(self.q_id, self.fname_img)
+        moji += self.prob_stat.toPlainText()
         print(moji)
     
 
