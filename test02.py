@@ -73,13 +73,16 @@ class Example(QWidget):
     # ファイルの中身を作成
     def makeMdFile(self):
         moji = "---\nlayout: post\ntitle \"第{:d}回\"\ndate: ".format(self.q_id)
-        moji += self.now.strftime('%Y-%m-%d %H:%M:%S +0900')
+        moji += self.now.strftime('%Y-%m-%d %H:%M:%S +0900\n')
+        moji += "categories: question\n---\n\n"
         print(moji)
     
     # 最新の問題番号を取得し, 次の問題番号を設定
     def calcQuestionId(self):
         m_list = [re.search(r'q(\d{3}).md', i) for i in os.listdir(path="./_posts")]
         self.q_id = max(int(m.group(1)) for m in m_list if m) + 1
+        self.fname_img = "./images/q{:d}.jpg".format(self.q_id)
+        print(self.fname_img)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
