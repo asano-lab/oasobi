@@ -34,8 +34,12 @@ class Example(QWidget):
 
     def initUI(self):
         self.fdbtn = QPushButton("画像ファイルを選択", self)
-        self.fdbtn.move(20, 40)
+        self.fdbtn.move(40, 40)
         self.fdbtn.clicked.connect(self.showFileDialog)
+
+        self.img_label = QLabel(self)
+        self.img_label.setText("ファイルのパスを入力\nまたはドラッグ&ドロップ")
+        self.img_label.move(40, 80)
         
         self.mkbtn = QPushButton("作成", self)
         self.mkbtn.move(500, 500)
