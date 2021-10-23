@@ -59,7 +59,7 @@ class Example(QMainWindow):
         self.le.move(150, 40)
 
         self.setGeometry(300, 300, 1000, 600)
-        self.setWindowTitle('dialog')
+        self.setWindowTitle("問題追加")
         self.show()
 
     def showInputDialog(self):
