@@ -6,14 +6,13 @@
 
 import sys
 from PyQt5.QtWidgets import (
-    QWidget, QPushButton, QLineEdit, QInputDialog,
-    QApplication, QFrame, QColorDialog, QFileDialog,
-    QTextEdit, QAction, QMainWindow
+    QWidget, QPushButton, QApplication, QFileDialog,
+    QTextEdit
 )
-from PyQt5.QtGui import (QColor, QIcon)
+from PyQt5.QtGui import (QIcon)
 
 
-class Example(QMainWindow):
+class Example(QWidget):
 
     def __init__(self):
         super().__init__()
