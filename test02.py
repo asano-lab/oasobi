@@ -107,11 +107,14 @@ class Example(QWidget):
         f.seek(0)
 
         reader = csv.reader(f)
-        read_data = [i for i in reader]
+        hints = []
+        for i in reader:
+            hints += i
 
         f.close()
+
         print(moji)
-        print(read_data)
+        print(hints)
     
 
 if __name__ == '__main__':
