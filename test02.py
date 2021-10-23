@@ -41,7 +41,9 @@ class Example(QWidget):
         self.textEdit.setGeometry(200, 40, 400, 100)
 
         self.setGeometry(300, 300, 1000, 600)
-        self.setWindowTitle("問題追加")
+
+        self.calcQuestionId()
+        self.setWindowTitle("第{:d}問の作成".format(self.q_id))
         self.show()
 
     def showFileDialog(self):
@@ -52,7 +54,8 @@ class Example(QWidget):
             # print(fname[0])
     
     def makeQuestionFiles(self):
-        self.makeNewMdFileName()
+        fnamew = self.makeNewMdFileName()
+        print(fnamew)
         fnamer = self.textEdit.toPlainText()
         if not os.path.exists(fnamer):
             reply = QMessageBox.question(self, "エラー", "パスが存在しません。", QMessageBox.Ok, QMessageBox.Ok)
@@ -64,12 +67,13 @@ class Example(QWidget):
         print("ある")
     
     def makeNewMdFileName(self):
-        m_list = [re.search(r'q(\d{3}).md', i) for i in os.listdir(path="./_posts")]
-        latest = max(int(m.group(1)) for m in m_list if m)
         today = datetime.datetime.now()
-        fnamew = today.strftime('%Y-%m-%d') + "-q{:03d}.md".format(latest + 1)
-        print(fnamew)
+        fnamew = today.strftime('%Y-%m-%d') + "-q{:03d}.md".format(self.q_id)
         return fnamew
+    
+    def calcQuestionId(self):
+        m_list = [re.search(r'q(\d{3}).md', i) for i in os.listdir(path="./_posts")]
+        self.q_id = max(int(m.group(1)) for m in m_list if m) + 1
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
