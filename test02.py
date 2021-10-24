@@ -88,12 +88,13 @@ class Example(QWidget):
         self.ans_label.setText("正確な解答を記入\n(空なら「未発表」扱い)")
         self.ans_label.move(40, 400)
         self.ans_label.setAlignment(Qt.AlignCenter)
-
+        
         self.image = QImage("Images/imoyokan.jpg")
         self.pixmap = QPixmap.fromImage(self.image)
         self.image_label = QLabel(self)
         self.image_label.setPixmap(self.pixmap)
-        self.image_label.move(700, 20)
+        # self.image_label.move(700, 20)
+        self.image_label.setGeometry(700, 20, 100, 100)
 
         self.setGeometry(300, 300, 1000, 600)
 
