@@ -200,8 +200,7 @@ class Example(QWidget):
             l += i
 
         f.close()
-        # 重複を排除して返す
-        return list(set(l))
+        return l
     
     # ファイルの中身を作成
     def makeMdFile(self):
@@ -220,8 +219,8 @@ class Example(QWidget):
             moji += "- [ヒント{:d}](javascript:void(0)){{: .hint}}\n".format(i + 1)
             moji += "   - " + j + "\n"
         
-        # 正誤判定用ハッシュ
-        cands = self.csv2list(self.cand_input.toPlainText())
+        # 正誤判定用ハッシュ (重複排除)
+        cands = set(self.csv2list(self.cand_input.toPlainText()))
         if cands:
             moji += "\n1. {: #ans_input}\n"
             for i, j in enumerate(cands):
