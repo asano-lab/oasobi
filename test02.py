@@ -156,8 +156,8 @@ class Example(QWidget):
         # 正誤判定用ハッシュ
         cands = self.csv2list(self.cand_input.toPlainText())
         if cands:
-            moji += "\n<label>解答入力欄 <input type=\"text\" id=\"ans_col\"></label>\n\n"
-            moji += "- [判定](javascript:void(0)){{: #judge_but}}\n"
+            moji += "\n[](javascript:void(0)){{}: #ans_input}}\n\n"
+            moji += "- [](javascript:void(0)){{: #judge_but}}\n"
             for i, j in enumerate(cands):
                 h_arg = "第{:d}回".format(self.q_id) + j
                 h = hashlib.sha256(h_arg.encode("utf-8")).hexdigest()
