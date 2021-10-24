@@ -118,7 +118,8 @@ class Example(QWidget):
 
         if fname[0]:
             self.textEdit.setText(fname[0])
-            # print(fname[0])
+        
+        self.setImage(fname[0])
     
     # ファイル作成
     def makeQuestionFiles(self):
