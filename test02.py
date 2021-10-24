@@ -26,7 +26,9 @@ class MyTextEdit(QTextEdit):
 
     def dropEvent(self, e):
         urls = e.mimeData().urls()
-        self.setText(urls[0].toLocalFile())
+        path = urls[0].toLocalFile()
+        self.setText(path)
+        self.obj.setImage(path)
         # print(self.toPlainText())
 
 class Example(QWidget):
@@ -89,11 +91,8 @@ class Example(QWidget):
         self.ans_label.move(40, 400)
         self.ans_label.setAlignment(Qt.AlignCenter)
 
+        # プレビュー
         self.graphics_view = QGraphicsView(self)
-        self.image = QImage("Images/imoyokan.jpg")
-        self.scene = QGraphicsScene(self)
-        self.scene.addPixmap(QPixmap.fromImage(self.image))
-        self.graphics_view.setScene(self.scene)
         self.graphics_view.setGeometry(700, 40, 300, 300)
 
         self.setGeometry(300, 300, 1000, 600)
@@ -107,6 +106,12 @@ class Example(QWidget):
         m_list = [re.search(r'q(\d{3}).md', i) for i in os.listdir(path="./_posts")]
         self.q_id = max(int(m.group(1)) for m in m_list if m) + 1
         self.fname_img = "images/q{:d}.jpg".format(self.q_id)
+    
+    def setImage(self, path):
+        self.image = QImage(path)
+        self.scene = QGraphicsScene(self)
+        self.scene.addPixmap(QPixmap.fromImage(self.image))
+        self.graphics_view.setScene(self.scene)
 
     def showFileDialog(self):
         fname = QFileDialog.getOpenFileName(self, 'Open file', '.')
