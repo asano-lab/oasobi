@@ -30,6 +30,14 @@ class MyTextEdit(QTextEdit):
         self.setText(path)
         self.obj.setImage(path)
         # print(self.toPlainText())
+    
+    def enterEvent(self, a0):
+        print("エンターイベント")
+        return super().enterEvent(a0)
+    
+    def keyPressEvent(self, e):
+        print(self.toPlainText())
+        return super().keyPressEvent(e)
 
 class Example(QWidget):
     X1 = 230
