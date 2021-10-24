@@ -1,7 +1,5 @@
-
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-
 
 import sys
 import os
@@ -41,6 +39,15 @@ class Example(QWidget):
 
     def __init__(self):
         super().__init__()
+
+        # 必要なディレクトリが存在しない場合は終了
+        if not os.path.isdir("_posts"):
+            print("_posts ディレクトリが存在しません。")
+            sys.exit()
+        if not os.path.isdir("images"):
+            print("images ディレクトリが存在しません。")
+            sys.exit()
+
         self.image = QImage()
         self.pixmap = QPixmap.fromImage(self.image)
 
