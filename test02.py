@@ -16,7 +16,7 @@ from PyQt5.QtWidgets import (
     QTextEdit, QMessageBox, QLabel
 )
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QImage
+from PyQt5.QtGui import QImage, QPixmap
 
 class MyTextEdit(QTextEdit):
 
@@ -89,7 +89,13 @@ class Example(QWidget):
         self.ans_label.move(40, 400)
         self.ans_label.setAlignment(Qt.AlignCenter)
 
-        self.image = QImage("images/imoyokan.jpg");
+        self.image = QImage("images/imoyokan.jpg")
+        self.imageLabel = QLabel(self)
+        # ラベルに読み込んだ画像を反映
+        self.imageLabel.setPixmap(QPixmap.fromImage(self.image))
+        # self.imageLabel.setText("テキスト")
+        # スケールは1.0
+        self.imageLabel.setGeometry(800, 100, 100, 100)
 
         self.setGeometry(300, 300, 1000, 600)
 
