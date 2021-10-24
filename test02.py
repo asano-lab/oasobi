@@ -91,12 +91,12 @@ class Example(QWidget):
 
         self.graphics_view = QGraphicsView(self)
         self.scene = QGraphicsScene(self)
-        self.image = QImage("images/imoyokan.jpg")
+        self.image = QImage("Images/imoyokan.jpg")
         self.pixmap = QPixmap.fromImage(self.image)
         self.scene.addPixmap(self.pixmap)
         self.graphics_view.setScene(self.scene)
-        # self.graphics_view.move(800, 100)
-        self.graphics_view.setGeometry(700, 100, 300, 300)
+        self.graphics_view.move(800, 100)
+        # self.graphics_view.setGeometry(700, 100, 300, 300)
 
         self.setGeometry(300, 300, 1000, 600)
 
