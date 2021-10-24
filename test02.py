@@ -57,15 +57,15 @@ class Example(QWidget):
         self.textEdit.setGeometry(self.X1, 40, 400, 80)
 
         # 問題文入力欄
-        self.prob_input = MyTextEdit(self)
+        self.prob_input = QTextEdit(self)
         self.prob_input.setGeometry(self.X1, 130, 400, 80)
 
         self.prob_label = QLabel(self)
         self.prob_label.setText("問題文を記入")
-        self.prob_label.move(60, 130)
+        self.prob_label.move(70, 140)
 
         # ヒント入力欄
-        self.hint_input = MyTextEdit(self)
+        self.hint_input = QTextEdit(self)
         self.hint_input.setGeometry(self.X1, 220, 400, 80)
 
         self.hint_label = QLabel(self)
@@ -74,7 +74,7 @@ class Example(QWidget):
         self.hint_label.setAlignment(Qt.AlignCenter)
         
         # 正誤判定用文字列入力欄
-        self.cand_input = MyTextEdit(self)
+        self.cand_input = QTextEdit(self)
         self.cand_input.setGeometry(self.X1, 310, 400, 80)
 
         self.cand_label = QLabel(self)
@@ -83,7 +83,7 @@ class Example(QWidget):
         self.cand_label.setAlignment(Qt.AlignCenter)
 
         # 解答入力欄
-        self.ans_input = MyTextEdit(self)
+        self.ans_input = QTextEdit(self)
         self.ans_input.setGeometry(self.X1, 400, 400, 80)
 
         self.ans_label = QLabel(self)
@@ -95,7 +95,11 @@ class Example(QWidget):
         self.graphics_view = QGraphicsView(self)
         self.graphics_view.setGeometry(700, 40, 300, 300)
 
-        self.setGeometry(300, 300, 1000, 600)
+        self.graphics_view_label = QLabel(self)
+        self.graphics_view_label.setText("プレビュー")
+        self.graphics_view_label.move(700, 20)
+
+        self.setGeometry(300, 300, 1200, 600)
 
         self.setWindowTitle("第{:d}問の作成".format(self.q_id))
         self.show()
