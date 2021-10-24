@@ -178,6 +178,8 @@ class Example(QWidget):
         with open(fnamew, "w") as f:
             f.write(content)
         
+        # 作成成功
+        QMessageBox.question(self, "作成成功", "ウィンドウを閉じます。", QMessageBox.Ok, QMessageBox.Ok)
         sys.exit()
     
     # csv形式の文字列をリストに変換
