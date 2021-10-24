@@ -1,4 +1,3 @@
-#参考：https://qiita.com/Nobu12/items/acd3caa625be8eebc09c
 
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
@@ -135,6 +134,7 @@ class Example(QWidget):
         self.scene.addPixmap(self.pixmap)
         self.graphics_view.setScene(self.scene)
 
+    # ファイルダイアログの表示
     def showFileDialog(self):
         fname = QFileDialog.getOpenFileName(self, 'Open file', '.')
 
@@ -169,17 +169,20 @@ class Example(QWidget):
                 break
         # jpeg以外なら圧縮して保存
         else:
-            self.pixmap.save("images/q{:d}.jpg".format(self.q_id), "jpg")
+            if not self.pixmap.save("images/q{:d}.jpg".format(self.q_id), "jpg"):
+                QMessageBox.question(self, "エラー", "画像ファイル作成失敗", QMessageBox.Ok, QMessageBox.Ok)
+                return
         
         fnamew = "_posts/" + self.now.strftime('%Y-%m-%d') + "-q{:03d}.md".format(self.q_id)
         content = self.makeMdFile()
+        # print(content)
         
         # markdownの保存
         with open(fnamew, "w") as f:
             f.write(content)
         
         # 作成成功
-        QMessageBox.question(self, "作成成功", "ウィンドウを閉じます。", QMessageBox.Ok, QMessageBox.Ok)
+        QMessageBox.question(self, "作成成功", "アプリを終了します。", QMessageBox.Ok, QMessageBox.Ok)
         sys.exit()
     
     # csv形式の文字列をリストに変換
@@ -232,7 +235,6 @@ class Example(QWidget):
             ans = "未発表"
         moji += ans + "\n{{: #answer}}\n"
 
-        print(moji)
         return moji
 
 if __name__ == '__main__':
