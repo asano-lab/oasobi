@@ -148,8 +148,8 @@ class Example(QWidget):
             reply = QMessageBox.question(self, "エラー", "ディレクトリです。", QMessageBox.Ok, QMessageBox.Ok)
             return
         # 画像を出力
-        a = self.image.save("images/q{:d}.jpg".format(self.q_id), quality=0)
-        # a = self.pixmap.save("images/q{:d}.jpg".format(self.q_id), "jpg")
+        # a = self.image.save("images/q{:d}.jpg".format(self.q_id), quality=0)
+        a = self.pixmap.save("images/q{:d}.jpg".format(self.q_id), "jpg")
         print(a)
     
     # csv形式の文字列をリストに変換
