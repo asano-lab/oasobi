@@ -18,6 +18,9 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QImage, QPixmap
 
+# 拡張子の種類
+JPEG_EXT = [r'.*.jpg', r'.*.jpeg', r'.*.JPG', r'.*.JPEG']
+
 class MyTextEdit(QTextEdit):
 
     def __init__(self, obj):
@@ -148,9 +151,15 @@ class Example(QWidget):
             reply = QMessageBox.question(self, "エラー", "ディレクトリです。", QMessageBox.Ok, QMessageBox.Ok)
             return
         # 画像を出力
-        # a = self.image.save("images/q{:d}.jpg".format(self.q_id), quality=0)
-        a = self.pixmap.save("images/q{:d}.jpg".format(self.q_id), "jpg")
-        print(a)
+        # jpegファイルかどうかチェック
+        for i in JPEG_EXT:
+            if re.match(i, fnamer):
+                shutil.copy2(fnamer, "images/q{:d}.jpg".format(self.q_id))
+                print("jpeg!!")
+                break
+        else:
+            self.pixmap.save("images/q{:d}.jpg".format(self.q_id), "jpg")
+        
     
     # csv形式の文字列をリストに変換
     # 一次元配列で返す
