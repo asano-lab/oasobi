@@ -16,6 +16,7 @@ from PyQt5.QtWidgets import (
     QTextEdit, QMessageBox, QLabel
 )
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QImage
 
 class MyTextEdit(QTextEdit):
 
@@ -87,6 +88,8 @@ class Example(QWidget):
         self.ans_label.setText("正確な解答を記入\n(空なら「未発表」扱い)")
         self.ans_label.move(40, 400)
         self.ans_label.setAlignment(Qt.AlignCenter)
+
+        self.image = QImage("images/imoyokan.jpg");
 
         self.setGeometry(300, 300, 1000, 600)
 
