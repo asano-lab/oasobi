@@ -177,6 +177,8 @@ class Example(QWidget):
         # markdownの保存
         with open(fnamew, "w") as f:
             f.write(content)
+        
+        sys.exit()
     
     # csv形式の文字列をリストに変換
     # 一次元配列で返す
