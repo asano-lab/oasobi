@@ -144,8 +144,7 @@ class Example(QWidget):
         if os.path.isdir(fnamer):
             reply = QMessageBox.question(self, "エラー", "ディレクトリです。", QMessageBox.Ok, QMessageBox.Ok)
             return
-        # 画像の保存
-        # self.image.save("./images/q{:d}.jpg".format(self.q_id))
+        # 画像をコピー
         shutil.copyfile(self.textEdit.toPlainText(), "images/q{:d}.jpg".format(self.q_id))
     
     # csv形式の文字列をリストに変換
