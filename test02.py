@@ -39,6 +39,7 @@ class Example(QWidget):
 
     def __init__(self):
         super().__init__()
+        self.image = QImage()
         self.calcQuestionId()
         self.initUI()
 
@@ -144,7 +145,8 @@ class Example(QWidget):
             reply = QMessageBox.question(self, "エラー", "ディレクトリです。", QMessageBox.Ok, QMessageBox.Ok)
             return
         # 画像の保存
-        self.image.save("./images/q{:d}.jpg".format(self.q_id))
+        # self.image.save("./images/q{:d}.jpg".format(self.q_id))
+        shutil.copyfile(self.textEdit.toPlainText(), "images/q{:d}.jpg".format(self.q_id))
     
     # csv形式の文字列をリストに変換
     # 一次元配列で返す
