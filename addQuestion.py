@@ -187,7 +187,7 @@ class Example(QWidget):
         # print(content)
         
         # markdownの保存
-        with open(fnamew, "w") as f:
+        with open(fnamew, "w", encoding="utf-8") as f:
             f.write(content)
         
         # 作成成功
