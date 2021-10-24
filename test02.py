@@ -64,10 +64,12 @@ class Example(QWidget):
         # 画像ファイルのパス入力欄
         self.textEdit = MyTextEdit(self)
         self.textEdit.setGeometry(self.X1, 40, 400, 80)
+        self.textEdit.setText("path/to/image")
 
         # 問題文入力欄
         self.prob_input = QTextEdit(self)
         self.prob_input.setGeometry(self.X1, 130, 400, 80)
+        self.prob_input.setText("施設名を答えてください。")
 
         self.prob_label = QLabel(self)
         self.prob_label.setText("問題文を記入")
@@ -76,6 +78,7 @@ class Example(QWidget):
         # ヒント入力欄
         self.hint_input = QTextEdit(self)
         self.hint_input.setGeometry(self.X1, 220, 400, 80)
+        self.hint_input.setText("ヒント1,ヒント2,ヒント3")
 
         self.hint_label = QLabel(self)
         self.hint_label.setText("ヒントを記入\n(複数ある場合はcsv形式)")
@@ -85,6 +88,7 @@ class Example(QWidget):
         # 正誤判定用文字列入力欄
         self.cand_input = QTextEdit(self)
         self.cand_input.setGeometry(self.X1, 310, 400, 80)
+        self.cand_input.setText("解答候補,かいとうこうほ")
 
         self.cand_label = QLabel(self)
         self.cand_label.setText("解答の候補を記入\n(複数ある場合はcsv形式)")
@@ -94,6 +98,7 @@ class Example(QWidget):
         # 解答入力欄
         self.ans_input = QTextEdit(self)
         self.ans_input.setGeometry(self.X1, 400, 400, 80)
+        self.ans_input.setText("長野県長野市…")
 
         self.ans_label = QLabel(self)
         self.ans_label.setText("正確な解答を記入\n(空なら「未発表」扱い)")
@@ -218,7 +223,7 @@ class Example(QWidget):
         if not ans:
             ans = "未発表"
         moji += ans + "\n{{: #answer}}\n"
-        
+
         print(moji)
         return moji
 
