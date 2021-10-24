@@ -12,8 +12,8 @@ import datetime
 import csv
 import hashlib
 from PyQt5.QtWidgets import (
-    QWidget, QPushButton, QApplication, QFileDialog,
-    QTextEdit, QMessageBox, QLabel
+    QGraphicsScene, QWidget, QPushButton, QApplication, QFileDialog,
+    QTextEdit, QMessageBox, QLabel, QGraphicsView
 )
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QImage, QPixmap
@@ -89,13 +89,14 @@ class Example(QWidget):
         self.ans_label.move(40, 400)
         self.ans_label.setAlignment(Qt.AlignCenter)
 
+        self.graphics_view = QGraphicsView(self)
+        self.scene = QGraphicsScene(self)
         self.image = QImage("images/imoyokan.jpg")
-        self.imageLabel = QLabel(self)
-        # ラベルに読み込んだ画像を反映
-        self.imageLabel.setPixmap(QPixmap.fromImage(self.image))
-        # self.imageLabel.setText("テキスト")
-        # スケールは1.0
-        self.imageLabel.setGeometry(800, 100, 100, 100)
+        self.pixmap = QPixmap.fromImage(self.image)
+        self.scene.addPixmap(self.pixmap)
+        self.graphics_view.setScene(self.scene)
+        # self.graphics_view.move(800, 100)
+        self.graphics_view.setGeometry(700, 100, 300, 300)
 
         self.setGeometry(300, 300, 1000, 600)
 
