@@ -145,7 +145,8 @@ class Example(QWidget):
             reply = QMessageBox.question(self, "エラー", "ディレクトリです。", QMessageBox.Ok, QMessageBox.Ok)
             return
         # 画像をコピー
-        shutil.copyfile(self.textEdit.toPlainText(), "images/q{:d}.jpg".format(self.q_id))
+        # shutil.copyfile(self.textEdit.toPlainText(), "images/q{:d}.jpg".format(self.q_id))
+        shutil.copy2(self.textEdit.toPlainText(), "images/q{:d}.jpg".format(self.q_id))
     
     # csv形式の文字列をリストに変換
     # 一次元配列で返す
