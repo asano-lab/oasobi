@@ -158,6 +158,7 @@ class Example(QWidget):
                 print("jpeg!!")
                 break
         else:
+            print("jpegじゃない")
             self.pixmap.save("images/q{:d}.jpg".format(self.q_id), "jpg")
         
     
