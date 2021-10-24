@@ -141,26 +141,33 @@ class Example(QWidget):
     # ファイル作成
     def makeQuestionFiles(self):
         self.now = datetime.datetime.now()
-        fnamew = "_posts/" + self.now.strftime('%Y-%m-%d') + "-q{:03d}.md".format(self.q_id)
-        self.makeMdFile()
         fnamer = self.textEdit.toPlainText()
+
+        # ファイルの存在確認
         if not os.path.exists(fnamer):
-            reply = QMessageBox.question(self, "エラー", "パスが存在しません。", QMessageBox.Ok, QMessageBox.Ok)
+            QMessageBox.question(self, "エラー", "パスが存在しません。", QMessageBox.Ok, QMessageBox.Ok)
             return
         if os.path.isdir(fnamer):
-            reply = QMessageBox.question(self, "エラー", "ディレクトリです。", QMessageBox.Ok, QMessageBox.Ok)
+            QMessageBox.question(self, "エラー", "ディレクトリです。", QMessageBox.Ok, QMessageBox.Ok)
             return
+        
         # 画像を出力
         # jpegファイルかどうかチェック
         for i in JPEG_EXT:
+            # jpegならそのままコピー
             if re.match(i, fnamer):
                 shutil.copy2(fnamer, "images/q{:d}.jpg".format(self.q_id))
-                print("jpeg!!")
                 break
+        # jpeg以外なら圧縮して保存
         else:
-            print("jpegじゃない")
             self.pixmap.save("images/q{:d}.jpg".format(self.q_id), "jpg")
         
+        fnamew = "_posts/" + self.now.strftime('%Y-%m-%d') + "-q{:03d}.md".format(self.q_id)
+        content = self.makeMdFile()
+        
+        # markdownの保存
+        with open(fnamew, "w") as f:
+            f.write(content)
     
     # csv形式の文字列をリストに変換
     # 一次元配列で返す
@@ -211,7 +218,9 @@ class Example(QWidget):
         if not ans:
             ans = "未発表"
         moji += ans + "\n{{: #answer}}\n"
+        
         print(moji)
+        return moji
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
