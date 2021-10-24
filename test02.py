@@ -40,6 +40,8 @@ class Example(QWidget):
     def __init__(self):
         super().__init__()
         self.image = QImage()
+        self.pixmap = QPixmap.fromImage(self.image)
+
         self.calcQuestionId()
         self.initUI()
 
@@ -120,8 +122,9 @@ class Example(QWidget):
         if not path:
             return
         self.image = QImage(path)
+        self.pixmap = QPixmap.fromImage(self.image)
         self.scene = QGraphicsScene(self)
-        self.scene.addPixmap(QPixmap.fromImage(self.image))
+        self.scene.addPixmap(self.pixmap)
         self.graphics_view.setScene(self.scene)
 
     def showFileDialog(self):
@@ -144,9 +147,10 @@ class Example(QWidget):
         if os.path.isdir(fnamer):
             reply = QMessageBox.question(self, "エラー", "ディレクトリです。", QMessageBox.Ok, QMessageBox.Ok)
             return
-        # 画像をコピー
-        # shutil.copyfile(self.textEdit.toPlainText(), "images/q{:d}.jpg".format(self.q_id))
-        shutil.copy2(self.textEdit.toPlainText(), "images/q{:d}.jpg".format(self.q_id))
+        # 画像を出力
+        a = self.image.save("images/q{:d}.jpg".format(self.q_id), quality=0)
+        # a = self.pixmap.save("images/q{:d}.jpg".format(self.q_id), "jpg")
+        print(a)
     
     # csv形式の文字列をリストに変換
     # 一次元配列で返す
