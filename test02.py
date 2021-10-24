@@ -29,15 +29,10 @@ class MyTextEdit(QTextEdit):
         path = urls[0].toLocalFile()
         self.setText(path)
         self.obj.setImage(path)
-        # print(self.toPlainText())
-    
-    def enterEvent(self, a0):
-        print("エンターイベント")
-        return super().enterEvent(a0)
     
     def keyPressEvent(self, e):
-        print(self.toPlainText())
-        return super().keyPressEvent(e)
+        super().keyPressEvent(e)
+        self.obj.setImage(self.toPlainText())
 
 class Example(QWidget):
     X1 = 230
@@ -120,6 +115,9 @@ class Example(QWidget):
         self.fname_img = "images/q{:d}.jpg".format(self.q_id)
     
     def setImage(self, path):
+        # 空文字は無視
+        if not path:
+            return
         self.image = QImage(path)
         self.scene = QGraphicsScene(self)
         self.scene.addPixmap(QPixmap.fromImage(self.image))
