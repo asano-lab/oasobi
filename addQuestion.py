@@ -53,8 +53,9 @@ class Example(QWidget):
         self.fdbtn.clicked.connect(self.showFileDialog)
 
         self.img_label = QLabel(self)
-        self.img_label.setText("ファイルのパスを入力\nまたはドラッグ&ドロップ")
+        self.img_label.setText("ファイルのパスを入力\nまたは入力欄にD&D")
         self.img_label.move(40, 80)
+        self.img_label.setAlignment(Qt.AlignCenter)
         
         self.mkbtn = QPushButton("作成", self)
         self.mkbtn.move(500, 500)
