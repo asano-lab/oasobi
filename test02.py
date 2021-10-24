@@ -161,7 +161,11 @@ class Example(QWidget):
         for i in JPEG_EXT:
             # jpegならそのままコピー
             if re.match(i, fnamer):
-                shutil.copy2(fnamer, "images/q{:d}.jpg".format(self.q_id))
+                try:
+                    shutil.copy2(fnamer, "images/q{:d}.jpg".format(self.q_id))
+                except shutil.SameFileError:
+                    QMessageBox.question(self, "エラー", "コピー元とコピー先が同じです。", QMessageBox.Ok, QMessageBox.Ok)
+                    return
                 break
         # jpeg以外なら圧縮して保存
         else:
