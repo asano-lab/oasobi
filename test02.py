@@ -169,6 +169,7 @@ class Example(QWidget):
                 break
         # jpeg以外なら圧縮して保存
         else:
+            # 画像の保存に失敗した場合はエラー (そもそも画像ファイルが選択されてない)
             if not self.pixmap.save("images/q{:d}.jpg".format(self.q_id), "jpg"):
                 QMessageBox.question(self, "エラー", "画像ファイル作成失敗", QMessageBox.Ok, QMessageBox.Ok)
                 return
@@ -186,8 +187,9 @@ class Example(QWidget):
         sys.exit()
     
     # csv形式の文字列をリストに変換
-    # 一次元配列で返す
+    # 改行もカンマと同等に見なす
     def csv2list(self, csv_str):
+        # 一旦ファイルストリームに変換
         f = csv.StringIO()
         f.write(csv_str)
         f.seek(0)
@@ -220,20 +222,20 @@ class Example(QWidget):
         # 正誤判定用ハッシュ
         cands = self.csv2list(self.cand_input.toPlainText())
         if cands:
-            moji += "\n[](javascript:void(0)){{}: #ans_input}}\n\n"
-            moji += "- [](javascript:void(0)){{: #judge_but}}\n"
+            moji += "\n[](javascript:void(0)){: #ans_input}\n\n"
+            moji += "- [](javascript:void(0)){: #judge_but}\n"
             for i, j in enumerate(cands):
                 h_arg = "第{:d}回".format(self.q_id) + j
                 h = hashlib.sha256(h_arg.encode("utf-8")).hexdigest()
                 moji += "   - " + h + "\n"
         
         # 古い形式の方がなんだかんだ見やすい
-        moji += "\n[答えを表示する](javascript:void(0)){{: #ansbtn}}\n>"
+        moji += "\n[答えを表示する](javascript:void(0)){: #ansbtn}\n>"
         
         ans = self.ans_input.toPlainText()
         if not ans:
             ans = "未発表"
-        moji += ans + "\n{{: #answer}}\n"
+        moji += ans + "\n{: #answer}\n"
 
         return moji
 
