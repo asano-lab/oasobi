@@ -200,7 +200,8 @@ class Example(QWidget):
             l += i
 
         f.close()
-        return l
+        # 重複を排除して返す
+        return list(set(l))
     
     # ファイルの中身を作成
     def makeMdFile(self):
@@ -222,12 +223,11 @@ class Example(QWidget):
         # 正誤判定用ハッシュ
         cands = self.csv2list(self.cand_input.toPlainText())
         if cands:
-            moji += "\n[](javascript:void(0)){: #ans_input}\n\n"
-            moji += "- [](javascript:void(0)){: #judge_but}\n"
+            moji += "\n1. {: #ans_input}\n"
             for i, j in enumerate(cands):
                 h_arg = "第{:d}回".format(self.q_id) + j
                 h = hashlib.sha256(h_arg.encode("utf-8")).hexdigest()
-                moji += "   - " + h + "\n"
+                moji += "1. " + h + "\n"
         
         # 古い形式の方がなんだかんだ見やすい
         moji += "\n[答えを表示する](javascript:void(0)){: #ansbtn}\n>"
