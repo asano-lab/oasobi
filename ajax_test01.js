@@ -5,12 +5,17 @@ let img_input;
 const init = () => {
     img_input = document.getElementById("img_input");
     test_btn = document.getElementById("test_btn");
+    console.log(img_input);
     console.log(test_btn);
 
     test_btn.addEventListener("click", () => {
         loadDoc('cgi-bin/yeah.py?mode=mode', load);
     });
     // console.log(img_input.clientHeight);
+
+    img_input.addEventListener("input", () => {
+        console.log("yeah");
+    });
 }
 
 const loadDoc = (url, callBack) => {
