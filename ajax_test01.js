@@ -1,9 +1,12 @@
 let xhttp;
+let test_btn;
 let img_input;
 
 const init = () => {
     img_input = document.getElementById("img_input");
-    console.log(img_input.clientHeight);
+    test_btn = document.getElementById("test_btn");
+    console.log(test_btn);
+    // console.log(img_input.clientHeight);
 }
 
 const loadDoc = (url, callBack) => {
