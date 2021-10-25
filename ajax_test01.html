@@ -1,0 +1,29 @@
+<html>
+<head>
+<meta charset="utf-8" />
+</head>
+<body>
+<h3>AJAX test</h3>
+<p id="change">AJAXでこの部分を変更します</p>
+<button type="button" onclick="loadDoc('cgi-bin/yeah.py?mode=time', load)">変更</button>
+<script>
+let xhttp;
+
+const loadDoc = (url, callBack) => {
+    xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = () => {
+        if (xhttp.readyState == 4 && this.status == 200) {
+            callBack(xhttp);
+        }
+    };
+    xhttp.open("GET", url, true);
+    xhttp.send();
+}
+
+const load = (xhttp) => {
+    document.getElementById("change").innerHTML = xhttp.responseText;
+}
+
+</script>
+</body>
+</html>
