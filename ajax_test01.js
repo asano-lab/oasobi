@@ -15,7 +15,10 @@ const init = () => {
 
     img_input.addEventListener("input", () => {
         console.log("yeah");
+        loadDoc('cgi-bin/yeah.py?mode=mode', load);
     });
+    
+    console.log(img_input);
 }
 
 const loadDoc = (url, callBack) => {
