@@ -1,5 +1,9 @@
 let xhttp;
 
+const init = () => {
+    console.log("あいうえお");
+}
+
 const loadDoc = (url, callBack) => {
     xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = () => {

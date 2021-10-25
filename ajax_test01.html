@@ -3,12 +3,10 @@
 <meta charset="utf-8" />
 <script type="text/javascript" src="ajax_test01.js"></script>
 </head>
-<body>
+<body onload="init()">
 <h3>AJAX test</h3>
 <p id="change">AJAXでこの部分を変更します</p>
 <button type="button" onclick="loadDoc('cgi-bin/now.py', load)">変更</button>
-<textarea>
-
-</textarea>
+<input type="text" value="画像ファイルのパスを入力" id="img_input">
 </body>
 </html>
