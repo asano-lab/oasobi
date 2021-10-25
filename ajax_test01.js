@@ -11,10 +11,9 @@ const init = () => {
     test_btn.addEventListener("click", () => {
         loadDoc('cgi-bin/yeah.py?mode=mode', load);
     });
-    // console.log(img_input.clientHeight);
 
     img_input.addEventListener("input", () => {
-        console.log("yeah");
+        console.log(img_input.value);
         loadDoc('cgi-bin/now.py', load);
     });
     
