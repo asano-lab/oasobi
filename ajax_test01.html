@@ -4,24 +4,8 @@
 </head>
 <body>
 <h3>AJAX test</h3>
-<p id="change">AJAXでこの部分を変更します</p>
+<p id="change">AJAXでこの部分を変更しますよ</p>
 <button type="button" onclick="loadDoc('cgi-bin/yeah.py?mode=time', load)">変更</button>
-<script>
-    
-function loadDoc(url,callBack) {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-        callBack(this);
-    }
-    };
-    xhttp.open("GET",url,true);
-    xhttp.send();
-}
-function load(xhttp) {
-    document.getElementById("change").innerHTML = xhttp.responseText;
-}
-
-</script>
+<script type="text/javascript" src="ajax_test01.js"></script>
 </body>
 </html>
