@@ -1,6 +1,7 @@
 #! /usr/bin/env python3
 
 htmlText = """Content-type: text/html; charset=UTF-8
+
 <html>
 <head>
   <title>現在時刻を表示する</title>
