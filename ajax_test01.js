@@ -1,7 +1,9 @@
 let xhttp;
+let img_input;
 
 const init = () => {
-    console.log("あいうえお");
+    img_input = document.getElementById("img_input");
+    console.log(img_input.offsetWidth);
 }
 
 const loadDoc = (url, callBack) => {
