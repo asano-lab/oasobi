@@ -17,6 +17,7 @@ const init = () => {
     img_input.addEventListener("input", () => {
         console.log(img_input.value);
         loadDoc('cgi-bin/now.py', load);
+        // loadDoc('cgi-bin/test01.exe', load);
     });
     
     console.log(img_input);
