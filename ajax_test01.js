@@ -2,9 +2,11 @@ let xhttp;
 
 const loadDoc = (url, callBack) => {
     xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            callBack(this);
+    xhttp.onreadystatechange = () => {
+        console.log(this);
+        console.log(xhttp);
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            callBack(xhttp);
         }
     };
     xhttp.open("GET",url,true);
