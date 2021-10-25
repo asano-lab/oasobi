@@ -1,10 +1,12 @@
 let xhttp;
 let test_btn;
 let img_input;
+let img_preview;
 
 const init = () => {
     img_input = document.getElementById("img_input");
     test_btn = document.getElementById("test_btn");
+    img_preview = document.getElementById("img_preview");
     console.log(img_input);
     console.log(test_btn);
 
