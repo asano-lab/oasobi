@@ -3,7 +3,7 @@ let img_input;
 
 const init = () => {
     img_input = document.getElementById("img_input");
-    console.log(img_input.offsetWidth);
+    console.log(img_input.clientHeight);
 }
 
 const loadDoc = (url, callBack) => {
