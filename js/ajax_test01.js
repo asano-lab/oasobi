@@ -38,6 +38,10 @@ const init = () => {
         img_preview.innerHTML = "<img src=\"%s\">".replace("%s", blobUrl);
         console.log(img_preview);
     });
+
+    send_btn.addEventListener("click", () => {
+        console.log("送信!");
+    });
 }
 
 const loadDoc = (url, callBack) => {
