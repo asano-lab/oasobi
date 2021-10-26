@@ -7,16 +7,16 @@ const init = () => {
     img_input = document.getElementById("img_input");
     test_btn = document.getElementById("test_btn");
     img_preview = document.getElementById("img_preview");
-    console.log(img_input);
-    console.log(test_btn);
+    // console.log(img_input);
+    // console.log(test_btn);
 
     test_btn.addEventListener("click", () => {
         loadDoc('cgi-bin/yeah.py?mode=mode', load);
     });
 
-    img_input.addEventListener("input", () => {
+    img_input.addEventListener("input", (e) => {
         console.log(img_input.value);
-        console.log(e);
+        console.log("なにか");
         loadDoc('cgi-bin/now.py', load);
         // loadDoc('cgi-bin/test01.exe', load);
     });
@@ -25,7 +25,6 @@ const init = () => {
         console.log("change", e);
     });
     
-    console.log(img_input);
 }
 
 const loadDoc = (url, callBack) => {
