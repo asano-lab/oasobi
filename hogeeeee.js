@@ -7,8 +7,6 @@ const init = () => {
     img_input = document.getElementById("img_input");
     test_btn = document.getElementById("test_btn");
     img_preview = document.getElementById("img_preview");
-    // console.log(img_input);
-    // console.log(test_btn);
 
     test_btn.addEventListener("click", () => {
         loadDoc('cgi-bin/yeah.py?mode=mode', load);

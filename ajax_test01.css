@@ -4,7 +4,7 @@ input[type="text"] {
 }
 
 img {
-    border: 3px  black solid;
+    border: 1px  rgb(197, 46, 46) solid;
     width: 200;
     height: 200;
 }
