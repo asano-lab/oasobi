@@ -8,16 +8,18 @@ const init = () => {
     test_btn = document.getElementById("test_btn");
     img_preview = document.getElementById("img_preview");
 
+    img_input.accept = ".png, .jpg, .jpeg";
+
     console.log("うん");
 
     test_btn.addEventListener("click", () => {
         loadDoc('cgi-bin/yeah.py?mode=mode', load);
     });
 
-    // img_input.addEventListener("input", (e) => {
-    //     loadDoc('cgi-bin/now.py', load);
-    //     // loadDoc('cgi-bin/test01.exe', load);
-    // });
+    img_input.addEventListener("input", (e) => {
+        loadDoc('cgi-bin/now.py', load);
+        // loadDoc('cgi-bin/test01.exe', load);
+    });
 
     img_input.addEventListener("change", (e) => {
         // console.log("change", e);
@@ -31,7 +33,6 @@ const init = () => {
         console.log(img_preview);
         console.log(img_preview.naturalWidth);
     });
-    
 }
 
 const loadDoc = (url, callBack) => {
