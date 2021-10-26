@@ -14,11 +14,15 @@ const init = () => {
         loadDoc('cgi-bin/yeah.py?mode=mode', load);
     });
 
-    img_input.addEventListener("input", function(e) {
+    img_input.addEventListener("input", () => {
         console.log(img_input.value);
         console.log(e);
         loadDoc('cgi-bin/now.py', load);
         // loadDoc('cgi-bin/test01.exe', load);
+    });
+
+    img_input.addEventListener("change", (e) => {
+        console.log("change", e);
     });
     
     console.log(img_input);
