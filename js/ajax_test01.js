@@ -29,13 +29,11 @@ const init = () => {
 
         // ファイルのブラウザ上でのURL
         let blobUrl = window.URL.createObjectURL(f);
-        let gazou = document.createElement("img");
 
         console.log(blobUrl);
-        gazou.src = blobUrl;
-        img_preview.appendChild(gazou);
+        // img_preview.appendChild(gazou);
+        img_preview.innerHTML = "<img src=\"%s\">".replace("%s", blobUrl);
         console.log(img_preview);
-        console.log(gazou.naturalHeight);
     });
 }
 
