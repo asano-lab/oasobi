@@ -15,16 +15,18 @@ const init = () => {
     });
 
     img_input.addEventListener("input", (e) => {
-        console.log(img_input.value);
-        console.log("なにか", e);
         loadDoc('cgi-bin/now.py', load);
         // loadDoc('cgi-bin/test01.exe', load);
     });
 
     img_input.addEventListener("change", (e) => {
-        console.log("change", e);
+        // console.log("change", e);
         let f = e.target.files[0];
         console.log(f);
+
+        // ファイルのブラウザ上でのURL
+        let blobUrl = window.URL.createObjectURL(f);
+        console.log(blobUrl);
     });
     
 }
