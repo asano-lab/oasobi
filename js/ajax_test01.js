@@ -39,9 +39,9 @@ const init = () => {
     });
 
     send_btn.addEventListener("click", () => {
-        console.log(img_file);
-        const encoded_file = base64Encode(img_file);
-        console.log(encoded_file);
+        toBase64Url(blob_url, (base64url) => {
+            console.log("base64url", base64url);
+        });
     });
 }
 
@@ -60,21 +60,16 @@ const load = (xhttp) => {
     document.getElementById("change").innerHTML = xhttp.responseText;
 }
 
-const base64Encode = (...parts) => {
-    return new Promise(resolve => {
-        const reader = new FileReader();
-        reader.onload = () => {
-            const offset = reader.result.indexOf(",") + 1;
-            resolve(reader.result.slice(offset));
-        };
-        reader.readAsDataURL(new Blob(parts));
-    });
+function toBase64Url(url, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+        var reader = new FileReader();
+        reader.onloadend = function() {
+            callback(reader.result);
+        }
+        reader.readAsDataURL(xhr.response);
+    };
+    xhr.open('GET', url);
+    xhr.responseType = 'blob';
+    // xhr.send();
 }
-  
-function base64Decode(text, charset) {
-    return fetch(`data:text/plain;charset=${charset};base64,` + text).then(response => response.text());
-}
-
-function base64DecodeAsBlob(text, type = "text/plain;charset=UTF-8") {
-    return fetch(`data:${type};base64,` + text).then(response => response.blob());
-} 
