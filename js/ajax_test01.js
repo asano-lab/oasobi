@@ -8,7 +8,8 @@ const init = () => {
     test_btn = document.getElementById("test_btn");
     img_preview = document.getElementById("img_preview");
 
-    img_input.accept = ".png, .jpg, .jpeg";
+    // img_input.accept = ".png, .jpg, .jpeg";
+    img_input.accept = "image/*"
 
     console.log("うん");
 
