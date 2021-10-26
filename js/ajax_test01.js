@@ -8,10 +8,10 @@ const init = () => {
     test_btn = document.getElementById("test_btn");
     img_preview = document.getElementById("img_preview");
 
-    // img_input.accept = ".png, .jpg, .jpeg";
     img_input.accept = "image/*"
 
     console.log("うん");
+    console.log(img_preview);
 
     test_btn.addEventListener("click", () => {
         loadDoc('cgi-bin/yeah.py?mode=mode', load);
@@ -29,10 +29,13 @@ const init = () => {
 
         // ファイルのブラウザ上でのURL
         let blobUrl = window.URL.createObjectURL(f);
+        let gazou = document.createElement("img");
+
         console.log(blobUrl);
-        img_preview.src = blobUrl;
+        gazou.src = blobUrl;
+        img_preview.appendChild(gazou);
         console.log(img_preview);
-        console.log(img_preview.naturalWidth);
+        console.log(gazou.naturalHeight);
     });
 }
 
