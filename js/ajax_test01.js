@@ -27,6 +27,7 @@ const init = () => {
         // ファイルのブラウザ上でのURL
         let blobUrl = window.URL.createObjectURL(f);
         console.log(blobUrl);
+        img_preview.src = blobUrl;
     });
     
 }
