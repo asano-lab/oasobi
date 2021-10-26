@@ -1,5 +1,6 @@
 let xhttp;
 let test_btn;
+let send_btn;
 let img_input;
 let img_preview;
 let img_file;
@@ -8,6 +9,7 @@ let form_data;
 const init = () => {
     img_input = document.getElementById("img_input");
     test_btn = document.getElementById("test_btn");
+    send_btn = document.getElementById("send_btn");
     img_preview = document.getElementById("img_preview");
     form_data = new FormData();
 
