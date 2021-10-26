@@ -2,6 +2,7 @@ let xhttp;
 let test_btn;
 let img_input;
 let img_preview;
+let img_file;
 
 const init = () => {
     img_input = document.getElementById("img_input");
@@ -23,12 +24,10 @@ const init = () => {
     });
 
     img_input.addEventListener("change", (e) => {
-        // console.log("change", e);
-        let f = e.target.files[0];
-        console.log(f);
+        img_file = e.target.files[0];
 
         // ファイルのブラウザ上でのURL
-        let blobUrl = window.URL.createObjectURL(f);
+        let blobUrl = window.URL.createObjectURL(img_file);
 
         console.log(blobUrl);
         // img_preview.appendChild(gazou);
