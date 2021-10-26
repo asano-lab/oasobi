@@ -34,13 +34,14 @@ const init = () => {
         let blobUrl = window.URL.createObjectURL(img_file);
 
         console.log(blobUrl);
-        // img_preview.appendChild(gazou);
         img_preview.innerHTML = "<img src=\"%s\">".replace("%s", blobUrl);
         console.log(img_preview);
     });
 
     send_btn.addEventListener("click", () => {
-        console.log("送信!");
+        form_data.append("avatar", img_file);
+        console.log(form_data);
+        fetch("cgi-bin/yeah.py", { method: "POST", body: form_data });
     });
 }
 
