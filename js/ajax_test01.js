@@ -28,6 +28,8 @@ const init = () => {
         let blobUrl = window.URL.createObjectURL(f);
         console.log(blobUrl);
         img_preview.src = blobUrl;
+        console.log(img_preview);
+        console.log(img_preview.naturalWidth);
     });
     
 }
