@@ -14,7 +14,7 @@ const init = () => {
 
     img_input.addEventListener("input", (e) => {
         console.log(img_input.value);
-        console.log("なにか");
+        console.log("なにか", e);
         loadDoc('cgi-bin/now.py', load);
         // loadDoc('cgi-bin/test01.exe', load);
     });
