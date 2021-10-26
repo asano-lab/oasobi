@@ -5,6 +5,7 @@ let img_input;
 let img_preview;
 let img_file;
 let form_data;
+let blob_url;
 
 const init = () => {
     img_input = document.getElementById("img_input");
@@ -29,19 +30,18 @@ const init = () => {
 
     img_input.addEventListener("change", (e) => {
         img_file = e.target.files[0];
-
         // ファイルのブラウザ上でのURL
-        let blobUrl = window.URL.createObjectURL(img_file);
+        blob_url = window.URL.createObjectURL(img_file);
 
-        console.log(blobUrl);
-        img_preview.innerHTML = "<img src=\"%s\">".replace("%s", blobUrl);
+        console.log(blob_url);
+        img_preview.innerHTML = "<img src=\"%s\">".replace("%s", blob_url);
         console.log(img_preview);
     });
 
     send_btn.addEventListener("click", () => {
-        form_data.append("avatar", img_file);
-        console.log(form_data);
-        fetch("cgi-bin/yeah.py", { method: "POST", body: form_data });
+        console.log(img_file);
+        const encoded_file = base64Encode(img_file);
+        console.log(encoded_file);
     });
 }
 
@@ -59,3 +59,22 @@ const loadDoc = (url, callBack) => {
 const load = (xhttp) => {
     document.getElementById("change").innerHTML = xhttp.responseText;
 }
+
+const base64Encode = (...parts) => {
+    return new Promise(resolve => {
+        const reader = new FileReader();
+        reader.onload = () => {
+            const offset = reader.result.indexOf(",") + 1;
+            resolve(reader.result.slice(offset));
+        };
+        reader.readAsDataURL(new Blob(parts));
+    });
+}
+  
+function base64Decode(text, charset) {
+    return fetch(`data:text/plain;charset=${charset};base64,` + text).then(response => response.text());
+}
+
+function base64DecodeAsBlob(text, type = "text/plain;charset=UTF-8") {
+    return fetch(`data:${type};base64,` + text).then(response => response.blob());
+} 
