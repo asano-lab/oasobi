@@ -23,6 +23,8 @@ const init = () => {
 
     img_input.addEventListener("change", (e) => {
         console.log("change", e);
+        let f = e.target.files[0];
+        console.log(f);
     });
     
 }
