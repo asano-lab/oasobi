@@ -2,12 +2,14 @@
 let dec_p_but;
 let num_p_input;
 let num_points;
+let el_points;
 
 const _main = () => {
     dec_p_but = document.getElementById("dec_p_but");
     num_p_input = document.getElementById("num_p_input");
-    console.log(dec_p_but);
     dec_p_but.addEventListener("click", Macro.decPoints);
+
+    el_points = [];
 
     setRange(-0.1, 1.1, -0.1, 1.1);
     axis('full', 0.5, 0.5, 0, 0);
@@ -16,12 +18,15 @@ const _main = () => {
 
 const _decPoints = () => {
     let x, y;
+    for (let i = 0; i < el_points.length; i++) {
+        el_points[i].remove();
+    }
     num_points = num_p_input.value;
     console.log(num_points);
     for (let i = 0; i < num_points; i++) {
         x = Math.random();
         y = Math.random();
-        dot(x, y);
+        el_points.push(dot(x, y));
     }
 }
 
