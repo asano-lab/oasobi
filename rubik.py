@@ -35,7 +35,9 @@ class Rubik():
         print(bin(n))
         lll = self.num2lll(n)
         print(lll)
-        print(self.rightUp(lll))
+        for i in range(4):
+            lll = self.rightUp(lll)
+        print(lll)
     
     # 3次元リストを数値に変換 (100bit)
     def lll2num(self, lll: list) -> int:
