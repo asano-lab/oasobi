@@ -18,10 +18,16 @@ class Rubik():
     ]
 
     # 動かないマス
-    immovable = [9, 11, 13, 15, 24, 25, 26]
-
-    # 動かないマスの添え字
-    immovable_ind = [(0, 1, 1), (1, 0, 1), (1, 1, 0), (1, 1, 1), (1, 1, 2), (1, 2, 1), (2, 1, 1)]
+    # キーが添え字のタプルで値が数値
+    immovable = {
+        (0, 1, 1): 24,
+        (1, 0, 1):  9,
+        (1, 1, 0): 11,
+        (1, 1, 1): 15,
+        (1, 1, 2): 25,
+        (1, 2, 1): 13,
+        (2, 1, 1): 26
+    }
 
     def __init__(self) -> None:
         print(self.complete)
@@ -37,7 +43,7 @@ class Rubik():
             for j in range(3):
                 for k in range(3):
                     p = lll[i][j][k]
-                    if p not in self.immovable:
+                    if p not in self.immovable.values():
                         n = (n << 5) | p
         return n
     
@@ -46,7 +52,9 @@ class Rubik():
         for i in range(2, -1, -1):
             for j in range(2, -1, -1):
                 for k in range(2, -1, -1):
-                    if (i, j, k) not in self.immovable_ind:
+                    if (i, j, k) in self.immovable:
+                        lll[i][j][k] = self.immovable[(i, j, k)]
+                    else:
                         lll[i][j][k] = n & 0b11111
                         n >>= 5
         return lll
