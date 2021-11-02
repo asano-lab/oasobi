@@ -21,6 +21,8 @@ const _decPoints = () => {
     for (let i = 0; i < el_points.length; i++) {
         el_points[i].remove();
     }
+    el_points = [];
+    
     num_points = num_p_input.value;
     console.log(num_points);
     for (let i = 0; i < num_points; i++) {
@@ -28,6 +30,7 @@ const _decPoints = () => {
         y = Math.random();
         el_points.push(dot(x, y));
     }
+    console.log(el_points);
 }
 
 // 作成した関数をマクロに登録する
