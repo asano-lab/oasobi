@@ -83,6 +83,21 @@ class Rubik():
         n_cube[1][0][2] = cube[0][1][2]
         return n_cube
     
+    # 右側を下方向に90deg回転
+    def rightDown(self, cube: list) -> list:
+        n_cube = self.lllCopy(cube)
+        return n_cube
+    
+    # 左側を上方向に90deg回転
+    def leftUp(self, cube: list) -> list:
+        n_cube = self.lllCopy(cube)
+        return n_cube
+    
+    # 左側を下方向に90deg回転
+    def leftDown(self, cube: list) -> list:
+        n_cube = self.lllCopy(cube)
+        return n_cube
+    
     def bfs(self) -> None:
         pass
 
