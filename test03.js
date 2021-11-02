@@ -8,7 +8,6 @@ let _main = () => {
         y = Math.random();
         dot(x, y);
     }
-    return 0;
 }
 
 // 作成した関数をマクロに登録する
