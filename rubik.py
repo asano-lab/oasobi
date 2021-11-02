@@ -35,6 +35,11 @@ class Rubik():
         print(bin(n))
         lll = self.num2lll(n)
         print(lll)
+        lcp = self.lllCopy(lll)
+        # print(lcp)
+        lcp[1][1][1] = 1000
+        print(lcp)
+        print(lll)
     
     # 3次元リストを数値に変換 (100bit)
     def lll2num(self, lll: list) -> int:
@@ -58,6 +63,17 @@ class Rubik():
                         lll[i][j][k] = n & 0b11111
                         n >>= 5
         return lll
+    
+    def lllCopy(self, lll: list) -> list:
+        lcp = [[] for i in range(3)]
+        for i, j in enumerate(lll):
+            for k in j:
+                lcp[i].append(k.copy())
+        return lcp
+                        
+    # 右側を上方向に90deg回転
+    def rightUp(lll: list) -> list:
+        pass
     
     def bfs(self) -> None:
         pass
