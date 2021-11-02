@@ -19,6 +19,10 @@ class Rubik():
 
     def __init__(self) -> None:
         print(self.complete)
+    
+    def bfs(self) -> None:
+        pass
+
 
 def main() -> None:
     r = Rubik()
