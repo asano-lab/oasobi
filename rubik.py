@@ -38,11 +38,12 @@ class Rubik():
         lll = self.num2lll(n)
         print(lll)
         for i in range(1):
-            # lll = self.rollMinus(lll, 0)
+            lll = self.rollPlus(lll, 2)
+            lll = self.rollMinus(lll, 2)
             # lll = self.pitchPlus(lll, 2)
             # lll = self.pitchMinus(lll, 0)
-            lll = self.yawMinus(lll, 2)
-            lll = self.yawPlus(lll, 2)
+            # lll = self.yawMinus(lll, 2)
+            # lll = self.yawPlus(lll, 0)
         print(lll)
     
     # 3次元リストを数値に変換 (100bit)
@@ -86,14 +87,14 @@ class Rubik():
             print("無効な引数です")
             return []
         n_cube = self.lllCopy(cube)
-        n_cube[0][2][x] = cube[0][0][x]
-        n_cube[2][2][x] = cube[0][2][x]
-        n_cube[2][0][x] = cube[2][2][x]
         n_cube[0][0][x] = cube[2][0][x]
-        n_cube[1][2][x] = cube[0][1][x]
-        n_cube[2][1][x] = cube[1][2][x]
-        n_cube[1][0][x] = cube[2][1][x]
+        n_cube[2][0][x] = cube[2][2][x]
+        n_cube[2][2][x] = cube[0][2][x]
+        n_cube[0][2][x] = cube[0][0][x]
         n_cube[0][1][x] = cube[1][0][x]
+        n_cube[1][0][x] = cube[2][1][x]
+        n_cube[2][1][x] = cube[1][2][x]
+        n_cube[1][2][x] = cube[0][1][x]
         return n_cube
     
     # 上方向に90deg回転
