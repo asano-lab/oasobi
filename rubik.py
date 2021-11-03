@@ -179,13 +179,18 @@ class Rubik():
         next_num = 0
         fname = path_format.format(next_num)
         while os.path.exists(fname):
+            # f = open(fname, "rb")
+            # tmp = pickle.load(f)
+            # print(bin(tmp[0]))
+            # f.close()
             next_num += 1
             fname = path_format.format(next_num)
         # まだ何も作られていない
         if next_num == 0:
             cube_num = self.lll2num(self.complete)
             f = open(fname, "wb")
-            pickle.dump(cube_num, f)
+            # 要素が1つだけのリストを作成
+            pickle.dump([cube_num], f)
             f.close()
             return
         print(fname)
