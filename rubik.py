@@ -327,14 +327,17 @@ class Rubik():
 def main() -> None:
     r = Rubik()
 
-    for i in range(7):
+    for i in range(0):
         t0 = time.time()
         # end = r.bfs("./rubik_dat/")
         end = r.bfs("./test_dir/")
         print(time.time() - t0, "秒")
         if end:
             break
-    
+
+    with open("./rubik_dat/act07.pickle", "rb") as f:
+        cubes = pickle.load(f)
+        print(len(cubes))
 
 if __name__ == "__main__":
     main()
