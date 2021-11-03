@@ -37,7 +37,7 @@ class Rubik():
     pos_avail = (0, 2)
 
     # cnt_max = 1000000
-    cnt_max = 100000 # メモリが心配なので少し減らす
+    cnt_max = 500000 # メモリが心配なので少し減らす
 
     def __init__(self) -> None:
         pass
@@ -240,7 +240,7 @@ class Rubik():
                 fnamer = path_format.format(act_num, sub_num)
 
         # 余りファイルの有無をチェック
-        rem_fname = "act{:02d}_{:02d}rem.pickle".format(act_num, sub_num)
+        rem_fname = dir_path + "act{:02d}_{:02d}rem.pickle".format(act_num, sub_num)
         if os.path.exists(rem_fname):
             # 存在したらそのファイルを指定
             fnamer = rem_fname
@@ -252,7 +252,7 @@ class Rubik():
         prev_cubes = pickle.load(f)
         f.close()
 
-        print("探索盤面数：", len(prev_cubes))
+        print("探索状態数：", len(prev_cubes))
         # 次の状態を計算
         cubes = self.allActions(prev_cubes)
         # すべて探索しきれなかった場合, 余りファイルに保存
@@ -311,11 +311,13 @@ class Rubik():
             if len(known_cubes) + len(cubes) <= self.cnt_max * 10:
                 cubes += known_cubes
                 fnamew = latest_fname
+                print("ファイル結合")
             # 状態数が多すぎた場合は新ファイル作成
             else:
                 fnamew = path_format.format(latest_act_num, latest_sub_num + 1)
         # これ以上状態が増えない場合
         elif not cubes:
+            print("探索終了")
             return True
 
         # リストにして保存
