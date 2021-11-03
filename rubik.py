@@ -2,6 +2,7 @@
 
 import os
 import pickle
+import time
 
 class Rubik():
     complete = [
@@ -236,19 +237,25 @@ class Rubik():
         print("重複排除後", len(cubes), "個")
 
         if len(cubes) == 0:
-            return False
+            return True
         
         # リストにして保存
         f = open(fname, "wb")
         pickle.dump(list(cubes), f)
         f.close()
         
-        return True
+        return False
         
 
 def main() -> None:
     r = Rubik()
-    r.bfs("./rubic_dat/")
+    
+    for i in range(5):
+        t0 = time.time()
+        end = r.bfs("./rubic_dat/")
+        print(time.time() - t0, "秒")
+        if end:
+            break
 
 if __name__ == "__main__":
     main()
