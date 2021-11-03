@@ -219,6 +219,7 @@ class Rubik():
         f = open(fname_prev, "rb")
         prev_cubes = pickle.load(f)
         f.close()
+
         cubes = self.allActions(prev_cubes)
         print("重複排除前", len(cubes), "個")
 
@@ -227,14 +228,20 @@ class Rubik():
 
         # 過去に出たキューブとの重複を削除
         for i in range(next_num - 1):
-            f = open(path_format.format(i))
+            f = open(path_format.format(i), "rb")
             prev_cubes = pickle.load(f)
             f.close()
             cubes -= set(prev_cubes)
         
         print("重複排除後", len(cubes), "個")
+
         if len(cubes) == 0:
             return False
+        
+        # リストにして保存
+        f = open(fname, "wb")
+        pickle.dump(list(cubes), f)
+        f.close()
         
         return True
         
