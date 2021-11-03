@@ -286,7 +286,7 @@ class Rubik():
         for i in range(act_num + 2):
             j = 0
             past_fname = path_format.format(i, j)
-            if os.path.exists(past_fname):
+            while os.path.exists(past_fname):
                 f = open(past_fname, "rb")
                 known_cubes = pickle.load(f)
                 f.close()
@@ -295,8 +295,9 @@ class Rubik():
                 latest_fname = past_fname
                 latest_act_num = i
                 latest_sub_num = j
-                print(latest_fname, i, j)
+                # print(latest_fname, i, j)
                 j += 1
+                past_fname = path_format.format(i, j)
         
         # リストに変換
         cubes = list(cubes)
