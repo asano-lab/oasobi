@@ -175,22 +175,23 @@ class Rubik():
         return n_cube
     
     # キューブの数値のリストを与えると, 次のキューブの数値の集合を返す
-    def allActions(self, cube_num_list: list) -> set:
-        # デコード
-        lll_list = [self.num2lll(i) for i in cube_num_list]
-        # 次のキューブのリスト
-        next_lll_list = []
-        for lll in lll_list:
+    def allActions(self, cube_num_list: list) -> list:
+        next_cube_num_list = []
+        # 全キューブをループ
+        for cube_num in cube_num_list:
+            # デコード
+            lll = self.num2lll(cube_num)
             # 各キューブで12種類の動作を行う
             for pos in self.pos_avail:
-                next_lll_list.append(self.rollPlus(lll, pos))
-                next_lll_list.append(self.rollMinus(lll, pos))
-                next_lll_list.append(self.pitchPlus(lll, pos))
-                next_lll_list.append(self.pitchMinus(lll, pos))
-                next_lll_list.append(self.yawPlus(lll, pos))
-                next_lll_list.append(self.yawMinus(lll, pos))
-        # すべて数値に変換して集合を返す
-        return set(self.lll2num(i) for i in next_lll_list)
+                # エンコードしてリストに追加
+                next_cube_num_list.append(self.lll2num(self.rollPlus(lll, pos)))
+                next_cube_num_list.append(self.lll2num(self.rollMinus(lll, pos)))
+                next_cube_num_list.append(self.lll2num(self.pitchPlus(lll, pos)))
+                next_cube_num_list.append(self.lll2num(self.pitchMinus(lll, pos)))
+                next_cube_num_list.append(self.lll2num(self.yawPlus(lll, pos)))
+                next_cube_num_list.append(self.lll2num(self.yawMinus(lll, pos)))
+        
+        return next_cube_num_list
     
     # 幅優先探索
     def bfs(self, dir_path: str) -> bool:
@@ -221,8 +222,12 @@ class Rubik():
         prev_cubes = pickle.load(f)
         f.close()
 
+        # 参照渡し
         cubes = self.allActions(prev_cubes)
         print("重複排除前", len(cubes), "個")
+
+        # 集合に変換
+        cubes = set(cubes)
 
         # 直前のキューブは先に除外
         cubes -= set(prev_cubes)
@@ -249,10 +254,11 @@ class Rubik():
 
 def main() -> None:
     r = Rubik()
-    
-    for i in range(5):
+
+    for i in range(7):
         t0 = time.time()
-        end = r.bfs("./rubic_dat/")
+        # end = r.bfs("./rubic_dat/")
+        end = r.bfs("./test_dir/")
         print(time.time() - t0, "秒")
         if end:
             break
