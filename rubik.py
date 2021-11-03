@@ -253,8 +253,8 @@ def main() -> None:
 
     for i in range(5):
         t0 = time.time()
-        # end = r.bfs("./rubic_dat/")
-        end = r.bfs("./test_dir/")
+        end = r.bfs("./rubic_dat/")
+        # end = r.bfs("./test_dir/")
         print(time.time() - t0, "秒")
         if end:
             break
