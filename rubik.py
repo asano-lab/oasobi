@@ -177,8 +177,10 @@ class Rubik():
     def bfs(self, dir_path: str) -> None:
         path_format = dir_path + "act{:02d}.pickle"
         next_num = 0
+        fname_prev = ""
         fname = path_format.format(next_num)
         while os.path.exists(fname):
+            fname_prev = fname
             # f = open(fname, "rb")
             # tmp = pickle.load(f)
             # print(bin(tmp[0]))
@@ -193,8 +195,13 @@ class Rubik():
             pickle.dump([cube_num], f)
             f.close()
             return
-        print(fname)
-
+        
+        print(fname, "の作成")
+        # ロード
+        f = open(fname_prev, "rb")
+        preb_cubes = pickle.load(f)
+        f.close()
+        print(preb_cubes)
 
 def main() -> None:
     r = Rubik()
