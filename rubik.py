@@ -252,6 +252,7 @@ class Rubik():
         prev_cubes = pickle.load(f)
         f.close()
 
+        print("探索盤面数：", len(prev_cubes))
         # 次の状態を計算
         cubes = self.allActions(prev_cubes)
         # すべて探索しきれなかった場合, 余りファイルに保存
