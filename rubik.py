@@ -37,7 +37,7 @@ class Rubik():
     pos_avail = (0, 2)
 
     # cnt_max = 1000000
-    cnt_max = 100000 # メモリが心配なので少し減らす
+    cnt_max = 500000 # メモリが心配なので少し減らす
 
     def __init__(self) -> None:
         pass
