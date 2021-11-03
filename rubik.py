@@ -35,6 +35,8 @@ class Rubik():
 
     pos_avail = (0, 2)
 
+    cnt_max = 1000000
+
     def __init__(self) -> None:
         pass
     
@@ -177,10 +179,16 @@ class Rubik():
     # キューブの数値のリストを与えると, 次のキューブの数値の集合を返す
     def allActions(self, cube_num_list: list) -> list:
         next_cube_num_list = []
-        # 全キューブをループ
-        for cube_num in cube_num_list:
-            # デコード
-            lll = self.num2lll(cube_num)
+
+        # ループの上限を追加
+        for i in range(self.cnt_max):
+            # 空になったら終了
+            if not cube_num_list:
+                break
+
+            # ポップしてデコード
+            lll = self.num2lll(cube_num_list.pop())
+
             # 各キューブで12種類の動作を行う
             for pos in self.pos_avail:
                 # エンコードしてリストに追加
@@ -189,23 +197,25 @@ class Rubik():
                 next_cube_num_list.append(self.lll2num(self.pitchPlus(lll, pos)))
                 next_cube_num_list.append(self.lll2num(self.pitchMinus(lll, pos)))
                 next_cube_num_list.append(self.lll2num(self.yawPlus(lll, pos)))
-                next_cube_num_list.append(self.lll2num(self.yawMinus(lll, pos)))
+                next_cube_num_list.append(self.lll2num(self.yawMinus(lll, pos))) 
         
         return next_cube_num_list
     
     # 幅優先探索
     def bfs(self, dir_path: str) -> bool:
-        path_format = dir_path + "act{:02d}.pickle"
-        next_num = 0
+        path_format = dir_path + "act{:02d}_{:02d}.pickle"
+        act_num = 0
         fname_prev = ""
-        fname = path_format.format(next_num)
+        fname = path_format.format(act_num, 0)
 
+        # まずは0だけ探索
         while os.path.exists(fname):
             fname_prev = fname
-            next_num += 1
-            fname = path_format.format(next_num)
+            act_num += 1
+            fname = path_format.format(act_num, 0)
+        
         # まだ何も作られていない
-        if next_num == 0:
+        if act_num == 0:
             cube_num = self.lll2num(self.complete)
             f = open(fname, "wb")
             # 要素が1つだけのリストを作成
@@ -221,6 +231,7 @@ class Rubik():
 
         # 参照渡し
         cubes = self.allActions(prev_cubes)
+        print(prev_cubes)
         print("重複排除前", len(cubes), "個")
 
         # 集合に変換
@@ -230,7 +241,7 @@ class Rubik():
         cubes -= set(prev_cubes)
 
         # 過去に出たキューブとの重複を削除
-        for i in range(next_num):
+        for i in range(act_num):
             f = open(path_format.format(i), "rb")
             prev_cubes = pickle.load(f)
             f.close()
@@ -252,21 +263,14 @@ class Rubik():
 def main() -> None:
     r = Rubik()
 
-    for i in range(0):
+    for i in range(1):
         t0 = time.time()
-        end = r.bfs("./rubik_dat/")
-        # end = r.bfs("./test_dir/")
+        # end = r.bfs("./rubik_dat/")
+        end = r.bfs("./test_dir/")
         print(time.time() - t0, "秒")
         if end:
             break
     
-    t0 = time.time()
-    with open("./rubik_dat/act07.pickle", "rb") as f:
-        cubes = pickle.load(f)
-        print(len(cubes))
-    
-    del cubes
-    print(time.time() - t0)
 
 if __name__ == "__main__":
     main()
