@@ -37,8 +37,9 @@ class Rubik():
         print(bin(n))
         lll = self.num2lll(n)
         print(lll)
-        for i in range(1):
-            lll = self.actionUp(lll, 2)
+        for i in range(4):
+            # lll = self.actionUp(lll, 0)
+            lll = self.actionDown(lll, 2)
         print(lll)
     
     # 3次元リストを数値に変換 (100bit)
@@ -72,7 +73,7 @@ class Rubik():
                 lcp[i].append(k.copy())
         return lcp
                         
-    # 右側を上方向に90deg回転
+    # 上方向に90deg回転
     # 第2引数には回転させる位置を与える
     # 0: left, 2: right
     # とりあえず真ん中は1ステップで動かせないものとする
@@ -92,13 +93,20 @@ class Rubik():
         return n_cube
     
     # 右側を下方向に90deg回転
-    def rightDown(self, cube: list) -> list:
+    # 0: left, 2: right
+    def actionDown(self, cube: list, x: int) -> list:
+        if x not in self.pos_avail:
+            print("無効な引数です")
+            return []
         n_cube = self.lllCopy(cube)
-        return n_cube
-    
-    # 左側を上方向に90deg回転
-    def leftUp(self, cube: list) -> list:
-        n_cube = self.lllCopy(cube)
+        n_cube[0][2][x] = cube[0][0][x]
+        n_cube[2][2][x] = cube[0][2][x]
+        n_cube[2][0][x] = cube[2][2][x]
+        n_cube[0][0][x] = cube[2][0][x]
+        n_cube[1][2][x] = cube[0][1][x]
+        n_cube[2][1][x] = cube[1][2][x]
+        n_cube[1][0][x] = cube[2][1][x]
+        n_cube[0][1][x] = cube[1][0][x]
         return n_cube
     
     # 左側を下方向に90deg回転
