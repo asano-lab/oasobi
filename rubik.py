@@ -36,7 +36,8 @@ class Rubik():
 
     pos_avail = (0, 2)
 
-    cnt_max = 1000000
+    # cnt_max = 1000000
+    cnt_max = 500000 # メモリが心配なので少し減らす
 
     def __init__(self) -> None:
         pass
@@ -329,8 +330,8 @@ def main() -> None:
 
     for i in range(7):
         t0 = time.time()
-        # end = r.bfs("./rubik_dat/")
-        end = r.bfs("./test_dir/")
+        end = r.bfs("./rubik_dat/")
+        # end = r.bfs("./test_dir/")
         print(time.time() - t0, "秒")
         if end:
             break
