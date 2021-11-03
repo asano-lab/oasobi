@@ -233,7 +233,7 @@ class Rubik():
         cubes -= set(prev_cubes)
 
         # 過去に出たキューブとの重複を削除
-        for i in range(next_num - 1):
+        for i in range(next_num):
             f = open(path_format.format(i), "rb")
             prev_cubes = pickle.load(f)
             f.close()
