@@ -3,6 +3,7 @@
 import os
 import pickle
 import time
+import json
 
 class Rubik():
     complete = [
@@ -203,17 +204,16 @@ class Rubik():
     
     # 幅優先探索
     def bfs(self, dir_path: str) -> bool:
-        searched = dir_path + "searched.txt"
+        searched = dir_path + "searched.json"
         path_format = dir_path + "act{:02d}_{:02d}.pickle"
-        act_num = 0
-        fname = path_format.format(act_num, 0)
 
         # まだ何も作られていない
         if not os.path.exists(searched):
             f = open(searched, "w")
-            f.write("00_00")
+            json.dump([0, 0], f)
             f.close()
-
+            
+            fname = path_format.format(0, 0)
             cube_num = self.lll2num(self.complete)
             f = open(fname, "wb")
             # 要素が1つだけのリストを作成
@@ -221,7 +221,12 @@ class Rubik():
             f.close()
             return False
         
+        f = open(searched, "r")
+        act_num, sub_num = json.load(f)
+        f.close()
+        
         fname_prev = ""
+        print(act_num, sub_num)
 
         # まずは0だけ探索
         while os.path.exists(fname):
