@@ -37,11 +37,12 @@ class Rubik():
         print(bin(n))
         lll = self.num2lll(n)
         print(lll)
-        for i in range(3):
+        for i in range(1):
             # lll = self.rollMinus(lll, 0)
             # lll = self.pitchPlus(lll, 2)
             # lll = self.pitchMinus(lll, 0)
-            lll = self.yawMinus(lll, 0)
+            lll = self.yawMinus(lll, 2)
+            lll = self.yawPlus(lll, 2)
         print(lll)
     
     # 3次元リストを数値に変換 (100bit)
@@ -145,6 +146,23 @@ class Rubik():
         n_cube[2][y][1] = cube[1][y][2]
         n_cube[1][y][2] = cube[0][y][1]
         return n_cube
+    
+    # z軸周りに回転 (順)
+    # 0: top, 2: bottom
+    def yawPlus(self, cube: list, z: int) -> list:
+        if z not in self.pos_avail:
+            print("無効な引数です")
+            return []
+        n_cube = self.lllCopy(cube)
+        n_cube[z][0][0] = cube[z][2][0]
+        n_cube[z][2][0] = cube[z][2][2]
+        n_cube[z][2][2] = cube[z][0][2]
+        n_cube[z][0][2] = cube[z][0][0]
+        n_cube[z][0][1] = cube[z][1][0]
+        n_cube[z][1][0] = cube[z][2][1]
+        n_cube[z][2][1] = cube[z][1][2]
+        n_cube[z][1][2] = cube[z][0][1]
+        return n_cube
 
     # z軸周りに回転 (逆)
     # 0: top, 2: bottom
@@ -163,7 +181,6 @@ class Rubik():
         n_cube[z][1][0] = cube[z][0][1]
         return n_cube
         
-
     def bfs(self) -> None:
         pass
 
