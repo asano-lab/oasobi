@@ -173,6 +173,24 @@ class Rubik():
         n_cube[z][1][0] = cube[z][0][1]
         return n_cube
     
+    # キューブの数値のリストを与えると, 次のキューブの数値の集合を返す
+    def allActions(self, cube_num_list: list) -> set:
+        # デコード
+        lll_list = [self.num2lll(i) for i in cube_num_list]
+        # 次のキューブのリスト
+        next_lll_list = []
+        for lll in lll_list:
+            # 各キューブで12種類の動作を行う
+            for pos in self.pos_avail:
+                next_lll_list.append(self.rollPlus(lll, pos))
+                next_lll_list.append(self.rollMinus(lll, pos))
+                next_lll_list.append(self.pitchPlus(lll, pos))
+                next_lll_list.append(self.pitchMinus(lll, pos))
+                next_lll_list.append(self.yawPlus(lll, pos))
+                next_lll_list.append(self.yawMinus(lll, pos))
+        # すべて数値に変換して集合を返す
+        return set(self.lll2num(i) for i in next_lll_list)
+    
     # 幅優先探索
     def bfs(self, dir_path: str) -> None:
         path_format = dir_path + "act{:02d}.pickle"
@@ -201,7 +219,10 @@ class Rubik():
         f = open(fname_prev, "rb")
         preb_cubes = pickle.load(f)
         f.close()
-        print(preb_cubes)
+        cubes = self.allActions(preb_cubes)
+        print(cubes)
+        for i in cubes:
+            print(self.num2lll(i))
 
 def main() -> None:
     r = Rubik()
