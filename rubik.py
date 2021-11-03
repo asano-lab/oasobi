@@ -1,5 +1,8 @@
 # ルービックキューブソルバを作りたい
 
+import os
+import pickle
+
 class Rubik():
     complete = [
         [
@@ -32,19 +35,7 @@ class Rubik():
     pos_avail = (0, 2)
 
     def __init__(self) -> None:
-        print(self.complete)
-        n = self.lll2num(self.complete)
-        print(bin(n))
-        lll = self.num2lll(n)
-        print(lll)
-        for i in range(1):
-            lll = self.rollPlus(lll, 2)
-            lll = self.rollMinus(lll, 2)
-            # lll = self.pitchPlus(lll, 2)
-            # lll = self.pitchMinus(lll, 0)
-            # lll = self.yawMinus(lll, 2)
-            # lll = self.yawPlus(lll, 0)
-        print(lll)
+        pass
     
     # 3次元リストを数値に変換 (100bit)
     def lll2num(self, lll: list) -> int:
@@ -181,13 +172,28 @@ class Rubik():
         n_cube[z][2][1] = cube[z][1][0]
         n_cube[z][1][0] = cube[z][0][1]
         return n_cube
-        
-    def bfs(self) -> None:
-        pass
+    
+    # 幅優先探索
+    def bfs(self, dir_path: str) -> None:
+        path_format = dir_path + "act{:02d}.pickle"
+        next_num = 0
+        fname = path_format.format(next_num)
+        while os.path.exists(fname):
+            next_num += 1
+            fname = path_format.format(next_num)
+        # まだ何も作られていない
+        if next_num == 0:
+            cube_num = self.lll2num(self.complete)
+            f = open(fname, "wb")
+            pickle.dump(cube_num, f)
+            f.close()
+            return
+        print(fname)
 
 
 def main() -> None:
     r = Rubik()
+    r.bfs("./rubic_dat/")
 
 if __name__ == "__main__":
     main()
