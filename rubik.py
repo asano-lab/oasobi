@@ -201,10 +201,6 @@ class Rubik():
         fname = path_format.format(next_num)
         while os.path.exists(fname):
             fname_prev = fname
-            # f = open(fname, "rb")
-            # tmp = pickle.load(f)
-            # print(bin(tmp[0]))
-            # f.close()
             next_num += 1
             fname = path_format.format(next_num)
         # まだ何も作られていない
