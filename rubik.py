@@ -37,9 +37,8 @@ class Rubik():
         print(bin(n))
         lll = self.num2lll(n)
         print(lll)
-        for i in range(4):
-            # lll = self.actionUp(lll, 0)
-            lll = self.actionDown(lll, 2)
+        for i in range(3):
+            lll = self.rollMinus(lll, 0)
         print(lll)
     
     # 3次元リストを数値に変換 (100bit)
@@ -77,7 +76,7 @@ class Rubik():
     # 第2引数には回転させる位置を与える
     # 0: left, 2: right
     # とりあえず真ん中は1ステップで動かせないものとする
-    def actionUp(self, cube: list, x: int) -> list:
+    def rollMinus(self, cube: list, x: int) -> list:
         if x not in self.pos_avail:
             print("無効な引数です")
             return []
@@ -94,7 +93,7 @@ class Rubik():
     
     # 右側を下方向に90deg回転
     # 0: left, 2: right
-    def actionDown(self, cube: list, x: int) -> list:
+    def rollPlus(self, cube: list, x: int) -> list:
         if x not in self.pos_avail:
             print("無効な引数です")
             return []
