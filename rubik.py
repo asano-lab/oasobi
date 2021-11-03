@@ -251,7 +251,7 @@ class Rubik():
 def main() -> None:
     r = Rubik()
 
-    for i in range(7):
+    for i in range(5):
         t0 = time.time()
         # end = r.bfs("./rubic_dat/")
         end = r.bfs("./test_dir/")
