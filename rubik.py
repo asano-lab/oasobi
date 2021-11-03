@@ -256,8 +256,8 @@ class Rubik():
         # 次の状態を計算
         cubes = self.allActions(prev_cubes)
         # すべて探索しきれなかった場合, 余りファイルに保存
-        if len(prev_cubes) != 0:
-            print("未探索状態数：", len(prev_cubes))
+        print("未探索状態数：", len(prev_cubes))
+        if prev_cubes:
             f = open(rem_fname, "wb")
             pickle.dump(prev_cubes, f)
             f.close()
@@ -331,7 +331,7 @@ class Rubik():
 def main() -> None:
     r = Rubik()
 
-    for i in range(7):
+    for i in range(8):
         t0 = time.time()
         end = r.bfs("./rubik_dat/")
         # end = r.bfs("./test_dir/")
