@@ -37,7 +37,7 @@ class Rubik():
     pos_avail = (0, 2)
 
     # cnt_max = 1000000
-    cnt_max = 500000 # メモリが心配なので少し減らす
+    cnt_max = 100000 # メモリが心配なので少し減らす
 
     def __init__(self) -> None:
         pass
@@ -256,7 +256,7 @@ class Rubik():
         # 次の状態を計算
         cubes = self.allActions(prev_cubes)
         # すべて探索しきれなかった場合, 余りファイルに保存
-        if prev_cubes:
+        if len(prev_cubes) != 0:
             print("未探索状態数：", len(prev_cubes))
             f = open(rem_fname, "wb")
             pickle.dump(prev_cubes, f)
