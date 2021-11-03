@@ -199,6 +199,7 @@ class Rubik():
         next_num = 0
         fname_prev = ""
         fname = path_format.format(next_num)
+
         while os.path.exists(fname):
             fname_prev = fname
             next_num += 1
@@ -210,7 +211,7 @@ class Rubik():
             # 要素が1つだけのリストを作成
             pickle.dump([cube_num], f)
             f.close()
-            return
+            return False
         
         print(fname, "の作成")
         # ロード
@@ -253,7 +254,7 @@ def main() -> None:
 
     for i in range(5):
         t0 = time.time()
-        end = r.bfs("./rubic_dat/")
+        end = r.bfs("./rubik_dat/")
         # end = r.bfs("./test_dir/")
         print(time.time() - t0, "秒")
         if end:
