@@ -39,7 +39,8 @@ class Rubik():
         print(lll)
         for i in range(4):
             # lll = self.rollMinus(lll, 0)
-            lll = self.pitchPlus(lll, 2)
+            # lll = self.pitchPlus(lll, 2)
+            lll = self.pitchMinus(lll, 0)
         print(lll)
     
     # 3次元リストを数値に変換 (100bit)
@@ -72,29 +73,12 @@ class Rubik():
             for k in j:
                 lcp[i].append(k.copy())
         return lcp
-                        
-    # 上方向に90deg回転
+
+    # 下方向に90deg回転
     # 第2引数には回転させる位置を与える
     # 0: left, 2: right
     # とりあえず真ん中は1ステップで動かせないものとする
-    def rollMinus(self, cube: list, x: int) -> list:
-        if x not in self.pos_avail:
-            print("無効な引数です")
-            return []
-        n_cube = self.lllCopy(cube)
-        n_cube[0][0][x] = cube[0][2][x]
-        n_cube[0][2][x] = cube[2][2][x]
-        n_cube[2][2][x] = cube[2][0][x]
-        n_cube[2][0][x] = cube[0][0][x]
-        n_cube[0][1][x] = cube[1][2][x]
-        n_cube[1][2][x] = cube[2][1][x]
-        n_cube[2][1][x] = cube[1][0][x]
-        n_cube[1][0][x] = cube[0][1][x]
-        return n_cube
-    
-    # 右側を下方向に90deg回転
     # 軸に対して右ねじの向きをプラスにした
-    # 0: left, 2: right
     def rollPlus(self, cube: list, x: int) -> list:
         if x not in self.pos_avail:
             print("無効な引数です")
@@ -110,7 +94,24 @@ class Rubik():
         n_cube[0][1][x] = cube[1][0][x]
         return n_cube
     
-    # y軸周りに回転
+    # 上方向に90deg回転
+    # 0: left, 2: right
+    def rollMinus(self, cube: list, x: int) -> list:
+        if x not in self.pos_avail:
+            print("無効な引数です")
+            return []
+        n_cube = self.lllCopy(cube)
+        n_cube[0][0][x] = cube[0][2][x]
+        n_cube[0][2][x] = cube[2][2][x]
+        n_cube[2][2][x] = cube[2][0][x]
+        n_cube[2][0][x] = cube[0][0][x]
+        n_cube[0][1][x] = cube[1][2][x]
+        n_cube[1][2][x] = cube[2][1][x]
+        n_cube[2][1][x] = cube[1][0][x]
+        n_cube[1][0][x] = cube[0][1][x]
+        return n_cube
+    
+    # y軸周りに回転 (順)
     # 0: back, 2: front
     def pitchPlus(self, cube: list, y: int) -> list:
         if y not in self.pos_avail:
@@ -125,6 +126,23 @@ class Rubik():
         n_cube[1][y][2] = cube[2][y][1]
         n_cube[2][y][1] = cube[1][y][0]
         n_cube[1][y][0] = cube[0][y][1]
+        return n_cube
+    
+    # y軸周りに回転 (逆)
+    # 0: back, 2: front
+    def pitchMinus(self, cube: list, y: int) -> list:
+        if y not in self.pos_avail:
+            print("無効な引数です")
+            return []
+        n_cube = self.lllCopy(cube)
+        n_cube[0][y][0] = cube[2][y][0]
+        n_cube[2][y][0] = cube[2][y][2]
+        n_cube[2][y][2] = cube[0][y][2]
+        n_cube[0][y][2] = cube[0][y][0]
+        n_cube[0][y][1] = cube[1][y][0]
+        n_cube[1][y][0] = cube[2][y][1]
+        n_cube[2][y][1] = cube[1][y][2]
+        n_cube[1][y][2] = cube[0][y][1]
         return n_cube
 
     def bfs(self) -> None:
