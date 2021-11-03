@@ -63,3 +63,21 @@ act_num 6
 
 ./rubik_dat/act06_00rem.pickle から次の状態を計算
 探索状態数： 477956
+./rubik_dat/act06_00rem.pickle から次の状態を計算
+探索状態数： 477956
+未探索状態数： 377956
+新状態数 (重複排除前)： 1200000
+./rubik_dat/act00_00.pickle 0 0
+./rubik_dat/act01_00.pickle 1 0
+./rubik_dat/act02_00.pickle 2 0
+./rubik_dat/act03_00.pickle 3 0
+./rubik_dat/act04_00.pickle 4 0
+./rubik_dat/act05_00.pickle 5 0
+./rubik_dat/act06_00.pickle 6 0
+./rubik_dat/act07_00.pickle 7 0
+新状態数 (重複排除後) 1003927 個
+書き込みファイル： ./rubik_dat/act07_01.pickle
+16.806827068328857 秒
+
+./rubik_dat/act06_00rem.pickle から次の状態を計算
+探索状態数： 377956

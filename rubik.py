@@ -295,6 +295,7 @@ class Rubik():
                 latest_fname = past_fname
                 latest_act_num = i
                 latest_sub_num = j
+                print(latest_fname, i, j)
                 j += 1
         
         # リストに変換
@@ -303,7 +304,7 @@ class Rubik():
 
         # 深さが進む場合
         fnamew = path_format.format(act_num + 1, 0)
-        print("act_num", act_num)
+
         if act_num == 0:
             pass
         # 最新のファイルの深さが, 探索済み深さでない
