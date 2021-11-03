@@ -230,7 +230,7 @@ class Rubik():
 
             # 副番号をインクリメントしてファイルの存在を確認
             sub_num += 1
-            fnamer = path_format.format(act_num + 1, sub_num)
+            fnamer = path_format.format(act_num, sub_num)
 
             # 存在しない (この深さの盤面はすべて探索済み)
             if not os.path.exists(fnamer):
@@ -331,14 +331,13 @@ class Rubik():
 def main() -> None:
     r = Rubik()
 
-    for i in range(8):
+    for i in range(3):
         t0 = time.time()
         end = r.bfs("./rubik_dat/")
         # end = r.bfs("./test_dir/")
         print(time.time() - t0, "秒")
         if end:
             break
-    
 
 if __name__ == "__main__":
     main()
