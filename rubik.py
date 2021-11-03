@@ -192,7 +192,7 @@ class Rubik():
         return set(self.lll2num(i) for i in next_lll_list)
     
     # 幅優先探索
-    def bfs(self, dir_path: str) -> None:
+    def bfs(self, dir_path: str) -> bool:
         path_format = dir_path + "act{:02d}.pickle"
         next_num = 0
         fname_prev = ""
@@ -217,12 +217,27 @@ class Rubik():
         print(fname, "の作成")
         # ロード
         f = open(fname_prev, "rb")
-        preb_cubes = pickle.load(f)
+        prev_cubes = pickle.load(f)
         f.close()
-        cubes = self.allActions(preb_cubes)
-        print(cubes)
-        for i in cubes:
-            print(self.num2lll(i))
+        cubes = self.allActions(prev_cubes)
+        print("重複排除前", len(cubes), "個")
+
+        # 直前のキューブは先に除外
+        cubes -= set(prev_cubes)
+
+        # 過去に出たキューブとの重複を削除
+        for i in range(next_num - 1):
+            f = open(path_format.format(i))
+            prev_cubes = pickle.load(f)
+            f.close()
+            cubes -= set(prev_cubes)
+        
+        print("重複排除後", len(cubes), "個")
+        if len(cubes) == 0:
+            return False
+        
+        return True
+        
 
 def main() -> None:
     r = Rubik()
