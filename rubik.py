@@ -203,25 +203,31 @@ class Rubik():
     
     # 幅優先探索
     def bfs(self, dir_path: str) -> bool:
+        searched = dir_path + "searched.txt"
         path_format = dir_path + "act{:02d}_{:02d}.pickle"
         act_num = 0
-        fname_prev = ""
         fname = path_format.format(act_num, 0)
 
-        # まずは0だけ探索
-        while os.path.exists(fname):
-            fname_prev = fname
-            act_num += 1
-            fname = path_format.format(act_num, 0)
-        
         # まだ何も作られていない
-        if act_num == 0:
+        if not os.path.exists(searched):
+            f = open(searched, "w")
+            f.write("00_00")
+            f.close()
+
             cube_num = self.lll2num(self.complete)
             f = open(fname, "wb")
             # 要素が1つだけのリストを作成
             pickle.dump([cube_num], f)
             f.close()
             return False
+        
+        fname_prev = ""
+
+        # まずは0だけ探索
+        while os.path.exists(fname):
+            fname_prev = fname
+            act_num += 1
+            fname = path_format.format(act_num, 0)
         
         print(fname, "の作成")
         # ロード
@@ -230,6 +236,7 @@ class Rubik():
         f.close()
 
         # 参照渡し
+        print(prev_cubes)
         cubes = self.allActions(prev_cubes)
         print(prev_cubes)
         print("重複排除前", len(cubes), "個")
@@ -237,21 +244,15 @@ class Rubik():
         # 集合に変換
         cubes = set(cubes)
 
-        # 直前のキューブは先に除外
-        cubes -= set(prev_cubes)
-
         # 過去に出たキューブとの重複を削除
         for i in range(act_num):
-            f = open(path_format.format(i), "rb")
+            f = open(path_format.format(i, 0), "rb")
             prev_cubes = pickle.load(f)
             f.close()
             cubes -= set(prev_cubes)
         
         print("重複排除後", len(cubes), "個")
 
-        if len(cubes) == 0:
-            return True
-        
         # リストにして保存
         f = open(fname, "wb")
         pickle.dump(list(cubes), f)
