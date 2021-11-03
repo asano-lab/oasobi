@@ -37,7 +37,7 @@ class Rubik():
     pos_avail = (0, 2)
 
     # cnt_max = 1000000
-    cnt_max = 500000 # メモリが心配なので少し減らす
+    cnt_max = 100000 # メモリが心配なので少し減らす
 
     def __init__(self) -> None:
         pass
@@ -231,7 +231,6 @@ class Rubik():
             # 副番号をインクリメントしてファイルの存在を確認
             sub_num += 1
             fnamer = path_format.format(act_num, sub_num)
-
             # 存在しない (この深さの盤面はすべて探索済み)
             if not os.path.exists(fnamer):
                 # 次の深さの最初のファイルを指定
@@ -304,9 +303,11 @@ class Rubik():
 
         # 深さが進む場合
         fnamew = path_format.format(act_num + 1, 0)
-
-        # 最新のファイルの深さが, 探索済み深さ+1と一致する
-        if latest_act_num == act_num + 1:
+        print("act_num", act_num)
+        if act_num == 0:
+            pass
+        # 最新のファイルの深さが, 探索済み深さでない
+        elif latest_act_num != act_num:
             # 直前の状態数と, 新状態数の和が1000万以下なら, 新しいファイルは作らない
             if len(known_cubes) + len(cubes) <= self.cnt_max * 10:
                 cubes += known_cubes
@@ -320,6 +321,7 @@ class Rubik():
             print("探索終了")
             return True
 
+        print("書き込みファイル：", fnamew)
         # リストにして保存
         f = open(fnamew, "wb")
         pickle.dump(cubes, f)
@@ -331,7 +333,7 @@ class Rubik():
 def main() -> None:
     r = Rubik()
 
-    for i in range(3):
+    for i in range(1):
         t0 = time.time()
         end = r.bfs("./rubik_dat/")
         # end = r.bfs("./test_dir/")
