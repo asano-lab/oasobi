@@ -1,2 +1,0 @@
-./rubik_dat/act08.pickle の作成
-./rubik_dat/act08.pickle の作成
