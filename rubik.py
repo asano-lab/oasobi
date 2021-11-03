@@ -37,8 +37,9 @@ class Rubik():
         print(bin(n))
         lll = self.num2lll(n)
         print(lll)
-        for i in range(3):
-            lll = self.rollMinus(lll, 0)
+        for i in range(4):
+            # lll = self.rollMinus(lll, 0)
+            lll = self.pitchPlus(lll, 2)
         print(lll)
     
     # 3次元リストを数値に変換 (100bit)
@@ -92,6 +93,7 @@ class Rubik():
         return n_cube
     
     # 右側を下方向に90deg回転
+    # 軸に対して右ねじの向きをプラスにした
     # 0: left, 2: right
     def rollPlus(self, cube: list, x: int) -> list:
         if x not in self.pos_avail:
@@ -108,11 +110,23 @@ class Rubik():
         n_cube[0][1][x] = cube[1][0][x]
         return n_cube
     
-    # 左側を下方向に90deg回転
-    def leftDown(self, cube: list) -> list:
+    # y軸周りに回転
+    # 0: back, 2: front
+    def pitchPlus(self, cube: list, y: int) -> list:
+        if y not in self.pos_avail:
+            print("無効な引数です")
+            return []
         n_cube = self.lllCopy(cube)
+        n_cube[0][y][0] = cube[0][y][2]
+        n_cube[0][y][2] = cube[2][y][2]
+        n_cube[2][y][2] = cube[2][y][0]
+        n_cube[2][y][0] = cube[0][y][0]
+        n_cube[0][y][1] = cube[1][y][2]
+        n_cube[1][y][2] = cube[2][y][1]
+        n_cube[2][y][1] = cube[1][y][0]
+        n_cube[1][y][0] = cube[0][y][1]
         return n_cube
-    
+
     def bfs(self) -> None:
         pass
 
