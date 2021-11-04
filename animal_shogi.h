@@ -1,6 +1,6 @@
 #ifndef ANIMAL_SHOGI_H
 #define ANIMAL_SHOGI_H
 
-
+enum PEACES {EMPTY, CHICK, GIRAFFE, ELEPHANT, LION, CHICKEN = 9};
 
 #endif
