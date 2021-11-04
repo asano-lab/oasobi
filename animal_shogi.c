@@ -3,7 +3,6 @@
 #include "animal_shogi.h"
 
 int main(void) {
-    printf("Hello World!!\n");
     showBoard(INITIAL_BOARD);
     return 0;
 }

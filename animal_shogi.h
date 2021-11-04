@@ -4,7 +4,7 @@
 #define INITIAL_BOARD (long)0xa003c914b002
 
 // 表示する文字
-#define DISPLAY_PEACES " HGELC"
+#define DISPLAY_PEACES " hgelc"
 
 enum PEACES {EMPTY, CHICK, GIRAFFE, ELEPHANT, LION, CHICKEN};
 
