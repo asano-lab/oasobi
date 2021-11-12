@@ -25,37 +25,61 @@ class Rubik:
     def _cubeCopy(self, cube):
         return [i.copy() for i in cube]
     
-    # ロール回転
+    # 右ロール回転 (正)
     def _rightRollPlus(self, cube):
         n_cube = self._cubeCopy(cube)
         n_cube[0][2] = cube[3][5]
         n_cube[3][5] = cube[5][2]
         n_cube[5][2] = cube[1][2]
         n_cube[1][2] = cube[0][2]
-        
         n_cube[0][4] = cube[3][3]
         n_cube[3][3] = cube[5][4]
         n_cube[5][4] = cube[1][4]
         n_cube[1][4] = cube[0][4]
-
         n_cube[0][7] = cube[3][0]
         n_cube[3][0] = cube[5][7]
         n_cube[5][7] = cube[1][7]
         n_cube[1][7] = cube[0][7]
-
         n_cube[2][0] = cube[2][2]
         n_cube[2][2] = cube[2][7]
         n_cube[2][7] = cube[2][5]
         n_cube[2][5] = cube[2][0]
-
         n_cube[2][1] = cube[2][4]
         n_cube[2][4] = cube[2][6]
         n_cube[2][6] = cube[2][3]
         n_cube[2][3] = cube[2][1]
         return Rubik(n_cube)
     
+    # 右ロール回転 (負)
+    def _rightRollMinus(self, cube):
+        n_cube = self._cubeCopy(cube)
+        n_cube[0][2] = cube[1][2]
+        n_cube[1][2] = cube[5][2]
+        n_cube[5][2] = cube[3][5]
+        n_cube[3][5] = cube[0][2]
+        n_cube[0][4] = cube[1][4]
+        n_cube[1][4] = cube[5][4]
+        n_cube[5][4] = cube[3][3]
+        n_cube[3][3] = cube[0][4]
+        n_cube[0][7] = cube[1][7]
+        n_cube[1][7] = cube[5][7]
+        n_cube[5][7] = cube[3][0]
+        n_cube[3][0] = cube[0][7]
+        n_cube[2][0] = cube[2][5]
+        n_cube[2][5] = cube[2][7]
+        n_cube[2][7] = cube[2][2]
+        n_cube[2][2] = cube[2][0]
+        n_cube[2][1] = cube[2][3]
+        n_cube[2][3] = cube[2][6]
+        n_cube[2][6] = cube[2][4]
+        n_cube[2][4] = cube[2][1]
+        return Rubik(n_cube)
+    
     def rightRollPlus(self):
         return self._rightRollPlus(self.cube)
+    
+    def rightRollMinus(self):
+        return self._rightRollMinus(self.cube)
     
     def __eq__(self, target):
         return self.cube == target.cube
@@ -85,7 +109,8 @@ if __name__ == "__main__":
     r0 = Rubik()
     r = r0.copy()
     print(r)
+    print(r == r0)
     for i in range(4):
-        r = r.rightRollPlus()
+        r = r.rightRollMinus()
         print(r)
         print(r == r0)
