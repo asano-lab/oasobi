@@ -5,7 +5,7 @@
 COMPLETE = [
     [0, 0, 0, 0, 0, 0, 0, 0],
     [1, 1, 1, 1, 1, 1, 1, 1],
-    [2, 2, 2, 2, 2, 2, 2, 2],
+    [2, 2, 2, 1, 2, 2, 2, 2],
     [3, 3, 3, 3, 3, 3, 3, 3],
     [4, 4, 4, 4, 4, 4, 4, 4],
     [5, 5, 5, 5, 5, 5, 5, 5]
@@ -18,13 +18,18 @@ class Rubik:
     def __init__(self, cube=COMPLETE):
         self.cube = cube
     
+    # キューブのコピー
+    def _cubeCopy(self, cube):
+        return [i.copy() for i in cube]
+    
     # ロール回転
+    def _rightRollPlus(self, cube):
+        n_cube = self._cubeCopy(cube)
+        print(n_cube)
+    
     def rightRollPlus(self):
-        cp_cube = self.cubeCopy()
-        print(cp_cube)
+        return self._rightRollPlus(self.cube)
 
-    def cubeCopy(self):
-        return [i.copy() for i in self.cube]
     
     def __str__(self):
         sub1 = 0
