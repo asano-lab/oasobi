@@ -85,12 +85,41 @@ class Rubik:
         n_cube[2][4] = cube[2][1]
         return Rubik(n_cube)
     
+    # 左ロール回転 (正)
+    def _leftRollPlus(self, cube):
+        n_cube = self._cubeCopy(cube)
+        n_cube[0][0] = cube[3][7]
+        n_cube[3][7] = cube[5][0]
+        n_cube[5][0] = cube[1][0]
+        n_cube[1][0] = cube[0][0]
+        n_cube[0][3] = cube[3][4]
+        n_cube[3][4] = cube[5][3]
+        n_cube[5][3] = cube[1][3]
+        n_cube[1][3] = cube[0][3]
+        n_cube[0][5] = cube[3][2]
+        n_cube[3][2] = cube[5][5]
+        n_cube[5][5] = cube[1][5]
+        n_cube[1][5] = cube[0][5]
+        n_cube[4][0] = cube[4][5]
+        n_cube[4][5] = cube[4][7]
+        n_cube[4][7] = cube[4][2]
+        n_cube[4][2] = cube[4][0]
+        n_cube[4][1] = cube[4][3]
+        n_cube[4][3] = cube[4][6]
+        n_cube[4][6] = cube[4][4]
+        n_cube[4][4] = cube[4][1]
+        return Rubik(n_cube)
+    
     def rightRollPlus(self):
         return self._rightRollPlus(self.cube)
     
     def rightRollMinus(self):
         return self._rightRollMinus(self.cube)
     
+    def leftRollPlus(self):
+        return self._leftRollPlus(self.cube)
+    
+    # 等号演算子の処理を定義
     def __eq__(self, target):
         return self.cube == target.cube
     
@@ -99,10 +128,11 @@ class Rubik:
         sub2 = 0
         moji = ""
         for i in range(3):
-            if i == 1:
-                sub1 = 3
-            elif i == 2:
-                sub1 = 5
+            if i != 0:
+                if i == 1:
+                    sub1 = 3
+                else:
+                    sub1 = 5
             for j in range(6):
                 sub2 = sub1
                 for k in range(3):
@@ -121,6 +151,6 @@ if __name__ == "__main__":
     print(r)
     print(r == r0)
     for i in range(4):
-        r = r.rightRollMinus()
+        r = r.leftRollPlus()
         print(r)
         print(r == r0)
