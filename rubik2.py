@@ -110,6 +110,31 @@ class Rubik:
         n_cube[4][4] = cube[4][1]
         return Rubik(n_cube)
     
+    # 左ロール回転 (負)
+    def _leftRollMinus(self, cube):
+        n_cube = self._cubeCopy(cube)
+        n_cube[0][0] = cube[1][0]
+        n_cube[1][0] = cube[5][0]
+        n_cube[5][0] = cube[3][7]
+        n_cube[3][7] = cube[0][0]
+        n_cube[0][3] = cube[1][3]
+        n_cube[1][3] = cube[5][3]
+        n_cube[5][3] = cube[3][4]
+        n_cube[3][4] = cube[0][3]
+        n_cube[0][5] = cube[1][5]
+        n_cube[1][5] = cube[5][5]
+        n_cube[5][5] = cube[3][2]
+        n_cube[3][2] = cube[0][5]
+        n_cube[4][0] = cube[4][2]
+        n_cube[4][2] = cube[4][7]
+        n_cube[4][7] = cube[4][5]
+        n_cube[4][5] = cube[4][0]
+        n_cube[4][1] = cube[4][4]
+        n_cube[4][4] = cube[4][6]
+        n_cube[4][6] = cube[4][3]
+        n_cube[4][3] = cube[4][1]
+        return Rubik(n_cube)
+
     def rightRollPlus(self):
         return self._rightRollPlus(self.cube)
     
@@ -118,6 +143,9 @@ class Rubik:
     
     def leftRollPlus(self):
         return self._leftRollPlus(self.cube)
+    
+    def leftRollMinus(self):
+        return self._leftRollMinus(self.cube)
     
     # 等号演算子の処理を定義
     def __eq__(self, target):
@@ -151,6 +179,6 @@ if __name__ == "__main__":
     print(r)
     print(r == r0)
     for i in range(4):
-        r = r.leftRollPlus()
+        r = r.leftRollMinus()
         print(r)
         print(r == r0)
