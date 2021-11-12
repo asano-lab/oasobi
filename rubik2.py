@@ -18,6 +18,14 @@ class Rubik:
     def __init__(self, cube=COMPLETE):
         self.cube = cube
     
+    # ロール回転
+    def rightRollPlus(self):
+        cp_cube = self.cubeCopy()
+        print(cp_cube)
+
+    def cubeCopy(self):
+        return [i.copy() for i in self.cube]
+    
     def __str__(self):
         sub1 = 0
         sub2 = 0
@@ -35,7 +43,6 @@ class Rubik:
                     else:
                         moji += JPN_COLOR[self.cube[j][sub2]]
                         sub2 += 1
-                    print(sub1, sub2)
                 moji += " "
             moji += "\n"
         return moji
@@ -43,3 +50,4 @@ class Rubik:
 if __name__ == "__main__":
     r = Rubik()
     print(r)
+    r.rightRollPlus()
