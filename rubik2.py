@@ -5,7 +5,7 @@
 COMPLETE = [
     [0, 0, 0, 0, 0, 0, 0, 0],
     [1, 1, 1, 1, 1, 1, 1, 1],
-    [2, 2, 2, 1, 2, 2, 2, 2],
+    [2, 2, 2, 2, 2, 2, 2, 2],
     [3, 3, 3, 3, 3, 3, 3, 3],
     [4, 4, 4, 4, 4, 4, 4, 4],
     [5, 5, 5, 5, 5, 5, 5, 5]
@@ -25,11 +25,34 @@ class Rubik:
     # ロール回転
     def _rightRollPlus(self, cube):
         n_cube = self._cubeCopy(cube)
-        print(n_cube)
+        n_cube[0][2] = cube[3][5]
+        n_cube[3][5] = cube[5][2]
+        n_cube[5][2] = cube[1][2]
+        n_cube[1][2] = cube[0][2]
+        
+        n_cube[0][4] = cube[3][3]
+        n_cube[3][3] = cube[5][4]
+        n_cube[5][4] = cube[1][4]
+        n_cube[1][4] = cube[0][4]
+
+        n_cube[0][7] = cube[3][0]
+        n_cube[3][0] = cube[5][7]
+        n_cube[5][7] = cube[1][7]
+        n_cube[1][7] = cube[0][7]
+
+        n_cube[2][0] = cube[2][2]
+        n_cube[2][2] = cube[2][7]
+        n_cube[2][7] = cube[2][5]
+        n_cube[2][5] = cube[2][0]
+
+        n_cube[2][1] = cube[2][4]
+        n_cube[2][4] = cube[2][6]
+        n_cube[2][6] = cube[2][3]
+        n_cube[2][3] = cube[2][1]
+        return Rubik(n_cube)
     
     def rightRollPlus(self):
         return self._rightRollPlus(self.cube)
-
     
     def __str__(self):
         sub1 = 0
@@ -55,4 +78,6 @@ class Rubik:
 if __name__ == "__main__":
     r = Rubik()
     print(r)
-    r.rightRollPlus()
+    for i in range(4):
+        r = r.rightRollPlus()
+        print(r)
