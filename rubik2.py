@@ -19,15 +19,24 @@ class Rubik:
         self.cube = cube
     
     def __str__(self):
-        sub = 0
+        sub1 = 0
+        sub2 = 0
         moji = ""
         for i in range(3):
-            for j in range(3):
-                if i == 1 and j == 1:
-                    moji += "白"
-                else:
-                    moji += JPN_COLOR[self.cube[0][sub]]
-                    sub += 1
+            if i == 1:
+                sub1 = 3
+            elif i == 2:
+                sub1 = 5
+            for j in range(6):
+                sub2 = sub1
+                for k in range(3):
+                    if i == 1 and k == 1:
+                        moji += JPN_COLOR[j]
+                    else:
+                        moji += JPN_COLOR[self.cube[j][sub2]]
+                        sub2 += 1
+                    print(sub1, sub2)
+                moji += " "
             moji += "\n"
         return moji
 
