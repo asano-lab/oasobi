@@ -18,6 +18,9 @@ class Rubik:
     def __init__(self, cube=COMPLETE):
         self.cube = cube
     
+    def copy(self):
+        return Rubik(self.cube)
+    
     # キューブのコピー
     def _cubeCopy(self, cube):
         return [i.copy() for i in cube]
@@ -54,6 +57,9 @@ class Rubik:
     def rightRollPlus(self):
         return self._rightRollPlus(self.cube)
     
+    def __eq__(self, target):
+        return self.cube == target.cube
+    
     def __str__(self):
         sub1 = 0
         sub2 = 0
@@ -76,8 +82,10 @@ class Rubik:
         return moji
 
 if __name__ == "__main__":
-    r = Rubik()
+    r0 = Rubik()
+    r = r0.copy()
     print(r)
     for i in range(4):
         r = r.rightRollPlus()
         print(r)
+        print(r == r0)
