@@ -159,6 +159,31 @@ class Rubik:
         n_cube[3][6] = cube[3][4]
         n_cube[3][4] = cube[3][1]
         return Rubik(n_cube)
+    
+    # 奥ピッチ回転 (負)
+    def _backPitchMinus(self, cube):
+        n_cube = self._cubeCopy(cube)
+        n_cube[0][0] = cube[4][5]
+        n_cube[4][5] = cube[5][7]
+        n_cube[5][7] = cube[2][2]
+        n_cube[2][2] = cube[0][0]
+        n_cube[0][1] = cube[4][3]
+        n_cube[4][3] = cube[5][6]
+        n_cube[5][6] = cube[2][4]
+        n_cube[2][4] = cube[0][1]
+        n_cube[0][2] = cube[4][0]
+        n_cube[4][0] = cube[5][5]
+        n_cube[5][5] = cube[2][7]
+        n_cube[2][7] = cube[0][2]
+        n_cube[3][0] = cube[3][2]
+        n_cube[3][2] = cube[3][7]
+        n_cube[3][7] = cube[3][5]
+        n_cube[3][5] = cube[3][0]
+        n_cube[3][1] = cube[3][4]
+        n_cube[3][4] = cube[3][6]
+        n_cube[3][6] = cube[3][3]
+        n_cube[3][3] = cube[3][1]
+        return Rubik(n_cube)
 
     def rightRollPlus(self):
         return self._rightRollPlus(self.cube)
@@ -174,6 +199,9 @@ class Rubik:
 
     def backPitchPlus(self):
         return self._backPitchPlus(self.cube)
+    
+    def backPitchMinus(self):
+        return self._backPitchMinus(self.cube)
     
     # 等号演算子の処理を定義
     def __eq__(self, target):
@@ -208,6 +236,7 @@ if __name__ == "__main__":
     print(r == r0)
     for i in range(4):
         # r = r.leftRollMinus()
-        r = r.backPitchPlus()
+        # r = r.backPitchPlus()
+        r = r.backPitchMinus()
         print(r)
         print(r == r0)
