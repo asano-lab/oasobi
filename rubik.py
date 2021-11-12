@@ -38,7 +38,7 @@ class Rubik():
     pos_avail = (0, 2)
 
     # cnt_max = 1000000
-    cnt_max = 100000 # メモリが心配なので少し減らす
+    cnt_max = 500000 # メモリが心配なので少し減らす
 
     def __init__(self) -> None:
         pass
@@ -287,7 +287,7 @@ class Rubik():
         for i in range(act_num + 2):
             j = 0
             past_fname = path_format.format(i, j)
-            if os.path.exists(past_fname):
+            while os.path.exists(past_fname):
                 f = open(past_fname, "rb")
                 known_cubes = pickle.load(f)
                 f.close()
@@ -296,7 +296,9 @@ class Rubik():
                 latest_fname = past_fname
                 latest_act_num = i
                 latest_sub_num = j
+                # print(latest_fname, i, j)
                 j += 1
+                past_fname = path_format.format(i, j)
         
         # リストに変換
         cubes = list(cubes)
@@ -304,7 +306,7 @@ class Rubik():
 
         # 深さが進む場合
         fnamew = path_format.format(act_num + 1, 0)
-        print("act_num", act_num)
+
         if act_num == 0:
             pass
         # 最新のファイルの深さが, 探索済み深さでない
