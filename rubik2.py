@@ -27,7 +27,7 @@ JPN_COLOR = ["白", "赤", "黄", "橙", "緑", "青"]
 class Rubik:
 
     def __init__(self, cube=COMPLETE):
-        self.cube = cube
+        self.cube = self._cubeCopy(cube)
     
     # インスタンスのコピー
     # 恒等写像 (何も操作しない) とみなせるかも
