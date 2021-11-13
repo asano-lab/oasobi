@@ -24,6 +24,16 @@ SAMPLE01 = [
 
 JPN_COLOR = ["白", "赤", "黄", "橙", "緑", "青"]
 
+# 数値を2次元リストに戻す
+# メソッドでなく関数として定義
+def num2cube(num):
+    cube = [[] for i in range(6)]
+    for i in range(6):
+        for j in range(8):
+            cube[i].append(num & 0b111)
+            num >>= 3
+    return cube
+
 class Rubik:
 
     def __init__(self, cube=COMPLETE, tekazu=0):
@@ -395,12 +405,11 @@ class Rubik:
 
 class Search:
     
-    def __init__(self, r: Rubik):
+    def __init__(self, cube_num):
+        r = Rubik(num2cube(cube_num))
         print(r)
-        pass
 
 
 if __name__ == "__main__":
     r0 = Rubik(SAMPLE01)
-    print(r0)
-    s = Search(r0)
+    Search(r0.num)
