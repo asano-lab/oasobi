@@ -31,7 +31,7 @@ class Rubik:
     
     # インスタンスのコピー
     def copy(self):
-        return Rubik(self.cube)
+        return Rubik(self._cubeCopy(self.cube))
     
     # キューブのコピー
     def _cubeCopy(self, cube):
@@ -211,6 +211,11 @@ class Rubik:
         n_cube[1][6] = cube[1][3]
         n_cube[1][3] = cube[1][1]
         return Rubik(n_cube)
+    
+    # 手前ピッチ回転 (負)
+    def _frontPitchMinus(self, cube):
+        n_cube = self._cubeCopy(cube)
+        pass
 
     def rightRollPlus(self):
         return self._rightRollPlus(self.cube)
