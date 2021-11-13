@@ -27,7 +27,9 @@ JPN_COLOR = ["白", "赤", "黄", "橙", "緑", "青"]
 class Rubik:
 
     def __init__(self, cube=COMPLETE):
+        # 値渡し
         self.cube = self._cubeCopy(cube)
+        # インスタンス作成と同時に数値変換も行う
         self.num = self._cube2num(self.cube)
     
     # インスタンスのコピー
@@ -355,6 +357,15 @@ class Rubik:
                 sft += 3
         return num
     
+    # 数値を2次元リストに戻す
+    def _num2cube(self, num):
+        cube = [[] for i in range(6)]
+        for i in range(6):
+            for j in range(8):
+                cube[i].append(num & 0b111)
+                num >>= 3
+        return cube
+    
     # 等号演算子の処理を定義
     def __eq__(self, target):
         return self.cube == target.cube
@@ -390,3 +401,5 @@ class Search:
 if __name__ == "__main__":
     r0 = Rubik(SAMPLE01)
     print(r0)
+    r = Rubik()._num2cube(0x8d12d1a1989c009b650a2a6d023aa060c49b)
+    print(r)
