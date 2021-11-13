@@ -32,7 +32,7 @@ class Rubik:
     # インスタンスのコピー
     # 恒等写像 (何も操作しない) とみなせるかも
     def copy(self):
-        return Rubik(self._cubeCopy(self.cube))
+        return Rubik(self.cube)
     
     # キューブのコピー
     def _cubeCopy(self, cube):
@@ -370,20 +370,12 @@ class Rubik:
 
 if __name__ == "__main__":
     r0 = Rubik(SAMPLE01)
-    r0.cube[0][0] = 5
-    print(SAMPLE01)
     r = r0.copy()
+    r.cube[0][0] = 5
+    print(r0)
     print(r)
     print(r == r0)
     for i in range(4):
-        # r = r.leftRollMinus()
-        # r = r.backPitchPlus()
-        # r = r.backPitchMinus()
-        # r = r.frontPitchPlus()
-        # r = r.frontPitchMinus()
-        # r = r.aboveYawPlus()
-        # r = r.aboveYawMinus()
-        # r = r.belowYawPlus()
         r = r.belowYawMinus()
         print(r)
         print(r == r0)
