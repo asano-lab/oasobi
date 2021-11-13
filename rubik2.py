@@ -440,11 +440,11 @@ class Search:
             nrns -= knowns
         print(len(nrns))
         self.depth += 1
-        
-        
+        self.num_dic[self.depth] = list(nrns)
 
 if __name__ == "__main__":
     r0 = Rubik(SAMPLE01)
     # r0 = Rubik(COMPLETE)
     s = Search(r0.num)
-    s.bfs()
+    for i in range(6):
+        s.bfs()
