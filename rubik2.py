@@ -28,6 +28,7 @@ class Rubik:
 
     def __init__(self, cube=COMPLETE):
         self.cube = self._cubeCopy(cube)
+        self.num = self._cube2num(self.cube)
     
     # インスタンスのコピー
     # 恒等写像 (何も操作しない) とみなせるかも
@@ -342,6 +343,18 @@ class Rubik:
     def belowYawMinus(self):
         return self._belowYawMinus(self.cube)
     
+    # 数値変換
+    # 若い添え字の値が下位ビットになるように変換
+    # 各3bit
+    def _cube2num(self, cube):
+        num = 0
+        sft = 0
+        for i in range(6):
+            for j in range(8):
+                num |= cube[i][j] << sft
+                sft += 3
+        return num
+    
     # 等号演算子の処理を定義
     def __eq__(self, target):
         return self.cube == target.cube
@@ -349,7 +362,7 @@ class Rubik:
     def __str__(self):
         sub1 = 0
         sub2 = 0
-        moji = ""
+        moji = hex(self.num) + "\n"
         for i in range(3):
             if i != 0:
                 if i == 1:
@@ -368,14 +381,12 @@ class Rubik:
             moji += "\n"
         return moji
 
+class Search:
+    
+    def __init__(self):
+        pass
+
+
 if __name__ == "__main__":
     r0 = Rubik(SAMPLE01)
-    r = r0.copy()
-    r.cube[0][0] = 5
     print(r0)
-    print(r)
-    print(r == r0)
-    for i in range(4):
-        r = r.belowYawMinus()
-        print(r)
-        print(r == r0)
