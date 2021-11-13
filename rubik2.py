@@ -26,11 +26,12 @@ JPN_COLOR = ["白", "赤", "黄", "橙", "緑", "青"]
 
 class Rubik:
 
-    def __init__(self, cube=COMPLETE):
+    def __init__(self, cube=COMPLETE, tekazu=0):
         # 値渡し
         self.cube = self._cubeCopy(cube)
         # インスタンス作成と同時に数値変換も行う
         self.num = self._cube2num(self.cube)
+        self.tekazu = tekazu
     
     # インスタンスのコピー
     # 恒等写像 (何も操作しない) とみなせるかも
@@ -394,12 +395,12 @@ class Rubik:
 
 class Search:
     
-    def __init__(self):
+    def __init__(self, r: Rubik):
+        print(r)
         pass
 
 
 if __name__ == "__main__":
     r0 = Rubik(SAMPLE01)
     print(r0)
-    r = Rubik()._num2cube(0x8d12d1a1989c009b650a2a6d023aa060c49b)
-    print(r)
+    s = Search(r0)
