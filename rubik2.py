@@ -266,7 +266,12 @@ class Rubik:
 
 if __name__ == "__main__":
     r0 = Rubik(SAMPLE01)
+    print(r0.cube)
+    print(id(r0.cube[0]))
     r = r0.copy()
+    print(id(r.cube[0]))
+    r.cube[0][0] = 5
+    print(r0.cube)
     print(r)
     print(r == r0)
     for i in range(4):
