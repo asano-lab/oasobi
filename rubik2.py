@@ -406,10 +406,15 @@ class Rubik:
 class Search:
     
     def __init__(self, cube_num):
-        r = Rubik(num2cube(cube_num))
-        print(r)
-
+        self.num_dic = {0: [cube_num]}
+        self.depth = 0
+    
+    def bfs(self):
+        for i in self.num_dic[self.depth]:
+            r = Rubik(num2cube(i))
+            print(r)
 
 if __name__ == "__main__":
     r0 = Rubik(SAMPLE01)
-    Search(r0.num)
+    s = Search(r0.num)
+    s.bfs()
