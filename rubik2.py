@@ -288,6 +288,23 @@ class Rubik:
         n_cube[5][6] = cube[5][3]
         n_cube[5][3] = cube[5][1]
         return Rubik(n_cube)
+    
+    # 下ヨー回転 (負)
+    def _belowYawMinus(self, cube):
+        n_cube = self._cubeCopy(cube)
+        n_cube[1][5:] = cube[4][5:]
+        n_cube[4][5:] = cube[3][5:]
+        n_cube[3][5:] = cube[2][5:]
+        n_cube[2][5:] = cube[1][5:]
+        n_cube[5][0] = cube[5][5]
+        n_cube[5][5] = cube[5][7]
+        n_cube[5][7] = cube[5][2]
+        n_cube[5][2] = cube[5][0]
+        n_cube[5][1] = cube[5][3]
+        n_cube[5][3] = cube[5][6]
+        n_cube[5][6] = cube[5][4]
+        n_cube[5][4] = cube[5][1]
+        return Rubik(n_cube)
 
     def rightRollPlus(self):
         return self._rightRollPlus(self.cube)
@@ -321,6 +338,9 @@ class Rubik:
     
     def belowYawPlus(self):
         return self._belowYawPlus(self.cube)
+    
+    def belowYawMinus(self):
+        return self._belowYawMinus(self.cube)
     
     # 等号演算子の処理を定義
     def __eq__(self, target):
@@ -361,6 +381,7 @@ if __name__ == "__main__":
         # r = r.frontPitchMinus()
         # r = r.aboveYawPlus()
         # r = r.aboveYawMinus()
-        r = r.belowYawPlus()
+        # r = r.belowYawPlus()
+        r = r.belowYawMinus()
         print(r)
         print(r == r0)
