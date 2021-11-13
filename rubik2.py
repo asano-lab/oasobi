@@ -370,6 +370,8 @@ class Rubik:
 
 if __name__ == "__main__":
     r0 = Rubik(SAMPLE01)
+    r0.cube[0][0] = 5
+    print(SAMPLE01)
     r = r0.copy()
     print(r)
     print(r == r0)
