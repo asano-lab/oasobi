@@ -356,6 +356,22 @@ class Rubik:
     def belowYawMinus(self):
         return self._belowYawMinus(self.cube)
     
+    def allActions(self):
+        cube_list = []
+        cube_list.append(self.rightRollPlus())
+        cube_list.append(self.rightRollMinus())
+        cube_list.append(self.leftRollPlus())
+        cube_list.append(self.leftRollMinus())
+        cube_list.append(self.backPitchPlus())
+        cube_list.append(self.backPitchMinus())
+        cube_list.append(self.frontPitchPlus())
+        cube_list.append(self.frontPitchMinus())
+        cube_list.append(self.aboveYawPlus())
+        cube_list.append(self.aboveYawMinus())
+        cube_list.append(self.belowYawPlus())
+        cube_list.append(self.aboveYawMinus())
+        return cube_list
+    
     # 数値変換
     # 若い添え字の値が下位ビットになるように変換
     # 各3bit
@@ -412,9 +428,12 @@ class Search:
     def bfs(self):
         for i in self.num_dic[self.depth]:
             r = Rubik(num2cube(i))
-            print(r)
+            nrl = r.allActions()
+            for j in nrl:
+                print(j)
 
 if __name__ == "__main__":
-    r0 = Rubik(SAMPLE01)
+    # r0 = Rubik(SAMPLE01)
+    r0 = Rubik(COMPLETE)
     s = Search(r0.num)
     s.bfs()
