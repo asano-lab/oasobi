@@ -30,6 +30,7 @@ class Rubik:
         self.cube = cube
     
     # インスタンスのコピー
+    # 恒等写像 (何も操作しない) とみなせるかも
     def copy(self):
         return Rubik(self._cubeCopy(self.cube))
     
@@ -215,7 +216,27 @@ class Rubik:
     # 手前ピッチ回転 (負)
     def _frontPitchMinus(self, cube):
         n_cube = self._cubeCopy(cube)
-        pass
+        n_cube[0][5] = cube[4][7]
+        n_cube[4][7] = cube[5][2]
+        n_cube[5][2] = cube[2][0]
+        n_cube[2][0] = cube[0][5]
+        n_cube[0][6] = cube[4][4]
+        n_cube[4][4] = cube[5][1]
+        n_cube[5][1] = cube[2][3]
+        n_cube[2][3] = cube[0][6]
+        n_cube[0][7] = cube[4][2]
+        n_cube[4][2] = cube[5][0]
+        n_cube[5][0] = cube[2][5]
+        n_cube[2][5] = cube[0][7]
+        n_cube[1][0] = cube[1][5]
+        n_cube[1][5] = cube[1][7]
+        n_cube[1][7] = cube[1][2]
+        n_cube[1][2] = cube[1][0]
+        n_cube[1][1] = cube[1][3]
+        n_cube[1][3] = cube[1][6]
+        n_cube[1][6] = cube[1][4]
+        n_cube[1][4] = cube[1][1]
+        return Rubik(n_cube)
 
     def rightRollPlus(self):
         return self._rightRollPlus(self.cube)
@@ -237,6 +258,9 @@ class Rubik:
     
     def frontPitchPlus(self):
         return self._frontPitchPlus(self.cube)
+    
+    def frontPitchMinus(self):
+        return self._frontPitchMinus(self.cube)
     
     # 等号演算子の処理を定義
     def __eq__(self, target):
@@ -273,6 +297,7 @@ if __name__ == "__main__":
         # r = r.leftRollMinus()
         # r = r.backPitchPlus()
         # r = r.backPitchMinus()
-        r = r.frontPitchPlus()
+        # r = r.frontPitchPlus()
+        r = r.frontPitchMinus()
         print(r)
         print(r == r0)
