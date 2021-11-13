@@ -369,7 +369,7 @@ class Rubik:
         cube_list.append(self.aboveYawPlus())
         cube_list.append(self.aboveYawMinus())
         cube_list.append(self.belowYawPlus())
-        cube_list.append(self.aboveYawMinus())
+        cube_list.append(self.belowYawMinus())
         return cube_list
     
     # 数値変換
@@ -426,14 +426,25 @@ class Search:
         self.depth = 0
     
     def bfs(self):
+        nrnl = []
         for i in self.num_dic[self.depth]:
             r = Rubik(num2cube(i))
             nrl = r.allActions()
-            for j in nrl:
-                print(j)
+            nrnl += [nr.num for nr in nrl]
+        print(len(nrnl))
+        nrns = set(nrnl)
+        print(len(nrns))
+        del nrnl
+        for knownl in self.num_dic.values():
+            knowns = set(knownl)
+            nrns -= knowns
+        print(len(nrns))
+        self.depth += 1
+        
+        
 
 if __name__ == "__main__":
-    # r0 = Rubik(SAMPLE01)
-    r0 = Rubik(COMPLETE)
+    r0 = Rubik(SAMPLE01)
+    # r0 = Rubik(COMPLETE)
     s = Search(r0.num)
     s.bfs()
