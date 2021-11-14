@@ -65,7 +65,7 @@ ACT_STR = ["lp", "lm", "rp", "rm", "bp", "bm", "fp", "fm", "up", "um", "dp", "dm
 # 数値を2次元リストに戻す
 # メソッドでなく関数として定義
 def num2cube(num):
-    cube = [[] for i in range(6)]
+    cube = [[] for _ in range(6)]
     for i in range(6):
         for j in range(8):
             cube[i].append(num & 0b111)
@@ -406,7 +406,7 @@ class Rubik:
     # 12種類の操作を行ったあとのキューブのリスト
     # 格納した添え字を各操作の番号とする
     def allActions(self):
-        n_cube_list = [
+        return [
             self.leftRollPlus(), self.leftRollMinus(),
             self.rightRollPlus(), self.rightRollMinus(),
             self.backPitchPlus(), self.backPitchMinus(),
@@ -414,8 +414,7 @@ class Rubik:
             self.upYawPlus(), self.upYawMinus(),
             self.downYawPlus(), self.downYawMinus()
         ]
-        return n_cube_list
-    
+
     # 数値変換
     # 若い添え字の値が下位ビットになるように変換
     # 各3bit
@@ -544,28 +543,28 @@ class Search:
         self.depth += 1
         self.num_dic[self.depth] = {k: v for k, v in nrnd.items() if k in nrns}
 
+# 白基準のキューブから全ての色の等価なキューブのリストを作成
+# ついでにマスクも
+def makeAllColorCubeList(white_cube):
+    r_list = [Rubik(white_cube)]
+    r_list.append(r_list[0].switch0to1())
+    for i in range(3):
+        r_list.append(r_list[i + 1].switch1to2())
+    r_list.append(r_list[1].switch0to1())
+    return [r.num for r in r_list], [r.getMask() for r in r_list]
+
 def init():
     global COMPLETE_NUM, COMP_ONE_SIDE_NUMS, COMP_ONE_SIDE_NUM_MASKS
+    global CROSS_ONE_SIDE_NUMS, CROSS_ONE_SIDE_NUM_MASKS
     # 完成したキューブの数値
     COMPLETE_NUM = Rubik().num
-    # 白
-    r_list = [Rubik(COMP_0)]
-    # 赤
-    r_list.append(r_list[0].switch0to1())
-    # 黄, 橙, 緑
-    for i in range(3):
-        r_list.append(r_list[1 + i].switch1to2())
-    # 青
-    r_list.append(r_list[1].switch0to1())
-    COMP_ONE_SIDE_NUMS = [r.num for r in r_list]
-    COMP_ONE_SIDE_NUM_MASKS = [r.getMask() for r in r_list]
+    COMP_ONE_SIDE_NUMS, COMP_ONE_SIDE_NUM_MASKS = makeAllColorCubeList(COMP_0)
+    CROSS_ONE_SIDE_NUMS, CROSS_ONE_SIDE_NUM_MASKS = makeAllColorCubeList(CROSS_0)
 
 init()
 
 if __name__ == "__main__":
-    print(COMP_ONE_SIDE_NUMS)
-    r0 = Rubik(SAMPLE02)
-    s = Search(r0.num)
-    for i in range(6):
-        s.bfs()
+    for i in CROSS_ONE_SIDE_NUMS:
+        r = Rubik(num2cube(i))
+        print(r)
 
