@@ -22,6 +22,16 @@ COMP_0 = [
     [7, 7, 7, 7, 7, 7, 7, 7]
 ]
 
+# 白の十字
+CROSS_0 = [
+    [7, 0, 7, 0, 0, 7, 0, 7],
+    [7, 1, 7, 7, 7, 7, 7, 7],
+    [7, 2, 7, 7, 7, 7, 7, 7],
+    [7, 3, 7, 7, 7, 7, 7, 7],
+    [7, 4, 7, 7, 7, 7, 7, 7],
+    [7, 7, 7, 7, 7, 7, 7, 7]
+]
+
 # デバッグ用サンプル状態
 SAMPLE01 = [
     [3, 3, 2, 2, 4, 1, 0, 3],
@@ -32,6 +42,7 @@ SAMPLE01 = [
     [1, 2, 3, 1, 1, 2, 3, 4]
 ]
 
+# 黄色の完全一面から6手動かした盤面
 SAMPLE02 = [
     [3, 5, 5, 3, 2, 1, 5, 1],
     [5, 1, 2, 4, 2, 4, 1, 0],
@@ -73,12 +84,11 @@ def printActs(acts):
 
 class Rubik:
 
-    def __init__(self, cube=COMPLETE, tekazu=0):
+    def __init__(self, cube=COMPLETE):
         # 値渡し
         self.cube = self._cubeCopy(cube)
         # インスタンス作成と同時に数値変換も行う
         self.num = self._cube2num(self.cube)
-        self.tekazu = tekazu
     
     # インスタンスのコピー
     # 恒等写像 (何も操作しない) とみなせるかも
@@ -512,10 +522,15 @@ class Search:
             r = Rubik(num2cube(k))
             nrl = r.allActions()
             for i, nr in enumerate(nrl):
+                # 解けた
+                if nr.num == COMPLETE_NUM:
+                    print(nr)
+                    printActs(v + (i,))
+                    return
                 # 一面揃ったかチェック
                 for j, one_side in enumerate(COMP_ONE_SIDE_NUMS):
                     if nr.num | COMP_ONE_SIDE_NUM_MASKS[j] == one_side:
-                        print(Rubik(num2cube(nr.num)))
+                        print(nr)
                         printActs(v + (i,))
                         return
                 nrnd[nr.num] = v + (i,)
@@ -528,15 +543,11 @@ class Search:
         print(len(nrns))
         self.depth += 1
         self.num_dic[self.depth] = {k: v for k, v in nrnd.items() if k in nrns}
-        
-        # print(self.num_dic)
-    
-    # ひとまず一面を揃えたい
-    def oneSide(self):
-        pass
 
 def init():
-    global COMP_ONE_SIDE_NUMS, COMP_ONE_SIDE_NUM_MASKS
+    global COMPLETE_NUM, COMP_ONE_SIDE_NUMS, COMP_ONE_SIDE_NUM_MASKS
+    # 完成したキューブの数値
+    COMPLETE_NUM = Rubik().num
     # 白
     r_list = [Rubik(COMP_0)]
     # 赤
