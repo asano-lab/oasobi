@@ -33,6 +33,10 @@ SAMPLE01 = [
 
 JPN_COLOR = ["白", "赤", "黄", "橙", "緑", "青", "黒", "ー"]
 
+DIC_0TO1 = {0: 1, 1: 5, 5: 3, 3: 0, 2: 2, 4: 4, 7: 7}
+
+DIC_ROT_R = {0: 2, 2: 7, 7: 5, 5: 0, 1: 4, 4: 6, 6: 3, 3: 1}
+
 # 数値を2次元リストに戻す
 # メソッドでなく関数として定義
 def num2cube(num):
@@ -42,6 +46,21 @@ def num2cube(num):
             cube[i].append(num & 0b111)
             num >>= 3
     return cube
+
+# 0と1の色, 位置を切り替え
+# 白 -> 赤 -> 青 -> 橙 -> 白
+# 白の完全一面を基に赤の完全一面を作る
+def switch0to1(cube):
+    s_cube = [[7] * 8 for _ in range(6)]
+    s_cube[1] = [DIC_0TO1[i] for i in cube[0]]
+    s_cube[5] = [DIC_0TO1[i] for i in cube[1]]
+    for i in range(8):
+        s_cube[3][i] = DIC_0TO1[cube[5][7 - i]]
+        s_cube[0][i] = DIC_0TO1[cube[3][7 - i]]
+    for k, v in DIC_ROT_R.items():
+        s_cube[2][k] = DIC_0TO1[cube[2][v]]
+        s_cube[4][v] = DIC_0TO1[cube[4][k]]
+    return s_cube
 
 class Rubik:
 
@@ -450,13 +469,18 @@ class Search:
         print(len(nrns))
         self.depth += 1
         self.num_dic[self.depth] = list(nrns)
-        for i in nrns:
-            print(Rubik(num2cube(i)))
+        # for i in nrns:
+        #     print(Rubik(num2cube(i)))
 
 if __name__ == "__main__":
-    r0 = Rubik(COMP_0)
-    print(r0)
+    r0 = Rubik(SAMPLE01)
+    r = r0.copy()
+    print(r)
+    for i in range(4):
+        r = Rubik(switch0to1(r.cube))
+        print(r)
+        print(r0 == r)
+    
     # r0 = Rubik(COMPLETE)
     s = Search(r0.num)
-    for i in range(1):
-        s.bfs()
+
