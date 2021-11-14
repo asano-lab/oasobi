@@ -13,9 +13,6 @@ COMPLETE = [
     [5, 5, 5, 5, 5, 5, 5, 5]
 ]
 
-# 宣言
-COMPLETE_NUM = 0
-
 # 白の完全一面
 COMP_0 = [
     [0, 0, 0, 0, 0, 0, 0, 0],
@@ -556,6 +553,9 @@ class Rubik:
             moji += "\n"
         return moji
 
+# 完成したキューブの数値
+COMPLETE_NUM = Rubik().num
+
 class Search:
     
     # 目的とする状態はリストとして与える (複数あること前提)
@@ -576,8 +576,7 @@ class Search:
     # とりあえずループ数だけ繰り返す
     def useDist(self, loop):
         for _ in range(loop):
-            if not self.unexplored[self.min_dist]:
-                # 空要素の削除
+            while not self.unexplored[self.min_dist]:
                 self.unexplored.pop(self.min_dist)
                 self.min_dist = min(self.unexplored)
             k, v = self.unexplored[self.min_dist].popitem()
@@ -600,7 +599,7 @@ class Search:
                     return
                 # これまでの手数を加える
                 total_dist = dist + (len(v) + 1) * self.act_weight
-                # キーの追加
+                # キーが存在しない場合は追加
                 if total_dist not in self.unexplored:
                     # 最短距離の更新
                     if total_dist < self.min_dist:
@@ -670,10 +669,8 @@ def makeAllColorCubeList(white_cube):
     return [r.num for r in r_list], [r.getMask() for r in r_list]
 
 def init():
-    global COMPLETE_NUM, COMP_ONE_SIDE_NUMS, COMP_ONE_SIDE_NUM_MASKS
+    global COMP_ONE_SIDE_NUMS, COMP_ONE_SIDE_NUM_MASKS
     global CROSS_ONE_SIDE_NUMS, CROSS_ONE_SIDE_NUM_MASKS
-    # 完成したキューブの数値
-    COMPLETE_NUM = Rubik().num
     COMP_ONE_SIDE_NUMS, COMP_ONE_SIDE_NUM_MASKS = makeAllColorCubeList(COMP_0)
     CROSS_ONE_SIDE_NUMS, CROSS_ONE_SIDE_NUM_MASKS = makeAllColorCubeList(CROSS_0)
 
