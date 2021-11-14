@@ -564,9 +564,18 @@ class Search:
         self.explored = []
         # 初期値の距離を計算 (不要だがデバッグのため)
         crnt_dist = self.calcMinDist(cube_num)
-        self.num_dic = {crnt_dist: {cube_num: tuple()}}
-        print(self.num_dic)
+        self.unexplored = {crnt_dist: {cube_num: tuple()}}
+        self.num_dic = {0: {cube_num: tuple()}}
+        # 一手の重み
+        self.act_weight = 12
+        print(self.unexplored)
+        # 現状, 目的に最も近い (と思われる) 距離
+        self.min_dist = crnt_dist
         self.depth = 0
+    
+    # 距離を使って優先順位を決める
+    def useDist(self, loop):
+        pass
     
     # 幅優先探索 (全探索)
     def bfs(self):
@@ -604,7 +613,7 @@ class Search:
         self.num_dic[self.depth] = {k: v for k, v in nrnd.items() if k in nrns}
         return False
     
-    # 目的とする状態から, 最も近い距離を返す
+    # 目的とするいくつかの状態から, 最も近い距離を返す
     def calcMinDist(self, cube_num):
         min_dist = 50
         for g in self.goal:
