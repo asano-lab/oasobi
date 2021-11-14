@@ -1,3 +1,4 @@
+import time
 
 # 完成した盤面
 # 日本配色で白, 赤, 黄, 橙, 緑, 青の順
@@ -604,6 +605,8 @@ if __name__ == "__main__":
     r0 = Rubik(SAMPLE01)
     if r0.checkSum():
         s = Search(r0.num)
-        for i in range(6):
+        t0 = time.time()
+        for i in range(7):
             if s.bfs():
                 break
+            print(time.time() - t0)
