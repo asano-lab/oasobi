@@ -574,8 +574,12 @@ class Search:
         self.depth = 0
     
     # 距離を使って優先順位を決める
+    # とりあえずループ数だけ繰り返す
     def useDist(self, loop):
-        pass
+        for _ in range(loop):
+            k, v = self.unexplored[self.min_dist].popitem()
+            print(k, v)
+            print(self.unexplored)
     
     # 幅優先探索 (全探索)
     def bfs(self):
@@ -647,6 +651,7 @@ def main():
     if not r0.checkSum():
         return
     s = Search(r0.num, CROSS_ONE_SIDE_NUMS)
+    s.useDist(1)
 
 if __name__ == "__main__":
     main()
