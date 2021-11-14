@@ -585,6 +585,9 @@ class Search:
         # 現状, 目的に最も近い (と思われる) 距離
         self.min_dist = crnt_dist
         self.num_known_states = 1
+        self.nearest_dist = crnt_dist
+        self.nearest_r = Rubik(num2cube(cube_num))
+        self.nearest_acts = tuple()
         self.depth = 0
     
     # 距離を使って優先順位を決める
@@ -622,6 +625,11 @@ class Search:
                     # 最短距離の更新
                     if total_dist < self.min_dist:
                         self.min_dist = total_dist
+                        # 最も近づいた(?)状態を保存
+                        if total_dist < self.nearest_dist:
+                            self.nearest_dist = total_dist
+                            self.nearest_r = nr
+                            self.nearest_acts = v + (j,)
                     self.unexplored[total_dist] = {nr.num: v + (j,)}
                     self.num_known_states += 1
                 # 既存のキーなら追加
@@ -709,6 +717,8 @@ def main():
     # s = Search(r0.num, act_weight=1)
     t0 = time.time()
     s.useDist(13000)
+    print(s.nearest_r)
+    print(s.nearest_acts)
 
     del s
     print(time.time() - t0, "秒")
