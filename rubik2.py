@@ -570,19 +570,21 @@ class Search:
         self.num_dic = {0: {cube_num: tuple()}}
         # 現状, 目的に最も近い (と思われる) 距離
         self.min_dist = crnt_dist
+        self.num_known_states = 1
         self.depth = 0
     
     # 距離を使って優先順位を決める
     # とりあえずループ数だけ繰り返す
     def useDist(self, loop):
-        for _ in range(loop):
+        for i in range(loop):
             while not self.unexplored[self.min_dist]:
                 self.unexplored.pop(self.min_dist)
                 self.min_dist = min(self.unexplored)
             k, v = self.unexplored[self.min_dist].popitem()
             r = Rubik(num2cube(k))
             nrl = r.allActions()
-            for i, nr in enumerate(nrl):
+            # 新状態を確認
+            for j, nr in enumerate(nrl):
                 # 探索済みに含まれていたらやりなおし
                 if nr.num in self.explored:
                     continue
@@ -595,7 +597,7 @@ class Search:
                 # 一致したら終了
                 if dist == 0:
                     print(nr)
-                    printActs(v + (i,))
+                    printActs(v + (j,))
                     return
                 # これまでの手数を加える
                 total_dist = dist + (len(v) + 1) * self.act_weight
@@ -604,13 +606,18 @@ class Search:
                     # 最短距離の更新
                     if total_dist < self.min_dist:
                         self.min_dist = total_dist
-                    self.unexplored[total_dist] = {nr.num: v + (i,)}
-                # 既存のキー
+                    self.unexplored[total_dist] = {nr.num: v + (j,)}
+                    self.num_known_states += 1
+                # 既存のキーなら追加
                 else:
-                    self.unexplored[total_dist][nr.num] = v + (i,)
+                    self.unexplored[total_dist][nr.num] = v + (j,)
+                    self.num_known_states += 1
             # 探索済みは数値だけ格納
             self.explored.append(k)
-            print(list(self.unexplored.keys()))
+            if i % 1000 == 0:
+                print("ループ数：", i)
+                print("総状態数：", self.num_known_states)
+            
     
     # 幅優先探索 (全探索)
     def bfs(self):
@@ -681,7 +688,9 @@ def main():
         return
     s = Search(r0.num, CROSS_ONE_SIDE_NUMS, 2)
     # s = Search(r0.num, act_weight=1)
-    s.useDist(10000)
+    t0 = time.time()
+    s.useDist(20000)
+    print(time.time() - t0, "秒")
 
 if __name__ == "__main__":
     main()
