@@ -12,6 +12,7 @@ COMPLETE = [
     [5, 5, 5, 5, 5, 5, 5, 5]
 ]
 
+# 白の完全一面
 COMP_0 = [
     [0, 0, 0, 0, 0, 0, 0, 0],
     [1, 1, 1, 7, 7, 7, 7, 7],
@@ -486,17 +487,28 @@ class Search:
         # for i in nrns:
         #     print(Rubik(num2cube(i)))
 
-if __name__ == "__main__":
+COMP_ONE_SIDE_NUMS = []
+
+def init():
     r0 = Rubik(COMP_0)
-    r = r0.copy()
-    r = Rubik(switch0to1(r.cube))
-    print(r)
-    for i in range(4):
-        # r = Rubik(switch0to1(r.cube))
+    # 白
+    COMP_ONE_SIDE_NUMS.append(r0.num)
+    r1 = Rubik(switch0to1(r0.cube))
+    # 赤
+    COMP_ONE_SIDE_NUMS.append(r1.num)
+    r = r1.copy()
+    # 黄, 橙, 緑
+    for i in range(3):
         r = Rubik(switch1to2(r.cube))
+        COMP_ONE_SIDE_NUMS.append(r.num)
+    r = Rubik(switch0to1(r1.cube))
+    # 青
+    COMP_ONE_SIDE_NUMS.append(r.num)
+
+init()
+
+if __name__ == "__main__":
+    for i in COMP_ONE_SIDE_NUMS:
+        r = Rubik(num2cube(i))
         print(r)
-        print(r0 == r)
-    
-    # r0 = Rubik(COMPLETE)
-    s = Search(r0.num)
 
