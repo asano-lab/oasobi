@@ -372,21 +372,18 @@ class Rubik:
     def belowYawMinus(self):
         return self._belowYawMinus(self.cube)
     
+    # 12種類の操作を行ったあとのキューブのリスト
+    # 格納した添え字を各操作の番号とする
     def allActions(self):
-        cube_list = []
-        cube_list.append(self.rightRollPlus())
-        cube_list.append(self.rightRollMinus())
-        cube_list.append(self.leftRollPlus())
-        cube_list.append(self.leftRollMinus())
-        cube_list.append(self.backPitchPlus())
-        cube_list.append(self.backPitchMinus())
-        cube_list.append(self.frontPitchPlus())
-        cube_list.append(self.frontPitchMinus())
-        cube_list.append(self.aboveYawPlus())
-        cube_list.append(self.aboveYawMinus())
-        cube_list.append(self.belowYawPlus())
-        cube_list.append(self.belowYawMinus())
-        return cube_list
+        n_cube_list = [
+            self.leftRollPlus(), self.leftRollMinus(),
+            self.rightRollPlus(), self.rightRollMinus(),
+            self.backPitchPlus(), self.backPitchMinus(),
+            self.frontPitchPlus(), self.frontPitchMinus(),
+            self.aboveYawPlus(), self.aboveYawMinus(),
+            self.belowYawPlus(), self.belowYawMinus()
+        ]
+        return n_cube_list
     
     # 数値変換
     # 若い添え字の値が下位ビットになるように変換
@@ -484,27 +481,25 @@ class Rubik:
 class Search:
     
     def __init__(self, cube_num):
-        self.num_dic = {0: [cube_num]}
+        self.num_dic = {0: {cube_num: tuple()}}
         self.depth = 0
+        print(self.num_dic)
     
     def bfs(self):
-        nrnl = []
-        for i in self.num_dic[self.depth]:
-            r = Rubik(num2cube(i))
+        nrnd = {}
+        for k, v in self.num_dic[self.depth].items():
+            r = Rubik(num2cube(k))
             nrl = r.allActions()
-            nrnl += [nr.num for nr in nrl]
-        print(len(nrnl))
-        nrns = set(nrnl)
-        print(len(nrns))
-        del nrnl
-        for knownl in self.num_dic.values():
-            knowns = set(knownl)
+            nrnd.update({nr.num: v + (i,) for i, nr in enumerate(nrl)})
+        print(len(nrnd))
+        nrns = set(nrnd)
+        for knownd in self.num_dic.values():
+            knowns = set(knownd)
             nrns -= knowns
         print(len(nrns))
         self.depth += 1
-        self.num_dic[self.depth] = list(nrns)
-        # for i in nrns:
-        #     print(Rubik(num2cube(i)))
+        self.num_dic[self.depth] = {k: v for k, v in nrnd.items() if k in nrns}
+        print(self.num_dic)
     
     # ひとまず一面を揃えたい
     def oneSide(self):
@@ -528,7 +523,8 @@ init()
 
 if __name__ == "__main__":
     print(COMP_ONE_SIDE_NUMS)
-    for i in COMP_ONE_SIDE_NUM_MASKS:
-        r = Rubik(num2cube(i))
-        print(r)
+    r0 = Rubik(SAMPLE01)
+    s = Search(r0.num)
+    for i in range(3):
+        s.bfs()
 
