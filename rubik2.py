@@ -513,7 +513,7 @@ class Search:
     def __init__(self, cube_num):
         self.num_dic = {0: {cube_num: tuple()}}
         self.depth = 0
-        print(self.num_dic)
+        # print(self.num_dic)
     
     def bfs(self):
         nrnd = {}
@@ -525,13 +525,19 @@ class Search:
                 if nr.num == COMPLETE_NUM:
                     print(nr)
                     printActs(v + (i,))
-                    return
+                    return True
                 # 一面揃ったかチェック
                 for j, one_side in enumerate(COMP_ONE_SIDE_NUMS):
                     if nr.num | COMP_ONE_SIDE_NUM_MASKS[j] == one_side:
                         print(nr)
                         printActs(v + (i,))
-                        return
+                        return True
+                # 十字が揃ったかチェック
+                for j, cross in enumerate(CROSS_ONE_SIDE_NUMS):
+                    if nr.num | CROSS_ONE_SIDE_NUM_MASKS[j] == cross:
+                        print(nr)
+                        printActs(v + (i,))
+                        return True
                 nrnd[nr.num] = v + (i,)
 
         print(len(nrnd))
@@ -542,6 +548,7 @@ class Search:
         print(len(nrns))
         self.depth += 1
         self.num_dic[self.depth] = {k: v for k, v in nrnd.items() if k in nrns}
+        return False
 
 # 白基準のキューブから全ての色の等価なキューブのリストを作成
 # ついでにマスクも
@@ -564,7 +571,8 @@ def init():
 init()
 
 if __name__ == "__main__":
-    for i in CROSS_ONE_SIDE_NUMS:
-        r = Rubik(num2cube(i))
-        print(r)
-
+    r0 = Rubik(SAMPLE02)
+    s = Search(r0.num)
+    for i in range(6):
+        if s.bfs():
+            break
