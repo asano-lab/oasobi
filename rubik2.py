@@ -683,7 +683,7 @@ def main():
     r0 = Rubik(SAMPLE01)
     if not r0.checkSum():
         return
-    s = Search(r0.num, CROSS_ONE_SIDE_NUMS, 4)
+    s = Search(r0.num, CROSS_ONE_SIDE_NUMS, 0)
     s.useDist(10000)
 
 if __name__ == "__main__":
