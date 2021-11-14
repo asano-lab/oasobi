@@ -695,11 +695,12 @@ def main():
     r0 = Rubik(SAMPLE01)
     if not r0.checkSum():
         return
-    # s = Search(r0.num, CROSS_ONE_SIDE_NUMS, 2)
-    s = Search(r0.num, COMP_ONE_SIDE_NUMS, 0)
+    print(r0)
+    s = Search(r0.num, CROSS_ONE_SIDE_NUMS, 4)
+    # s = Search(r0.num, COMP_ONE_SIDE_NUMS, 0)
     # s = Search(r0.num, act_weight=1)
     t0 = time.time()
-    s.useDist(20000)
+    s.useDist(13000)
     print(time.time() - t0, "秒")
 
 if __name__ == "__main__":
