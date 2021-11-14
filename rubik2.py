@@ -713,10 +713,10 @@ def main():
         return
     print(r0)
     # s = Search(r0.num, CROSS_ONE_SIDE_NUMS, 4)
-    s = Search(r0.num, COMP_ONE_SIDE_NUMS, 0)
+    s = Search(r0.num, COMP_ONE_SIDE_NUMS, 1)
     # s = Search(r0.num, act_weight=1)
     t0 = time.time()
-    s.useDist(13000)
+    s.useDist(10000)
     print(s.nearest_r)
     print(s.nearest_acts)
 
