@@ -71,6 +71,8 @@ DIC_ROT_R = {0: 2, 2: 7, 7: 5, 5: 0, 1: 4, 4: 6, 6: 3, 3: 1}
 
 ACT_STR = ["lp", "lm", "rp", "rm", "bp", "bm", "fp", "fm", "up", "um", "dp", "dm"]
 
+CORNERS = [0, 2, 5, 7]
+
 # 数値を2次元リストに戻す
 # メソッドでなく関数として定義
 def num2cube(num):
@@ -491,6 +493,25 @@ class Rubik:
                 sft += 3
         return cube_mask
     
+    def checkSum(self):
+        corners_sum = {i: 0 for i in range(6)}
+        edges_sum = {i: 0 for i in range(6)}
+        # print(corners_sum)
+        # print(edges_sum)
+        for i in range(6):
+            for j in range(8):
+                if j in CORNERS:
+                    corners_sum[self.cube[i][j]] += 1
+                else:
+                    edges_sum[self.cube[i][j]] += 1
+        for i in corners_sum.values():
+            if i != 4:
+                return False
+        for i in edges_sum.values():
+            if i != 4:
+                return False
+        return True
+    
     # 等号演算子の処理を定義
     def __eq__(self, target):
         return self.num == target.num
@@ -581,7 +602,8 @@ init()
 
 if __name__ == "__main__":
     r0 = Rubik(SAMPLE01)
-    s = Search(r0.num)
-    for i in range(6):
-        if s.bfs():
-            break
+    if r0.checkSum():
+        s = Search(r0.num)
+        for i in range(6):
+            if s.bfs():
+                break
