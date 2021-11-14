@@ -1,4 +1,5 @@
 # ルービックキューブソルバを作りたい
+# 状態数が想像以上に多かったので断念
 
 import os
 import pickle
@@ -36,7 +37,8 @@ class Rubik():
 
     pos_avail = (0, 2)
 
-    cnt_max = 1000000
+    # cnt_max = 1000000
+    cnt_max = 500000 # メモリが心配なので少し減らす
 
     def __init__(self) -> None:
         pass
@@ -229,8 +231,7 @@ class Rubik():
 
             # 副番号をインクリメントしてファイルの存在を確認
             sub_num += 1
-            fnamer = path_format.format(act_num + 1, sub_num)
-
+            fnamer = path_format.format(act_num, sub_num)
             # 存在しない (この深さの盤面はすべて探索済み)
             if not os.path.exists(fnamer):
                 # 次の深さの最初のファイルを指定
@@ -239,7 +240,7 @@ class Rubik():
                 fnamer = path_format.format(act_num, sub_num)
 
         # 余りファイルの有無をチェック
-        rem_fname = "act{:02d}_{:02d}rem.pickle".format(act_num, sub_num)
+        rem_fname = dir_path + "act{:02d}_{:02d}rem.pickle".format(act_num, sub_num)
         if os.path.exists(rem_fname):
             # 存在したらそのファイルを指定
             fnamer = rem_fname
@@ -251,11 +252,12 @@ class Rubik():
         prev_cubes = pickle.load(f)
         f.close()
 
+        print("探索状態数：", len(prev_cubes))
         # 次の状態を計算
         cubes = self.allActions(prev_cubes)
         # すべて探索しきれなかった場合, 余りファイルに保存
+        print("未探索状態数：", len(prev_cubes))
         if prev_cubes:
-            print("未探索状態数：", len(prev_cubes))
             f = open(rem_fname, "wb")
             pickle.dump(prev_cubes, f)
             f.close()
@@ -285,7 +287,7 @@ class Rubik():
         for i in range(act_num + 2):
             j = 0
             past_fname = path_format.format(i, j)
-            if os.path.exists(past_fname):
+            while os.path.exists(past_fname):
                 f = open(past_fname, "rb")
                 known_cubes = pickle.load(f)
                 f.close()
@@ -294,7 +296,9 @@ class Rubik():
                 latest_fname = past_fname
                 latest_act_num = i
                 latest_sub_num = j
+                # print(latest_fname, i, j)
                 j += 1
+                past_fname = path_format.format(i, j)
         
         # リストに変換
         cubes = list(cubes)
@@ -303,19 +307,24 @@ class Rubik():
         # 深さが進む場合
         fnamew = path_format.format(act_num + 1, 0)
 
-        # 最新のファイルの深さが, 探索済み深さ+1と一致する
-        if latest_act_num == act_num + 1:
+        if act_num == 0:
+            pass
+        # 最新のファイルの深さが, 探索済み深さでない
+        elif latest_act_num != act_num:
             # 直前の状態数と, 新状態数の和が1000万以下なら, 新しいファイルは作らない
             if len(known_cubes) + len(cubes) <= self.cnt_max * 10:
                 cubes += known_cubes
                 fnamew = latest_fname
+                print("ファイル結合")
             # 状態数が多すぎた場合は新ファイル作成
             else:
                 fnamew = path_format.format(latest_act_num, latest_sub_num + 1)
         # これ以上状態が増えない場合
         elif not cubes:
+            print("探索終了")
             return True
 
+        print("書き込みファイル：", fnamew)
         # リストにして保存
         f = open(fnamew, "wb")
         pickle.dump(cubes, f)
@@ -327,17 +336,13 @@ class Rubik():
 def main() -> None:
     r = Rubik()
 
-    for i in range(0):
+    for i in range(1):
         t0 = time.time()
-        # end = r.bfs("./rubik_dat/")
-        end = r.bfs("./test_dir/")
+        end = r.bfs("./rubik_dat/")
+        # end = r.bfs("./test_dir/")
         print(time.time() - t0, "秒")
         if end:
             break
-
-    with open("./rubik_dat/act07.pickle", "rb") as f:
-        cubes = pickle.load(f)
-        print(len(cubes))
 
 if __name__ == "__main__":
     main()
