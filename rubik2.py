@@ -50,33 +50,6 @@ def num2cube(num):
             num >>= 3
     return cube
 
-# 0と1の色, 位置を切り替え
-# 白 -> 赤 -> 青 -> 橙 -> 白
-# 白の完全一面を基に赤の完全一面を作る
-# 色を切り替えて等価な盤面を作る場合に使える??
-def switch0to1(cube):
-    s_cube = [[7] * 8 for _ in range(6)]
-    s_cube[1] = [DIC_0TO1[i] for i in cube[0]]
-    s_cube[5] = [DIC_0TO1[i] for i in cube[1]]
-    for i in range(8):
-        s_cube[3][i] = DIC_0TO1[cube[5][7 - i]]
-        s_cube[0][i] = DIC_0TO1[cube[3][7 - i]]
-    for k, v in DIC_ROT_R.items():
-        s_cube[2][k] = DIC_0TO1[cube[2][v]]
-        s_cube[4][v] = DIC_0TO1[cube[4][k]]
-    return s_cube
-
-# 1と2の色, 位置を切り替え
-# 赤 -> 黄 -> 橙 -> 緑 -> 赤
-def switch1to2(cube):
-    s_cube = [[6] * 8 for _ in range(6)]
-    for i in range(1, 5):
-        s_cube[DIC_1TO2[i]] = [DIC_1TO2[j] for j in cube[i]]
-    for k, v in DIC_ROT_R.items():
-        s_cube[0][k] = DIC_1TO2[cube[0][v]]
-        s_cube[5][v] = DIC_1TO2[cube[5][k]]
-    return s_cube
-
 class Rubik:
 
     def __init__(self, cube=COMPLETE, tekazu=0):
@@ -436,6 +409,39 @@ class Rubik:
                 num >>= 3
         return cube
     
+    # 0と1の色, 位置を切り替え
+    # 白 -> 赤 -> 青 -> 橙 -> 白
+    # 白の完全一面を基に赤の完全一面を作る
+    # 色を切り替えて等価な盤面を作る場合に使える??
+    def _switch0to1(self, cube):
+        s_cube = [[6] * 8 for _ in range(6)]
+        s_cube[1] = [DIC_0TO1[i] for i in cube[0]]
+        s_cube[5] = [DIC_0TO1[i] for i in cube[1]]
+        for i in range(8):
+            s_cube[3][i] = DIC_0TO1[cube[5][7 - i]]
+            s_cube[0][i] = DIC_0TO1[cube[3][7 - i]]
+        for k, v in DIC_ROT_R.items():
+            s_cube[2][k] = DIC_0TO1[cube[2][v]]
+            s_cube[4][v] = DIC_0TO1[cube[4][k]]
+        return Rubik(s_cube)
+
+    # 1と2の色, 位置を切り替え
+    # 赤 -> 黄 -> 橙 -> 緑 -> 赤
+    def _switch1to2(self, cube):
+        s_cube = [[6] * 8 for _ in range(6)]
+        for i in range(1, 5):
+            s_cube[DIC_1TO2[i]] = [DIC_1TO2[j] for j in cube[i]]
+        for k, v in DIC_ROT_R.items():
+            s_cube[0][k] = DIC_1TO2[cube[0][v]]
+            s_cube[5][v] = DIC_1TO2[cube[5][k]]
+        return Rubik(s_cube)
+    
+    def switch0to1(self):
+        return self._switch0to1(self.cube)
+    
+    def switch1to2(self):
+        return self._switch1to2(self.cube)
+    
     # 等号演算子の処理を定義
     def __eq__(self, target):
         return self.cube == target.cube
@@ -493,15 +499,15 @@ def init():
     r0 = Rubik(COMP_0)
     # 白
     COMP_ONE_SIDE_NUMS.append(r0.num)
-    r1 = Rubik(switch0to1(r0.cube))
+    r1 = r0.switch0to1()
     # 赤
     COMP_ONE_SIDE_NUMS.append(r1.num)
     r = r1.copy()
     # 黄, 橙, 緑
     for i in range(3):
-        r = Rubik(switch1to2(r.cube))
+        r = r.switch1to2()
         COMP_ONE_SIDE_NUMS.append(r.num)
-    r = Rubik(switch0to1(r1.cube))
+    r = r1.switch0to1()
     # 青
     COMP_ONE_SIDE_NUMS.append(r.num)
 
