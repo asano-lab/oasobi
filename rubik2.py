@@ -625,7 +625,7 @@ def main():
 
 if __name__ == "__main__":
     # main()
-    r1 = Rubik(COMPLETE)
+    r1 = Rubik(SAMPLE01)
     r2 = r1.rightRollPlus()
     print(r1)
     print(r2)
