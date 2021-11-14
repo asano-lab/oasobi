@@ -35,6 +35,8 @@ JPN_COLOR = ["白", "赤", "黄", "橙", "緑", "青", "黒", "ー"]
 
 DIC_0TO1 = {0: 1, 1: 5, 5: 3, 3: 0, 2: 2, 4: 4, 7: 7}
 
+DIC_1TO2 = {1: 2, 2: 3, 3: 4, 4: 1, 0: 0, 5: 5, 7: 7}
+
 DIC_ROT_R = {0: 2, 2: 7, 7: 5, 5: 0, 1: 4, 4: 6, 6: 3, 3: 1}
 
 # 数値を2次元リストに戻す
@@ -50,6 +52,7 @@ def num2cube(num):
 # 0と1の色, 位置を切り替え
 # 白 -> 赤 -> 青 -> 橙 -> 白
 # 白の完全一面を基に赤の完全一面を作る
+# 色を切り替えて等価な盤面を作る場合に使える??
 def switch0to1(cube):
     s_cube = [[7] * 8 for _ in range(6)]
     s_cube[1] = [DIC_0TO1[i] for i in cube[0]]
@@ -60,6 +63,17 @@ def switch0to1(cube):
     for k, v in DIC_ROT_R.items():
         s_cube[2][k] = DIC_0TO1[cube[2][v]]
         s_cube[4][v] = DIC_0TO1[cube[4][k]]
+    return s_cube
+
+# 1と2の色, 位置を切り替え
+# 赤 -> 黄 -> 橙 -> 緑 -> 赤
+def switch1to2(cube):
+    s_cube = [[6] * 8 for _ in range(6)]
+    for i in range(1, 5):
+        s_cube[DIC_1TO2[i]] = [DIC_1TO2[j] for j in cube[i]]
+    for k, v in DIC_ROT_R.items():
+        s_cube[0][k] = DIC_1TO2[cube[0][v]]
+        s_cube[5][v] = DIC_1TO2[cube[5][k]]
     return s_cube
 
 class Rubik:
@@ -473,11 +487,13 @@ class Search:
         #     print(Rubik(num2cube(i)))
 
 if __name__ == "__main__":
-    r0 = Rubik(SAMPLE01)
+    r0 = Rubik(COMP_0)
     r = r0.copy()
+    r = Rubik(switch0to1(r.cube))
     print(r)
     for i in range(4):
-        r = Rubik(switch0to1(r.cube))
+        # r = Rubik(switch0to1(r.cube))
+        r = Rubik(switch1to2(r.cube))
         print(r)
         print(r0 == r)
     
