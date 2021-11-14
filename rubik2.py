@@ -499,7 +499,17 @@ class Search:
         print(len(nrns))
         self.depth += 1
         self.num_dic[self.depth] = {k: v for k, v in nrnd.items() if k in nrns}
-        print(self.num_dic)
+
+        for num in self.num_dic[self.depth]:
+            for i, one_side in enumerate(COMP_ONE_SIDE_NUMS):
+                if num | COMP_ONE_SIDE_NUM_MASKS[i] == one_side:
+                    print(Rubik(num2cube(num)))
+                    print(self.num_dic[self.depth][num])
+                    break
+            else:
+                continue
+        
+        # print(self.num_dic)
     
     # ひとまず一面を揃えたい
     def oneSide(self):
@@ -525,6 +535,6 @@ if __name__ == "__main__":
     print(COMP_ONE_SIDE_NUMS)
     r0 = Rubik(SAMPLE01)
     s = Search(r0.num)
-    for i in range(3):
+    for i in range(6):
         s.bfs()
 
