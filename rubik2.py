@@ -61,6 +61,16 @@ def num2cube(num):
             num >>= 3
     return cube
 
+# 手順を出力
+def printActs(acts):
+    moji = ""
+    im = len(acts) - 1
+    for i, act in enumerate(acts):
+        moji += ACT_STR[act]
+        if i < im:
+            moji += ", "
+    print(moji)
+
 class Rubik:
 
     def __init__(self, cube=COMPLETE, tekazu=0):
@@ -506,7 +516,7 @@ class Search:
                 for j, one_side in enumerate(COMP_ONE_SIDE_NUMS):
                     if nr.num | COMP_ONE_SIDE_NUM_MASKS[j] == one_side:
                         print(Rubik(num2cube(nr.num)))
-                        print(v + (i, ))
+                        printActs(v + (i,))
                         return
                 nrnd[nr.num] = v + (i,)
 
