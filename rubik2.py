@@ -583,12 +583,33 @@ class Search:
             r = Rubik(num2cube(k))
             nrl = r.allActions()
             for i, nr in enumerate(nrl):
-                app_dist = self.calcMinDist(nr.num) + (len(v) + 1) * self.act_weight
-                # 最小距離の更新
-                if app_dist < self.min_dist:
-                    self.min_dist = app_dist
-                print(nr)
-                print(app_dist)
+                # 探索済みに含まれていたらやりなおし
+                if nr.num in self.explored:
+                    continue
+                # 未探索に含まれていてもやりなおし
+                for known in self.unexplored.values():
+                    if nr.num in known:
+                        continue
+                # 最短距離を計算
+                dist = self.calcMinDist(nr.num)
+                # 一致したら終了
+                if dist == 0:
+                    print(nr)
+                    printActs(v + (i,))
+                    return
+                # これまでの手数を加える
+                total_dist = dist + (len(v) + 1) * self.act_weight
+                # キーの追加
+                if total_dist not in self.unexplored:
+                    # 最短距離の更新
+                    if total_dist < self.min_dist:
+                        self.min_dist = total_dist
+                    self.unexplored[self.min_dist] = {nr.num: v + (i,)}
+                # 既存のキー
+                else:
+                    self.unexplored[total_dist][nr.num] = v + (i,)
+            # 探索済みは数値だけ格納
+            self.explored.append(k)
             print(k, v)
             print(self.unexplored)
     
@@ -662,9 +683,7 @@ def main():
     if not r0.checkSum():
         return
     s = Search(r0.num, CROSS_ONE_SIDE_NUMS)
-    s.useDist(1)
-    a = {7: "a", 3: "b"}
-    print(min(a))
+    s.useDist(3)
 
 if __name__ == "__main__":
     main()
