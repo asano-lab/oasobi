@@ -568,7 +568,6 @@ class Search:
         self.num_dic = {0: {cube_num: tuple()}}
         # 一手の重み
         self.act_weight = 12
-        print(self.unexplored)
         # 現状, 目的に最も近い (と思われる) 距離
         self.min_dist = crnt_dist
         self.depth = 0
@@ -578,6 +577,8 @@ class Search:
     def useDist(self, loop):
         for _ in range(loop):
             if not self.unexplored[self.min_dist]:
+                # 空要素の削除
+                self.unexplored.pop(self.min_dist)
                 self.min_dist = min(self.unexplored)
             k, v = self.unexplored[self.min_dist].popitem()
             r = Rubik(num2cube(k))
@@ -604,14 +605,13 @@ class Search:
                     # 最短距離の更新
                     if total_dist < self.min_dist:
                         self.min_dist = total_dist
-                    self.unexplored[self.min_dist] = {nr.num: v + (i,)}
+                    self.unexplored[total_dist] = {nr.num: v + (i,)}
                 # 既存のキー
                 else:
                     self.unexplored[total_dist][nr.num] = v + (i,)
             # 探索済みは数値だけ格納
             self.explored.append(k)
-            print(k, v)
-            print(self.unexplored)
+            # print(self.unexplored)
     
     # 幅優先探索 (全探索)
     def bfs(self):
@@ -683,7 +683,7 @@ def main():
     if not r0.checkSum():
         return
     s = Search(r0.num, CROSS_ONE_SIDE_NUMS)
-    s.useDist(3)
+    s.useDist(10000)
 
 if __name__ == "__main__":
     main()
