@@ -711,10 +711,19 @@ def makeAllColorCubeList(white_cube):
 # 最初にそろえた十字の色に応じてCROSS_0_MID_NUMSを変更
 def changeMidNums(color):
     global CROSS_0_MID_NUMS
+    # 白は何もしない
     if color == 0:
-        pass
-    elif color == 1:
-        CROSS_0_MID_NUMS = [Rubik(num2cube(rn)).switch0to1().num for rn in CROSS_0_MID_NUMS]
+        return
+    # 白以外
+    r_list = [Rubik(num2cube(rn)).switch0to1() for rn in CROSS_0_MID_NUMS]
+    # 青
+    if color == 5:
+        CROSS_0_MID_NUMS = [r.switch0to1().num for r in r_list]
+        return
+    # 赤, 黄, 橙, 緑
+    for i in range(color - 1):
+        r_list = [r.switch1to2() for r in r_list]
+    CROSS_0_MID_NUMS = [r.num for r in r_list]
 
 def init():
     global COMP_ONE_SIDE_NUMS, COMP_ONE_SIDE_NUM_MASKS
@@ -748,8 +757,8 @@ def main():
     print(time.time() - t0, "秒")
 
 if __name__ == "__main__":
-    changeMidNums(1)
     # main()
+    changeMidNums(1)
     for i in CROSS_0_MID_NUMS:
         r = Rubik(num2cube(i))
         print(r)
