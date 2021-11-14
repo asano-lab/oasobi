@@ -708,34 +708,34 @@ def makeAllColorCubeList(white_cube):
     r_list.append(r_list[1].switch0to1())
     return [r.num for r in r_list], [r.getMask() for r in r_list]
 
-# 最初にそろえた十字の色に応じてCROSS_0_MID_NUMSを変更
+# 最初にそろえた十字の色に応じてCROSS_MID_ONE_NUMSを変更
 def changeMidNums(color):
-    global CROSS_0_MID_NUMS
+    global CROSS_MID_ONE_NUMS
     # 白は何もしない
     if color == 0:
         return
     # 白以外
-    r_list = [Rubik(num2cube(rn)).switch0to1() for rn in CROSS_0_MID_NUMS]
+    r_list = [Rubik(num2cube(rn)).switch0to1() for rn in CROSS_MID_ONE_NUMS]
     # 青
     if color == 5:
-        CROSS_0_MID_NUMS = [r.switch0to1().num for r in r_list]
+        CROSS_MID_ONE_NUMS = [r.switch0to1().num for r in r_list]
         return
     # 赤, 黄, 橙, 緑
     for i in range(color - 1):
         r_list = [r.switch1to2() for r in r_list]
-    CROSS_0_MID_NUMS = [r.num for r in r_list]
+    CROSS_MID_ONE_NUMS = [r.num for r in r_list]
 
 def init():
     global COMP_ONE_SIDE_NUMS, COMP_ONE_SIDE_NUM_MASKS
     global CROSS_ONE_SIDE_NUMS, CROSS_ONE_SIDE_NUM_MASKS
-    global CROSS_0_MID_NUMS
+    global CROSS_MID_ONE_NUMS
     COMP_ONE_SIDE_NUMS, COMP_ONE_SIDE_NUM_MASKS = makeAllColorCubeList(COMP_0)
     CROSS_ONE_SIDE_NUMS, CROSS_ONE_SIDE_NUM_MASKS = makeAllColorCubeList(CROSS_0)
     # 4種類の側面の辺
     r_list = [Rubik(CROSS_0_MID_12)]
     for i in range(3):
         r_list.append(r_list[i].switch1to2())
-    CROSS_0_MID_NUMS = [r.num for r in r_list]
+    CROSS_MID_ONE_NUMS = [r.num for r in r_list]
 
 init()
 
@@ -746,10 +746,11 @@ def main():
         return
     print(r0)
     # s = Search(r0.num, CROSS_ONE_SIDE_NUMS, 4)
-    s = Search(r0.num, COMP_ONE_SIDE_NUMS, 1)
+    # s = Search(r0.num, COMP_ONE_SIDE_NUMS, 1)
+    s = Search(r0.num, CROSS_MID_ONE_NUMS)
     # s = Search(r0.num, act_weight=1)
     t0 = time.time()
-    s.useDist(1)
+    s.useDist(13000)
     # print(s.nearest_r)
     # print(s.nearest_acts)
 
@@ -757,9 +758,10 @@ def main():
     print(time.time() - t0, "秒")
 
 if __name__ == "__main__":
-    # main()
     changeMidNums(1)
-    for i in CROSS_0_MID_NUMS:
-        r = Rubik(num2cube(i))
-        print(r)
+    main()
+    # changeMidNums(1)
+    # for i in CROSS_MID_ONE_NUMS:
+    #     r = Rubik(num2cube(i))
+    #     print(r)
 
