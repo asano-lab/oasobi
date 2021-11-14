@@ -559,15 +559,15 @@ class Rubik:
 class Search:
     
     # 目的とする状態はリストとして与える (複数あること前提)
-    def __init__(self, cube_num, goal=[COMPLETE_NUM]):
+    # 一手の重みも与える
+    def __init__(self, cube_num, goal=[COMPLETE_NUM], act_weight=12):
         self.goal = goal
+        self.act_weight = act_weight
         self.explored = []
         # 初期値の距離を計算 (不要だがデバッグのため)
         crnt_dist = self.calcMinDist(cube_num)
         self.unexplored = {crnt_dist: {cube_num: tuple()}}
         self.num_dic = {0: {cube_num: tuple()}}
-        # 一手の重み
-        self.act_weight = 12
         # 現状, 目的に最も近い (と思われる) 距離
         self.min_dist = crnt_dist
         self.depth = 0
@@ -611,6 +611,7 @@ class Search:
                     self.unexplored[total_dist][nr.num] = v + (i,)
             # 探索済みは数値だけ格納
             self.explored.append(k)
+            print(list(self.unexplored.keys()))
             # print(self.unexplored)
     
     # 幅優先探索 (全探索)
@@ -682,8 +683,8 @@ def main():
     r0 = Rubik(SAMPLE01)
     if not r0.checkSum():
         return
-    s = Search(r0.num, CROSS_ONE_SIDE_NUMS)
-    s.useDist(10000)
+    s = Search(r0.num, CROSS_ONE_SIDE_NUMS, 4)
+    s.useDist(100)
 
 if __name__ == "__main__":
     main()
