@@ -71,6 +71,9 @@ SAMPLE02 = [
     [5, 0, 3, 4, 2, 1, 3, 2]
 ]
 
+# 赤の十字
+SAMPLE_RED_CROSS = 0x22c5282245607230e8ac34ab66134a40ba52
+
 JPN_COLOR = ["白", "赤", "黄", "橙", "緑", "青", "黒", "ー"]
 
 DIC_0TO1 = {0: 1, 1: 5, 5: 3, 3: 0, 2: 2, 4: 4, 7: 7}
@@ -575,6 +578,8 @@ class Search:
         self.explored = []
         # 初期値の距離を計算 (不要だがデバッグのため)
         crnt_dist = self.calcMinDist(cube_num)
+        if crnt_dist == 0:
+            print("達成済み")
         self.unexplored = {crnt_dist: {cube_num: tuple()}}
         self.num_dic = {0: {cube_num: tuple()}}
         # 現状, 目的に最も近い (と思われる) 距離
@@ -585,6 +590,8 @@ class Search:
     # 距離を使って優先順位を決める
     # とりあえずループ数だけ繰り返す
     def useDist(self, loop):
+        if self.min_dist == 0:
+            return
         for i in range(loop):
             while not self.unexplored[self.min_dist]:
                 self.unexplored.pop(self.min_dist)
@@ -692,15 +699,18 @@ def init():
 init()
 
 def main():
-    r0 = Rubik(SAMPLE01)
+    # r0 = Rubik(SAMPLE01)
+    r0 = Rubik(num2cube(SAMPLE_RED_CROSS))
     if not r0.checkSum():
         return
     print(r0)
-    s = Search(r0.num, CROSS_ONE_SIDE_NUMS, 4)
-    # s = Search(r0.num, COMP_ONE_SIDE_NUMS, 0)
+    # s = Search(r0.num, CROSS_ONE_SIDE_NUMS, 4)
+    s = Search(r0.num, COMP_ONE_SIDE_NUMS, 0)
     # s = Search(r0.num, act_weight=1)
     t0 = time.time()
     s.useDist(13000)
+
+    del s
     print(time.time() - t0, "秒")
 
 if __name__ == "__main__":
