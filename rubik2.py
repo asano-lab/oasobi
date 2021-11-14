@@ -442,9 +442,22 @@ class Rubik:
     def switch1to2(self):
         return self._switch1to2(self.cube)
     
+    # 比較用のマスクを取得 (通常キューブには使わない)
+    # 7はそのまま, それ以外は0
+    # 比較対象とorを取ることで, don't careの部分は全て1になる
+    def getMask(self):
+        cube_mask = 0
+        sft = 0
+        for i in range(6):
+            for j in range(8):
+                if self.cube[i][j] == 7:
+                    cube_mask |= 7 << sft
+                sft += 3
+        return cube_mask
+    
     # 等号演算子の処理を定義
     def __eq__(self, target):
-        return self.cube == target.cube
+        return self.num == target.num
     
     def __str__(self):
         sub1 = 0
@@ -492,29 +505,30 @@ class Search:
         self.num_dic[self.depth] = list(nrns)
         # for i in nrns:
         #     print(Rubik(num2cube(i)))
-
-COMP_ONE_SIDE_NUMS = []
+    
+    # ひとまず一面を揃えたい
+    def oneSide(self):
+        pass
 
 def init():
-    r0 = Rubik(COMP_0)
+    global COMP_ONE_SIDE_NUMS, COMP_ONE_SIDE_NUM_MASKS
     # 白
-    COMP_ONE_SIDE_NUMS.append(r0.num)
-    r1 = r0.switch0to1()
+    r_list = [Rubik(COMP_0)]
     # 赤
-    COMP_ONE_SIDE_NUMS.append(r1.num)
-    r = r1.copy()
+    r_list.append(r_list[0].switch0to1())
     # 黄, 橙, 緑
     for i in range(3):
-        r = r.switch1to2()
-        COMP_ONE_SIDE_NUMS.append(r.num)
-    r = r1.switch0to1()
+        r_list.append(r_list[1 + i].switch1to2())
     # 青
-    COMP_ONE_SIDE_NUMS.append(r.num)
+    r_list.append(r_list[1].switch0to1())
+    COMP_ONE_SIDE_NUMS = [r.num for r in r_list]
+    COMP_ONE_SIDE_NUM_MASKS = [r.getMask() for r in r_list]
 
 init()
 
 if __name__ == "__main__":
-    for i in COMP_ONE_SIDE_NUMS:
+    print(COMP_ONE_SIDE_NUMS)
+    for i in COMP_ONE_SIDE_NUM_MASKS:
         r = Rubik(num2cube(i))
         print(r)
 
