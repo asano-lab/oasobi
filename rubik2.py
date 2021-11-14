@@ -13,6 +13,9 @@ COMPLETE = [
     [5, 5, 5, 5, 5, 5, 5, 5]
 ]
 
+# 宣言
+COMPLETE_NUM = 0
+
 # 白の完全一面
 COMP_0 = [
     [0, 0, 0, 0, 0, 0, 0, 0],
@@ -96,13 +99,16 @@ def printActs(acts):
 
 # 色が一致している数を計算
 # 与えるのはキューブの数値
-def calcDist(cn1, cn2):
-    dif = cn1 ^ cn2
+# don't care を含むキューブは第二引数に与える
+def calcDist(crnt, dest):
+    diff = crnt ^ dest
     dist = 0
     for _ in range(48):
-        if dif & 0b111:
+        # don't careでなく, 一致しない場合は加算
+        if dest & 0b111 != 0b111 and diff & 0b111:
             dist += 1
-        dif >>= 3
+        diff >>= 3
+        dest >>= 3
     return dist
 
 class Rubik:
@@ -552,11 +558,17 @@ class Rubik:
 
 class Search:
     
-    def __init__(self, cube_num):
-        self.num_dic = {0: {cube_num: tuple()}}
+    # 目的とする状態はリストとして与える (複数あること前提)
+    def __init__(self, cube_num, goal=[COMPLETE_NUM]):
+        self.goal = goal
+        self.explored = []
+        # 初期値の距離を計算 (不要だがデバッグのため)
+        crnt_dist = self.calcMinDist(cube_num)
+        self.num_dic = {crnt_dist: {cube_num: tuple()}}
+        print(self.num_dic)
         self.depth = 0
-        # print(self.num_dic)
     
+    # 幅優先探索 (全探索)
     def bfs(self):
         nrnd = {}
         for k, v in self.num_dic[self.depth].items():
@@ -591,6 +603,15 @@ class Search:
         self.depth += 1
         self.num_dic[self.depth] = {k: v for k, v in nrnd.items() if k in nrns}
         return False
+    
+    # 目的とする状態から, 最も近い距離を返す
+    def calcMinDist(self, cube_num):
+        min_dist = 50
+        for g in self.goal:
+            dist = calcDist(cube_num, g)
+            if dist < min_dist:
+                min_dist = dist
+        return min_dist
 
 # 白基準のキューブから全ての色の等価なキューブのリストを作成
 # ついでにマスクも
@@ -616,17 +637,8 @@ def main():
     r0 = Rubik(SAMPLE01)
     if not r0.checkSum():
         return
-    s = Search(r0.num)
-    t0 = time.time()
-    for i in range(7):
-        if s.bfs():
-            break
-        print(time.time() - t0)
+    s = Search(r0.num, CROSS_ONE_SIDE_NUMS)
 
 if __name__ == "__main__":
-    # main()
-    r1 = Rubik(SAMPLE01)
-    r2 = r1.rightRollPlus()
-    print(r1)
-    print(r2)
-    print(calcDist(r1.num, r2.num))
+    main()
+
