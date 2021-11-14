@@ -611,7 +611,6 @@ class Search:
             # 探索済みは数値だけ格納
             self.explored.append(k)
             print(list(self.unexplored.keys()))
-            # print(self.unexplored)
     
     # 幅優先探索 (全探索)
     def bfs(self):
@@ -680,8 +679,8 @@ def main():
     r0 = Rubik(SAMPLE01)
     if not r0.checkSum():
         return
-    # s = Search(r0.num, CROSS_ONE_SIDE_NUMS, 1)
-    s = Search(r0.num, act_weight=0)
+    s = Search(r0.num, CROSS_ONE_SIDE_NUMS, 2)
+    # s = Search(r0.num, act_weight=1)
     s.useDist(10000)
 
 if __name__ == "__main__":
