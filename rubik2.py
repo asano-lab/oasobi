@@ -577,11 +577,16 @@ class Search:
     # とりあえずループ数だけ繰り返す
     def useDist(self, loop):
         for _ in range(loop):
+            if not self.unexplored[self.min_dist]:
+                self.min_dist = min(self.unexplored)
             k, v = self.unexplored[self.min_dist].popitem()
             r = Rubik(num2cube(k))
             nrl = r.allActions()
             for i, nr in enumerate(nrl):
-                app_dist = self.calcMinDist(nr.num) + len(v)
+                app_dist = self.calcMinDist(nr.num) + (len(v) + 1) * self.act_weight
+                # 最小距離の更新
+                if app_dist < self.min_dist:
+                    self.min_dist = app_dist
                 print(nr)
                 print(app_dist)
             print(k, v)
@@ -658,6 +663,8 @@ def main():
         return
     s = Search(r0.num, CROSS_ONE_SIDE_NUMS)
     s.useDist(1)
+    a = {7: "a", 3: "b"}
+    print(min(a))
 
 if __name__ == "__main__":
     main()
