@@ -578,6 +578,12 @@ class Search:
     def useDist(self, loop):
         for _ in range(loop):
             k, v = self.unexplored[self.min_dist].popitem()
+            r = Rubik(num2cube(k))
+            nrl = r.allActions()
+            for i, nr in enumerate(nrl):
+                app_dist = self.calcMinDist(nr.num) + len(v)
+                print(nr)
+                print(app_dist)
             print(k, v)
             print(self.unexplored)
     
