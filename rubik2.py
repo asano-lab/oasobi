@@ -684,7 +684,7 @@ def main():
     if not r0.checkSum():
         return
     s = Search(r0.num, CROSS_ONE_SIDE_NUMS, 4)
-    s.useDist(100)
+    s.useDist(10000)
 
 if __name__ == "__main__":
     main()
