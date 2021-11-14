@@ -31,7 +31,7 @@ SAMPLE01 = [
     [1, 2, 3, 1, 1, 2, 3, 4]
 ]
 
-JPN_COLOR = ["白", "赤", "黄", "橙", "緑", "青", "黒", "--"]
+JPN_COLOR = ["白", "赤", "黄", "橙", "緑", "青", "黒", "ー"]
 
 # 数値を2次元リストに戻す
 # メソッドでなく関数として定義
@@ -450,6 +450,8 @@ class Search:
         print(len(nrns))
         self.depth += 1
         self.num_dic[self.depth] = list(nrns)
+        for i in nrns:
+            print(Rubik(num2cube(i)))
 
 if __name__ == "__main__":
     r0 = Rubik(COMP_0)
