@@ -627,7 +627,7 @@ class Search:
                 if dist == 0:
                     print(nr)
                     printActs(v + (j,))
-                    return
+                    return (nr, v + (j,))
                 # これまでの手数を加える
                 total_dist = dist + (len(v) + 1) * self.act_weight
                 # キーが存在しない場合は追加
@@ -651,7 +651,7 @@ class Search:
             if i % 1000 == 0:
                 print("ループ数：", i)
                 print("総状態数：", self.num_known_states)
-            
+        return (-1, -1)
     
     # 幅優先探索 (全探索)
     def bfs(self):
@@ -740,25 +740,35 @@ def init():
 init()
 
 def main():
-    # r0 = Rubik(SAMPLE01)
-    r0 = Rubik(num2cube(SAMPLE_RED_CROSS))
+    r0 = Rubik(SAMPLE01)
+    # r0 = Rubik(num2cube(SAMPLE_RED_CROSS))
     if not r0.checkSum():
         return
+    # 初期状態
+    print("初期状態")
     print(r0)
-    # s = Search(r0.num, CROSS_ONE_SIDE_NUMS, 4)
-    # s = Search(r0.num, COMP_ONE_SIDE_NUMS, 1)
-    s = Search(r0.num, CROSS_MID_ONE_NUMS)
-    # s = Search(r0.num, act_weight=1)
+    # 十字を揃える
+    s = Search(r0.num, CROSS_ONE_SIDE_NUMS, 2)
+    t0 = time.time()
+    r1, act1 = s.useDist(13000)
+    print(time.time() - t0, "秒")
+    if r1.num < 0:
+        return
+    color = 0
+    for j, cross in enumerate(CROSS_ONE_SIDE_NUMS):
+        if r1.num | CROSS_ONE_SIDE_NUM_MASKS[j] == cross:
+            color = j
+            break
+    else:
+        return
+    changeMidNums(color)
+    s = Search(r1.num, CROSS_MID_ONE_NUMS, 2)
     t0 = time.time()
     s.useDist(13000)
-    # print(s.nearest_r)
-    # print(s.nearest_acts)
-
-    del s
+    
     print(time.time() - t0, "秒")
 
 if __name__ == "__main__":
-    changeMidNums(1)
     main()
     # changeMidNums(1)
     # for i in CROSS_MID_ONE_NUMS:
