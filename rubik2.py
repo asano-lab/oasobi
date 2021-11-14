@@ -33,6 +33,16 @@ CROSS_0 = [
     [7, 7, 7, 7, 7, 7, 7, 7]
 ]
 
+# 白の十字と, 赤黄の上・中層が揃う
+CROSS_0_MID_12 = [
+    [7, 0, 7, 0, 0, 7, 0, 0],
+    [7, 1, 1, 7, 1, 7, 7, 7],
+    [2, 2, 7, 2, 7, 7, 7, 7],
+    [7, 3, 7, 7, 7, 7, 7, 7],
+    [7, 4, 7, 7, 7, 7, 7, 7],
+    [7, 7, 7, 7, 7, 7, 7, 7]
+]
+
 # デバッグ用サンプル状態
 # SAMPLE01 = [
 #     [3, 3, 2, 2, 4, 1, 0, 3],
@@ -701,8 +711,14 @@ def makeAllColorCubeList(white_cube):
 def init():
     global COMP_ONE_SIDE_NUMS, COMP_ONE_SIDE_NUM_MASKS
     global CROSS_ONE_SIDE_NUMS, CROSS_ONE_SIDE_NUM_MASKS
+    global CROSS_0_MID_NUMS
     COMP_ONE_SIDE_NUMS, COMP_ONE_SIDE_NUM_MASKS = makeAllColorCubeList(COMP_0)
     CROSS_ONE_SIDE_NUMS, CROSS_ONE_SIDE_NUM_MASKS = makeAllColorCubeList(CROSS_0)
+    # 4種類の側面の辺
+    r_list = [Rubik(CROSS_0_MID_12)]
+    for i in range(3):
+        r_list.append(r_list[i].switch1to2())
+    CROSS_0_MID_NUMS = [r.num for r in r_list]
 
 init()
 
@@ -716,13 +732,16 @@ def main():
     s = Search(r0.num, COMP_ONE_SIDE_NUMS, 1)
     # s = Search(r0.num, act_weight=1)
     t0 = time.time()
-    s.useDist(10000)
-    print(s.nearest_r)
-    print(s.nearest_acts)
+    s.useDist(1)
+    # print(s.nearest_r)
+    # print(s.nearest_acts)
 
     del s
     print(time.time() - t0, "秒")
 
 if __name__ == "__main__":
-    main()
+    # main()
+    for i in CROSS_0_MID_NUMS:
+        r = Rubik(num2cube(i))
+        print(r)
 
