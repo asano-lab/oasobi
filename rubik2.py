@@ -571,7 +571,7 @@ def init():
 init()
 
 if __name__ == "__main__":
-    r0 = Rubik(SAMPLE02)
+    r0 = Rubik(SAMPLE01)
     s = Search(r0.num)
     for i in range(6):
         if s.bfs():
