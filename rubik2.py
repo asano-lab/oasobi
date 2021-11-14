@@ -49,6 +49,8 @@ DIC_1TO2 = {1: 2, 2: 3, 3: 4, 4: 1, 0: 0, 5: 5, 7: 7}
 
 DIC_ROT_R = {0: 2, 2: 7, 7: 5, 5: 0, 1: 4, 4: 6, 6: 3, 3: 1}
 
+ACT_STR = ["lp", "lm", "rp", "rm", "bp", "bm", "fp", "fm", "up", "um", "dp", "dm"]
+
 # 数値を2次元リストに戻す
 # メソッドでなく関数として定義
 def num2cube(num):
@@ -278,7 +280,7 @@ class Rubik:
         return Rubik(n_cube)
     
     # 上ヨー回転 (正)
-    def _aboveYawPlus(self, cube):
+    def _upYawPlus(self, cube):
         n_cube = self._cubeCopy(cube)
         n_cube[0][0] = cube[0][5]
         n_cube[0][5] = cube[0][7]
@@ -295,7 +297,7 @@ class Rubik:
         return Rubik(n_cube)
     
     # 上ヨー回転 (負)
-    def _aboveYawMinus(self, cube):
+    def _upYawMinus(self, cube):
         n_cube = self._cubeCopy(cube)
         n_cube[0][0] = cube[0][2]
         n_cube[0][2] = cube[0][7]
@@ -312,7 +314,7 @@ class Rubik:
         return Rubik(n_cube)
     
     # 下ヨー回転 (正)
-    def _belowYawPlus(self, cube):
+    def _downYawPlus(self, cube):
         n_cube = self._cubeCopy(cube)
         n_cube[1][5:] = cube[2][5:]
         n_cube[2][5:] = cube[3][5:]
@@ -329,7 +331,7 @@ class Rubik:
         return Rubik(n_cube)
     
     # 下ヨー回転 (負)
-    def _belowYawMinus(self, cube):
+    def _downYawMinus(self, cube):
         n_cube = self._cubeCopy(cube)
         n_cube[1][5:] = cube[4][5:]
         n_cube[4][5:] = cube[3][5:]
@@ -369,17 +371,17 @@ class Rubik:
     def frontPitchMinus(self):
         return self._frontPitchMinus(self.cube)
     
-    def aboveYawPlus(self):
-        return self._aboveYawPlus(self.cube)
+    def upYawPlus(self):
+        return self._upYawPlus(self.cube)
     
-    def aboveYawMinus(self):
-        return self._aboveYawMinus(self.cube)
+    def upYawMinus(self):
+        return self._upYawMinus(self.cube)
     
-    def belowYawPlus(self):
-        return self._belowYawPlus(self.cube)
+    def downYawPlus(self):
+        return self._downYawPlus(self.cube)
     
-    def belowYawMinus(self):
-        return self._belowYawMinus(self.cube)
+    def downYawMinus(self):
+        return self._downYawMinus(self.cube)
     
     # 12種類の操作を行ったあとのキューブのリスト
     # 格納した添え字を各操作の番号とする
@@ -389,8 +391,8 @@ class Rubik:
             self.rightRollPlus(), self.rightRollMinus(),
             self.backPitchPlus(), self.backPitchMinus(),
             self.frontPitchPlus(), self.frontPitchMinus(),
-            self.aboveYawPlus(), self.aboveYawMinus(),
-            self.belowYawPlus(), self.belowYawMinus()
+            self.upYawPlus(), self.upYawMinus(),
+            self.downYawPlus(), self.downYawMinus()
         ]
         return n_cube_list
     
@@ -499,7 +501,15 @@ class Search:
         for k, v in self.num_dic[self.depth].items():
             r = Rubik(num2cube(k))
             nrl = r.allActions()
-            nrnd.update({nr.num: v + (i,) for i, nr in enumerate(nrl)})
+            for i, nr in enumerate(nrl):
+                # 一面揃ったかチェック
+                for j, one_side in enumerate(COMP_ONE_SIDE_NUMS):
+                    if nr.num | COMP_ONE_SIDE_NUM_MASKS[j] == one_side:
+                        print(Rubik(num2cube(nr.num)))
+                        print(v + (i, ))
+                        return
+                nrnd[nr.num] = v + (i,)
+
         print(len(nrnd))
         nrns = set(nrnd)
         for knownd in self.num_dic.values():
@@ -508,15 +518,6 @@ class Search:
         print(len(nrns))
         self.depth += 1
         self.num_dic[self.depth] = {k: v for k, v in nrnd.items() if k in nrns}
-
-        for num in self.num_dic[self.depth]:
-            for i, one_side in enumerate(COMP_ONE_SIDE_NUMS):
-                if num | COMP_ONE_SIDE_NUM_MASKS[i] == one_side:
-                    print(Rubik(num2cube(num)))
-                    print(self.num_dic[self.depth][num])
-                    break
-            else:
-                continue
         
         # print(self.num_dic)
     
