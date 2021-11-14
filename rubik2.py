@@ -94,6 +94,17 @@ def printActs(acts):
             moji += ", "
     print(moji)
 
+# 色が一致している数を計算
+# 与えるのはキューブの数値
+def calcDist(cn1, cn2):
+    dif = cn1 ^ cn2
+    dist = 0
+    for _ in range(48):
+        if dif & 0b111:
+            dist += 1
+        dif >>= 3
+    return dist
+
 class Rubik:
 
     def __init__(self, cube=COMPLETE):
@@ -601,12 +612,21 @@ def init():
 
 init()
 
-if __name__ == "__main__":
+def main():
     r0 = Rubik(SAMPLE01)
-    if r0.checkSum():
-        s = Search(r0.num)
-        t0 = time.time()
-        for i in range(7):
-            if s.bfs():
-                break
-            print(time.time() - t0)
+    if not r0.checkSum():
+        return
+    s = Search(r0.num)
+    t0 = time.time()
+    for i in range(7):
+        if s.bfs():
+            break
+        print(time.time() - t0)
+
+if __name__ == "__main__":
+    # main()
+    r1 = Rubik(SAMPLE01)
+    r2 = Rubik(SAMPLE02)
+    print(r1)
+    print(r2)
+    print(calcDist(r1.num, r2.num))
