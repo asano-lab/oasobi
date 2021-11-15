@@ -901,12 +901,12 @@ def main():
         if rn < 0:
             return
     # 上の十字
-    s = Search(rn, CROSS_TOP_NUMS, 1, 0)
-    t0 = time.time()
-    rn, act = s.useDist(20000)
-    print(time.time() - t0, "秒")
-    if rn < 0:
-        return
+    # s = Search(rn, CROSS_TOP_NUMS, 1, 0)
+    # t0 = time.time()
+    # rn, act = s.useDist(20000)
+    # print(time.time() - t0, "秒")
+    # if rn < 0:
+    #     return
     # パターンのいずれか
     s = Search(rn, TOP_PATTERN_NUMS, 1, 0)
     t0 = time.time()
@@ -921,20 +921,20 @@ def main():
     print(time.time() - t0, "秒")
     if rn < 0:
         return
-    # 上の一面と角
-    s = Search(rn, COMP_TOP_CORNER_NUMS, 1, 0)
-    t0 = time.time()
-    rn, act = s.useDist(30000)
-    print(time.time() - t0, "秒")
-    if rn < 0:
-        return
-    # 全面
-    s = Search(rn, [COMPLETE_NUM], 1, 0)
-    t0 = time.time()
-    rn, act = s.useDist(30000)
-    print(time.time() - t0, "秒")
-    if rn < 0:
-        return
+    # # 上の一面と角
+    # s = Search(rn, COMP_TOP_CORNER_NUMS, 1, 0)
+    # t0 = time.time()
+    # rn, act = s.useDist(30000)
+    # print(time.time() - t0, "秒")
+    # if rn < 0:
+    #     return
+    # # 全面
+    # s = Search(rn, [COMPLETE_NUM], 1, 0)
+    # t0 = time.time()
+    # rn, act = s.useDist(30000)
+    # print(time.time() - t0, "秒")
+    # if rn < 0:
+    #     return
 
 if __name__ == "__main__":
     # COMP_TOP_NUMS = switchColorList(COMP_TOP_NUMS, 3)
