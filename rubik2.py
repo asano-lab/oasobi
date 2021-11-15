@@ -750,7 +750,7 @@ class Search:
             # 探索済みは数値だけ格納
             self.explored.append(k)
             if i % 1000 == 999:
-                print("ループ数：", i)
+                print("ループ数：", i + 1)
                 print("総状態数：", self.num_known_states)
         return (-1, -1)
     
