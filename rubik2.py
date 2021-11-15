@@ -559,6 +559,10 @@ class Rubik:
     # 12種類の操作を行ったあとのキューブのリスト
     def allActions(self):
         return [i() for i in self.acts_list]
+    
+    # 指定した添え字の動作を行う
+    def anyAction(self, act_num):
+        return self.acts_list[act_num]()
 
     # 数値変換
     # 若い添え字の値が下位ビットになるように変換
