@@ -859,6 +859,7 @@ def init():
     global TOP_PATTERN_NUMS, COMP_TOP_CORNER_NUMS
     global ACTIONS_C_LIST_LIST, ACTIONS_C_DASH_LIST_LIST
     global ACTIONS_D_LIST_LSIT, ACTIONS_E_LIST_LIST
+    global REMAIN_TOP_ROT_LIST
     COMP_ONE_SIDE_NUMS, COMP_ONE_SIDE_NUM_MASKS = makeAllColorCubeList(COMP_0)
     CROSS_ONE_SIDE_NUMS, CROSS_ONE_SIDE_NUM_MASKS = makeAllColorCubeList(CROSS_0)
     # 4種類の側面の辺
@@ -882,6 +883,11 @@ def init():
         r_list.append(r_list[-1].switch1to2())
     TOP_PATTERN_NUMS = [r.num for r in r_list]
     COMP_TOP_CORNER_NUMS = [Rubik(COMP_TOP_CORNER).num]
+    # 残りは最後の面の回転だけ (初期値白基準)
+    r_list = [Rubik(COMPLETE)]
+    for _ in range(3):
+        r_list.append(r_list[-1].upYawMinus())
+    REMAIN_TOP_ROT_LIST = [r.num for r in r_list]
 
     # 動作関係
     # C, C', D, E の各方向4パターン (初期値白基準)
@@ -977,5 +983,8 @@ if __name__ == "__main__":
     # print(ACTIONS_C_LIST_LIST)
     # ACTIONS_C_DASH_LIST_LIST = switchColorAct(ACTIONS_C_DASH_LIST_LIST, 4)
     # ACTIONS_D_LIST_LSIT = switchColorAct(ACTIONS_D_LIST_LSIT, 5)
-    ACTIONS_E_LIST_LIST = switchColorAct(ACTIONS_E_LIST_LIST, 1)
-    print(r.actionByList(ACTIONS_E_LIST_LIST[2]))
+    # ACTIONS_E_LIST_LIST = switchColorAct(ACTIONS_E_LIST_LIST, 1)
+    # print(r.actionByList(ACTIONS_E_LIST_LIST[2]))
+    REMAIN_TOP_ROT_LIST = switchColorList(REMAIN_TOP_ROT_LIST, 2)
+    for i in REMAIN_TOP_ROT_LIST:
+        print(Rubik(num2cube(i)))
