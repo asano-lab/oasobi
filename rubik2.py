@@ -117,6 +117,8 @@ COMP_TOP_CORNER = [
 
 ACTIONS_C_LIST = [1, 9, 0, 9, 1, 9, 9, 0]
 
+ACTIONS_C_DASH_LIST = [3, 8, 2, 8, 3, 8, 8, 2]
+
 # デバッグ用サンプル状態
 # SAMPLE01 = [
 #     [3, 3, 2, 2, 4, 1, 0, 3],
@@ -963,4 +965,5 @@ if __name__ == "__main__":
     # print(r)
     # main()
     r = Rubik(COMPLETE)
-    print(r.actionByList(ACTIONS_C_LIST))
+    # print(r.actionByList(ACTIONS_C_LIST))
+    print(r.actionByList(ACTIONS_C_DASH_LIST))
