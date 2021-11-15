@@ -852,7 +852,7 @@ def init():
 init()
 
 def main():
-    global CROSS_MID_ONE_NUMS, CROSS_TOP_NUMS, COMP_TOP_NUMS
+    global CROSS_MID_ONE_NUMS, CROSS_TOP_NUMS, COMP_TOP_NUMS, TOP_PATTERN_NUMS
     # r0 = Rubik(SAMPLE01)
     r0 = Rubik(num2cube(SAMPLE_WHITE_SIDE_MID))
     if not r0.checkSum():
@@ -879,6 +879,7 @@ def main():
     CROSS_MID_ONE_NUMS = switchColorList(CROSS_MID_ONE_NUMS, color)
     CROSS_TOP_NUMS = switchColorList(CROSS_TOP_NUMS, color)
     COMP_TOP_NUMS = switchColorList(COMP_TOP_NUMS, color)
+    TOP_PATTERN_NUMS = switchColorList(TOP_PATTERN_NUMS, color)
     rn = rn1
     for i in range(4):
         s = Search(rn, CROSS_MID_ONE_NUMS, 1, i)
@@ -887,12 +888,21 @@ def main():
         print(time.time() - t0, "秒")
         if rn < 0:
             return
+    # 上の十字
     s = Search(rn, CROSS_TOP_NUMS, 1, 0)
     t0 = time.time()
     rn, act = s.useDist(20000)
     print(time.time() - t0, "秒")
     if rn < 0:
         return
+    # パターンのいずれか
+    s = Search(rn, TOP_PATTERN_NUMS, 1, 0)
+    t0 = time.time()
+    rn, act = s.useDist(20000)
+    print(time.time() - t0, "秒")
+    if rn < 0:
+        return
+    # 上の全面
     s = Search(rn, COMP_TOP_NUMS, 1, 0)
     t0 = time.time()
     rn, act = s.useDist(30000)
@@ -904,6 +914,4 @@ if __name__ == "__main__":
     # COMP_TOP_NUMS = switchColorList(COMP_TOP_NUMS, 3)
     # r = Rubik(num2cube(COMP_TOP_NUMS[0]))
     # print(r)
-    # main()
-    for i in TOP_PATTERN_NUMS:
-        print(Rubik(num2cube(i)))
+    main()
