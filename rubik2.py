@@ -783,16 +783,14 @@ def main():
     else:
         return
     changeMidNums(color)
-    s = Search(r1.num, CROSS_MID_ONE_NUMS, 2)
-    t0 = time.time()
-    r2, act2 = s.useDist(13000)
-    print(time.time() - t0, "秒")
-    if r2.num < 0:
-        return
-    s = Search(r2.num, CROSS_MID_ONE_NUMS, 2, 1)
-    t0 = time.time()
-    s.useDist(13000)
-    print(time.time() - t0, "秒")    
+    r = r1.copy()
+    for i in range(4):
+        s = Search(r.num, CROSS_MID_ONE_NUMS, 2, i)
+        t0 = time.time()
+        r, act = s.useDist(13000)
+        print(time.time() - t0, "秒")
+        if r.num < 0:
+            return
 
 if __name__ == "__main__":
     main()
