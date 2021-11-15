@@ -858,7 +858,7 @@ def init():
     global CROSS_MID_ONE_NUMS, CROSS_TOP_NUMS, COMP_TOP_NUMS
     global TOP_PATTERN_NUMS, COMP_TOP_CORNER_NUMS
     global ACTIONS_C_LIST_LIST, ACTIONS_C_DASH_LIST_LIST
-    global ACTIONS_D_LIST_LSIT
+    global ACTIONS_D_LIST_LSIT, ACTIONS_E_LIST_LIST
     COMP_ONE_SIDE_NUMS, COMP_ONE_SIDE_NUM_MASKS = makeAllColorCubeList(COMP_0)
     CROSS_ONE_SIDE_NUMS, CROSS_ONE_SIDE_NUM_MASKS = makeAllColorCubeList(CROSS_0)
     # 4種類の側面の辺
@@ -886,14 +886,14 @@ def init():
     # 動作関係
     # C, C', D, E の各方向4パターン (初期値白基準)
     ACTIONS_C_LIST_LIST = [ACTIONS_C_LIST]
+    ACTIONS_C_DASH_LIST_LIST = [ACTIONS_C_DASH_LIST]
+    ACTIONS_D_LIST_LSIT = [ACTIONS_D_LIST]
+    ACTIONS_E_LIST_LIST = [ACTIONS_E_LIST]
     for _ in range(3):
         ACTIONS_C_LIST_LIST.append(switch0to7Acts(ACTIONS_C_LIST_LIST[-1]))
-    ACTIONS_C_DASH_LIST_LIST = [ACTIONS_C_DASH_LIST]
-    for _ in range(3):
         ACTIONS_C_DASH_LIST_LIST.append(switch0to7Acts(ACTIONS_C_DASH_LIST_LIST[-1]))
-    ACTIONS_D_LIST_LSIT = [ACTIONS_D_LIST]
-    for _ in range(3):
         ACTIONS_D_LIST_LSIT.append(switch0to7Acts(ACTIONS_D_LIST_LSIT[-1]))
+        ACTIONS_E_LIST_LIST.append(switch0to7Acts(ACTIONS_E_LIST_LIST[-1]))
 
 init()
 
@@ -976,5 +976,6 @@ if __name__ == "__main__":
     r = Rubik(COMPLETE)
     # print(ACTIONS_C_LIST_LIST)
     # ACTIONS_C_DASH_LIST_LIST = switchColorAct(ACTIONS_C_DASH_LIST_LIST, 4)
-    ACTIONS_D_LIST_LSIT = switchColorAct(ACTIONS_D_LIST_LSIT, 5)
-    print(r.actionByList(ACTIONS_D_LIST_LSIT[1]))
+    # ACTIONS_D_LIST_LSIT = switchColorAct(ACTIONS_D_LIST_LSIT, 5)
+    ACTIONS_E_LIST_LIST = switchColorAct(ACTIONS_E_LIST_LIST, 1)
+    print(r.actionByList(ACTIONS_E_LIST_LIST[2]))
