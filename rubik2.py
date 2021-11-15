@@ -127,6 +127,8 @@ SAMPLE_RED_CROSS = 0x22c5282245607230e8ac34ab66134a40ba52
 # 白の一面と中間層
 SAMPLE_WHITE_SIDE_MID = 0x4ed36a76492474b6dbb0a4928a9249000000
 
+CROSS_MID_ONE_NUMS = []
+
 JPN_COLOR = ["白", "赤", "黄", "橙", "緑", "青", "黒", "ー"]
 
 DIC_0TO1 = {0: 1, 1: 5, 5: 3, 3: 0, 2: 2, 4: 4, 7: 7}
@@ -779,28 +781,10 @@ def switchColorList(rn_list, color):
         r_list = [r.switch1to2() for r in r_list]
     return [r.num for r in r_list]
 
-
-# 最初にそろえた十字の色に応じてCROSS_MID_ONE_NUMSを変更
-def changeMidNums(color):
-    global CROSS_MID_ONE_NUMS
-    # 白は何もしない
-    if color == 0:
-        return
-    # 白以外
-    r_list = [Rubik(num2cube(rn)).switch0to1() for rn in CROSS_MID_ONE_NUMS]
-    # 青
-    if color == 5:
-        CROSS_MID_ONE_NUMS = [r.switch0to1().num for r in r_list]
-        return
-    # 赤, 黄, 橙, 緑
-    for _ in range(color - 1):
-        r_list = [r.switch1to2() for r in r_list]
-    CROSS_MID_ONE_NUMS = [r.num for r in r_list]
-
 def init():
     global COMP_ONE_SIDE_NUMS, COMP_ONE_SIDE_NUM_MASKS
     global CROSS_ONE_SIDE_NUMS, CROSS_ONE_SIDE_NUM_MASKS
-    global CROSS_MID_ONE_NUMS
+    global CROSS_MID_ONE_NUMS, CROSS_TOP_NUMS
     COMP_ONE_SIDE_NUMS, COMP_ONE_SIDE_NUM_MASKS = makeAllColorCubeList(COMP_0)
     CROSS_ONE_SIDE_NUMS, CROSS_ONE_SIDE_NUM_MASKS = makeAllColorCubeList(CROSS_0)
     # 4種類の側面の辺
@@ -808,10 +792,12 @@ def init():
     for i in range(3):
         r_list.append(r_list[i].switch1to2())
     CROSS_MID_ONE_NUMS = [r.num for r in r_list]
+    CROSS_TOP_NUMS = [Rubik(CROSS_TOP).num]
 
 init()
 
 def main():
+    global CROSS_MID_ONE_NUMS, CROSS_TOP_NUMS
     # r0 = Rubik(SAMPLE01)
     r0 = Rubik(num2cube(SAMPLE_WHITE_SIDE_MID))
     if not r0.checkSum():
@@ -835,7 +821,8 @@ def main():
         return
     # 変更
     # changeMidNums(color)
-    switchColorList(CROSS_MID_ONE_NUMS, color)
+    CROSS_MID_ONE_NUMS = switchColorList(CROSS_MID_ONE_NUMS, color)
+    CROSS_TOP_NUMS = switchColorList(CROSS_TOP_NUMS, color)
     rn = rn1
     for i in range(4):
         s = Search(rn, CROSS_MID_ONE_NUMS, 1, i)
@@ -844,12 +831,16 @@ def main():
         print(time.time() - t0, "秒")
         if rn < 0:
             return
+    s = Search(rn, CROSS_TOP_NUMS, 1, 0)
+    t0 = time.time()
+    rn, act = s.useDist(20000)
+    print(time.time() - t0, "秒")
+    if rn < 0:
+        return
+
 
 if __name__ == "__main__":
-    # main()
-    CROSS_MID_ONE_NUMS = switchColorList(CROSS_MID_ONE_NUMS, 5)
-    for i in CROSS_MID_ONE_NUMS:
-        print(Rubik(num2cube(i)))
+    main()
     # r = Rubik(COMP_TOP)
     # r = Rubik(num2cube(SAMPLE_WHITE_SIDE_MID))
     # print(r)
