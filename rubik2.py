@@ -159,6 +159,9 @@ SAMPLE_RED_CROSS = 0x22c5282245607230e8ac34ab66134a40ba52
 # 白の一面と中間層
 SAMPLE_WHITE_SIDE_MID = 0x4ed36a76492474b6dbb0a4928a9249000000
 
+# ほぼ最終局面
+SAMPLE_FINAL_01 = 0x74daad8ec92446b6db8aa492709249000000
+
 JPN_COLOR = ["白", "赤", "黄", "橙", "緑", "青", "黒", "ー"]
 
 DIC_0TO1 = {0: 1, 1: 5, 5: 3, 3: 0, 2: 2, 4: 4, 7: 7}
@@ -803,7 +806,7 @@ class Search:
     # 色が一致している数を計算
     # 与えるのはキューブの数値
     # don't care を含むキューブは第二引数に与える
-    def _calcDist(crnt, dest):
+    def _calcDist(self, crnt, dest):
         diff = crnt ^ dest
         dist = 0
         for _ in range(48):
@@ -905,7 +908,7 @@ init()
 
 def main():
     global CROSS_MID_ONE_NUMS, CROSS_TOP_NUMS, COMP_TOP_NUMS, TOP_PATTERN_NUMS
-    global COMP_TOP_CORNER_NUMS
+    global COMP_TOP_CORNER_NUMS, REMAIN_TOP_ROT_LIST
     r0 = Rubik(num2cube(SAMPLE_WHITE_SIDE_MID))
     if not r0.checkSum():
         return
@@ -933,6 +936,7 @@ def main():
     COMP_TOP_NUMS = switchColorList(COMP_TOP_NUMS, color)
     TOP_PATTERN_NUMS = switchColorList(TOP_PATTERN_NUMS, color)
     COMP_TOP_CORNER_NUMS = switchColorList(COMP_TOP_CORNER_NUMS, color)
+    REMAIN_TOP_ROT_LIST = switchColorList(REMAIN_TOP_ROT_LIST, color)
     rn = rn1
     for i in range(4):
         s = Search(rn, CROSS_MID_ONE_NUMS, 1, i)
@@ -969,6 +973,13 @@ def main():
     # print(time.time() - t0, "秒")
     # if rn < 0:
     #     return
+    # ほぼ全面
+    s = Search(rn, REMAIN_TOP_ROT_LIST, 2, 0)
+    t0 = time.time()
+    rn, act = s.useDist(30000)
+    print(time.time() - t0, "秒")
+    if rn < 0:
+        return
     # # 全面
     # s = Search(rn, [COMPLETE_NUM], 1, 0)
     # t0 = time.time()
@@ -978,13 +989,4 @@ def main():
     #     return
 
 if __name__ == "__main__":
-    # main()
-    r = Rubik(COMPLETE)
-    # print(ACTIONS_C_LIST_LIST)
-    # ACTIONS_C_DASH_LIST_LIST = switchColorAct(ACTIONS_C_DASH_LIST_LIST, 4)
-    # ACTIONS_D_LIST_LSIT = switchColorAct(ACTIONS_D_LIST_LSIT, 5)
-    # ACTIONS_E_LIST_LIST = switchColorAct(ACTIONS_E_LIST_LIST, 1)
-    # print(r.actionByList(ACTIONS_E_LIST_LIST[2]))
-    REMAIN_TOP_ROT_LIST = switchColorList(REMAIN_TOP_ROT_LIST, 2)
-    for i in REMAIN_TOP_ROT_LIST:
-        print(Rubik(num2cube(i)))
+    main()
