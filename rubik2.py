@@ -232,6 +232,16 @@ class Rubik:
         self.cube = self._cubeCopy(cube)
         # インスタンス作成と同時に数値変換も行う
         self.num = self._cube2num(self.cube)
+        # 動作のリストを作成
+        # 格納した添え字を各操作の番号とする
+        self.acts_list = [
+            self.leftRollPlus, self.leftRollMinus,
+            self.rightRollPlus, self.rightRollMinus,
+            self.backPitchPlus, self.backPitchMinus,
+            self.frontPitchPlus, self.frontPitchMinus,
+            self.upYawPlus, self.upYawMinus,
+            self.downYawPlus, self.downYawMinus
+        ]
     
     # インスタンスのコピー
     # 恒等写像 (何も操作しない) とみなせるかも
@@ -547,16 +557,8 @@ class Rubik:
         return self._downYawMinus(self.cube)
     
     # 12種類の操作を行ったあとのキューブのリスト
-    # 格納した添え字を各操作の番号とする
     def allActions(self):
-        return [
-            self.leftRollPlus(), self.leftRollMinus(),
-            self.rightRollPlus(), self.rightRollMinus(),
-            self.backPitchPlus(), self.backPitchMinus(),
-            self.frontPitchPlus(), self.frontPitchMinus(),
-            self.upYawPlus(), self.upYawMinus(),
-            self.downYawPlus(), self.downYawMinus()
-        ]
+        return [i() for i in self.acts_list]
 
     # 数値変換
     # 若い添え字の値が下位ビットになるように変換
