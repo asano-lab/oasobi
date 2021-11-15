@@ -54,6 +54,17 @@ CROSS_TOP = [
     [7, 5, 7, 5, 5, 7, 5, 7]
 ]
 
+# 白を基準に中間層が揃っている
+# かつ, 青の一面が揃っている
+COMP_TOP = [
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 1, 7, 7, 7],
+    [2, 2, 2, 2, 2, 7, 7, 7],
+    [3, 3, 3, 3, 3, 7, 7, 7],
+    [4, 4, 4, 4, 4, 7, 7, 7],
+    [5, 5, 5, 5, 5, 5, 5, 5]
+]
+
 # デバッグ用サンプル状態
 # SAMPLE01 = [
 #     [3, 3, 2, 2, 4, 1, 0, 3],
@@ -112,6 +123,9 @@ SAMPLE02 = [
 
 # 赤の十字
 SAMPLE_RED_CROSS = 0x22c5282245607230e8ac34ab66134a40ba52
+
+# 白の一面と中間層
+SAMPLE_WHITE_SIDE_MID = 0x4ed36a76492474b6dbb0a4928a9249000000
 
 JPN_COLOR = ["白", "赤", "黄", "橙", "緑", "青", "黒", "ー"]
 
@@ -618,6 +632,8 @@ class Search:
         self.act_weight = act_weight
         self.explored = []
         self.match_num = match_num
+        # 初期値
+        self.init_cube = cube_num
         # 初期値の距離を計算 (不要だがデバッグのため)
         # crnt_dist = self.calcMinDist(cube_num)
         crnt_dist = self.calcDistMatchNum(cube_num)
@@ -637,7 +653,7 @@ class Search:
     # とりあえずループ数だけ繰り返す
     def useDist(self, loop):
         if self.min_dist == 0:
-            return
+            return (self.init_cube, tuple())
         for i in range(loop):
             while not self.unexplored[self.min_dist]:
                 self.unexplored.pop(self.min_dist)
@@ -781,8 +797,8 @@ def init():
 init()
 
 def main():
-    r0 = Rubik(SAMPLE01)
-    # r0 = Rubik(num2cube(SAMPLE_RED_CROSS))
+    # r0 = Rubik(SAMPLE01)
+    r0 = Rubik(num2cube(SAMPLE_WHITE_SIDE_MID))
     if not r0.checkSum():
         return
     # 初期状態
@@ -813,9 +829,10 @@ def main():
             return
 
 if __name__ == "__main__":
-    # main()
-    r = Rubik(CROSS_TOP)
-    print(r)
+    main()
+    # r = Rubik(COMP_TOP)
+    # r = Rubik(num2cube(SAMPLE_WHITE_SIDE_MID))
+    # print(r)
     # changeMidNums(1)
     # for i in CROSS_MID_ONE_NUMS:
     #     r = Rubik(num2cube(i))
