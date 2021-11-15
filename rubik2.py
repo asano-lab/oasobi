@@ -115,7 +115,7 @@ COMP_TOP_CORNER = [
     [5, 5, 5, 5, 5, 5, 5, 5]
 ]
 
-ACTIONS_C_LIST = [1, 8, 0, 8, 1, 8, 8, 0]
+ACTIONS_C_LIST = [1, 9, 0, 9, 1, 9, 9, 0]
 
 # デバッグ用サンプル状態
 # SAMPLE01 = [
@@ -187,8 +187,6 @@ SAMPLE_RED_CROSS = 0x22c5282245607230e8ac34ab66134a40ba52
 
 # 白の一面と中間層
 SAMPLE_WHITE_SIDE_MID = 0x4ed36a76492474b6dbb0a4928a9249000000
-
-CROSS_MID_ONE_NUMS = []
 
 JPN_COLOR = ["白", "赤", "黄", "橙", "緑", "青", "黒", "ー"]
 
