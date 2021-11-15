@@ -172,6 +172,8 @@ DIC_ROT_R = {0: 2, 2: 7, 7: 5, 5: 0, 1: 4, 4: 6, 6: 3, 3: 1}
 # Z軸回りの動作は等価
 ACT_DIC_0TO7 = {0: 7, 7: 3, 3: 4, 4: 0, 1: 6, 6: 2, 2: 5, 5: 1, 8: 8, 9: 9, 10: 10, 11: 11}
 
+ACT_DIC_4TO8 = {4: 8, 8: 7, 7: 11, 11: 4, 5: 9, 9: 6, 6: 10, 10: 5, 0: 0, 1: 1, 2: 2, 3: 3}
+
 ACT_STR = ["lp", "lm", "rp", "rm", "bp", "bm", "fp", "fm", "up", "um", "dp", "dm"]
 
 CORNERS = [0, 2, 5, 7]
@@ -213,6 +215,10 @@ def calcDist(crnt, dest):
 # 赤 -> 黄 -> 橙 -> 緑 -> 赤
 def switch0to7Acts(a_list):
     return [ACT_DIC_0TO7[a] for a in a_list]
+
+# 白 -> 赤 -> 青 -> 橙 -> 白
+def swith4to8Acts(a_list):
+    return [ACT_DIC_4TO8[a] for a in a_list]
 
 class Rubik:
 
@@ -832,12 +838,26 @@ def switchColorList(rn_list, color):
         r_list = [r.switch1to2() for r in r_list]
     return [r.num for r in r_list]
 
+# 動作を色によって変更
+def switchColorAct(a_list_list, color):
+    # 白
+    if color == 0:
+        return a_list_list
+    a_list_list = [swith4to8Acts(a_list) for a_list in a_list_list]
+    # 青
+    if color == 5:
+        return [swith4to8Acts(a_list) for a_list in a_list_list]
+    # 赤, 黄, 橙, 緑
+    for _ in range(color - 1):
+        a_list_list = [switch0to7Acts(a_list) for a_list in a_list_list]
+    return a_list_list
+
 def init():
     global COMP_ONE_SIDE_NUMS, COMP_ONE_SIDE_NUM_MASKS
     global CROSS_ONE_SIDE_NUMS, CROSS_ONE_SIDE_NUM_MASKS
     global CROSS_MID_ONE_NUMS, CROSS_TOP_NUMS, COMP_TOP_NUMS
     global TOP_PATTERN_NUMS, COMP_TOP_CORNER_NUMS
-    global ACTIONS_C_LIST_LIST
+    global ACTIONS_C_LIST_LIST, ACTIONS_C_DASH_LIST_LIST
     COMP_ONE_SIDE_NUMS, COMP_ONE_SIDE_NUM_MASKS = makeAllColorCubeList(COMP_0)
     CROSS_ONE_SIDE_NUMS, CROSS_ONE_SIDE_NUM_MASKS = makeAllColorCubeList(CROSS_0)
     # 4種類の側面の辺
@@ -863,9 +883,13 @@ def init():
     COMP_TOP_CORNER_NUMS = [Rubik(COMP_TOP_CORNER).num]
 
     # 動作関係
+    # C, C', D, E の各方向4パターン (初期値白基準)
     ACTIONS_C_LIST_LIST = [ACTIONS_C_LIST]
     for _ in range(3):
         ACTIONS_C_LIST_LIST.append(switch0to7Acts(ACTIONS_C_LIST_LIST[-1]))
+    ACTIONS_C_DASH_LIST_LIST = [ACTIONS_C_DASH_LIST]
+    for _ in range(3):
+        ACTIONS_C_DASH_LIST_LIST.append(switch0to7Acts(ACTIONS_C_DASH_LIST_LIST[-1]))
 
 init()
 
@@ -944,14 +968,8 @@ def main():
     #     return
 
 if __name__ == "__main__":
-    # COMP_TOP_NUMS = switchColorList(COMP_TOP_NUMS, 3)
-    # r = Rubik(num2cube(COMP_TOP_NUMS[0]))
-    # print(r)
     # main()
     r = Rubik(COMPLETE)
-    # print(r.actionByList(ACTIONS_C_LIST))
-    # print(r.actionByList(ACTIONS_C_DASH_LIST))
-    # print(r.actionByList(ACTIONS_D_LIST))
-    # print(r.actionByList(ACTIONS_E_LIST))
     # print(ACTIONS_C_LIST_LIST)
-    print(r.actionByList(ACTIONS_C_LIST_LIST[2]))
+    ACTIONS_C_DASH_LIST_LIST = switchColorAct(ACTIONS_C_DASH_LIST_LIST, 4)
+    print(r.actionByList(ACTIONS_C_DASH_LIST_LIST[3]))
