@@ -903,7 +903,14 @@ def main():
     if rn < 0:
         return
     # 上の全面
-    s = Search(rn, COMP_TOP_NUMS, 1, 0)
+    s = Search(rn, COMP_TOP_NUMS, 2, 0)
+    t0 = time.time()
+    rn, act = s.useDist(30000)
+    print(time.time() - t0, "秒")
+    if rn < 0:
+        return
+    # 全面
+    s = Search(rn, [COMPLETE_NUM], 0, 0)
     t0 = time.time()
     rn, act = s.useDist(30000)
     print(time.time() - t0, "秒")
