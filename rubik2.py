@@ -105,6 +105,16 @@ COMP_TOP = [
     [5, 5, 5, 5, 5, 5, 5, 5]
 ]
 
+# 角も揃っている
+COMP_TOP_CORNER = [
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 1, 1, 7, 1],
+    [2, 2, 2, 2, 2, 2, 7, 2],
+    [3, 3, 3, 3, 3, 3, 7, 3],
+    [4, 4, 4, 4, 4, 4, 7, 4],
+    [5, 5, 5, 5, 5, 5, 5, 5]
+]
+
 # デバッグ用サンプル状態
 # SAMPLE01 = [
 #     [3, 3, 2, 2, 4, 1, 0, 3],
@@ -824,7 +834,7 @@ def init():
     global COMP_ONE_SIDE_NUMS, COMP_ONE_SIDE_NUM_MASKS
     global CROSS_ONE_SIDE_NUMS, CROSS_ONE_SIDE_NUM_MASKS
     global CROSS_MID_ONE_NUMS, CROSS_TOP_NUMS, COMP_TOP_NUMS
-    global TOP_PATTERN_NUMS
+    global TOP_PATTERN_NUMS, COMP_TOP_CORNER_NUMS
     COMP_ONE_SIDE_NUMS, COMP_ONE_SIDE_NUM_MASKS = makeAllColorCubeList(COMP_0)
     CROSS_ONE_SIDE_NUMS, CROSS_ONE_SIDE_NUM_MASKS = makeAllColorCubeList(CROSS_0)
     # 4種類の側面の辺
@@ -847,11 +857,13 @@ def init():
     for _ in range(3):
         r_list.append(r_list[-1].switch1to2())
     TOP_PATTERN_NUMS = [r.num for r in r_list]
+    COMP_TOP_CORNER_NUMS = [Rubik(COMP_TOP_CORNER).num]
 
 init()
 
 def main():
     global CROSS_MID_ONE_NUMS, CROSS_TOP_NUMS, COMP_TOP_NUMS, TOP_PATTERN_NUMS
+    global COMP_TOP_CORNER_NUMS
     # r0 = Rubik(SAMPLE01)
     r0 = Rubik(num2cube(SAMPLE_WHITE_SIDE_MID))
     if not r0.checkSum():
@@ -879,6 +891,7 @@ def main():
     CROSS_TOP_NUMS = switchColorList(CROSS_TOP_NUMS, color)
     COMP_TOP_NUMS = switchColorList(COMP_TOP_NUMS, color)
     TOP_PATTERN_NUMS = switchColorList(TOP_PATTERN_NUMS, color)
+    COMP_TOP_CORNER_NUMS = switchColorList(COMP_TOP_CORNER_NUMS, color)
     rn = rn1
     for i in range(4):
         s = Search(rn, CROSS_MID_ONE_NUMS, 1, i)
@@ -902,12 +915,19 @@ def main():
     if rn < 0:
         return
     # 上の一面
-    # s = Search(rn, COMP_TOP_NUMS, 2, 0)
-    # t0 = time.time()
-    # rn, act = s.useDist(30000)
-    # print(time.time() - t0, "秒")
-    # if rn < 0:
-    #     return
+    s = Search(rn, COMP_TOP_NUMS, 2, 0)
+    t0 = time.time()
+    rn, act = s.useDist(20000)
+    print(time.time() - t0, "秒")
+    if rn < 0:
+        return
+    # 上の一面と角
+    s = Search(rn, COMP_TOP_CORNER_NUMS, 1, 0)
+    t0 = time.time()
+    rn, act = s.useDist(30000)
+    print(time.time() - t0, "秒")
+    if rn < 0:
+        return
     # 全面
     s = Search(rn, [COMPLETE_NUM], 1, 0)
     t0 = time.time()
