@@ -865,7 +865,14 @@ def main():
     global CROSS_MID_ONE_NUMS, CROSS_TOP_NUMS, COMP_TOP_NUMS, TOP_PATTERN_NUMS
     global COMP_TOP_CORNER_NUMS
     # r0 = Rubik(SAMPLE01)
-    r0 = Rubik(num2cube(SAMPLE_WHITE_SIDE_MID))
+    cube = [[2,4,0,2,0,4,0,5],
+            [5,3,1,1,3,3,5,4],
+            [4,1,1,2,4,0,2,2],
+            [2,0,5,5,1,5,5,2],
+            [3,0,3,4,5,0,3,4],
+            [0,2,1,4,1,3,3,1]]
+    # r0 = Rubik(num2cube(SAMPLE_WHITE_SIDE_MID))
+    r0 = Rubik(cube)
     if not r0.checkSum():
         return
     # 初期状態
