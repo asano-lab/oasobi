@@ -713,7 +713,6 @@ class Search:
                     if nr.num in known:
                         continue
                 # 最短距離を計算
-                # dist = self.calcMinDist(nr.num)
                 dist = self.calcDistMatchNum(nr.num)
                 # 一致したら終了
                 if dist == 0:
@@ -740,7 +739,7 @@ class Search:
                     self.num_known_states += 1
             # 探索済みは数値だけ格納
             self.explored.append(k)
-            if i % 1000 == 0:
+            if i % 1000 == 999:
                 print("ループ数：", i)
                 print("総状態数：", self.num_known_states)
         return (-1, -1)
@@ -902,15 +901,15 @@ def main():
     print(time.time() - t0, "秒")
     if rn < 0:
         return
-    # 上の全面
-    s = Search(rn, COMP_TOP_NUMS, 2, 0)
-    t0 = time.time()
-    rn, act = s.useDist(30000)
-    print(time.time() - t0, "秒")
-    if rn < 0:
-        return
+    # 上の一面
+    # s = Search(rn, COMP_TOP_NUMS, 2, 0)
+    # t0 = time.time()
+    # rn, act = s.useDist(30000)
+    # print(time.time() - t0, "秒")
+    # if rn < 0:
+    #     return
     # 全面
-    s = Search(rn, [COMPLETE_NUM], 0, 0)
+    s = Search(rn, [COMPLETE_NUM], 1, 0)
     t0 = time.time()
     rn, act = s.useDist(30000)
     print(time.time() - t0, "秒")
