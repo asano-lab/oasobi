@@ -167,6 +167,11 @@ DIC_1TO2 = {1: 2, 2: 3, 3: 4, 4: 1, 0: 0, 5: 5, 7: 7}
 
 DIC_ROT_R = {0: 2, 2: 7, 7: 5, 5: 0, 1: 4, 4: 6, 6: 3, 3: 1}
 
+# 操作の変換
+# 赤正面 -> 黄色正面
+# Z軸回りの動作は等価
+ACT_DIC_0TO7 = {0: 7, 7: 3, 3: 4, 4: 0, 1: 6, 6: 2, 2: 5, 5: 1, 8: 8, 9: 9, 10: 10, 11: 11}
+
 ACT_STR = ["lp", "lm", "rp", "rm", "bp", "bm", "fp", "fm", "up", "um", "dp", "dm"]
 
 CORNERS = [0, 2, 5, 7]
@@ -204,6 +209,10 @@ def calcDist(crnt, dest):
         diff >>= 3
         dest >>= 3
     return dist
+
+# 赤 -> 黄 -> 橙 -> 緑 -> 赤
+def switch0to7Acts(a_list):
+    return [ACT_DIC_0TO7[a] for a in a_list]
 
 class Rubik:
 
@@ -828,6 +837,7 @@ def init():
     global CROSS_ONE_SIDE_NUMS, CROSS_ONE_SIDE_NUM_MASKS
     global CROSS_MID_ONE_NUMS, CROSS_TOP_NUMS, COMP_TOP_NUMS
     global TOP_PATTERN_NUMS, COMP_TOP_CORNER_NUMS
+    global ACTIONS_C_LIST_LIST
     COMP_ONE_SIDE_NUMS, COMP_ONE_SIDE_NUM_MASKS = makeAllColorCubeList(COMP_0)
     CROSS_ONE_SIDE_NUMS, CROSS_ONE_SIDE_NUM_MASKS = makeAllColorCubeList(CROSS_0)
     # 4種類の側面の辺
@@ -851,6 +861,11 @@ def init():
         r_list.append(r_list[-1].switch1to2())
     TOP_PATTERN_NUMS = [r.num for r in r_list]
     COMP_TOP_CORNER_NUMS = [Rubik(COMP_TOP_CORNER).num]
+
+    # 動作関係
+    ACTIONS_C_LIST_LIST = [ACTIONS_C_LIST]
+    for _ in range(3):
+        ACTIONS_C_LIST_LIST.append(switch0to7Acts(ACTIONS_C_LIST_LIST[-1]))
 
 init()
 
@@ -937,4 +952,6 @@ if __name__ == "__main__":
     # print(r.actionByList(ACTIONS_C_LIST))
     # print(r.actionByList(ACTIONS_C_DASH_LIST))
     # print(r.actionByList(ACTIONS_D_LIST))
-    print(r.actionByList(ACTIONS_E_LIST))
+    # print(r.actionByList(ACTIONS_E_LIST))
+    # print(ACTIONS_C_LIST_LIST)
+    print(r.actionByList(ACTIONS_C_LIST_LIST[2]))
