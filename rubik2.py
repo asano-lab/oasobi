@@ -54,6 +54,26 @@ CROSS_TOP = [
     [7, 5, 7, 5, 5, 7, 5, 7]
 ]
 
+# パターンC
+PATTERN_C_12 = [
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 1, 7, 7, 5],
+    [2, 2, 2, 2, 2, 7, 7, 7],
+    [3, 3, 3, 3, 3, 7, 7, 5],
+    [4, 4, 4, 4, 4, 7, 7, 5],
+    [7, 5, 7, 5, 5, 7, 5, 5]
+]
+
+# パターンC'
+PATTERN_C_DASH_12 = [
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 1, 5, 7, 7],
+    [2, 2, 2, 2, 2, 5, 7, 7],
+    [3, 3, 3, 3, 3, 5, 7, 7],
+    [4, 4, 4, 4, 4, 7, 7, 7],
+    [7, 5, 7, 5, 5, 5, 5, 7]
+]
+
 # 白を基準に中間層が揃っている
 # かつ, 青の一面が揃っている
 COMP_TOP = [
@@ -784,7 +804,8 @@ def switchColorList(rn_list, color):
 def init():
     global COMP_ONE_SIDE_NUMS, COMP_ONE_SIDE_NUM_MASKS
     global CROSS_ONE_SIDE_NUMS, CROSS_ONE_SIDE_NUM_MASKS
-    global CROSS_MID_ONE_NUMS, CROSS_TOP_NUMS
+    global CROSS_MID_ONE_NUMS, CROSS_TOP_NUMS, COMP_TOP_NUMS
+    global TOP_PATTERN_NUMS
     COMP_ONE_SIDE_NUMS, COMP_ONE_SIDE_NUM_MASKS = makeAllColorCubeList(COMP_0)
     CROSS_ONE_SIDE_NUMS, CROSS_ONE_SIDE_NUM_MASKS = makeAllColorCubeList(CROSS_0)
     # 4種類の側面の辺
@@ -793,11 +814,19 @@ def init():
         r_list.append(r_list[i].switch1to2())
     CROSS_MID_ONE_NUMS = [r.num for r in r_list]
     CROSS_TOP_NUMS = [Rubik(CROSS_TOP).num]
+    COMP_TOP_NUMS = [Rubik(COMP_TOP).num]
+    r_list = [Rubik(PATTERN_C_12)]
+    for _ in range(3):
+        r_list.append(r_list[-1].switch1to2())
+    r_list.append(Rubik(PATTERN_C_DASH_12))
+    for _ in range(3):
+        r_list.append(r_list[-1].switch1to2())
+    TOP_PATTERN_NUMS = [r.num for r in r_list]
 
 init()
 
 def main():
-    global CROSS_MID_ONE_NUMS, CROSS_TOP_NUMS
+    global CROSS_MID_ONE_NUMS, CROSS_TOP_NUMS, COMP_TOP_NUMS
     # r0 = Rubik(SAMPLE01)
     r0 = Rubik(num2cube(SAMPLE_WHITE_SIDE_MID))
     if not r0.checkSum():
@@ -823,6 +852,7 @@ def main():
     # changeMidNums(color)
     CROSS_MID_ONE_NUMS = switchColorList(CROSS_MID_ONE_NUMS, color)
     CROSS_TOP_NUMS = switchColorList(CROSS_TOP_NUMS, color)
+    COMP_TOP_NUMS = switchColorList(COMP_TOP_NUMS, color)
     rn = rn1
     for i in range(4):
         s = Search(rn, CROSS_MID_ONE_NUMS, 1, i)
@@ -837,14 +867,17 @@ def main():
     print(time.time() - t0, "秒")
     if rn < 0:
         return
-
+    s = Search(rn, COMP_TOP_NUMS, 1, 0)
+    t0 = time.time()
+    rn, act = s.useDist(30000)
+    print(time.time() - t0, "秒")
+    if rn < 0:
+        return
 
 if __name__ == "__main__":
-    main()
-    # r = Rubik(COMP_TOP)
-    # r = Rubik(num2cube(SAMPLE_WHITE_SIDE_MID))
+    # COMP_TOP_NUMS = switchColorList(COMP_TOP_NUMS, 3)
+    # r = Rubik(num2cube(COMP_TOP_NUMS[0]))
     # print(r)
-    # changeMidNums(1)
-    # for i in CROSS_MID_ONE_NUMS:
-    #     r = Rubik(num2cube(i))
-    #     print(r)
+    # main()
+    for i in TOP_PATTERN_NUMS:
+        print(Rubik(num2cube(i)))
