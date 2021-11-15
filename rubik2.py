@@ -198,20 +198,6 @@ def printActs(acts):
             moji += ", "
     print(moji)
 
-# 色が一致している数を計算
-# 与えるのはキューブの数値
-# don't care を含むキューブは第二引数に与える
-def calcDist(crnt, dest):
-    diff = crnt ^ dest
-    dist = 0
-    for _ in range(48):
-        # don't careでなく, 一致しない場合は加算
-        if dest & 0b111 != 0b111 and diff & 0b111:
-            dist += 1
-        diff >>= 3
-        dest >>= 3
-    return dist
-
 # 赤 -> 黄 -> 橙 -> 緑 -> 赤
 def switch0to7Acts(a_list):
     return [ACT_DIC_0TO7[a] for a in a_list]
@@ -802,7 +788,7 @@ class Search:
     def calcMinDist(self, cube_num):
         min_dist = 50
         for g in self.goal:
-            dist = calcDist(cube_num, g)
+            dist = self._calcDist(cube_num, g)
             if dist < min_dist:
                 min_dist = dist
         return min_dist
@@ -810,9 +796,23 @@ class Search:
     # 使用する添え字を指定
     # self.match_num == 0 なら calcMinDist と同じ
     def calcDistMatchNum(self, cube_num):
-        dists = [calcDist(cube_num, g) for g in self.goal]
+        dists = [self._calcDist(cube_num, g) for g in self.goal]
         dists.sort()
         return dists[self.match_num]
+    
+    # 色が一致している数を計算
+    # 与えるのはキューブの数値
+    # don't care を含むキューブは第二引数に与える
+    def _calcDist(crnt, dest):
+        diff = crnt ^ dest
+        dist = 0
+        for _ in range(48):
+            # don't careでなく, 一致しない場合は加算
+            if dest & 0b111 != 0b111 and diff & 0b111:
+                dist += 1
+            diff >>= 3
+            dest >>= 3
+        return dist
 
 # 白基準のキューブから全ての色の等価なキューブのリストを作成
 # ついでにマスクも
@@ -858,6 +858,7 @@ def init():
     global CROSS_MID_ONE_NUMS, CROSS_TOP_NUMS, COMP_TOP_NUMS
     global TOP_PATTERN_NUMS, COMP_TOP_CORNER_NUMS
     global ACTIONS_C_LIST_LIST, ACTIONS_C_DASH_LIST_LIST
+    global ACTIONS_D_LIST_LSIT
     COMP_ONE_SIDE_NUMS, COMP_ONE_SIDE_NUM_MASKS = makeAllColorCubeList(COMP_0)
     CROSS_ONE_SIDE_NUMS, CROSS_ONE_SIDE_NUM_MASKS = makeAllColorCubeList(CROSS_0)
     # 4種類の側面の辺
@@ -890,6 +891,9 @@ def init():
     ACTIONS_C_DASH_LIST_LIST = [ACTIONS_C_DASH_LIST]
     for _ in range(3):
         ACTIONS_C_DASH_LIST_LIST.append(switch0to7Acts(ACTIONS_C_DASH_LIST_LIST[-1]))
+    ACTIONS_D_LIST_LSIT = [ACTIONS_D_LIST]
+    for _ in range(3):
+        ACTIONS_D_LIST_LSIT.append(switch0to7Acts(ACTIONS_D_LIST_LSIT[-1]))
 
 init()
 
@@ -971,5 +975,6 @@ if __name__ == "__main__":
     # main()
     r = Rubik(COMPLETE)
     # print(ACTIONS_C_LIST_LIST)
-    ACTIONS_C_DASH_LIST_LIST = switchColorAct(ACTIONS_C_DASH_LIST_LIST, 4)
-    print(r.actionByList(ACTIONS_C_DASH_LIST_LIST[3]))
+    # ACTIONS_C_DASH_LIST_LIST = switchColorAct(ACTIONS_C_DASH_LIST_LIST, 4)
+    ACTIONS_D_LIST_LSIT = switchColorAct(ACTIONS_D_LIST_LSIT, 5)
+    print(r.actionByList(ACTIONS_D_LIST_LSIT[1]))
