@@ -121,6 +121,8 @@ ACTIONS_C_DASH_LIST = [3, 8, 2, 8, 3, 8, 8, 2]
 
 ACTIONS_D_LIST = [1, 9, 0, 8, 3, 9, 1, 8, 0, 2]
 
+ACTIONS_E_LIST = [1, 3, 8, 2, 9, 0, 8, 3, 9, 2]
+
 # デバッグ用サンプル状態
 
 # SAMPLE01 = [
@@ -934,4 +936,5 @@ if __name__ == "__main__":
     r = Rubik(COMPLETE)
     # print(r.actionByList(ACTIONS_C_LIST))
     # print(r.actionByList(ACTIONS_C_DASH_LIST))
-    print(r.actionByList(ACTIONS_D_LIST))
+    # print(r.actionByList(ACTIONS_D_LIST))
+    print(r.actionByList(ACTIONS_E_LIST))
