@@ -74,6 +74,26 @@ PATTERN_C_DASH_12 = [
     [7, 5, 7, 5, 5, 5, 5, 7]
 ]
 
+# パターンD
+PATTREN_D_12 = [
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 1, 7, 7, 5],
+    [2, 2, 2, 2, 2, 7, 7, 7],
+    [3, 3, 3, 3, 3, 5, 7, 7],
+    [4, 4, 4, 4, 4, 7, 7, 7],
+    [5, 5, 7, 5, 5, 5, 5, 7]
+]
+
+# パターンE
+PATTERN_E_12 = [
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 1, 7, 7, 7],
+    [2, 2, 2, 2, 2, 5, 7, 7],
+    [3, 3, 3, 3, 3, 7, 7, 5],
+    [4, 4, 4, 4, 4, 7, 7, 7],
+    [5, 5, 7, 5, 5, 7, 5, 5]
+]
+
 # 白を基準に中間層が揃っている
 # かつ, 青の一面が揃っている
 COMP_TOP = [
@@ -819,6 +839,12 @@ def init():
     for _ in range(3):
         r_list.append(r_list[-1].switch1to2())
     r_list.append(Rubik(PATTERN_C_DASH_12))
+    for _ in range(3):
+        r_list.append(r_list[-1].switch1to2())
+    r_list.append(Rubik(PATTREN_D_12))
+    for _ in range(3):
+        r_list.append(r_list[-1].switch1to2())
+    r_list.append(Rubik(PATTERN_E_12))
     for _ in range(3):
         r_list.append(r_list[-1].switch1to2())
     TOP_PATTERN_NUMS = [r.num for r in r_list]
