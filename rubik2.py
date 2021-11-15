@@ -1032,6 +1032,8 @@ def main():
     # if rn < 0:
     #     return
     # ほぼ全面
+    for i in REMAIN_TOP_ROT_LIST:
+        print(Rubik(num2cube(i)))
     s = Search(rn, REMAIN_TOP_ROT_LIST)
     t0 = time.time()
     rn, act = s.bfsFinal(10000)
