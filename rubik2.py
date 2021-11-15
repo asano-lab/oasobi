@@ -115,6 +115,8 @@ COMP_TOP_CORNER = [
     [5, 5, 5, 5, 5, 5, 5, 5]
 ]
 
+ACTIONS_C_LIST = [1, 8, 0, 8, 1, 8, 8, 0]
+
 # デバッグ用サンプル状態
 # SAMPLE01 = [
 #     [3, 3, 2, 2, 4, 1, 0, 3],
@@ -573,6 +575,13 @@ class Rubik:
     def anyAction(self, act_num):
         return self.acts_list[act_num]()
 
+    # 複数の動作を行う
+    def actionByList(self, a_list):
+        r = self.copy()
+        for a in a_list:
+            r = r.anyAction(a)
+        return r
+
     # 数値変換
     # 若い添え字の値が下位ビットになるように変換
     # 各3bit
@@ -954,4 +963,6 @@ if __name__ == "__main__":
     # COMP_TOP_NUMS = switchColorList(COMP_TOP_NUMS, 3)
     # r = Rubik(num2cube(COMP_TOP_NUMS[0]))
     # print(r)
-    main()
+    # main()
+    r = Rubik(COMPLETE)
+    print(r.actionByList(ACTIONS_C_LIST))
