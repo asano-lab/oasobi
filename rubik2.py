@@ -765,6 +765,21 @@ def makeAllColorCubeList(white_cube):
     r_list.append(r_list[1].switch0to1())
     return [r.num for r in r_list], [r.getMask() for r in r_list]
 
+# リストの数値すべての色を変換
+def switchColorList(rn_list, color):
+    # 白
+    if color == 0:
+        return rn_list
+    r_list = [Rubik(num2cube(rn)).switch0to1() for rn in rn_list]
+    # 青
+    if color == 5:
+        return [r.switch0to1().num for r in r_list]
+    # 赤, 黄, 橙, 緑
+    for _ in range(color - 1):
+        r_list = [r.switch1to2() for r in r_list]
+    return [r.num for r in r_list]
+
+
 # 最初にそろえた十字の色に応じてCROSS_MID_ONE_NUMSを変更
 def changeMidNums(color):
     global CROSS_MID_ONE_NUMS
@@ -778,7 +793,7 @@ def changeMidNums(color):
         CROSS_MID_ONE_NUMS = [r.switch0to1().num for r in r_list]
         return
     # 赤, 黄, 橙, 緑
-    for i in range(color - 1):
+    for _ in range(color - 1):
         r_list = [r.switch1to2() for r in r_list]
     CROSS_MID_ONE_NUMS = [r.num for r in r_list]
 
@@ -818,7 +833,9 @@ def main():
             break
     else:
         return
-    changeMidNums(color)
+    # 変更
+    # changeMidNums(color)
+    switchColorList(CROSS_MID_ONE_NUMS, color)
     rn = rn1
     for i in range(4):
         s = Search(rn, CROSS_MID_ONE_NUMS, 1, i)
@@ -829,7 +846,10 @@ def main():
             return
 
 if __name__ == "__main__":
-    main()
+    # main()
+    CROSS_MID_ONE_NUMS = switchColorList(CROSS_MID_ONE_NUMS, 5)
+    for i in CROSS_MID_ONE_NUMS:
+        print(Rubik(num2cube(i)))
     # r = Rubik(COMP_TOP)
     # r = Rubik(num2cube(SAMPLE_WHITE_SIDE_MID))
     # print(r)
