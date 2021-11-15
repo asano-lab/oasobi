@@ -641,7 +641,7 @@ class Search:
                 if dist == 0:
                     print(nr)
                     printActs(v + (j,))
-                    return (nr, v + (j,))
+                    return (nr.num, v + (j,))
                 # これまでの手数を加える
                 total_dist = dist + (len(v) + 1) * self.act_weight
                 # キーが存在しない場合は追加
@@ -771,25 +771,25 @@ def main():
     # 十字を揃える
     s = Search(r0.num, CROSS_ONE_SIDE_NUMS, 2)
     t0 = time.time()
-    r1, act1 = s.useDist(13000)
+    rn1, act1 = s.useDist(13000)
     print(time.time() - t0, "秒")
-    if r1.num < 0:
+    if rn1 < 0:
         return
     color = 0
     for j, cross in enumerate(CROSS_ONE_SIDE_NUMS):
-        if r1.num | CROSS_ONE_SIDE_NUM_MASKS[j] == cross:
+        if rn1 | CROSS_ONE_SIDE_NUM_MASKS[j] == cross:
             color = j
             break
     else:
         return
     changeMidNums(color)
-    r = r1.copy()
+    rn = rn1
     for i in range(4):
-        s = Search(r.num, CROSS_MID_ONE_NUMS, 2, i)
+        s = Search(rn, CROSS_MID_ONE_NUMS, 1, i)
         t0 = time.time()
-        r, act = s.useDist(13000)
+        rn, act = s.useDist(13000)
         print(time.time() - t0, "秒")
-        if r.num < 0:
+        if rn < 0:
             return
 
 if __name__ == "__main__":
@@ -798,4 +798,3 @@ if __name__ == "__main__":
     # for i in CROSS_MID_ONE_NUMS:
     #     r = Rubik(num2cube(i))
     #     print(r)
-
