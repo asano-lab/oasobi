@@ -179,7 +179,12 @@ ACT_DIC_4TO8 = {4: 8, 8: 7, 7: 11, 11: 4, 5: 9, 9: 6, 6: 10, 10: 5, 0: 0, 1: 1, 
 
 ACT_STR = ["lp", "lm", "rp", "rm", "bp", "bm", "fp", "fm", "up", "um", "dp", "dm"]
 
+ACT_PATTERN_STR = ["C", "C'", "D", "E"]
+
 CORNERS = [0, 2, 5, 7]
+
+# 真逆の色
+INV_COLOR = {0: 5, 1: 3, 2: 4, 3: 1, 4: 2, 5: 0}
 
 # 数値を2次元リストに戻す
 # メソッドでなく関数として定義
@@ -684,7 +689,6 @@ class Search:
         # 初期値
         self.init_cube = cube_num
         # 初期値の距離を計算 (不要だがデバッグのため)
-        # crnt_dist = self.calcMinDist(cube_num)
         crnt_dist = self.calcDistMatchNum(cube_num)
         if crnt_dist == 0:
             print("達成済み")
@@ -787,6 +791,58 @@ class Search:
         self.num_dic[self.depth] = {k: v for k, v in nrnd.items() if k in nrns}
         return False
     
+    # 最終局面の探索
+    # C, C', D, Eで幅優先探索
+    def bfsFinal(self, loop):
+        if self.min_dist == 0:
+            return (self.init_cube, tuple())
+        next_depth = self.depth + 1
+        if next_depth not in self.num_dic:
+            self.num_dic[next_depth] = {}
+        for i in range(loop):
+            # 深さが進む場合
+            if not self.num_dic[self.depth]:
+                self.num_dic.pop(self.depth)
+                self.depth += 1
+                next_depth = self.depth + 1
+                self.num_dic[next_depth] = {}
+            # 探索する要素を取り出す
+            k, v = self.num_dic[self.depth].popitem()
+            r = Rubik(num2cube(k))
+            # C, C', D, Eを行った後の状態 (各4方向, 計16状態)
+            nrll = [[r.actionByList(a_list) for a_list in ACTIONS_C_LIST_LIST]]
+            nrll.append([r.actionByList(a_list) for a_list in ACTIONS_C_DASH_LIST_LIST])
+            nrll.append([r.actionByList(a_list) for a_list in ACTIONS_D_LIST_LIST])
+            nrll.append([r.actionByList(a_list) for a_list in ACTIONS_E_LIST_LIST])
+            # 新状態を確認
+            for j, nrl in enumerate(nrll):
+                act_name = ACT_PATTERN_STR[j]
+                for m, nr in enumerate(nrl):
+                    act_name += str(m)
+                    # 探索済みに含まれていたらやりなおし
+                    if nr.num in self.explored:
+                        continue
+                    # 未探索に含まれていてもやりなおし
+                    for known in self.num_dic.values():
+                        if nr.num in known:
+                            continue
+                    # 最短距離を計算
+                    dist = self.calcDistMatchNum(nr.num)
+                    # 一致したら終了
+                    if dist == 0:
+                        print(nr)
+                        print(v + (act_name,))
+                        return (nr.num, v + (act_name,))
+                    self.num_dic[next_depth][nr.num] = v + (act_name,)
+                    self.num_known_states += 1
+
+            # 探索済みは数値だけ格納
+            self.explored.append(k)
+            if i % 1000 == 999:
+                print("ループ数：", i + 1)
+                print("総状態数：", self.num_known_states)
+        return (-1, -1)
+    
     # 目的とするいくつかの状態から, 最も近い距離を返す
     def calcMinDist(self, cube_num):
         min_dist = 50
@@ -861,7 +917,7 @@ def init():
     global CROSS_MID_ONE_NUMS, CROSS_TOP_NUMS, COMP_TOP_NUMS
     global TOP_PATTERN_NUMS, COMP_TOP_CORNER_NUMS
     global ACTIONS_C_LIST_LIST, ACTIONS_C_DASH_LIST_LIST
-    global ACTIONS_D_LIST_LSIT, ACTIONS_E_LIST_LIST
+    global ACTIONS_D_LIST_LIST, ACTIONS_E_LIST_LIST
     global REMAIN_TOP_ROT_LIST
     COMP_ONE_SIDE_NUMS, COMP_ONE_SIDE_NUM_MASKS = makeAllColorCubeList(COMP_0)
     CROSS_ONE_SIDE_NUMS, CROSS_ONE_SIDE_NUM_MASKS = makeAllColorCubeList(CROSS_0)
@@ -896,12 +952,12 @@ def init():
     # C, C', D, E の各方向4パターン (初期値白基準)
     ACTIONS_C_LIST_LIST = [ACTIONS_C_LIST]
     ACTIONS_C_DASH_LIST_LIST = [ACTIONS_C_DASH_LIST]
-    ACTIONS_D_LIST_LSIT = [ACTIONS_D_LIST]
+    ACTIONS_D_LIST_LIST = [ACTIONS_D_LIST]
     ACTIONS_E_LIST_LIST = [ACTIONS_E_LIST]
     for _ in range(3):
         ACTIONS_C_LIST_LIST.append(switch0to7Acts(ACTIONS_C_LIST_LIST[-1]))
         ACTIONS_C_DASH_LIST_LIST.append(switch0to7Acts(ACTIONS_C_DASH_LIST_LIST[-1]))
-        ACTIONS_D_LIST_LSIT.append(switch0to7Acts(ACTIONS_D_LIST_LSIT[-1]))
+        ACTIONS_D_LIST_LIST.append(switch0to7Acts(ACTIONS_D_LIST_LIST[-1]))
         ACTIONS_E_LIST_LIST.append(switch0to7Acts(ACTIONS_E_LIST_LIST[-1]))
 
 init()
@@ -909,7 +965,8 @@ init()
 def main():
     global CROSS_MID_ONE_NUMS, CROSS_TOP_NUMS, COMP_TOP_NUMS, TOP_PATTERN_NUMS
     global COMP_TOP_CORNER_NUMS, REMAIN_TOP_ROT_LIST
-    r0 = Rubik(num2cube(SAMPLE_WHITE_SIDE_MID))
+    # r0 = Rubik(num2cube(SAMPLE_WHITE_SIDE_MID))
+    r0 = Rubik(num2cube(SAMPLE_FINAL_01))
     if not r0.checkSum():
         return
     # 初期状態
@@ -935,8 +992,9 @@ def main():
     CROSS_TOP_NUMS = switchColorList(CROSS_TOP_NUMS, color)
     COMP_TOP_NUMS = switchColorList(COMP_TOP_NUMS, color)
     TOP_PATTERN_NUMS = switchColorList(TOP_PATTERN_NUMS, color)
-    COMP_TOP_CORNER_NUMS = switchColorList(COMP_TOP_CORNER_NUMS, color)
-    REMAIN_TOP_ROT_LIST = switchColorList(REMAIN_TOP_ROT_LIST, color)
+    # 色の反転に注意
+    COMP_TOP_CORNER_NUMS = switchColorList(COMP_TOP_CORNER_NUMS, INV_COLOR[color])
+    REMAIN_TOP_ROT_LIST = switchColorList(REMAIN_TOP_ROT_LIST, INV_COLOR[color])
     rn = rn1
     for i in range(4):
         s = Search(rn, CROSS_MID_ONE_NUMS, 1, i)
@@ -960,12 +1018,12 @@ def main():
     if rn < 0:
         return
     # 上の一面
-    s = Search(rn, COMP_TOP_NUMS, 2, 0)
-    t0 = time.time()
-    rn, act = s.useDist(20000)
-    print(time.time() - t0, "秒")
-    if rn < 0:
-        return
+    # s = Search(rn, COMP_TOP_NUMS, 2, 0)
+    # t0 = time.time()
+    # rn, act = s.useDist(20000)
+    # print(time.time() - t0, "秒")
+    # if rn < 0:
+    #     return
     # # 上の一面と角
     # s = Search(rn, COMP_TOP_CORNER_NUMS, 1, 0)
     # t0 = time.time()
@@ -974,9 +1032,9 @@ def main():
     # if rn < 0:
     #     return
     # ほぼ全面
-    s = Search(rn, REMAIN_TOP_ROT_LIST, 2, 0)
+    s = Search(rn, REMAIN_TOP_ROT_LIST)
     t0 = time.time()
-    rn, act = s.useDist(30000)
+    rn, act = s.bfsFinal(10000)
     print(time.time() - t0, "秒")
     if rn < 0:
         return
