@@ -591,12 +591,16 @@ class Search:
     
     # 目的とする状態はリストとして与える (複数あること前提)
     # 一手の重みも与える
-    def __init__(self, cube_num, goal=[COMPLETE_NUM], act_weight=12):
+    # 与えた候補で一致する数も与える??
+    # 角を複数揃えたい場合など
+    def __init__(self, cube_num, goal=[COMPLETE_NUM], act_weight=12, match_num=0):
         self.goal = goal
         self.act_weight = act_weight
         self.explored = []
+        self.match_num = match_num
         # 初期値の距離を計算 (不要だがデバッグのため)
-        crnt_dist = self.calcMinDist(cube_num)
+        # crnt_dist = self.calcMinDist(cube_num)
+        crnt_dist = self.calcDistMatchNum(cube_num)
         if crnt_dist == 0:
             print("達成済み")
         self.unexplored = {crnt_dist: {cube_num: tuple()}}
@@ -631,7 +635,8 @@ class Search:
                     if nr.num in known:
                         continue
                 # 最短距離を計算
-                dist = self.calcMinDist(nr.num)
+                # dist = self.calcMinDist(nr.num)
+                dist = self.calcDistMatchNum(nr.num)
                 # 一致したら終了
                 if dist == 0:
                     print(nr)
@@ -706,6 +711,13 @@ class Search:
             if dist < min_dist:
                 min_dist = dist
         return min_dist
+    
+    # 使用する添え字を指定
+    # self.match_num == 0 なら calcMinDist と同じ
+    def calcDistMatchNum(self, cube_num):
+        dists = [calcDist(cube_num, g) for g in self.goal]
+        dists.sort()
+        return dists[self.match_num]
 
 # 白基準のキューブから全ての色の等価なキューブのリストを作成
 # ついでにマスクも
@@ -773,9 +785,14 @@ def main():
     changeMidNums(color)
     s = Search(r1.num, CROSS_MID_ONE_NUMS, 2)
     t0 = time.time()
-    s.useDist(13000)
-    
+    r2, act2 = s.useDist(13000)
     print(time.time() - t0, "秒")
+    if r2.num < 0:
+        return
+    s = Search(r2.num, CROSS_MID_ONE_NUMS, 2, 1)
+    t0 = time.time()
+    s.useDist(13000)
+    print(time.time() - t0, "秒")    
 
 if __name__ == "__main__":
     main()
