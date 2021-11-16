@@ -189,6 +189,9 @@ DIC_1TO2 = {1: 2, 2: 3, 3: 4, 4: 1, 0: 0, 5: 5, 7: 7}
 
 DIC_ROT_R = {0: 2, 2: 7, 7: 5, 5: 0, 1: 4, 4: 6, 6: 3, 3: 1}
 
+# ある色を上にして正面になる色
+DIC_FRONT_COLOR = {0: 1, 1: 5, 2: 5, 3: 5, 4: 5, 5: 3}
+
 # 操作の変換
 # 赤正面 -> 黄色正面
 # Z軸回りの動作は等価
@@ -967,6 +970,13 @@ def init():
 
 init()
 
+# 標準入力
+def inputCube():
+    for i in range(6):
+        moji = input("中央が「{:s}」の面を上にし、「{:s}」を正面に持って上の色を入力してください：".format(JPN_COLOR[i], JPN_COLOR[DIC_FRONT_COLOR[i]]))
+        moji = moji.lower()
+        print(moji)
+
 def main():
     global CROSS_MID_ONE_NUMS, CROSS_TOP_NUMS, COMP_TOP_NUMS, TOP_PATTERN_NUMS
     global REMAIN_TOP_ROT_LIST, BAR_TOP_NUMS
@@ -974,8 +984,7 @@ def main():
     global ACTIONS_D_LIST_LIST, ACTIONS_E_LIST_LIST
     # r0 = Rubik(num2cube(SAMPLE_WHITE_SIDE_MID))
     # r0 = Rubik(num2cube(SAMPLE_FINAL_01))
-    # r0 = Rubik(SAMPLE01)
-    r0 = Rubik(num2cube(SAMPLE_ONLY_TOP_01))
+    r0 = Rubik(SAMPLE01)
     all_act = tuple()
     t0 = time.time()
     if not r0.checkSum():
@@ -1088,11 +1097,4 @@ def main():
 
 if __name__ == "__main__":
     # main()
-    rn = REMAIN_TOP_ROT_LIST[2]
-    print(Rubik(num2cube(rn)))
-    s = Search(rn, [COMPLETE_NUM])
-    t1 = time.time()
-    for _ in range(3):
-        rn, act = s.bfs()
-        if rn >= 0:
-            break
+    inputCube()
