@@ -43,6 +43,17 @@ CROSS_0_MID_12 = [
     [7, 7, 7, 7, 7, 7, 7, 7]
 ]
 
+# 上の棒
+# 青の棒が揃っている
+BAR_TOP = [
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 1, 7, 7, 7],
+    [2, 2, 2, 2, 2, 7, 7, 7],
+    [3, 3, 3, 3, 3, 7, 7, 7],
+    [4, 4, 4, 4, 4, 7, 7, 7],
+    [7, 5, 7, 7, 7, 7, 5, 7]
+]
+
 # 白を基準に中間層が揃っている
 # かつ, 青の十字が揃っている
 CROSS_TOP = [
@@ -102,16 +113,6 @@ COMP_TOP = [
     [2, 2, 2, 2, 2, 7, 7, 7],
     [3, 3, 3, 3, 3, 7, 7, 7],
     [4, 4, 4, 4, 4, 7, 7, 7],
-    [5, 5, 5, 5, 5, 5, 5, 5]
-]
-
-# 角も揃っている
-COMP_TOP_CORNER = [
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [1, 1, 1, 1, 1, 1, 7, 1],
-    [2, 2, 2, 2, 2, 2, 7, 2],
-    [3, 3, 3, 3, 3, 3, 7, 3],
-    [4, 4, 4, 4, 4, 4, 7, 4],
     [5, 5, 5, 5, 5, 5, 5, 5]
 ]
 
@@ -902,11 +903,12 @@ def switchColorAct(a_list_list, color):
 def init():
     global COMP_ONE_SIDE_NUMS, COMP_ONE_SIDE_NUM_MASKS
     global CROSS_ONE_SIDE_NUMS, CROSS_ONE_SIDE_NUM_MASKS
-    global CROSS_MID_ONE_NUMS, CROSS_TOP_NUMS, COMP_TOP_NUMS
-    global TOP_PATTERN_NUMS, COMP_TOP_CORNER_NUMS
+    global CROSS_MID_ONE_NUMS, BAR_TOP_NUMS, CROSS_TOP_NUMS, COMP_TOP_NUMS
+    global TOP_PATTERN_NUMS
     global ACTIONS_C_LIST_LIST, ACTIONS_C_DASH_LIST_LIST
     global ACTIONS_D_LIST_LIST, ACTIONS_E_LIST_LIST
     global REMAIN_TOP_ROT_LIST
+    # 十字と完全一面
     COMP_ONE_SIDE_NUMS, COMP_ONE_SIDE_NUM_MASKS = makeAllColorCubeList(COMP_0)
     CROSS_ONE_SIDE_NUMS, CROSS_ONE_SIDE_NUM_MASKS = makeAllColorCubeList(CROSS_0)
     # 4種類の側面の辺
@@ -914,6 +916,10 @@ def init():
     for i in range(3):
         r_list.append(r_list[i].switch1to2())
     CROSS_MID_ONE_NUMS = [r.num for r in r_list]
+    # 上の棒
+    r_list = [Rubik(BAR_TOP)]
+    r_list.append(r_list[0].downYawPlus())
+    BAR_TOP_NUMS = [r.num for r in r_list]
     CROSS_TOP_NUMS = [Rubik(CROSS_TOP).num]
     COMP_TOP_NUMS = [Rubik(COMP_TOP).num]
     r_list = [Rubik(PATTERN_C_12)]
@@ -929,7 +935,6 @@ def init():
     for _ in range(3):
         r_list.append(r_list[-1].switch1to2())
     TOP_PATTERN_NUMS = [r.num for r in r_list]
-    COMP_TOP_CORNER_NUMS = [Rubik(COMP_TOP_CORNER).num]
     # 残りは最後の面の回転だけ (初期値白基準)
     r_list = [Rubik(COMPLETE)]
     for _ in range(3):
@@ -952,7 +957,7 @@ init()
 
 def main():
     global CROSS_MID_ONE_NUMS, CROSS_TOP_NUMS, COMP_TOP_NUMS, TOP_PATTERN_NUMS
-    global COMP_TOP_CORNER_NUMS, REMAIN_TOP_ROT_LIST
+    global REMAIN_TOP_ROT_LIST, BAR_TOP_NUMS
     global ACTIONS_C_LIST_LIST, ACTIONS_C_DASH_LIST_LIST
     global ACTIONS_D_LIST_LIST, ACTIONS_E_LIST_LIST
     # r0 = Rubik(num2cube(SAMPLE_WHITE_SIDE_MID))
@@ -984,9 +989,9 @@ def main():
     CROSS_TOP_NUMS = switchColorList(CROSS_TOP_NUMS, color)
     COMP_TOP_NUMS = switchColorList(COMP_TOP_NUMS, color)
     TOP_PATTERN_NUMS = switchColorList(TOP_PATTERN_NUMS, color)
-    COMP_TOP_CORNER_NUMS = switchColorList(COMP_TOP_CORNER_NUMS, color)
     # 色の反転に注意
     REMAIN_TOP_ROT_LIST = switchColorList(REMAIN_TOP_ROT_LIST, INV_COLOR[color])
+
     # 動作
     ACTIONS_C_LIST_LIST = switchColorAct(ACTIONS_C_LIST_LIST, INV_COLOR[color])
     ACTIONS_C_DASH_LIST_LIST = switchColorAct(ACTIONS_C_DASH_LIST_LIST, INV_COLOR[color])
@@ -1035,4 +1040,6 @@ def main():
     print(time.time() - t0, "秒")
 
 if __name__ == "__main__":
-    main()
+    # main()
+    for i in BAR_TOP_NUMS:
+        print(Rubik(num2cube(i)))
