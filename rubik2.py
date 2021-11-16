@@ -693,6 +693,7 @@ class Search:
         if crnt_dist == 0:
             print("達成済み")
         self.unexplored = {crnt_dist: {cube_num: tuple()}}
+        # 幅優先探索で使用
         self.num_dic = {0: {cube_num: tuple()}}
         # 現状, 目的に最も近い (と思われる) 距離
         self.min_dist = crnt_dist
@@ -793,55 +794,34 @@ class Search:
     
     # 最終局面の探索
     # C, C', D, Eで幅優先探索
-    def bfsFinal(self, loop):
-        if self.min_dist == 0:
-            return (self.init_cube, tuple())
-        next_depth = self.depth + 1
-        if next_depth not in self.num_dic:
-            self.num_dic[next_depth] = {}
-        for i in range(loop):
-            # 深さが進む場合
-            if not self.num_dic[self.depth]:
-                self.num_dic.pop(self.depth)
-                self.depth += 1
-                next_depth = self.depth + 1
-                self.num_dic[next_depth] = {}
-            # 探索する要素を取り出す
-            k, v = self.num_dic[self.depth].popitem()
-            r = Rubik(num2cube(k))
-            # C, C', D, Eを行った後の状態 (各4方向, 計16状態)
-            nrll = [[r.actionByList(a_list) for a_list in ACTIONS_C_LIST_LIST]]
-            nrll.append([r.actionByList(a_list) for a_list in ACTIONS_C_DASH_LIST_LIST])
-            nrll.append([r.actionByList(a_list) for a_list in ACTIONS_D_LIST_LIST])
-            nrll.append([r.actionByList(a_list) for a_list in ACTIONS_E_LIST_LIST])
-            # 新状態を確認
-            for j, nrl in enumerate(nrll):
-                act_name = ACT_PATTERN_STR[j]
-                for m, nr in enumerate(nrl):
-                    act_name += str(m)
-                    # 探索済みに含まれていたらやりなおし
-                    if nr.num in self.explored:
-                        continue
-                    # 未探索に含まれていてもやりなおし
-                    for known in self.num_dic.values():
-                        if nr.num in known:
-                            continue
-                    # 最短距離を計算
-                    dist = self.calcDistMatchNum(nr.num)
-                    # 一致したら終了
-                    if dist == 0:
+    def bfsFinal(self):
+        nrnd = {}
+        for r_num, past_acts in self.num_dic[self.depth].items():
+            r = Rubik(num2cube(r_num))
+            nrll = [[r.actionByList(al) for al in ACTIONS_C_LIST_LIST]]
+            nrll.append([r.actionByList(al) for al in ACTIONS_C_DASH_LIST_LIST])
+            nrll.append([r.actionByList(al) for al in ACTIONS_D_LIST_LIST])
+            nrll.append([r.actionByList(al) for al in ACTIONS_E_LIST_LIST])
+            for i, nrl in enumerate(nrll):
+                act_name = ACT_PATTERN_STR[i]
+                for j, nr in enumerate(nrl):
+                    act_name += str(j)
+                    if self.calcDistMatchNum(nr.num):
                         print(nr)
-                        print(v + (act_name,))
-                        return (nr.num, v + (act_name,))
-                    self.num_dic[next_depth][nr.num] = v + (act_name,)
-                    self.num_known_states += 1
+                        print(past_acts + (act_name,))
+                        return True
+                    nrnd[nr.num] = past_acts + (act_name,)
 
-            # 探索済みは数値だけ格納
-            self.explored.append(k)
-            if i % 1000 == 999:
-                print("ループ数：", i + 1)
-                print("総状態数：", self.num_known_states)
-        return (-1, -1)
+        print(len(nrnd))
+        # 重複排除フェーズ
+        nrns = set(nrnd)
+        for knownd in self.num_dic.values():
+            knowns = set(knownd)
+            nrns -= knowns
+        print(len(nrns))
+        self.depth += 1
+        self.num_dic[self.depth] = {k: v for k, v in nrnd.items() if k in nrns}
+        return False
     
     # 目的とするいくつかの状態から, 最も近い距離を返す
     def calcMinDist(self, cube_num):
@@ -1036,7 +1016,7 @@ def main():
         print(Rubik(num2cube(i)))
     s = Search(rn, REMAIN_TOP_ROT_LIST)
     t0 = time.time()
-    rn, act = s.bfsFinal(10000)
+    b = s.bfsFinal()
     print(time.time() - t0, "秒")
     if rn < 0:
         return
