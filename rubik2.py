@@ -1028,7 +1028,8 @@ def main():
     global ACTIONS_D_LIST_LIST, ACTIONS_E_LIST_LIST
     # r0 = Rubik(num2cube(SAMPLE_WHITE_SIDE_MID))
     # r0 = Rubik(num2cube(SAMPLE_FINAL_01))
-    r0 = Rubik(SAMPLE01)
+    # r0 = Rubik(SAMPLE01)
+    r0 = inputCube()
     all_act = tuple()
     t0 = time.time()
     if not r0.checkSum():
@@ -1140,5 +1141,4 @@ def main():
     print(time.time() - t0, "秒")
 
 if __name__ == "__main__":
-    # main()
-    inputCube()
+    main()
