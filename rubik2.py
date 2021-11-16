@@ -945,6 +945,8 @@ init()
 def main():
     global CROSS_MID_ONE_NUMS, CROSS_TOP_NUMS, COMP_TOP_NUMS, TOP_PATTERN_NUMS
     global COMP_TOP_CORNER_NUMS, REMAIN_TOP_ROT_LIST
+    global ACTIONS_C_LIST_LIST, ACTIONS_C_DASH_LIST_LIST
+    global ACTIONS_D_LIST_LIST, ACTIONS_E_LIST_LIST
     # r0 = Rubik(num2cube(SAMPLE_WHITE_SIDE_MID))
     r0 = Rubik(num2cube(SAMPLE_FINAL_01))
     if not r0.checkSum():
@@ -966,15 +968,20 @@ def main():
             break
     else:
         return
-    # 変更
-    # changeMidNums(color)
+    # 基準の色に合わせる
     CROSS_MID_ONE_NUMS = switchColorList(CROSS_MID_ONE_NUMS, color)
     CROSS_TOP_NUMS = switchColorList(CROSS_TOP_NUMS, color)
     COMP_TOP_NUMS = switchColorList(COMP_TOP_NUMS, color)
     TOP_PATTERN_NUMS = switchColorList(TOP_PATTERN_NUMS, color)
+    COMP_TOP_CORNER_NUMS = switchColorList(COMP_TOP_CORNER_NUMS, color)
     # 色の反転に注意
-    COMP_TOP_CORNER_NUMS = switchColorList(COMP_TOP_CORNER_NUMS, INV_COLOR[color])
     REMAIN_TOP_ROT_LIST = switchColorList(REMAIN_TOP_ROT_LIST, INV_COLOR[color])
+    # 動作
+    ACTIONS_C_LIST_LIST = switchColorAct(ACTIONS_C_LIST_LIST, INV_COLOR[color])
+    ACTIONS_C_DASH_LIST_LIST = switchColorAct(ACTIONS_C_DASH_LIST_LIST, INV_COLOR[color])
+    ACTIONS_D_LIST_LIST = switchColorAct(ACTIONS_D_LIST_LIST, INV_COLOR[color])
+    ACTIONS_E_LIST_LIST = switchColorAct(ACTIONS_E_LIST_LIST, INV_COLOR[color])
+
     rn = rn1
     for i in range(4):
         s = Search(rn, CROSS_MID_ONE_NUMS, 1, i)
@@ -1014,7 +1021,7 @@ def main():
     # ほぼ全面
     s = Search(rn, REMAIN_TOP_ROT_LIST)
     t0 = time.time()
-    for i in range(7):
+    for i in range(5):
         rn, act = s.bfsFinal()
         if rn >= 0:
             break
@@ -1031,3 +1038,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
