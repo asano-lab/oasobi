@@ -806,7 +806,7 @@ class Search:
                 act_name = ACT_PATTERN_STR[i]
                 for j, nr in enumerate(nrl):
                     act_name += str(j)
-                    if self.calcDistMatchNum(nr.num):
+                    if not self.calcDistMatchNum(nr.num):
                         print(nr)
                         print(past_acts + (act_name,))
                         return True
