@@ -764,8 +764,8 @@ class Search:
                 dist = self.calcDistMatchNum(nr.num)
                 # 一致したら終了
                 if dist == 0:
-                    print(nr)
                     printActs(v + (j,))
+                    print(nr)
                     return (nr.num, v + (j,))
                 # これまでの手数を加える
                 total_dist = dist + (len(v) + 1) * self.act_weight
@@ -842,8 +842,8 @@ class Search:
                 for j, nr in enumerate(nrl):
                     act_name = ACT_PATTERN_STR[i] + str(j)
                     if not self.calcDistMatchNum(nr.num):
-                        print(nr)
                         print(past_acts + (act_name,))
+                        print(nr)
                         return (nr.num, past_acts + (act_name,))
                     nrnd[nr.num] = past_acts + (act_name,)
 
@@ -999,7 +999,7 @@ def main():
     # 十字を揃える
     s = Search(r0.num, CROSS_ONE_SIDE_NUMS, 2)
     t1 = time.time()
-    rn, act = s.useDist(13000)
+    rn, act = s.useDist(20000)
     all_act += act
     print(time.time() - t1, "秒")
     if rn < 0:
@@ -1035,22 +1035,32 @@ def main():
         print(time.time() - t1, "秒")
         if rn < 0:
             return
-    # 上の棒
-    s = Search(rn, BAR_TOP_NUMS, 1, 0)
-    t1 = time.time()
-    rn, act = s.useDist(20000)
-    all_act += act
-    print(time.time() - t1, "秒")
-    if rn < 0:
-        return
-    # 上の十字
+    # コピー
+    rncp = rn
+    # まずは上の十字を直接探す
     s = Search(rn, CROSS_TOP_NUMS, 1, 0)
     t1 = time.time()
     rn, act = s.useDist(20000)
     all_act += act
     print(time.time() - t1, "秒")
+    # 十字が見つからない場合は棒から探す
     if rn < 0:
-        return
+        # 上の棒
+        s = Search(rncp, BAR_TOP_NUMS, 1, 0)
+        t1 = time.time()
+        rn, act = s.useDist(20000)
+        all_act += act
+        print(time.time() - t1, "秒")
+        if rn < 0:
+            return
+        # 上の十字
+        s = Search(rn, CROSS_TOP_NUMS, 1, 0)
+        t1 = time.time()
+        rn, act = s.useDist(20000)
+        all_act += act
+        print(time.time() - t1, "秒")
+        if rn < 0:
+            return
     # パターンのいずれか
     # s = Search(rn, TOP_PATTERN_NUMS, 1, 0)
     # t1 = time.time()
@@ -1061,7 +1071,7 @@ def main():
     # 残るは上の回転のみ
     s = Search(rn, REMAIN_TOP_ROT_LIST)
     t1 = time.time()
-    for i in range(5):
+    for _ in range(6):
         rn, procs = s.bfsFinal()
         if rn >= 0:
             break
