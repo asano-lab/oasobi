@@ -930,17 +930,22 @@ def init():
     global COMP_ONE_SIDE_NUMS, COMP_ONE_SIDE_NUM_MASKS
     global CROSS_ONE_SIDE_NUMS, CROSS_ONE_SIDE_NUM_MASKS
     global CROSS_MID_ONE_NUMS, BAR_TOP_NUMS, CROSS_TOP_NUMS, COMP_TOP_NUMS
-    global TOP_PATTERN_NUMS
+    global TOP_PATTERN_NUMS, CROSS_CORNER_NUMS
     global ACTIONS_C_LIST_LIST, ACTIONS_C_DASH_LIST_LIST
     global ACTIONS_D_LIST_LIST, ACTIONS_E_LIST_LIST
     global REMAIN_TOP_ROT_LIST
     # 十字と完全一面
     COMP_ONE_SIDE_NUMS, COMP_ONE_SIDE_NUM_MASKS = makeAllColorCubeList(COMP_0)
     CROSS_ONE_SIDE_NUMS, CROSS_ONE_SIDE_NUM_MASKS = makeAllColorCubeList(CROSS_0)
+    # 十字と一つの角
+    r_list = [Rubik(CROSS_0_CORNER)]
+    for _ in range(3):
+        r_list.append(r_list[-1].switch1to2())
+    CROSS_CORNER_NUMS = [r.num for r in r_list]
     # 4種類の側面の辺
     r_list = [Rubik(CROSS_0_MID_12)]
-    for i in range(3):
-        r_list.append(r_list[i].switch1to2())
+    for _ in range(3):
+        r_list.append(r_list[-1].switch1to2())
     CROSS_MID_ONE_NUMS = [r.num for r in r_list]
     # 上の棒
     r_list = [Rubik(BAR_TOP)]
@@ -1152,4 +1157,6 @@ def main():
 
 if __name__ == "__main__":
     # main()
-    print(Rubik(CROSS_0_CORNER))
+    # print(Rubik(CROSS_0_CORNER))
+    for i in CROSS_CORNER_NUMS:
+        print(Rubik(num2cube(i)))
