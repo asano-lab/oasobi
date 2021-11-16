@@ -181,6 +181,9 @@ SAMPLE_WHITE_SIDE_MID = 0x4ed36a76492474b6dbb0a4928a9249000000
 # ほぼ最終局面
 SAMPLE_FINAL_01 = 0x74daad8ec92446b6db8aa492709249000000
 
+# 最後
+SAMPLE_ONLY_TOP_01 = 0xb6da4d3259646db6db492291112309020000
+
 JPN_COLOR = ["白", "赤", "黄", "橙", "緑", "青", "黒", "ー"]
 
 DIC_0TO1 = {0: 1, 1: 5, 5: 3, 3: 0, 2: 2, 4: 4, 7: 7}
@@ -794,38 +797,25 @@ class Search:
     # 幅優先探索 (全探索)
     def bfs(self):
         nrnd = {}
-        for k, v in self.num_dic[self.depth].items():
-            r = Rubik(num2cube(k))
+        for r_num, past_acts in self.num_dic[self.depth].items():
+            r = Rubik(num2cube(r_num))
             nrl = r.allActions()
             for i, nr in enumerate(nrl):
-                # 解けた
-                if nr.num == COMPLETE_NUM:
+                if not self.calcDistMatchNum(nr.num):
+                    print(past_acts + (i,))
                     print(nr)
-                    printActs(v + (i,))
-                    return True
-                # 一面揃ったかチェック
-                for j, one_side in enumerate(COMP_ONE_SIDE_NUMS):
-                    if nr.num | COMP_ONE_SIDE_NUM_MASKS[j] == one_side:
-                        print(nr)
-                        printActs(v + (i,))
-                        return True
-                # 十字が揃ったかチェック
-                for j, cross in enumerate(CROSS_ONE_SIDE_NUMS):
-                    if nr.num | CROSS_ONE_SIDE_NUM_MASKS[j] == cross:
-                        print(nr)
-                        printActs(v + (i,))
-                        return True
-                nrnd[nr.num] = v + (i,)
+                    return (nr.num, past_acts + (i,))
+                nrnd[nr.num] = past_acts + (i,)
 
-        print(len(nrnd))
+        # 重複排除フェーズ
         nrns = set(nrnd)
         for knownd in self.num_dic.values():
             knowns = set(knownd)
             nrns -= knowns
-        print(len(nrns))
+        print("新状態数:", len(nrns))
         self.depth += 1
         self.num_dic[self.depth] = {k: v for k, v in nrnd.items() if k in nrns}
-        return False
+        return (-1, -1)
     
     # 最終局面の探索
     # C, C', D, Eで幅優先探索
@@ -987,7 +977,8 @@ def main():
     global ACTIONS_D_LIST_LIST, ACTIONS_E_LIST_LIST
     # r0 = Rubik(num2cube(SAMPLE_WHITE_SIDE_MID))
     # r0 = Rubik(num2cube(SAMPLE_FINAL_01))
-    r0 = Rubik(SAMPLE01)
+    # r0 = Rubik(SAMPLE01)
+    r0 = Rubik(num2cube(SAMPLE_ONLY_TOP_01))
     all_act = tuple()
     t0 = time.time()
     if not r0.checkSum():
@@ -1082,13 +1073,17 @@ def main():
     print(time.time() - t1, "秒")
     if rn < 0:
         return
-    # # 全面
-    # s = Search(rn, [COMPLETE_NUM], 1, 0)
-    # t1 = time.time()
-    # rn, act = s.useDist(30000)
-    # print(time.time() - t1, "秒")
-    # if rn < 0:
-    #     return
+    # 全面
+    s = Search(rn, [COMPLETE])
+    t1 = time.time()
+    for _ in range(3):
+        rn, act = s.bfs()
+        if rn >= 0:
+            break
+    all_act += act
+    print(time.time() - t1, "秒")
+    if rn < 0:
+        return
     # 全ての手順
     print("総手順数：{:d}".format(len(all_act)))
     printActs(all_act)
