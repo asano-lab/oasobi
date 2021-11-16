@@ -809,7 +809,7 @@ class Search:
                     if not self.calcDistMatchNum(nr.num):
                         print(nr)
                         print(past_acts + (act_name,))
-                        return True
+                        return (nr.num, past_acts + (act_name,))
                     nrnd[nr.num] = past_acts + (act_name,)
 
         print(len(nrnd))
@@ -821,7 +821,7 @@ class Search:
         print(len(nrns))
         self.depth += 1
         self.num_dic[self.depth] = {k: v for k, v in nrnd.items() if k in nrns}
-        return False
+        return (-1, -1)
     
     # 目的とするいくつかの状態から, 最も近い距離を返す
     def calcMinDist(self, cube_num):
@@ -1012,11 +1012,12 @@ def main():
     # if rn < 0:
     #     return
     # ほぼ全面
-    for i in REMAIN_TOP_ROT_LIST:
-        print(Rubik(num2cube(i)))
     s = Search(rn, REMAIN_TOP_ROT_LIST)
     t0 = time.time()
-    b = s.bfsFinal()
+    for i in range(7):
+        rn, act = s.bfsFinal()
+        if rn >= 0:
+            break
     print(time.time() - t0, "秒")
     if rn < 0:
         return
