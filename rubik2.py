@@ -1080,6 +1080,7 @@ def main():
     # if rn < 0:
     #     return
     # 全ての手順
+    print("総手順数：{:d}".format(len(all_act)))
     printActs(all_act)
     print(time.time() - t0, "秒")
 
