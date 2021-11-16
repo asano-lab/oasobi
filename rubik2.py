@@ -798,27 +798,26 @@ class Search:
         nrnd = {}
         for r_num, past_acts in self.num_dic[self.depth].items():
             r = Rubik(num2cube(r_num))
+            # 動作 C, C', D, E それぞれ4方向, 計16種類
             nrll = [[r.actionByList(al) for al in ACTIONS_C_LIST_LIST]]
             nrll.append([r.actionByList(al) for al in ACTIONS_C_DASH_LIST_LIST])
             nrll.append([r.actionByList(al) for al in ACTIONS_D_LIST_LIST])
             nrll.append([r.actionByList(al) for al in ACTIONS_E_LIST_LIST])
             for i, nrl in enumerate(nrll):
-                act_name = ACT_PATTERN_STR[i]
                 for j, nr in enumerate(nrl):
-                    act_name += str(j)
+                    act_name = ACT_PATTERN_STR[i] + str(j)
                     if not self.calcDistMatchNum(nr.num):
                         print(nr)
                         print(past_acts + (act_name,))
                         return (nr.num, past_acts + (act_name,))
                     nrnd[nr.num] = past_acts + (act_name,)
 
-        print(len(nrnd))
         # 重複排除フェーズ
         nrns = set(nrnd)
         for knownd in self.num_dic.values():
             knowns = set(knownd)
             nrns -= knowns
-        print(len(nrns))
+        print("新状態数:", len(nrns))
         self.depth += 1
         self.num_dic[self.depth] = {k: v for k, v in nrnd.items() if k in nrns}
         return (-1, -1)
