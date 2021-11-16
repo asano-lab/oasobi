@@ -134,13 +134,22 @@ ACTIONS_E_LIST = [1, 3, 8, 2, 9, 0, 8, 3, 9, 2]
 #     [4, 2, 0, 3, 3, 2, 3, 4]
 # ]
 
+# SAMPLE01 = [
+#     [2, 4, 0, 2, 0, 4, 0, 5],
+#     [5, 3, 1, 1, 3, 3, 5, 4],
+#     [4, 1, 1, 2, 4, 0, 2, 2],
+#     [2, 0, 5, 5, 1, 5, 5, 2],
+#     [3, 0, 3, 4, 5, 0, 3, 4],
+#     [0, 2, 1, 4, 1, 3, 3, 1]
+# ]
+
 SAMPLE01 = [
-    [2, 4, 0, 2, 0, 4, 0, 5],
-    [5, 3, 1, 1, 3, 3, 5, 4],
-    [4, 1, 1, 2, 4, 0, 2, 2],
-    [2, 0, 5, 5, 1, 5, 5, 2],
-    [3, 0, 3, 4, 5, 0, 3, 4],
-    [0, 2, 1, 4, 1, 3, 3, 1]
+    [5, 5, 3, 4, 0, 4, 4, 4],
+    [3, 3, 5, 2, 5, 3, 4, 0],
+    [1, 3, 2, 1, 0, 2, 2, 0],
+    [5, 3, 2, 2, 1, 1, 3, 0],
+    [1, 0, 0, 0, 5, 3, 4, 5],
+    [4, 1, 1, 5, 1, 2, 2, 4]
 ]
 
 # 黄色の完全一面から6手動かした盤面
@@ -177,8 +186,8 @@ ACT_DIC_0TO7 = {0: 7, 7: 3, 3: 4, 4: 0, 1: 6, 6: 2, 2: 5, 5: 1, 8: 8, 9: 9, 10: 
 
 ACT_DIC_4TO8 = {4: 8, 8: 7, 7: 11, 11: 4, 5: 9, 9: 6, 6: 10, 10: 5, 0: 0, 1: 1, 2: 2, 3: 3}
 
-ACT_STR = ["lp", "lm", "rp", "rm", "bp", "bm", "fp", "fm", "up", "um", "dp", "dm"]
-# ACT_STR = []
+# ACT_STR = ["lp", "lm", "rp", "rm", "bp", "bm", "fp", "fm", "up", "um", "dp", "dm"]
+ACT_STR = ["L", "L'", "R'", "R", "B", "B'", "F'", "F", "U", "U'", "D'", "D"]
 
 ACT_PATTERN_STR = ["C", "C'", "D", "E"]
 
@@ -753,8 +762,7 @@ class Search:
             # 探索済みは数値だけ格納
             self.explored.append(k)
             if i % 1000 == 999:
-                print("ループ数：", i + 1)
-                print("総状態数：", self.num_known_states)
+                print("ループ数：{:d}, 総状態数：{:d}".format(i + 1, self.num_known_states))
         return (-1, -1)
     
     # 幅優先探索 (全探索)
@@ -948,17 +956,20 @@ def main():
     global ACTIONS_C_LIST_LIST, ACTIONS_C_DASH_LIST_LIST
     global ACTIONS_D_LIST_LIST, ACTIONS_E_LIST_LIST
     # r0 = Rubik(num2cube(SAMPLE_WHITE_SIDE_MID))
-    r0 = Rubik(num2cube(SAMPLE_FINAL_01))
+    # r0 = Rubik(num2cube(SAMPLE_FINAL_01))
+    r0 = Rubik(SAMPLE01)
+    t0 = time.time()
     if not r0.checkSum():
+        print("数が合いません")
         return
     # 初期状態
     print("初期状態")
     print(r0)
     # 十字を揃える
     s = Search(r0.num, CROSS_ONE_SIDE_NUMS, 2)
-    t0 = time.time()
+    t1 = time.time()
     rn1, act1 = s.useDist(13000)
-    print(time.time() - t0, "秒")
+    print(time.time() - t1, "秒")
     if rn1 < 0:
         return
     color = 0
@@ -968,7 +979,7 @@ def main():
             break
     else:
         return
-    # 基準の色に合わせる
+    # 基準の色を決定
     CROSS_MID_ONE_NUMS = switchColorList(CROSS_MID_ONE_NUMS, color)
     CROSS_TOP_NUMS = switchColorList(CROSS_TOP_NUMS, color)
     COMP_TOP_NUMS = switchColorList(COMP_TOP_NUMS, color)
@@ -985,57 +996,43 @@ def main():
     rn = rn1
     for i in range(4):
         s = Search(rn, CROSS_MID_ONE_NUMS, 1, i)
-        t0 = time.time()
+        t1 = time.time()
         rn, act = s.useDist(20000)
-        print(time.time() - t0, "秒")
+        print(time.time() - t1, "秒")
         if rn < 0:
             return
     # 上の十字
     # s = Search(rn, CROSS_TOP_NUMS, 1, 0)
-    # t0 = time.time()
+    # t1 = time.time()
     # rn, act = s.useDist(20000)
-    # print(time.time() - t0, "秒")
+    # print(time.time() - t1, "秒")
     # if rn < 0:
     #     return
     # パターンのいずれか
     s = Search(rn, TOP_PATTERN_NUMS, 1, 0)
-    t0 = time.time()
+    t1 = time.time()
     rn, act = s.useDist(20000)
-    print(time.time() - t0, "秒")
+    print(time.time() - t1, "秒")
     if rn < 0:
         return
-    # 上の一面
-    # s = Search(rn, COMP_TOP_NUMS, 2, 0)
-    # t0 = time.time()
-    # rn, act = s.useDist(20000)
-    # print(time.time() - t0, "秒")
-    # if rn < 0:
-    #     return
-    # # 上の一面と角
-    # s = Search(rn, COMP_TOP_CORNER_NUMS, 1, 0)
-    # t0 = time.time()
-    # rn, act = s.useDist(30000)
-    # print(time.time() - t0, "秒")
-    # if rn < 0:
-    #     return
-    # ほぼ全面
+    # 残るは上の回転のみ
     s = Search(rn, REMAIN_TOP_ROT_LIST)
-    t0 = time.time()
+    t1 = time.time()
     for i in range(5):
         rn, act = s.bfsFinal()
         if rn >= 0:
             break
-    print(time.time() - t0, "秒")
+    print(time.time() - t1, "秒")
     if rn < 0:
         return
     # # 全面
     # s = Search(rn, [COMPLETE_NUM], 1, 0)
-    # t0 = time.time()
+    # t1 = time.time()
     # rn, act = s.useDist(30000)
-    # print(time.time() - t0, "秒")
+    # print(time.time() - t1, "秒")
     # if rn < 0:
     #     return
+    print(time.time() - t0, "秒")
 
 if __name__ == "__main__":
     main()
-
