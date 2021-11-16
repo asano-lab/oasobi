@@ -803,7 +803,7 @@ class Search:
             self.explored.append(k)
             if i % 1000 == 999:
                 print("ループ数：{:d}, 総状態数：{:d}".format(i + 1, self.num_known_states))
-        return (-1, -1)
+        return (-1, tuple())
     
     # 幅優先探索 (全探索)
     def bfs(self):
@@ -826,7 +826,7 @@ class Search:
         print("新状態数:", len(nrns))
         self.depth += 1
         self.num_dic[self.depth] = {k: v for k, v in nrnd.items() if k in nrns}
-        return (-1, -1)
+        return (-1, tuple())
     
     # 最終局面の探索
     # C, C', D, Eで幅優先探索
@@ -1038,7 +1038,7 @@ def inputCube():
 
 def main():
     global CROSS_MID_ONE_NUMS, CROSS_TOP_NUMS, COMP_TOP_NUMS, TOP_PATTERN_NUMS
-    global REMAIN_TOP_ROT_LIST, BAR_TOP_NUMS
+    global REMAIN_TOP_ROT_LIST, BAR_TOP_NUMS, CROSS_CORNER_NUMS
     global ACTIONS_C_LIST_LIST, ACTIONS_C_DASH_LIST_LIST
     global ACTIONS_D_LIST_LIST, ACTIONS_E_LIST_LIST
     # r0 = Rubik(num2cube(SAMPLE_WHITE_SIDE_MID))
@@ -1069,6 +1069,7 @@ def main():
     else:
         return
     # 基準の色を決定
+    CROSS_CORNER_NUMS = switchColorList(CROSS_CORNER_NUMS, color)
     CROSS_MID_ONE_NUMS = switchColorList(CROSS_MID_ONE_NUMS, color)
     CROSS_TOP_NUMS = switchColorList(CROSS_TOP_NUMS, color)
     COMP_TOP_NUMS = switchColorList(COMP_TOP_NUMS, color)
@@ -1085,13 +1086,22 @@ def main():
 
     # 完全一面を揃えつつ中間層も揃える
     for i in range(4):
+        rncp = rn
         s = Search(rn, CROSS_MID_ONE_NUMS, 1, i)
         t1 = time.time()
-        rn, act = s.useDist(30000)
+        rn, act = s.useDist(20000)
         all_act += act
         print(time.time() - t1, "秒")
         if rn < 0:
-            return
+            print("妥協")
+            s = Search(rncp, CROSS_CORNER_NUMS, 2, i)
+            t1 = time.time()
+            rn, act = s.useDist(20000)
+            all_act += act
+            print(time.time() - t1, "秒")
+            if rn < 0:
+                return
+
     # コピー
     rncp = rn
     # まずは上の十字を直接探す
@@ -1156,7 +1166,5 @@ def main():
     print(time.time() - t0, "秒")
 
 if __name__ == "__main__":
-    # main()
+    main()
     # print(Rubik(CROSS_0_CORNER))
-    for i in CROSS_CORNER_NUMS:
-        print(Rubik(num2cube(i)))
