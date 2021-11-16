@@ -989,6 +989,7 @@ def main():
     CROSS_TOP_NUMS = switchColorList(CROSS_TOP_NUMS, color)
     COMP_TOP_NUMS = switchColorList(COMP_TOP_NUMS, color)
     TOP_PATTERN_NUMS = switchColorList(TOP_PATTERN_NUMS, color)
+    BAR_TOP_NUMS = switchColorList(BAR_TOP_NUMS, color)
     # 色の反転に注意
     REMAIN_TOP_ROT_LIST = switchColorList(REMAIN_TOP_ROT_LIST, INV_COLOR[color])
 
@@ -1041,5 +1042,6 @@ def main():
 
 if __name__ == "__main__":
     # main()
+    BAR_TOP_NUMS = switchColorList(BAR_TOP_NUMS, 4)
     for i in BAR_TOP_NUMS:
         print(Rubik(num2cube(i)))
