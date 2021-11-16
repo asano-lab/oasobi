@@ -217,6 +217,22 @@ def printActs(acts):
             moji += ", "
     print(moji)
 
+# C, C', D, Eなどを動作のリストに変換
+# 動作は数値のまま
+def procedure2actions(p: str):
+    sub = int(p[-1])
+    act = []
+    if p[0] == "C":
+        if p[1] == "'":
+            act = ACTIONS_C_DASH_LIST_LIST[sub]
+        else:
+            act = ACTIONS_C_LIST_LIST[sub]
+    elif p[0] == "D":
+        act = ACTIONS_D_LIST_LIST[sub]
+    elif p[0] == "E":
+        act = ACTIONS_E_LIST_LIST[sub]
+    return tuple(act)
+
 # 赤 -> 黄 -> 橙 -> 緑 -> 赤
 def switch0to7Acts(a_list):
     return [ACT_DIC_0TO7[a] for a in a_list]
@@ -961,8 +977,9 @@ def main():
     global ACTIONS_C_LIST_LIST, ACTIONS_C_DASH_LIST_LIST
     global ACTIONS_D_LIST_LIST, ACTIONS_E_LIST_LIST
     # r0 = Rubik(num2cube(SAMPLE_WHITE_SIDE_MID))
-    # r0 = Rubik(num2cube(SAMPLE_FINAL_01))
-    r0 = Rubik(SAMPLE01)
+    r0 = Rubik(num2cube(SAMPLE_FINAL_01))
+    # r0 = Rubik(SAMPLE01)
+    all_act = tuple()
     t0 = time.time()
     if not r0.checkSum():
         print("数が合いません")
@@ -973,7 +990,8 @@ def main():
     # 十字を揃える
     s = Search(r0.num, CROSS_ONE_SIDE_NUMS, 2)
     t1 = time.time()
-    rn, act1 = s.useDist(13000)
+    rn, act = s.useDist(13000)
+    all_act += act
     print(time.time() - t1, "秒")
     if rn < 0:
         return
@@ -999,10 +1017,12 @@ def main():
     ACTIONS_D_LIST_LIST = switchColorAct(ACTIONS_D_LIST_LIST, INV_COLOR[color])
     ACTIONS_E_LIST_LIST = switchColorAct(ACTIONS_E_LIST_LIST, INV_COLOR[color])
 
+    # 完全一面を揃えつつ中間層も揃える
     for i in range(4):
         s = Search(rn, CROSS_MID_ONE_NUMS, 1, i)
         t1 = time.time()
-        rn, act = s.useDist(20000)
+        rn, act = s.useDist(30000)
+        all_act += act
         print(time.time() - t1, "秒")
         if rn < 0:
             return
@@ -1010,6 +1030,7 @@ def main():
     s = Search(rn, BAR_TOP_NUMS, 1, 0)
     t1 = time.time()
     rn, act = s.useDist(20000)
+    all_act += act
     print(time.time() - t1, "秒")
     if rn < 0:
         return
@@ -1017,6 +1038,7 @@ def main():
     s = Search(rn, CROSS_TOP_NUMS, 1, 0)
     t1 = time.time()
     rn, act = s.useDist(20000)
+    all_act += act
     print(time.time() - t1, "秒")
     if rn < 0:
         return
@@ -1031,9 +1053,11 @@ def main():
     s = Search(rn, REMAIN_TOP_ROT_LIST)
     t1 = time.time()
     for i in range(5):
-        rn, act = s.bfsFinal()
+        rn, procs = s.bfsFinal()
         if rn >= 0:
             break
+    for p in procs:
+        all_act += procedure2actions(p)
     print(time.time() - t1, "秒")
     if rn < 0:
         return
@@ -1044,6 +1068,7 @@ def main():
     # print(time.time() - t1, "秒")
     # if rn < 0:
     #     return
+    printActs(all_act)
     print(time.time() - t0, "秒")
 
 if __name__ == "__main__":
