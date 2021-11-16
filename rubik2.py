@@ -181,9 +181,6 @@ SAMPLE_WHITE_SIDE_MID = 0x4ed36a76492474b6dbb0a4928a9249000000
 # ほぼ最終局面
 SAMPLE_FINAL_01 = 0x74daad8ec92446b6db8aa492709249000000
 
-# 最後
-SAMPLE_ONLY_TOP_01 = 0xb6da4d3259646db6db492291112309020000
-
 JPN_COLOR = ["白", "赤", "黄", "橙", "緑", "青", "黒", "ー"]
 
 DIC_0TO1 = {0: 1, 1: 5, 5: 3, 3: 0, 2: 2, 4: 4, 7: 7}
@@ -1090,4 +1087,12 @@ def main():
     print(time.time() - t0, "秒")
 
 if __name__ == "__main__":
-    main()
+    # main()
+    rn = REMAIN_TOP_ROT_LIST[2]
+    print(Rubik(num2cube(rn)))
+    s = Search(rn, [COMPLETE_NUM])
+    t1 = time.time()
+    for _ in range(3):
+        rn, act = s.bfs()
+        if rn >= 0:
+            break
