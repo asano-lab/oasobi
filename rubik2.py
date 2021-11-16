@@ -977,6 +977,7 @@ def inputCube():
     print("入力する順番は\n0 1 2\n3 4 5\n6 7 8\nです")
     print("色は英語の頭文字で入力してください（色番号も可）")
     print("白:w (0), 赤:r (1), 黄:y (2), 橙:o (3), 緑:g (4), 青:b (5)")
+    print("最初からやり直したい場合は \"!\" を入力してください")
     cube = [[6] * 8 for _ in range(6)]
     cont = True
     while cont:
@@ -985,8 +986,11 @@ def inputCube():
             sub = 0
             moji = input("中央が「{:s}」の面を上にし、「{:s}」を正面に持って上の色を入力してください：".format(JPN_COLOR[i], JPN_COLOR[DIC_FRONT_COLOR[i]]))
             moji = moji.lower()
+            if moji[0] == "!":
+                break
             if (len(moji) < 9):
                 print("文字数が不足しています")
+                break
             for j, c in enumerate(moji):
                 if j == 4:
                     continue
