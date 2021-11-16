@@ -209,6 +209,9 @@ CORNERS = [0, 2, 5, 7]
 # 真逆の色
 INV_COLOR = {0: 5, 1: 3, 2: 4, 3: 1, 4: 2, 5: 0}
 
+# 色番号と頭文字
+COLOR_INITIAL = {"w": 0, "r": 1, "y": 2, "o": 3, "g": 4, "b": 5}
+
 # 数値を2次元リストに戻す
 # メソッドでなく関数として定義
 def num2cube(num):
@@ -666,22 +669,20 @@ class Rubik:
                 sft += 3
         return cube_mask
     
+    # 合計をカウント
     def checkSum(self):
-        corners_sum = {i: 0 for i in range(6)}
-        edges_sum = {i: 0 for i in range(6)}
-        # print(corners_sum)
-        # print(edges_sum)
+        corners_sum = {i: 0 for i in range(8)}
+        edges_sum = {i: 0 for i in range(8)}
         for i in range(6):
             for j in range(8):
                 if j in CORNERS:
                     corners_sum[self.cube[i][j]] += 1
                 else:
                     edges_sum[self.cube[i][j]] += 1
-        for i in corners_sum.values():
-            if i != 4:
+        for i in range(6):
+            if corners_sum[i] != 4:
                 return False
-        for i in edges_sum.values():
-            if i != 4:
+            if edges_sum[i] != 4:
                 return False
         return True
     
@@ -972,10 +973,49 @@ init()
 
 # 標準入力
 def inputCube():
-    for i in range(6):
-        moji = input("中央が「{:s}」の面を上にし、「{:s}」を正面に持って上の色を入力してください：".format(JPN_COLOR[i], JPN_COLOR[DIC_FRONT_COLOR[i]]))
-        moji = moji.lower()
-        print(moji)
+    print("ルービックキューブの状態を入力")
+    print("入力する順番は\n0 1 2\n3 4 5\n6 7 8\nです")
+    print("色は英語の頭文字で入力してください（色番号も可）")
+    print("白:w (0), 赤:r (1), 黄:y (2), 橙:o (3), 緑:g (4), 青:b (5)")
+    cube = [[6] * 8 for _ in range(6)]
+    cont = True
+    while cont:
+        i = 0
+        while i < 6:
+            sub = 0
+            moji = input("中央が「{:s}」の面を上にし、「{:s}」を正面に持って上の色を入力してください：".format(JPN_COLOR[i], JPN_COLOR[DIC_FRONT_COLOR[i]]))
+            moji = moji.lower()
+            if (len(moji) < 9):
+                print("文字数が不足しています")
+            for j, c in enumerate(moji):
+                if j == 4:
+                    continue
+                if j >= 9:
+                    continue
+                # 数値でもいい
+                if c.isdecimal():
+                    cn = int(c)
+                    if cn in COLOR_INITIAL.values():
+                        cube[i][sub] = cn
+                    else:
+                        print("無効な入力です")
+                        break
+                # 頭文字
+                elif c in COLOR_INITIAL:
+                    cube[i][sub] = COLOR_INITIAL[c]
+                else:
+                    print("無効な入力です")
+                    break
+                sub += 1
+            else:
+                i += 1
+        r = Rubik(cube)
+        print(r)
+        if r.checkSum():
+            cont = False
+        else:
+            print("色の数が間違っています")   
+    return Rubik(cube)
 
 def main():
     global CROSS_MID_ONE_NUMS, CROSS_TOP_NUMS, COMP_TOP_NUMS, TOP_PATTERN_NUMS
