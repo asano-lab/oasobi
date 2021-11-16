@@ -973,13 +973,13 @@ def main():
     # 十字を揃える
     s = Search(r0.num, CROSS_ONE_SIDE_NUMS, 2)
     t1 = time.time()
-    rn1, act1 = s.useDist(13000)
+    rn, act1 = s.useDist(13000)
     print(time.time() - t1, "秒")
-    if rn1 < 0:
+    if rn < 0:
         return
     color = 0
     for j, cross in enumerate(CROSS_ONE_SIDE_NUMS):
-        if rn1 | CROSS_ONE_SIDE_NUM_MASKS[j] == cross:
+        if rn | CROSS_ONE_SIDE_NUM_MASKS[j] == cross:
             color = j
             break
     else:
@@ -999,7 +999,6 @@ def main():
     ACTIONS_D_LIST_LIST = switchColorAct(ACTIONS_D_LIST_LIST, INV_COLOR[color])
     ACTIONS_E_LIST_LIST = switchColorAct(ACTIONS_E_LIST_LIST, INV_COLOR[color])
 
-    rn = rn1
     for i in range(4):
         s = Search(rn, CROSS_MID_ONE_NUMS, 1, i)
         t1 = time.time()
@@ -1007,20 +1006,27 @@ def main():
         print(time.time() - t1, "秒")
         if rn < 0:
             return
-    # 上の十字
-    # s = Search(rn, CROSS_TOP_NUMS, 1, 0)
-    # t1 = time.time()
-    # rn, act = s.useDist(20000)
-    # print(time.time() - t1, "秒")
-    # if rn < 0:
-    #     return
-    # パターンのいずれか
-    s = Search(rn, TOP_PATTERN_NUMS, 1, 0)
+    # 上の棒
+    s = Search(rn, BAR_TOP_NUMS, 1, 0)
     t1 = time.time()
     rn, act = s.useDist(20000)
     print(time.time() - t1, "秒")
     if rn < 0:
         return
+    # 上の十字
+    s = Search(rn, CROSS_TOP_NUMS, 1, 0)
+    t1 = time.time()
+    rn, act = s.useDist(20000)
+    print(time.time() - t1, "秒")
+    if rn < 0:
+        return
+    # パターンのいずれか
+    # s = Search(rn, TOP_PATTERN_NUMS, 1, 0)
+    # t1 = time.time()
+    # rn, act = s.useDist(20000)
+    # print(time.time() - t1, "秒")
+    # if rn < 0:
+    #     return
     # 残るは上の回転のみ
     s = Search(rn, REMAIN_TOP_ROT_LIST)
     t1 = time.time()
@@ -1041,7 +1047,4 @@ def main():
     print(time.time() - t0, "秒")
 
 if __name__ == "__main__":
-    # main()
-    BAR_TOP_NUMS = switchColorList(BAR_TOP_NUMS, 4)
-    for i in BAR_TOP_NUMS:
-        print(Rubik(num2cube(i)))
+    main()
