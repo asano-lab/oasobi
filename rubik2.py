@@ -1033,6 +1033,11 @@ def inputCube():
             if (len(moji) < 9):
                 print("文字数が不足しています")
                 break
+            if moji[:2] == "0x":
+                r_num = int(moji, 0)
+                cube = num2cube(r_num)
+                i = 6
+                break
             for j, c in enumerate(moji):
                 if j == 4:
                     continue
@@ -1069,8 +1074,8 @@ def main():
     global ACTIONS_C_LIST_LIST, ACTIONS_C_DASH_LIST_LIST
     global ACTIONS_D_LIST_LIST, ACTIONS_E_LIST_LIST
     # r0 = Rubik(SAMPLE01)
-    # r0 = inputCube()
-    r0 = Rubik(num2cube(0x6902a990474c24296c4ab2d9705091b6001b))
+    r0 = inputCube()
+    # r0 = Rubik(num2cube(0x6902a990474c24296c4ab2d9705091b6001b))
     all_act = tuple()
     t0 = time.time()
     if not r0.checkSum():
