@@ -1081,12 +1081,61 @@ def searchCross(r_num):
     print(time.time() - t1, "秒")
     return nr_num, acts
 
+# 十字と角と対応する中間層を揃える
+def searchCrossCornerMid(r_num):
+    # 完全一面を揃えつつ中間層も揃える
+    i = 0
+    compromise = False
+    total_acts = tuple()
+    while i < 4:
+        r_num_cp = r_num
+        s = Search(r_num, CROSS_MID_ONE_NUMS, 2, i)
+        t1 = time.time()
+        r_num, acts = s.useDist(10000)
+        total_acts += acts
+        print(time.time() - t1, "秒")
+        # 妥協して端から揃える
+        if r_num < 0:
+            # 妥協しても見つからなかった場合
+            if compromise:
+                t1 = time.time()
+                if i == 3:
+                    print("中間層ラスト")
+                    # 最後の一個はできるだけ効率化
+                    s = Search(r_num_cp, COMP_MID_NUMS[STD_COLOR], 1)
+                    r_num, acts = s.useDist(100000)
+                    total_acts += acts
+                else:
+                    s = Search(r_num_cp, CROSS_MID_ONE_NUMS, 1, i)
+                    r_num, acts = s.useDist(100000)
+                    total_acts += acts
+                print(time.time() - t1, "秒")
+                if r_num < 0:
+                    return r_num, acts
+            # 最初の妥協
+            else:
+                compromise = True
+                print("妥協")
+                s = Search(r_num_cp, CROSS_CORNER_NUMS, 2, i)
+                t1 = time.time()
+                r_num, acts = s.useDist(20000)
+                total_acts += acts
+                print(time.time() - t1, "秒")
+                if r_num < 0:
+                    return r_num, acts
+        else:
+            compromise = False
+            i += 1
+    return r_num, total_acts
+
 # 基準となる色を決める
 def detStdColor(color):
     global CROSS_MID_ONE_NUMS, CROSS_TOP_NUMS
     global REMAIN_TOP_ROT_LIST, BAR_TOP_NUMS, CROSS_CORNER_NUMS
     global ACTIONS_C_LIST_LIST, ACTIONS_C_DASH_LIST_LIST
     global ACTIONS_D_LIST_LIST, ACTIONS_E_LIST_LIST
+    global STD_COLOR
+    STD_COLOR = color
     # 基準の色を決定
     CROSS_CORNER_NUMS = switchColorList(CROSS_CORNER_NUMS, color)
     CROSS_MID_ONE_NUMS = switchColorList(CROSS_MID_ONE_NUMS, color)
@@ -1136,62 +1185,30 @@ def main():
         if r0.num | COMP_MID_NUM_MASKS[i] == cmp_mid:
             color = i
             break
+    
+    rn = r0.num
 
     # 十字を揃える
     if phase == 0:
-        rn, act = searchCross(r0.num)
+        rn, act = searchCross(rn)
         if rn < 0:
             return
-        color = -1
-        for j, cross in enumerate(CROSS_ONE_SIDE_NUMS):
-            if rn | CROSS_ONE_SIDE_NUM_MASKS[j] == cross:
-                color = j
+        all_act += act
+        for i, cross in enumerate(CROSS_ONE_SIDE_NUMS):
+            if rn | CROSS_ONE_SIDE_NUM_MASKS[i] == cross:
+                detStdColor(i)
                 break
         else:
             return
-        detStdColor(color)
-
-    # 完全一面を揃えつつ中間層も揃える
-    i = 0
-    compromise = False
-    while i < 4:
-        rncp = rn
-        s = Search(rn, CROSS_MID_ONE_NUMS, 2, i)
-        t1 = time.time()
-        rn, act = s.useDist(10000)
-        all_act += act
-        print(time.time() - t1, "秒")
-        # 妥協して端から揃える
+        phase += 1
+    
+    # 完全一面と中間層
+    if phase == 1:
+        rn, act = searchCrossCornerMid(rn)
         if rn < 0:
-            # 妥協しても見つからなかった場合
-            if compromise:
-                t1 = time.time()
-                if i == 3:
-                    print("中間層ラスト")
-                    # 最後の一個は効率化??
-                    s = Search(rncp, COMP_MID_NUMS[color], 1)
-                    rn, act = s.useDist(100000)
-                    all_act += act
-                else:
-                    s = Search(rncp, CROSS_MID_ONE_NUMS, 1, i)
-                    rn, act = s.useDist(100000)
-                    all_act += act
-                print(time.time() - t1, "秒")
-                if rn < 0:
-                    return
-            else:
-                compromise = True
-                print("妥協")
-                s = Search(rncp, CROSS_CORNER_NUMS, 2, i)
-                t1 = time.time()
-                rn, act = s.useDist(20000)
-                all_act += act
-                print(time.time() - t1, "秒")
-                if rn < 0:
-                    return
-        else:
-            compromise = False
-            i += 1
+            return
+        all_act += act
+        phase += 1
 
     # コピー
     rncp = rn
