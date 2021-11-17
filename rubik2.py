@@ -743,15 +743,22 @@ class Search:
     # 一手の重みも与える
     # 与えた候補で一致する数も与える??
     # 角を複数揃えたい場合など
-    def __init__(self, cube_num, goal=[COMPLETE_NUM], act_weight=12, match_num=0):
+    def __init__(self, cube_num, goal=COMPLETE_NUM, act_weight=12, match_num=0):
         self.goal = goal
+        # 第二引数は整数型も許容
+        if type(goal) is int:
+            self.calc_dist_method = lambda rn: self._calcDist(rn, goal)
+        # リストならこれまで通り
+        elif type(goal) is list:
+            self.calc_dist_method = self.calcDistMatchNum
         self.act_weight = act_weight
+        # 探索済み
         self.explored = []
         self.match_num = match_num
         # 初期値
         self.init_cube = cube_num
         # 初期値の距離を計算 (不要だがデバッグのため)
-        crnt_dist = self.calcDistMatchNum(cube_num)
+        crnt_dist = self.calc_dist_method(cube_num)
         if crnt_dist == 0:
             print("達成済み")
         self.unexplored = {crnt_dist: {cube_num: tuple()}}
@@ -787,7 +794,7 @@ class Search:
                     if nr.num in known:
                         continue
                 # 最短距離を計算
-                dist = self.calcDistMatchNum(nr.num)
+                dist = self.calc_dist_method(nr.num)
                 # 一致したら終了
                 if dist == 0:
                     printActs(v + (j,))
@@ -824,7 +831,7 @@ class Search:
             r = Rubik(num2cube(r_num))
             nrl = r.allActions()
             for i, nr in enumerate(nrl):
-                if not self.calcDistMatchNum(nr.num):
+                if not self.calc_dist_method(nr.num):
                     printActs(past_acts + (i,))
                     print(nr)
                     return (nr.num, past_acts + (i,))
@@ -835,8 +842,8 @@ class Search:
         for knownd in self.num_dic.values():
             knowns = set(knownd)
             nrns -= knowns
-        print("新状態数:", len(nrns))
         self.depth += 1
+        print("深さ：{:d}, 状態数：{:d}".format(self.depth, len(nrns)))
         self.num_dic[self.depth] = {k: v for k, v in nrnd.items() if k in nrns}
         return (-1, tuple())
     
@@ -854,7 +861,7 @@ class Search:
             for i, nrl in enumerate(nrll):
                 for j, nr in enumerate(nrl):
                     act_name = ACT_PATTERN_STR[i] + str(j)
-                    if not self.calcDistMatchNum(nr.num):
+                    if not self.calc_dist_method(nr.num):
                         print(past_acts + (act_name,))
                         print(nr)
                         return (nr.num, past_acts + (act_name,))
@@ -865,10 +872,10 @@ class Search:
         for knownd in self.num_dic.values():
             knowns = set(knownd)
             nrns -= knowns
-        print("新状態数:", len(nrns))
         self.depth += 1
+        print("深さ{:d}, 状態数：{:d}".format(self.depth, len(nrns)))
         self.num_dic[self.depth] = {k: v for k, v in nrnd.items() if k in nrns}
-        return (-1, -1)
+        return (-1, tuple())
     
     # 目的とするいくつかの状態から, 最も近い距離を返す
     def calcMinDist(self, cube_num):
@@ -1074,7 +1081,14 @@ def main():
     if r0.num == COMPLETE_NUM:
         print("既に完成しています")
         return
-    # とりあえず幅優先探索
+    # とりあえず幅優先探索 (深さ6まで)
+    s = Search(r0.num)
+    t1 = time.time()
+    for _ in range(6):
+        rn, act = s.bfs()
+        if rn >= 0:
+            print(time.time() - t1)
+            return
     
     # 中間層まで揃っている面があるか
     for i, cmp_mid in enumerate(COMP_MID_NUMS):
@@ -1219,5 +1233,4 @@ def main():
     print(time.time() - t0, "秒")
 
 if __name__ == "__main__":
-    # main()
-    print(type(COMPLETE))
+    main()
