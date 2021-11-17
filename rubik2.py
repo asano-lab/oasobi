@@ -1066,7 +1066,7 @@ def main():
         return
     # ログに状態を保持しておく
     with open("rubik_log.txt", "a", encoding="utf-8") as f:
-        print(str(hex(r0.num)), file=f, end="\n")
+        print(hex(r0.num), file=f, end="\n")
     # 初期状態
     print("初期状態")
     print(r0)
@@ -1074,6 +1074,8 @@ def main():
     if r0.num == COMPLETE_NUM:
         print("既に完成しています")
         return
+    # とりあえず幅優先探索
+    
     # 中間層まで揃っている面があるか
     for i, cmp_mid in enumerate(COMP_MID_NUMS):
         if r0.num | COMP_MID_NUM_MASKS[i] == cmp_mid:
@@ -1217,4 +1219,5 @@ def main():
     print(time.time() - t0, "秒")
 
 if __name__ == "__main__":
-    main()
+    # main()
+    print(type(COMPLETE))
