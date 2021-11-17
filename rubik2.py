@@ -1119,6 +1119,7 @@ def main():
             if compromise:
                 t1 = time.time()
                 if i == 3:
+                    print("中間層ラスト")
                     # 最後の一個は効率化??
                     s = Search(rncp, [COMP_MID_NUMS[color]], 1)
                     rn, act = s.useDist(100000)
@@ -1209,7 +1210,4 @@ def main():
     print(time.time() - t0, "秒")
 
 if __name__ == "__main__":
-    # main()
-    for i in COMP_MID_NUMS:
-        print(Rubik(num2cube(i)))
-    # print(Rubik(CROSS_0_CORNER))
+    main()
