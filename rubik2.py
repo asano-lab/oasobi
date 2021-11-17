@@ -1070,9 +1070,15 @@ def main():
     # 初期状態
     print("初期状態")
     print(r0)
+    # 完成かチェック
     if r0.num == COMPLETE_NUM:
         print("既に完成しています")
         return
+    # 中間層まで揃っている面があるか
+    for i, cmp_mid in enumerate(COMP_MID_NUMS):
+        if r0.num | COMP_MID_NUM_MASKS[i] == cmp_mid:
+            color = i
+            break
 
     # 十字を揃える
     s = Search(r0.num, CROSS_ONE_SIDE_NUMS, 2)
