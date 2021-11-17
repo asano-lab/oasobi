@@ -1056,7 +1056,6 @@ def main():
     global REMAIN_TOP_ROT_LIST, BAR_TOP_NUMS, CROSS_CORNER_NUMS
     global ACTIONS_C_LIST_LIST, ACTIONS_C_DASH_LIST_LIST
     global ACTIONS_D_LIST_LIST, ACTIONS_E_LIST_LIST
-    # r0 = Rubik(num2cube(SAMPLE_FINAL_01))
     # r0 = Rubik(SAMPLE01)
     r0 = inputCube()
     all_act = tuple()
@@ -1111,7 +1110,7 @@ def main():
         rncp = rn
         s = Search(rn, CROSS_MID_ONE_NUMS, 2, i)
         t1 = time.time()
-        rn, act = s.useDist(20000)
+        rn, act = s.useDist(10000)
         all_act += act
         print(time.time() - t1, "秒")
         # 妥協して端から揃える
@@ -1119,9 +1118,16 @@ def main():
             # 妥協しても見つからなかった場合
             if compromise:
                 t1 = time.time()
-                # 追加で3万ループ探索
-                rn, act = s.useDist(30000)
-                all_act += act
+                if i == 3:
+                    # 最後の一個は効率化??
+                    s = Search(rncp, [COMP_MID_NUMS[color]], 1)
+                    rn, act = s.useDist(100000)
+                    all_act += act
+                else:
+                    s = Search(rncp, CROSS_MID_ONE_NUMS, 1, i)
+                    # 追加で3万ループ探索
+                    rn, act = s.useDist(100000)
+                    all_act += act
                 print(time.time() - t1, "秒")
                 if rn < 0:
                     return
@@ -1203,5 +1209,7 @@ def main():
     print(time.time() - t0, "秒")
 
 if __name__ == "__main__":
-    main()
+    # main()
+    for i in COMP_MID_NUMS:
+        print(Rubik(num2cube(i)))
     # print(Rubik(CROSS_0_CORNER))
