@@ -813,7 +813,7 @@ class Search:
             nrl = r.allActions()
             for i, nr in enumerate(nrl):
                 if not self.calcDistMatchNum(nr.num):
-                    print(past_acts + (i,))
+                    printActs(past_acts + (i,))
                     print(nr)
                     return (nr.num, past_acts + (i,))
                 nrnd[nr.num] = past_acts + (i,)
@@ -843,7 +843,7 @@ class Search:
                 for j, nr in enumerate(nrl):
                     act_name = ACT_PATTERN_STR[i] + str(j)
                     if not self.calcDistMatchNum(nr.num):
-                        printActs(past_acts + (act_name,))
+                        print(past_acts + (act_name,))
                         print(nr)
                         return (nr.num, past_acts + (act_name,))
                     nrnd[nr.num] = past_acts + (act_name,)
