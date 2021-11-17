@@ -1072,11 +1072,36 @@ def inputCube():
             print("色の数が間違っています")   
     return Rubik(cube)
 
-def main():
+# 十字を見つける
+def searchCross(r_num):
+    # 動作の重みは2
+    s = Search(r_num, CROSS_ONE_SIDE_NUMS, 2)
+    t1 = time.time()
+    nr_num, acts = s.useDist(30000)
+    print(time.time() - t1, "秒")
+    return nr_num, acts
+
+# 基準となる色を決める
+def detStdColor(color):
     global CROSS_MID_ONE_NUMS, CROSS_TOP_NUMS
     global REMAIN_TOP_ROT_LIST, BAR_TOP_NUMS, CROSS_CORNER_NUMS
     global ACTIONS_C_LIST_LIST, ACTIONS_C_DASH_LIST_LIST
     global ACTIONS_D_LIST_LIST, ACTIONS_E_LIST_LIST
+    # 基準の色を決定
+    CROSS_CORNER_NUMS = switchColorList(CROSS_CORNER_NUMS, color)
+    CROSS_MID_ONE_NUMS = switchColorList(CROSS_MID_ONE_NUMS, color)
+    CROSS_TOP_NUMS = switchColorList(CROSS_TOP_NUMS, color)
+    BAR_TOP_NUMS = switchColorList(BAR_TOP_NUMS, color)
+    # 色の反転に注意
+    REMAIN_TOP_ROT_LIST = switchColorList(REMAIN_TOP_ROT_LIST, INV_COLOR[color])
+
+    # 動作
+    ACTIONS_C_LIST_LIST = switchColorAct(ACTIONS_C_LIST_LIST, INV_COLOR[color])
+    ACTIONS_C_DASH_LIST_LIST = switchColorAct(ACTIONS_C_DASH_LIST_LIST, INV_COLOR[color])
+    ACTIONS_D_LIST_LIST = switchColorAct(ACTIONS_D_LIST_LIST, INV_COLOR[color])
+    ACTIONS_E_LIST_LIST = switchColorAct(ACTIONS_E_LIST_LIST, INV_COLOR[color])
+
+def main():
     # r0 = Rubik(SAMPLE01)
     r0 = inputCube()
     all_act = tuple()
@@ -1099,11 +1124,12 @@ def main():
     # とりあえず幅優先探索 (深さ5まで)
     s = Search(r0.num)
     t1 = time.time()
-    for _ in range(6):
+    for _ in range(5):
         rn, act = s.bfs()
         if rn >= 0:
             print(time.time() - t1)
             return
+    phase = 0
     
     # 中間層まで揃っている面があるか
     for i, cmp_mid in enumerate(COMP_MID_NUMS):
@@ -1112,33 +1138,18 @@ def main():
             break
 
     # 十字を揃える
-    s = Search(r0.num, CROSS_ONE_SIDE_NUMS, 2)
-    t1 = time.time()
-    rn, act = s.useDist(20000)
-    all_act += act
-    print(time.time() - t1, "秒")
-    if rn < 0:
-        return
-    color = 0
-    for j, cross in enumerate(CROSS_ONE_SIDE_NUMS):
-        if rn | CROSS_ONE_SIDE_NUM_MASKS[j] == cross:
-            color = j
-            break
-    else:
-        return
-    # 基準の色を決定
-    CROSS_CORNER_NUMS = switchColorList(CROSS_CORNER_NUMS, color)
-    CROSS_MID_ONE_NUMS = switchColorList(CROSS_MID_ONE_NUMS, color)
-    CROSS_TOP_NUMS = switchColorList(CROSS_TOP_NUMS, color)
-    BAR_TOP_NUMS = switchColorList(BAR_TOP_NUMS, color)
-    # 色の反転に注意
-    REMAIN_TOP_ROT_LIST = switchColorList(REMAIN_TOP_ROT_LIST, INV_COLOR[color])
-
-    # 動作
-    ACTIONS_C_LIST_LIST = switchColorAct(ACTIONS_C_LIST_LIST, INV_COLOR[color])
-    ACTIONS_C_DASH_LIST_LIST = switchColorAct(ACTIONS_C_DASH_LIST_LIST, INV_COLOR[color])
-    ACTIONS_D_LIST_LIST = switchColorAct(ACTIONS_D_LIST_LIST, INV_COLOR[color])
-    ACTIONS_E_LIST_LIST = switchColorAct(ACTIONS_E_LIST_LIST, INV_COLOR[color])
+    if phase == 0:
+        rn, act = searchCross(r0.num)
+        if rn < 0:
+            return
+        color = -1
+        for j, cross in enumerate(CROSS_ONE_SIDE_NUMS):
+            if rn | CROSS_ONE_SIDE_NUM_MASKS[j] == cross:
+                color = j
+                break
+        else:
+            return
+        detStdColor(color)
 
     # 完全一面を揃えつつ中間層も揃える
     i = 0
@@ -1158,12 +1169,11 @@ def main():
                 if i == 3:
                     print("中間層ラスト")
                     # 最後の一個は効率化??
-                    s = Search(rncp, [COMP_MID_NUMS[color]], 1)
+                    s = Search(rncp, COMP_MID_NUMS[color], 1)
                     rn, act = s.useDist(100000)
                     all_act += act
                 else:
                     s = Search(rncp, CROSS_MID_ONE_NUMS, 1, i)
-                    # 追加で3万ループ探索
                     rn, act = s.useDist(100000)
                     all_act += act
                 print(time.time() - t1, "秒")
