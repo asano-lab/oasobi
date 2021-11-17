@@ -1057,8 +1057,8 @@ def main():
     global REMAIN_TOP_ROT_LIST, BAR_TOP_NUMS, CROSS_CORNER_NUMS
     global ACTIONS_C_LIST_LIST, ACTIONS_C_DASH_LIST_LIST
     global ACTIONS_D_LIST_LIST, ACTIONS_E_LIST_LIST
-    r0 = Rubik(SAMPLE01)
-    # r0 = inputCube()
+    # r0 = Rubik(SAMPLE01)
+    r0 = inputCube()
     all_act = tuple()
     t0 = time.time()
     if not r0.checkSum():
