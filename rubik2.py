@@ -1072,9 +1072,6 @@ def main():
     if not r0.checkSum():
         print("数が合いません")
         return
-    # ログに状態を保持しておく
-    with open("rubik_log.txt", "a", encoding="utf-8") as f:
-        print(hex(r0.num), file=f, end="\n")
     # 初期状態
     print("初期状態")
     print(r0)
@@ -1082,6 +1079,11 @@ def main():
     if r0.num == COMPLETE_NUM:
         print("既に完成しています")
         return
+    # ログに状態を保持しておく
+    with open("rubik_log.txt", "a", encoding="utf-8") as f:
+        dt = datetime.datetime.utcnow() + datetime.timedelta(hours=9)
+        print(dt.strftime("%Y-%m-%d %H:%M:%S, "), file=f)
+        print(hex(r0.num), file=f, end="\n")
     # とりあえず幅優先探索 (深さ6まで)
     s = Search(r0.num)
     t1 = time.time()
@@ -1234,5 +1236,4 @@ def main():
     print(time.time() - t0, "秒")
 
 if __name__ == "__main__":
-    # main()
-    print(datetime.datetime.utcnow())
+    main()
