@@ -1049,6 +1049,9 @@ def main():
     if not r0.checkSum():
         print("数が合いません")
         return
+    # ログに状態を保持しておく
+    with open("rubik_log.txt", "a") as f:
+        print(r0, file=f)
     # 初期状態
     print("初期状態")
     print(r0)
@@ -1085,24 +1088,37 @@ def main():
 
     # 完全一面を揃えつつ中間層も揃える
     i = 0
+    compromise = False
     while i < 4:
         rncp = rn
-        s = Search(rn, CROSS_MID_ONE_NUMS, 1, i)
+        s = Search(rn, CROSS_MID_ONE_NUMS, 2, i)
         t1 = time.time()
         rn, act = s.useDist(20000)
         all_act += act
         print(time.time() - t1, "秒")
         # 妥協して端から揃える
         if rn < 0:
-            print("妥協")
-            s = Search(rncp, CROSS_CORNER_NUMS, 2, i)
-            t1 = time.time()
-            rn, act = s.useDist(20000)
-            all_act += act
-            print(time.time() - t1, "秒")
-            if rn < 0:
-                return
+            # 妥協しても見つからなかった場合
+            if compromise:
+                t1 = time.time()
+                # 追加で3万ループ探索
+                rn, act = s.useDist(30000)
+                all_act += act
+                print(time.time() - t1, "秒")
+                if rn < 0:
+                    return
+            else:
+                compromise = True
+                print("妥協")
+                s = Search(rncp, CROSS_CORNER_NUMS, 2, i)
+                t1 = time.time()
+                rn, act = s.useDist(20000)
+                all_act += act
+                print(time.time() - t1, "秒")
+                if rn < 0:
+                    return
         else:
+            compromise = False
             i += 1
 
     # コピー
