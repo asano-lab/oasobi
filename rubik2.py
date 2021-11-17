@@ -980,6 +980,8 @@ def init():
     r_list = [Rubik(BAR_TOP)]
     r_list.append(r_list[0].downYawPlus())
     BAR_TOP_NUMS = [r.num for r in r_list]
+    # 基準色の反対側の十字
+    # 複数形だが要素は一つ
     CROSS_TOP_NUMS = [Rubik(CROSS_TOP).num]
     COMP_TOP_NUMS = [Rubik(COMP_TOP).num]
     r_list = [Rubik(PATTERN_C_12)]
@@ -1128,6 +1130,34 @@ def searchCrossCornerMid(r_num):
             i += 1
     return r_num, total_acts
 
+# 基準色の反対側の十字を揃える
+def searchTopCross(r_num):
+    # コピー
+    r_num_cp = r_num
+    # まずは上の十字を直接探す
+    s = Search(r_num, CROSS_TOP_NUMS[0], 2, 0)
+    t1 = time.time()
+    r_num, acts = s.useDist(20000)
+    total_acts = acts
+    print(time.time() - t1, "秒")
+    # 十字が見つからない場合は棒から探す
+    if r_num < 0:
+        # 上の棒
+        s = Search(r_num_cp, BAR_TOP_NUMS, 2, 0)
+        t1 = time.time()
+        r_num, acts = s.useDist(20000)
+        total_acts += acts
+        print(time.time() - t1, "秒")
+        if r_num < 0:
+            return r_num, acts
+        # 上の十字
+        s = Search(r_num, CROSS_TOP_NUMS[0], 2, 0)
+        t1 = time.time()
+        r_num, acts = s.useDist(20000)
+        total_acts += acts
+        print(time.time() - t1, "秒")
+    return r_num, total_acts
+
 # 基準となる色を決める
 def detStdColor(color):
     global CROSS_MID_ONE_NUMS, CROSS_TOP_NUMS
@@ -1209,33 +1239,12 @@ def main():
             return
         all_act += act
         phase += 1
+    
+    if phase == 2:
+        rn, act = searchTopCross(rn)
+        all_act += act
+        phase += 1
 
-    # コピー
-    rncp = rn
-    # まずは上の十字を直接探す
-    s = Search(rn, CROSS_TOP_NUMS, 1, 0)
-    t1 = time.time()
-    rn, act = s.useDist(20000)
-    all_act += act
-    print(time.time() - t1, "秒")
-    # 十字が見つからない場合は棒から探す
-    if rn < 0:
-        # 上の棒
-        s = Search(rncp, BAR_TOP_NUMS, 1, 0)
-        t1 = time.time()
-        rn, act = s.useDist(20000)
-        all_act += act
-        print(time.time() - t1, "秒")
-        if rn < 0:
-            return
-        # 上の十字
-        s = Search(rn, CROSS_TOP_NUMS, 1, 0)
-        t1 = time.time()
-        rn, act = s.useDist(20000)
-        all_act += act
-        print(time.time() - t1, "秒")
-        if rn < 0:
-            return
     # 残るは上の回転のみ
     s = Search(rn, REMAIN_TOP_ROT_LIST)
     t1 = time.time()
