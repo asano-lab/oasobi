@@ -1056,16 +1056,16 @@ def main():
     global REMAIN_TOP_ROT_LIST, BAR_TOP_NUMS, CROSS_CORNER_NUMS
     global ACTIONS_C_LIST_LIST, ACTIONS_C_DASH_LIST_LIST
     global ACTIONS_D_LIST_LIST, ACTIONS_E_LIST_LIST
-    # r0 = Rubik(SAMPLE01)
-    r0 = inputCube()
+    r0 = Rubik(SAMPLE01)
+    # r0 = inputCube()
     all_act = tuple()
     t0 = time.time()
     if not r0.checkSum():
         print("数が合いません")
         return
     # ログに状態を保持しておく
-    with open("rubik_log.txt", "a") as f:
-        print(hex(r0.num), file=f)
+    with open("rubik_log.txt", "a", encoding="utf-8") as f:
+        print(str(hex(r0.num)), file=f, end="\n")
     # 初期状態
     print("初期状態")
     print(r0)
