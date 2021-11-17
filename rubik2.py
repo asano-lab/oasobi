@@ -1,4 +1,5 @@
 import time
+import datetime
 
 # 完成した盤面
 # 日本配色で白, 赤, 黄, 橙, 緑, 青の順
@@ -1233,4 +1234,5 @@ def main():
     print(time.time() - t0, "秒")
 
 if __name__ == "__main__":
-    main()
+    # main()
+    print(datetime.datetime.utcnow())
