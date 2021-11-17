@@ -23,6 +23,16 @@ COMP_0 = [
     [7, 7, 7, 7, 7, 7, 7, 7]
 ]
 
+# 白の完全一面と中間層全て
+COMP_0_MID = [
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 1, 7, 7, 7],
+    [2, 2, 2, 2, 2, 7, 7, 7],
+    [3, 3, 3, 3, 3, 7, 7, 7],
+    [4, 4, 4, 4, 4, 7, 7, 7],
+    [7, 7, 7, 7, 7, 7, 7, 7]
+]
+
 # 白の十字
 CROSS_0 = [
     [7, 0, 7, 0, 0, 7, 0, 7],
@@ -117,6 +127,7 @@ PATTERN_E_12 = [
 
 # 白を基準に中間層が揃っている
 # かつ, 青の一面が揃っている
+# 現状使う機会はなさそう
 COMP_TOP = [
     [0, 0, 0, 0, 0, 0, 0, 0],
     [1, 1, 1, 1, 1, 7, 7, 7],
@@ -927,6 +938,7 @@ def switchColorAct(a_list_list, color):
     return a_list_list
 
 def init():
+    global COMP_MID_NUMS, COMP_MID_NUM_MASKS
     global COMP_ONE_SIDE_NUMS, COMP_ONE_SIDE_NUM_MASKS
     global CROSS_ONE_SIDE_NUMS, CROSS_ONE_SIDE_NUM_MASKS
     global CROSS_MID_ONE_NUMS, BAR_TOP_NUMS, CROSS_TOP_NUMS, COMP_TOP_NUMS
@@ -934,8 +946,11 @@ def init():
     global ACTIONS_C_LIST_LIST, ACTIONS_C_DASH_LIST_LIST
     global ACTIONS_D_LIST_LIST, ACTIONS_E_LIST_LIST
     global REMAIN_TOP_ROT_LIST
-    # 十字と完全一面
+    # 完全一面と中間層
+    COMP_MID_NUMS, COMP_MID_NUM_MASKS = makeAllColorCubeList(COMP_0_MID)
+    # 完全一面
     COMP_ONE_SIDE_NUMS, COMP_ONE_SIDE_NUM_MASKS = makeAllColorCubeList(COMP_0)
+    # 十字
     CROSS_ONE_SIDE_NUMS, CROSS_ONE_SIDE_NUM_MASKS = makeAllColorCubeList(CROSS_0)
     # 十字と一つの角
     r_list = [Rubik(CROSS_0_CORNER)]
@@ -1037,7 +1052,7 @@ def inputCube():
     return Rubik(cube)
 
 def main():
-    global CROSS_MID_ONE_NUMS, CROSS_TOP_NUMS, COMP_TOP_NUMS, TOP_PATTERN_NUMS
+    global CROSS_MID_ONE_NUMS, CROSS_TOP_NUMS, TOP_PATTERN_NUMS
     global REMAIN_TOP_ROT_LIST, BAR_TOP_NUMS, CROSS_CORNER_NUMS
     global ACTIONS_C_LIST_LIST, ACTIONS_C_DASH_LIST_LIST
     global ACTIONS_D_LIST_LIST, ACTIONS_E_LIST_LIST
@@ -1051,10 +1066,14 @@ def main():
         return
     # ログに状態を保持しておく
     with open("rubik_log.txt", "a") as f:
-        print(r0, file=f)
+        print(hex(r0.num), file=f)
     # 初期状態
     print("初期状態")
     print(r0)
+    if r0.num == COMPLETE_NUM:
+        print("既に完成しています")
+        return
+
     # 十字を揃える
     s = Search(r0.num, CROSS_ONE_SIDE_NUMS, 2)
     t1 = time.time()
@@ -1074,7 +1093,6 @@ def main():
     CROSS_CORNER_NUMS = switchColorList(CROSS_CORNER_NUMS, color)
     CROSS_MID_ONE_NUMS = switchColorList(CROSS_MID_ONE_NUMS, color)
     CROSS_TOP_NUMS = switchColorList(CROSS_TOP_NUMS, color)
-    COMP_TOP_NUMS = switchColorList(COMP_TOP_NUMS, color)
     TOP_PATTERN_NUMS = switchColorList(TOP_PATTERN_NUMS, color)
     BAR_TOP_NUMS = switchColorList(BAR_TOP_NUMS, color)
     # 色の反転に注意
