@@ -1,5 +1,6 @@
 import time
 import datetime
+import random
 
 # 完成した盤面
 # 日本配色で白, 赤, 黄, 橙, 緑, 青の順
@@ -830,13 +831,15 @@ class Search:
         nrnd = {}
         for r_num, past_acts in self.num_dic[self.depth].items():
             r = Rubik(num2cube(r_num))
-            nrl = r.allActions()
-            for i, nr in enumerate(nrl):
+            # シャッフル
+            nr_act_l = list(enumerate(r.allActions()))
+            random.shuffle(nr_act_l)
+            for a, nr in nr_act_l:
                 if not self.calc_dist_method(nr.num):
-                    printActs(past_acts + (i,))
+                    printActs(past_acts + (a,))
                     print(nr)
-                    return (nr.num, past_acts + (i,))
-                nrnd[nr.num] = past_acts + (i,)
+                    return (nr.num, past_acts + (a,))
+                nrnd[nr.num] = past_acts + (a,)
 
         # 重複排除フェーズ
         nrns = set(nrnd)
@@ -1066,7 +1069,8 @@ def main():
     global ACTIONS_C_LIST_LIST, ACTIONS_C_DASH_LIST_LIST
     global ACTIONS_D_LIST_LIST, ACTIONS_E_LIST_LIST
     # r0 = Rubik(SAMPLE01)
-    r0 = inputCube()
+    # r0 = inputCube()
+    r0 = Rubik(num2cube(0x6902a990474c24296c4ab2d9705091b6001b))
     all_act = tuple()
     t0 = time.time()
     if not r0.checkSum():
@@ -1082,8 +1086,8 @@ def main():
     # ログに状態を保持しておく
     with open("rubik_log.txt", "a", encoding="utf-8") as f:
         dt = datetime.datetime.utcnow() + datetime.timedelta(hours=9)
-        print(dt.strftime("%Y-%m-%d %H:%M:%S, "), file=f)
-        print(hex(r0.num), file=f, end="\n")
+        print(dt.strftime("%Y-%m-%d %H:%M:%S, "), file=f, end="")
+        print(hex(r0.num), file=f)
     # とりあえず幅優先探索 (深さ6まで)
     s = Search(r0.num)
     t1 = time.time()
