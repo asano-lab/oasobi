@@ -784,10 +784,12 @@ class Search:
                 self.unexplored.pop(self.min_dist)
                 self.min_dist = min(self.unexplored)
             k, v = self.unexplored[self.min_dist].popitem()
-            r = Rubik(num2cube(k))
-            nrl = r.allActions()
+            # 次の状態への動作と数値
+            nr_act_l = list(enumerate(Rubik(num2cube(k)).allActions()))
+            # シャッフル
+            random.shuffle(nr_act_l)
             # 新状態を確認
-            for j, nr in enumerate(nrl):
+            for j, nr in nr_act_l:
                 # 探索済みに含まれていたらやりなおし
                 if nr.num in self.explored:
                     continue
@@ -1071,13 +1073,12 @@ def inputCube():
     return Rubik(cube)
 
 def main():
-    global CROSS_MID_ONE_NUMS, CROSS_TOP_NUMS, TOP_PATTERN_NUMS
+    global CROSS_MID_ONE_NUMS, CROSS_TOP_NUMS
     global REMAIN_TOP_ROT_LIST, BAR_TOP_NUMS, CROSS_CORNER_NUMS
     global ACTIONS_C_LIST_LIST, ACTIONS_C_DASH_LIST_LIST
     global ACTIONS_D_LIST_LIST, ACTIONS_E_LIST_LIST
     # r0 = Rubik(SAMPLE01)
     r0 = inputCube()
-    # r0 = Rubik(num2cube(0x6902a990474c24296c4ab2d9705091b6001b))
     all_act = tuple()
     t0 = time.time()
     if not r0.checkSum():
@@ -1095,7 +1096,7 @@ def main():
         dt = datetime.datetime.utcnow() + datetime.timedelta(hours=9)
         print(dt.strftime("%Y-%m-%d %H:%M:%S, "), file=f, end="")
         print(hex(r0.num), file=f)
-    # とりあえず幅優先探索 (深さ6まで)
+    # とりあえず幅優先探索 (深さ5まで)
     s = Search(r0.num)
     t1 = time.time()
     for _ in range(6):
@@ -1129,7 +1130,6 @@ def main():
     CROSS_CORNER_NUMS = switchColorList(CROSS_CORNER_NUMS, color)
     CROSS_MID_ONE_NUMS = switchColorList(CROSS_MID_ONE_NUMS, color)
     CROSS_TOP_NUMS = switchColorList(CROSS_TOP_NUMS, color)
-    TOP_PATTERN_NUMS = switchColorList(TOP_PATTERN_NUMS, color)
     BAR_TOP_NUMS = switchColorList(BAR_TOP_NUMS, color)
     # 色の反転に注意
     REMAIN_TOP_ROT_LIST = switchColorList(REMAIN_TOP_ROT_LIST, INV_COLOR[color])
@@ -1209,13 +1209,6 @@ def main():
         print(time.time() - t1, "秒")
         if rn < 0:
             return
-    # パターンのいずれか
-    # s = Search(rn, TOP_PATTERN_NUMS, 1, 0)
-    # t1 = time.time()
-    # rn, act = s.useDist(20000)
-    # print(time.time() - t1, "秒")
-    # if rn < 0:
-    #     return
     # 残るは上の回転のみ
     s = Search(rn, REMAIN_TOP_ROT_LIST)
     t1 = time.time()
