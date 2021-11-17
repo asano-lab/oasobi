@@ -221,7 +221,8 @@ ACT_DIC_0TO7 = {0: 7, 7: 3, 3: 4, 4: 0, 1: 6, 6: 2, 2: 5, 5: 1, 8: 8, 9: 9, 10: 
 ACT_DIC_4TO8 = {4: 8, 8: 7, 7: 11, 11: 4, 5: 9, 9: 6, 6: 10, 10: 5, 0: 0, 1: 1, 2: 2, 3: 3}
 
 # ACT_STR = ["lp", "lm", "rp", "rm", "bp", "bm", "fp", "fm", "up", "um", "dp", "dm"]
-ACT_STR = ["L", "L'", "R'", "R", "B", "B'", "F'", "F", "U", "U'", "D'", "D"]
+# ACT_STR = ["L", "L'", "R'", "R", "B", "B'", "F'", "F", "U", "U'", "D'", "D"]
+ACT_STR = ["L", "-L", "-R", "R", "B", "-B", "-F", "F", "U", "-U", "-D", "D"]
 
 ACT_PATTERN_STR = ["C", "C'", "D", "E"]
 
@@ -245,7 +246,7 @@ def num2cube(num):
 
 # 手順を出力
 def printActs(acts):
-    moji = ""
+    moji = "\n"
     im = len(acts) - 1
     for i, act in enumerate(acts):
         moji += ACT_STR[act]
