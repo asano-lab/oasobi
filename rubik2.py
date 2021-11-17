@@ -1041,7 +1041,6 @@ def main():
     global REMAIN_TOP_ROT_LIST, BAR_TOP_NUMS, CROSS_CORNER_NUMS
     global ACTIONS_C_LIST_LIST, ACTIONS_C_DASH_LIST_LIST
     global ACTIONS_D_LIST_LIST, ACTIONS_E_LIST_LIST
-    # r0 = Rubik(num2cube(SAMPLE_WHITE_SIDE_MID))
     # r0 = Rubik(num2cube(SAMPLE_FINAL_01))
     # r0 = Rubik(SAMPLE01)
     r0 = inputCube()
@@ -1085,13 +1084,15 @@ def main():
     ACTIONS_E_LIST_LIST = switchColorAct(ACTIONS_E_LIST_LIST, INV_COLOR[color])
 
     # 完全一面を揃えつつ中間層も揃える
-    for i in range(4):
+    i = 0
+    while i < 4:
         rncp = rn
         s = Search(rn, CROSS_MID_ONE_NUMS, 1, i)
         t1 = time.time()
         rn, act = s.useDist(20000)
         all_act += act
         print(time.time() - t1, "秒")
+        # 妥協して端から揃える
         if rn < 0:
             print("妥協")
             s = Search(rncp, CROSS_CORNER_NUMS, 2, i)
@@ -1101,6 +1102,8 @@ def main():
             print(time.time() - t1, "秒")
             if rn < 0:
                 return
+        else:
+            i += 1
 
     # コピー
     rncp = rn
@@ -1150,7 +1153,7 @@ def main():
     if rn < 0:
         return
     # 全面
-    s = Search(rn, [COMPLETE])
+    s = Search(rn)
     t1 = time.time()
     for _ in range(3):
         rn, act = s.bfs()
