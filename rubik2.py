@@ -745,7 +745,7 @@ class Search:
     # 一手の重みも与える
     # 与えた候補で一致する数も与える??
     # 角を複数揃えたい場合など
-    def __init__(self, cube_num, goal=COMPLETE_NUM, act_weight=12, match_num=0):
+    def __init__(self, cube_num, goal=COMPLETE_NUM, act_weight=12, dist_weight=1, match_num=0):
         self.goal = goal
         # 第二引数は整数型も許容
         if type(goal) is int:
@@ -754,6 +754,7 @@ class Search:
         elif type(goal) is list:
             self.calc_dist_method = self.calcDistMatchNum
         self.act_weight = act_weight
+        self.dist_weight = dist_weight
         # 探索済み
         self.explored = []
         self.match_num = match_num
@@ -897,7 +898,7 @@ class Search:
     def calcDistMatchNum(self, cube_num):
         dists = [self._calcDist(cube_num, g) for g in self.goal]
         dists.sort()
-        return dists[self.match_num]
+        return dists[self.match_num] * self.dist_weight
     
     # 色が一致している数を計算
     # 与えるのはキューブの数値
@@ -1077,7 +1078,7 @@ def inputCube():
 # 十字を見つける
 def searchCross(r_num):
     # 動作の重みは2
-    s = Search(r_num, CROSS_ONE_SIDE_NUMS, 2)
+    s = Search(r_num, CROSS_ONE_SIDE_NUMS, 2, 1)
     t1 = time.time()
     nr_num, acts = s.useDist(30000)
     print(time.time() - t1, "秒")
@@ -1091,11 +1092,17 @@ def searchCrossCornerMid(r_num):
     total_acts = tuple()
     while i < 4:
         r_num_cp = r_num
-        s = Search(r_num, CROSS_MID_ONE_NUMS, 2, i)
+        s = Search(r_num, CROSS_MID_ONE_NUMS, 2, 1, i)
         t1 = time.time()
         r_num, acts = s.useDist(10000)
         total_acts += acts
         print(time.time() - t1, "秒")
+        if r_num < 0:
+            s = Search(r_num, CROSS_MID_ONE_NUMS, 2, 1, i)
+            t1 = time.time()
+            r_num, acts = s.useDist(10000)
+            total_acts += acts
+            print(time.time() - t1, "秒")
         # 妥協して端から揃える
         if r_num < 0:
             # 妥協しても見つからなかった場合
@@ -1104,11 +1111,11 @@ def searchCrossCornerMid(r_num):
                 if i == 3:
                     print("中間層ラスト")
                     # 最後の一個はできるだけ効率化
-                    s = Search(r_num_cp, COMP_MID_NUMS[STD_COLOR], 1)
+                    s = Search(r_num_cp, COMP_MID_NUMS[STD_COLOR], 1, 1)
                     r_num, acts = s.useDist(100000)
                     total_acts += acts
                 else:
-                    s = Search(r_num_cp, CROSS_MID_ONE_NUMS, 1, i)
+                    s = Search(r_num_cp, CROSS_MID_ONE_NUMS, 1, 1, i)
                     r_num, acts = s.useDist(100000)
                     total_acts += acts
                 print(time.time() - t1, "秒")
@@ -1135,7 +1142,7 @@ def searchTopCross(r_num):
     # コピー
     r_num_cp = r_num
     # まずは上の十字を直接探す
-    s = Search(r_num, CROSS_TOP_NUMS[0], 2, 0)
+    s = Search(r_num, CROSS_TOP_NUMS[0], 2, 1)
     t1 = time.time()
     r_num, acts = s.useDist(20000)
     total_acts = acts
@@ -1143,7 +1150,7 @@ def searchTopCross(r_num):
     # 十字が見つからない場合は棒から探す
     if r_num < 0:
         # 上の棒
-        s = Search(r_num_cp, BAR_TOP_NUMS, 2, 0)
+        s = Search(r_num_cp, BAR_TOP_NUMS, 2, 1)
         t1 = time.time()
         r_num, acts = s.useDist(20000)
         total_acts += acts
@@ -1151,7 +1158,7 @@ def searchTopCross(r_num):
         if r_num < 0:
             return r_num, acts
         # 上の十字
-        s = Search(r_num, CROSS_TOP_NUMS[0], 2, 0)
+        s = Search(r_num, CROSS_TOP_NUMS[0], 2, 1)
         t1 = time.time()
         r_num, acts = s.useDist(20000)
         total_acts += acts
