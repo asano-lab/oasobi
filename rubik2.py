@@ -1234,21 +1234,22 @@ def main():
 
     # とりあえず幅優先探索
     rn, act = searchCompBfs(r0.num)
-    if rn < 0:
-        return
     all_act += act
     phase = 0
+    if rn >= 0:
+        phase = 5
     
-    # 中間層まで揃っている面があるか
-    for i, cmp_mid in enumerate(COMP_MID_NUMS):
-        if r0.num | COMP_MID_NUM_MASKS[i] == cmp_mid:
-            detStdColor(i)
-            # フェーズ3までスキップ
-            print("中間層まで既に揃っています")
-            phase = 3
-            break
-    
-    rn = r0.num
+    if phase < 5:
+        # 中間層まで揃っている面があるか
+        for i, cmp_mid in enumerate(COMP_MID_NUMS):
+            if r0.num | COMP_MID_NUM_MASKS[i] == cmp_mid:
+                detStdColor(i)
+                # フェーズ3までスキップ
+                print("中間層まで既に揃っています")
+                phase = 3
+                break
+        
+        rn = r0.num
 
     # 十字を揃える
     if phase == 0:
