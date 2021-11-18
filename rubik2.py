@@ -1158,8 +1158,27 @@ def searchTopCross(r_num):
         print(time.time() - t1, "秒")
     return r_num, total_acts
 
+# 上の回転4パターンのどれかを探す
+def searchOnlyTopRot(r_num):
+    s = Search(r_num, REMAIN_TOP_ROT_LIST)
+    t1 = time.time()
+    total_acts = tuple()
+    # 深さは最大6
+    for _ in range(6):
+        nr_num, procs = s.bfsFinal()
+        if nr_num >= 0:
+            break
+    # 動作手順を動作に変換
+    for p in procs:
+        acts = procedure2actions(p)
+        printActs(acts)
+        total_acts += acts
+    print(time.time() - t1, "秒")
+    return nr_num, total_acts
+
 # 基準となる色を決める
 def detStdColor(color):
+    print("基準となる色は「%s」に決定" % JPN_COLOR[color])
     global CROSS_MID_ONE_NUMS, CROSS_TOP_NUMS
     global REMAIN_TOP_ROT_LIST, BAR_TOP_NUMS, CROSS_CORNER_NUMS
     global ACTIONS_C_LIST_LIST, ACTIONS_C_DASH_LIST_LIST
@@ -1213,7 +1232,10 @@ def main():
     # 中間層まで揃っている面があるか
     for i, cmp_mid in enumerate(COMP_MID_NUMS):
         if r0.num | COMP_MID_NUM_MASKS[i] == cmp_mid:
-            color = i
+            detStdColor(i)
+            # フェーズ3までスキップ
+            print("中間層まで既に揃っています")
+            phase = 3
             break
     
     rn = r0.num
@@ -1245,20 +1267,12 @@ def main():
         all_act += act
         phase += 1
 
-    # 残るは上の回転のみ
-    s = Search(rn, REMAIN_TOP_ROT_LIST)
-    t1 = time.time()
-    for _ in range(6):
-        rn, procs = s.bfsFinal()
-        if rn >= 0:
-            break
-    for p in procs:
-        act = procedure2actions(p)
-        printActs(act)
+    # 上の回転のみを残してほぼ全面揃える
+    if phase == 3:
+        rn, act = searchOnlyTopRot(rn)
         all_act += act
-    print(time.time() - t1, "秒")
-    if rn < 0:
-        return
+        phase += 1
+
     # 全面
     s = Search(rn)
     t1 = time.time()
