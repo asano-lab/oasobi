@@ -1176,6 +1176,18 @@ def searchOnlyTopRot(r_num):
     print(time.time() - t1, "秒")
     return nr_num, total_acts
 
+# 幅優先で完成を目指す
+# 深さは適当な値 (時間をかけたくない)
+def searchCompBfs(r_num):
+    s = Search(r_num)
+    t1 = time.time()
+    for _ in range(5):
+        nr_num, acts = s.bfs()
+        if nr_num >= 0:
+            break
+    print(time.time() - t1, "秒")
+    return nr_num, acts
+
 # 基準となる色を決める
 def detStdColor(color):
     print("基準となる色は「%s」に決定" % JPN_COLOR[color])
@@ -1219,14 +1231,12 @@ def main():
         dt = datetime.datetime.utcnow() + datetime.timedelta(hours=9)
         print(dt.strftime("%Y-%m-%d %H:%M:%S, "), file=f, end="")
         print(hex(r0.num), file=f)
-    # とりあえず幅優先探索 (深さ5まで)
-    s = Search(r0.num)
-    t1 = time.time()
-    for _ in range(5):
-        rn, act = s.bfs()
-        if rn >= 0:
-            print(time.time() - t1)
-            return
+
+    # とりあえず幅優先探索
+    rn, act = searchCompBfs(r0.num)
+    if rn < 0:
+        return
+    all_act += act
     phase = 0
     
     # 中間層まで揃っている面があるか
@@ -1262,28 +1272,30 @@ def main():
         all_act += act
         phase += 1
     
+    # 上の十字
     if phase == 2:
         rn, act = searchTopCross(rn)
+        if rn < 0:
+            return
         all_act += act
         phase += 1
 
     # 上の回転のみを残してほぼ全面揃える
     if phase == 3:
         rn, act = searchOnlyTopRot(rn)
+        if rn < 0:
+            return
         all_act += act
         phase += 1
 
     # 全面
-    s = Search(rn)
-    t1 = time.time()
-    for _ in range(3):
-        rn, act = s.bfs()
-        if rn >= 0:
-            break
-    all_act += act
-    print(time.time() - t1, "秒")
-    if rn < 0:
-        return
+    if phase == 4:
+        rn, act = searchCompBfs(rn)
+        if rn < 0:
+            return
+        all_act += act
+        phase += 1
+
     # 全ての手順
     print("総手順数：{:d}".format(len(all_act)))
     printActs(all_act)
