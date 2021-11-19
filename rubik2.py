@@ -1097,10 +1097,11 @@ def searchCrossCornerMid(r_num):
         r_num, acts = s.useDist(10000)
         total_acts += acts
         print(time.time() - t1, "秒")
+        # 重み調整
         if r_num < 0:
-            s = Search(r_num, CROSS_MID_ONE_NUMS, 2, 1, i)
+            s = Search(r_num_cp, CROSS_MID_ONE_NUMS, 1, 2, i)
             t1 = time.time()
-            r_num, acts = s.useDist(10000)
+            r_num, acts = s.useDist(20000)
             total_acts += acts
             print(time.time() - t1, "秒")
         # 妥協して端から揃える
