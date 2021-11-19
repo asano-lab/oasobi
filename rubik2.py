@@ -1094,14 +1094,14 @@ def searchCrossCornerMid(r_num):
         r_num_cp = r_num
         s = Search(r_num, CROSS_MID_ONE_NUMS, 2, 1, i)
         t1 = time.time()
-        r_num, acts = s.useDist(10000)
+        r_num, acts = s.useDist(7000)
         total_acts += acts
         print(time.time() - t1, "秒")
         # 重み調整
         if r_num < 0:
             s = Search(r_num_cp, CROSS_MID_ONE_NUMS, 1, 2, i)
             t1 = time.time()
-            r_num, acts = s.useDist(20000)
+            r_num, acts = s.useDist(10000)
             total_acts += acts
             print(time.time() - t1, "秒")
         # 妥協して端から揃える
@@ -1112,12 +1112,12 @@ def searchCrossCornerMid(r_num):
                 if i == 3:
                     print("中間層ラスト")
                     # 最後の一個はできるだけ効率化
-                    s = Search(r_num_cp, COMP_MID_NUMS[STD_COLOR], 1, 1)
+                    s = Search(r_num_cp, COMP_MID_NUMS[STD_COLOR], 1, 4)
                     r_num, acts = s.useDist(100000)
                     total_acts += acts
                 else:
-                    s = Search(r_num_cp, CROSS_MID_ONE_NUMS, 1, 1, i)
-                    r_num, acts = s.useDist(100000)
+                    s = Search(r_num_cp, CROSS_MID_ONE_NUMS, 1, 4, i)
+                    r_num, acts = s.useDist(40000)
                     total_acts += acts
                 print(time.time() - t1, "秒")
                 if r_num < 0:
@@ -1126,7 +1126,7 @@ def searchCrossCornerMid(r_num):
             else:
                 compromise = True
                 print("妥協")
-                s = Search(r_num_cp, CROSS_CORNER_NUMS, 2, i)
+                s = Search(r_num_cp, CROSS_CORNER_NUMS, 2, 1, i)
                 t1 = time.time()
                 r_num, acts = s.useDist(20000)
                 total_acts += acts
