@@ -92,4 +92,9 @@ scramble = [
     "L", "F2", "R2", "B2", "R", "U'", "R'",
     "U2", "F2", "R'", "D", "B'", "F2"
 ]
-console.log(scramble);
+// console.log(scramble);
+let scrambled_state = solved;
+for (const m of scramble) {
+    scrambled_state = scrambled_state.add(moves[m]);
+}
+console.log(scrambled_state);
