@@ -90,3 +90,7 @@ for (const face_name of faces) {
     moves[face_name + "\'"] = moves[face_name + "2"].add(moves[face_name]);
 }
 console.log(Object.keys(moves))
+for (const m in moves) {
+    console.log(m);
+    console.log(moves[m]);
+}
