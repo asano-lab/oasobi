@@ -20,7 +20,7 @@ const solved = new State(
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 );
 
-// 完成状態からRをしたときの状態
+// 完成状態からRを適用したときの状態
 const r_state = new State(
     [0, 2, 6, 3, 4, 1, 5, 7],
     [0, 1, 2, 0, 0, 2, 1, 0],
@@ -28,10 +28,19 @@ const r_state = new State(
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 );
 
-// console.log(solved);
-console.log(r_state);
+// 完成状態からLを適用したときの状態
+const l_state = new State(
+    [4, 1, 2, 0, 7, 5, 6, 3],
+    [2, 0, 0, 1, 1, 0, 0, 2],
+    [11, 1, 2, 7, 4, 5, 6, 0, 8, 9, 10, 3],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+)
 
-a = [1, 2];
-b = [3, 4];
-a = a.concat(b);
-console.log(a);
+// 完成状態からUを適用したときの状態
+const u_state = new State(
+
+)
+
+// console.log(solved);
+console.log(l_state);
+
