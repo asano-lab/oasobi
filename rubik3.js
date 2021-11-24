@@ -83,5 +83,10 @@ let moves = {
 
 // console.log(solved);
 // console.log(solved.add(moves["B"]).add(moves["B"]));
-faces = Object.keys(moves);
-console.log(faces);
+const faces = Object.keys(moves);
+// console.log(faces);
+for (const face_name of faces) {
+    moves[face_name + "2"] = moves[face_name].add(moves[face_name]);
+    moves[face_name + "\'"] = moves[face_name + "2"].add(moves[face_name]);
+}
+console.log(Object.keys(moves))
