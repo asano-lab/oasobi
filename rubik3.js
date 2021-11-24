@@ -81,16 +81,15 @@ let moves = {
     )
 };
 
-// console.log(solved);
-// console.log(solved.add(moves["B"]).add(moves["B"]));
 const faces = Object.keys(moves);
-// console.log(faces);
 for (const face_name of faces) {
     moves[face_name + "2"] = moves[face_name].add(moves[face_name]);
-    moves[face_name + "\'"] = moves[face_name + "2"].add(moves[face_name]);
+    moves[face_name + "'"] = moves[face_name + "2"].add(moves[face_name]);
 }
-console.log(Object.keys(moves))
-for (const m in moves) {
-    console.log(m);
-    console.log(moves[m]);
-}
+
+scramble = [
+    "L", "D2", "R", "U2", "L", "F2", "U2",
+    "L", "F2", "R2", "B2", "R", "U'", "R'",
+    "U2", "F2", "R'", "D", "B'", "F2"
+]
+console.log(scramble);
