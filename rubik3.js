@@ -33,5 +33,5 @@ console.log(r_state);
 
 a = [1, 2];
 b = [3, 4];
-c = a + b;
-console.log(typeof c);
+a = a.concat(b);
+console.log(a);
