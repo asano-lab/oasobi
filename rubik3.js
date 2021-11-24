@@ -10,6 +10,7 @@ class State {
         // edge orientation
         this.eo = eo;
     }
+    
 }
 
 const solved = new State(
@@ -29,3 +30,8 @@ const r_state = new State(
 
 // console.log(solved);
 console.log(r_state);
+
+a = [1, 2];
+b = [3, 4];
+c = a + b;
+console.log(typeof c);
