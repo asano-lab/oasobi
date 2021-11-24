@@ -10,7 +10,23 @@ class State {
         // edge orientation
         this.eo = eo;
     }
-    
+    // 操作を適用
+    add(s) {
+        let i;
+        let ncp = [];
+        let nco = [];
+        let nep = [];
+        let neo = [];
+        for (i = 0; i < 8; i++) {
+            ncp.push(this.cp[s.cp[i]]);
+            nco.push((this.co[s.cp[i]] + s.co[i]) % 3);
+        }
+        for (i = 0; i < 12; i++) {
+            nep.push(this.ep[s.ep[i]]);
+            neo.push(this.eo[s.ep[i]] ^ s.eo[i]);
+        }
+        return new State(ncp, nco, nep, neo)
+    }
 }
 
 const solved = new State(
@@ -68,5 +84,4 @@ const b_state = new State(
 )
 
 // console.log(solved);
-console.log(d_state);
-
+console.log(solved.add(r_state).add(r_state));
