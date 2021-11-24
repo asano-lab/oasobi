@@ -82,4 +82,4 @@ let moves = {
 };
 
 // console.log(solved);
-console.log(solved.add(moves.B));
+console.log(solved.add(moves["B"]).add(moves["B"]));
