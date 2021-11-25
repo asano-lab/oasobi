@@ -27,6 +27,30 @@ class State {
         }
         return new State(ncp, nco, nep, neo)
     }
+
+    byteData() {
+        let i;
+        let c_bin = 0;
+        let e_bin = 0;
+        let byte_arr = [];
+        for (i = 0; i < 8; i++) {
+            c_bin = (c_bin << 3) | this.cp[i];
+            c_bin = (c_bin << 2) | this.co[i];
+        }
+        for (i = 0; i < 12; i++) {
+            e_bin = (e_bin << 4) | this.ep[i];
+            e_bin = (e_bin << 1) | this.eo[i];
+        }
+        for (i = 0; i < 5; i++) {
+            byte_arr.push(c_bin & 0xff);
+            c_bin >>>= 8;
+        }
+        for (i = 0; i < 8; i++) {
+            byte_arr.push(e_bin & 0xff);
+            e_bin >>>= 8;
+        }
+        return Buffer.from(byte_arr);
+    }
 }
 
 const solved = new State(
@@ -107,6 +131,9 @@ const options = {
 // const data = Buffer.from([0x62, 0x75, 0x66, 0x66, 0x65, 0x72, 0x0a]);
 // const data = Buffer.from(scrambled_state);
 // const data = "H\n";
+
+// const arr = [1, 2, 3, 4, 5];
+console.log(scrambled_state.byteData());
 
 fs.writeFile("file1.txt", scrambled_state, options, (err) => {
     if (err) throw err;
