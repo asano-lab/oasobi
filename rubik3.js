@@ -104,10 +104,11 @@ const options = {
     flag: "a"
 };
 
-const data = Buffer.from([0x62, 0x75, 0x66, 0x66, 0x65, 0x72, 0x0a]);
+// const data = Buffer.from([0x62, 0x75, 0x66, 0x66, 0x65, 0x72, 0x0a]);
+// const data = Buffer.from(scrambled_state);
 // const data = "H\n";
 
-fs.writeFile("file1.txt", data, options, (err) => {
+fs.writeFile("file1.txt", scrambled_state, options, (err) => {
     if (err) throw err;
     console.log("正常に書き込みが完了しました");
 });
