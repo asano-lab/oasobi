@@ -99,13 +99,13 @@ for (const m of scramble) {
 console.log(scrambled_state);
 
 const fs = require("fs");
-// console.log(fs);
-// const data = "Hello Node";
+
 const options = {
     flag: "a"
 };
 
 const data = Buffer.from([0x62, 0x75, 0x66, 0x66, 0x65, 0x72, 0x0a]);
+// const data = "H\n";
 
 fs.writeFile("file1.txt", data, options, (err) => {
     if (err) throw err;
