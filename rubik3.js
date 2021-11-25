@@ -53,6 +53,10 @@ class State {
     }
 }
 
+function byte2state(buf) {
+    
+}
+
 const solved = new State(
     [0, 1, 2, 3, 4, 5, 6, 7],
     [0, 0, 0, 0, 0, 0, 0, 0],
