@@ -58,9 +58,7 @@ class State2():
 
     def __init__(self, num: int):
         self.num = num
-        self.c_info = num >> 60
-        self.e_info = num & 0xfffffffffffffff
-        self.c_arr = cull2(self.c_info, self.e_info)
+        self.c_arr = cull2(num >> 60, num & 0xfffffffffffffff)
     
     def toState(self):
         cp = []
@@ -151,8 +149,11 @@ scrambled_state = solved
 for move_name in scramble:
     scrambled_state += moves[move_name]
 
-print(moves["R2"].toState2())
-yeah = moves["R"].toState2()
-yeah2 = yeah + yeah
-print(yeah2)
+print(scrambled_state)
+
+scrambled_state = solved.toState2()
+for move_name in scramble:
+    scrambled_state += moves[move_name].toState2()
+
+print(scrambled_state.toState())
 

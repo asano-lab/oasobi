@@ -33,8 +33,6 @@ int applyMove(const u_long *s1, const u_long *s2, u_long *ns) {
         ns[1] <<= 1;
         ns[1] |= getEo(s1[1], j) ^ getEo(s2[1], i);
     }
-    printf("0x%I64x\n", ns[0]);
-    printf("0x%I64x\n", ns[1]);
     return 0;
 }
 
