@@ -9,7 +9,11 @@ class cState(Structure):
         self._fields_[1] = ("e_info", c_uint64(num & 0xfffffffffffffff))
     
     def getNum(self):
-        return self._fields_[0][1].value << 60 | self._fields_[1][1].value
+        c_info = self._fields_[0][1].value
+        e_info = self._fields_[1][1].value
+        print(hex(c_info))
+        print(hex(e_info))
+        return c_info << 60 | e_info
 
 # 資料通りのクラス
 class State():
@@ -85,7 +89,9 @@ class State2():
         return State(cp, co, ep, eo)
     
     def __add__(self, arg):
-        return State2(applyMove(self.cst, arg.cst).getNum())
+        ncst = applyMove(self.cst, arg.cst)
+        print(hex(ncst.getNum()))
+        return State2(ncst.getNum())
     
     def __str__(self):
         return hex(self.num)
@@ -156,11 +162,8 @@ for move_name in scramble:
     scrambled_state += moves[move_name]
 print(moves["F2"].toState2())
 yeah = moves["F"].toState2()
+print(yeah)
 yeah3 = yeah + yeah
 print(yeah3)
 # print(scrambled_state)
 
-scrambled_state = solved.toState2()
-for move_name in scramble:
-    scrambled_state += moves[move_name].toState2()
-# print(scrambled_state.toState())
