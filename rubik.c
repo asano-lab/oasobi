@@ -32,7 +32,6 @@ cState applyMove(const cState s1, const cState s2) {
     ns.e_info = 0;
     for (i = 0; i < 8; i++) {
         j = getCp(s2.c_info, i);
-        printf("%d\n", j);
         ns.c_info = (ns.c_info << 3) | getCp(s1.c_info, j);
         nco = (getCo(s1.c_info, j) + getCo(s2.c_info, i)) % 3;
         ns.c_info = (ns.c_info << 2) | nco;

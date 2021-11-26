@@ -1,8 +1,15 @@
-from ctypes import CDLL, c_int32, c_uint64, Structure
+from ctypes import CDLL, c_int32, c_uint64, Structure, c_ulonglong
 
 class cState(Structure):
     # コーナーの情報40bitとエッジの情報60bitに分けたい
     _fields_ = [("c_info", c_uint64), ("e_info", c_uint64)]
+
+    def __init__(self, num: int):
+        self._fields_[0] = ("c_info", c_uint64(num >> 60))
+        self._fields_[1] = ("e_info", c_uint64(num & 0xfffffffffffffff))
+    
+    def getNum(self):
+        return self._fields_[0][1].value << 60 | self._fields_[1][1].value
 
 # 資料通りのクラス
 class State():
@@ -60,8 +67,13 @@ class State():
 
 class State2():
 
-    def __init__(self, num):
+    def __init__(self, num: int):
         self.num = num
+        self.cst = cState(self.num)
+    
+    def __add__(self, arg):
+        ncst = applyMove(self.cst, arg.cst)
+        print(hex(ncst.getNum()))
     
     def __str__(self):
         return hex(self.num)
@@ -119,6 +131,10 @@ nibai = clib.nibai
 nibai.restype = c_int32
 nibai.argtypes = (c_int32,)
 
+applyMove = clib.applyMove
+applyMove.restype = cState
+applyMove.argtypes = (cState, cState)
+
 print(nibai(63278))
 
 faces = list(moves.keys())
@@ -133,7 +149,11 @@ scrambled_state = solved
 for move_name in scramble:
     scrambled_state += moves[move_name]
 
-print(scrambled_state)
+# print(scrambled_state)
 # print(solved.convertState2())
-print(moves["R"].convertState2())
-print(moves["R2"].convertState2())
+rst2 = moves["R"].convertState2()
+print(rst2)
+r2st2 = moves["R2"].convertState2()
+print(r2st2)
+
+wa = rst2 + rst2
