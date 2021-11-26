@@ -24,7 +24,7 @@ class State():
         return State(self.cp.copy(), self.co.copy(), self.ep.copy(), self.eo.copy())
     
     # 数値で扱うクラスに変換
-    def convertState2(self):
+    def toState2(self):
         s_num = 0
         for i in range(8):
             s_num = (s_num << 3) | self.cp[i]
@@ -72,8 +72,7 @@ class State2():
         self.cst = cState(self.num)
     
     def __add__(self, arg):
-        ncst = applyMove(self.cst, arg.cst)
-        print(hex(ncst.getNum()))
+        return State2(applyMove(self.cst, arg.cst).getNum())
     
     def __str__(self):
         return hex(self.num)
@@ -148,12 +147,9 @@ scramble = scramble.split()
 scrambled_state = solved
 for move_name in scramble:
     scrambled_state += moves[move_name]
+print(scrambled_state.toState2())
 
-# print(scrambled_state)
-# print(solved.convertState2())
-rst2 = moves["R"].convertState2()
-print(rst2)
-r2st2 = moves["R2"].convertState2()
-print(r2st2)
-
-wa = rst2 + rst2
+scrambled_state = solved.toState2()
+for move_name in scramble:
+    scrambled_state += moves[move_name].toState2()
+print(scrambled_state)
