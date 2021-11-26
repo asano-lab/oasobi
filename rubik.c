@@ -5,7 +5,7 @@ typedef unsigned long long u_long;
 typedef struct {
     u_long c_info;
     u_long e_info;
-} cStatus;
+} cState;
 
 int nibai(int x) {
     return 2 * x;
@@ -13,6 +13,6 @@ int nibai(int x) {
 
 int main(void) {
     puts("Hello World!!");
-    cStatus s;
+    cState s;
     printf("%I64d\n", sizeof s);
 }
