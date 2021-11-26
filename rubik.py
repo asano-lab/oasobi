@@ -108,6 +108,11 @@ for face_name in faces:
     moves[face_name + "2"] = moves[face_name] * 2
     moves[face_name + "'"] = moves[face_name] * 3
 
-for k, v in moves.items():
-    print(k)
-    print(v)
+scramble = "L D2 R U2 L F2 U2 L F2 R2 B2 R U' R' U2 F2 R' D B' F2"
+scramble = scramble.split()
+
+scrambled_state = solved
+for move_name in scramble:
+    scrambled_state += moves[move_name]
+
+print(scrambled_state)
