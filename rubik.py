@@ -16,6 +16,17 @@ class State():
     def copy(self):
         return State(self.cp.copy(), self.co.copy(), self.ep.copy(), self.eo.copy())
     
+    # 数値で扱うクラスに変換
+    def convertState2(self):
+        s_num = 0
+        for i in range(8):
+            s_num = (s_num << 3) | self.cp[i]
+            s_num = (s_num << 2) | self.co[i]
+        for i in range(12):
+            s_num = (s_num << 4) | self.ep[i]
+            s_num = (s_num << 1) | self.eo[i]
+        return State2(s_num)
+    
     # 動作の適用
     # + 演算子を用いる
     def __add__(self, arg):
@@ -47,6 +58,13 @@ class State():
         moji += str(self.eo) + "\n"
         return moji
 
+class State2():
+
+    def __init__(self, num):
+        self.num = num
+    
+    def __str__(self):
+        return hex(self.num)
 
 # 完成形
 solved = State(
@@ -116,3 +134,4 @@ for move_name in scramble:
     scrambled_state += moves[move_name]
 
 print(scrambled_state)
+print(solved.convertState2())
