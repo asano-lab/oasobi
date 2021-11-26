@@ -1,19 +1,4 @@
-from ctypes import CDLL, c_uint64, Structure, c_ulonglong
-
-class cState(Structure):
-    # コーナーの情報40bitとエッジの情報60bitに分けたい
-    _fields_ = [("c_info", c_uint64), ("e_info", c_uint64)]
-
-    def __init__(self, num: int):
-        self._fields_[0] = ("c_info", c_ulonglong(num >> 60))
-        self._fields_[1] = ("e_info", c_ulonglong(num & 0xfffffffffffffff))
-    
-    def getNum(self):
-        c_info = self._fields_[0][1].value
-        e_info = self._fields_[1][1].value
-        # print(hex(c_info))
-        # print(hex(e_info))
-        return c_info << 60 | e_info
+from ctypes import CDLL, c_int32, Structure, c_ulonglong
 
 # 資料通りのクラス
 class State():
@@ -73,8 +58,9 @@ class State2():
 
     def __init__(self, num: int):
         self.num = num
-        self.cst = cState(self.num)
-        print(self.cst._fields_)
+        self.c_info = num >> 60
+        self.e_info = num & 0xfffffffffffffff
+        self.c_arr = cull2(self.c_info, self.e_info)
     
     def toState(self):
         cp = []
@@ -90,9 +76,10 @@ class State2():
         return State(cp, co, ep, eo)
     
     def __add__(self, arg):
-        ncst = applyMove(self.cst, arg.cst)
-        print(hex(ncst.getNum()))
-        return State2(ncst.getNum())
+        nc_arr = cull2()
+        applyMove(self.c_arr, arg.c_arr, nc_arr)
+        n_list = list(nc_arr)
+        return State2(n_list[0] << 60 | n_list[1])
     
     def __str__(self):
         return hex(self.num)
@@ -146,9 +133,11 @@ moves = {
 
 clib = CDLL("./rubik.so")
 
+cull2 = c_ulonglong * 2
+
 applyMove = clib.applyMove
-applyMove.restype = cState
-applyMove.argtypes = (cState, cState)
+applyMove.restype = c_int32
+applyMove.argtypes = (cull2, cull2, cull2)
 
 faces = list(moves.keys())
 for face_name in faces:
@@ -163,4 +152,7 @@ for move_name in scramble:
     scrambled_state += moves[move_name]
 
 print(moves["R2"].toState2())
+yeah = moves["R"].toState2()
+yeah2 = yeah + yeah
+print(yeah2)
 
