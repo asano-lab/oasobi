@@ -4,3 +4,5 @@ fibo.exe: fibo.c
 	gcc fibo.c -o fibo.exe -Wall
 rubik.exe: rubik.c
 	gcc rubik.c -o rubik.exe -Wall
+rubik.so: rubik.c
+	gcc rubik.c -o rubik.so -Wall -shared -fPIC
