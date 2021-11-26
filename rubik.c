@@ -36,7 +36,7 @@ cState applyMove(const cState s1, const cState s2) {
     for (i = 0; i < 12; i++) {
         j = getEp(s2.e_info, i);
         ns.e_info = (ns.e_info << 4) | getEp(s1.e_info, j);
-        neo = (getCo(s1.e_info, j) ^ getEo(s2.c_info, i));
+        neo = (getEo(s1.e_info, j) ^ getEo(s2.c_info, i));
         ns.e_info = (ns.e_info << 1) | neo;
     }
     return ns;
