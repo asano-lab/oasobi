@@ -134,4 +134,6 @@ for move_name in scramble:
     scrambled_state += moves[move_name]
 
 print(scrambled_state)
-print(solved.convertState2())
+# print(solved.convertState2())
+print(moves["R"].convertState2())
+print(moves["R2"].convertState2())
