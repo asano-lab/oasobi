@@ -14,47 +14,35 @@
 
 typedef unsigned long long u_long;
 
-// cで扱う状態
-typedef struct {
-    u_long c_info;
-    u_long e_info;
-} cState;
-
 // 動作の適用
-cState applyMove(cState s1, cState s2) {
+int applyMove(const u_long *s1, const u_long *s2, u_long *ns) {
     int i, j;
-    cState ns;
-    ns.c_info = 0;
-    ns.e_info = 0;
-    printf("0x%I64x\n", s1.c_info);
-    printf("0x%I64x\n", s1.e_info);
+    ns[0] = 0;
+    ns[1] = 0;
     for (i = 0; i < 8; i++) {
-        j = getCp(s2.c_info, i);
-        ns.c_info <<= 3;
-        ns.c_info |= getCp(s1.c_info, j);
-        ns.c_info <<= 2;
-        ns.c_info |= (getCo(s1.c_info, j) + getCo(s2.c_info, i)) % 3;
+        j = getCp(s2[0], i);
+        ns[0] <<= 3;
+        ns[0] |= getCp(s1[0], j);
+        ns[0] <<= 2;
+        ns[0] |= (getCo(s1[0], j) + getCo(s2[0], i)) % 3;
     }
     for (i = 0; i < 12; i++) {
-        j = getEp(s2.e_info, i);
-        ns.e_info <<= 4;
-        ns.e_info |= getEp(s1.e_info, j);
-        ns.e_info <<= 1;
-        ns.e_info |= getEo(s1.e_info, j) ^ getEo(s2.e_info, i);
+        j = getEp(s2[1], i);
+        ns[1] <<= 4;
+        ns[1] |= getEp(s1[1], j);
+        ns[1] <<= 1;
+        ns[1] |= getEo(s1[1], j) ^ getEo(s2[1], i);
     }
-    printf("0x%I64x\n", ns.c_info);
-    printf("0x%I64x\n", ns.e_info);
-    return ns;
+    printf("0x%I64x\n", ns[0]);
+    printf("0x%I64x\n", ns[1]);
+    return 0;
 }
 
 int main(void) {
-    puts("Hello World!!");
-    cState s1, s2;
-    s1.c_info = R_STATE_C;
-    s1.e_info = R_STATE_E;
-    printf("0x%I64x\n", s1.c_info);
-    printf("0x%I64x\n", s1.e_info);
-    s2 = applyMove(s1, s1);
-    printf("0x%I64x\n", s2.c_info);
-    printf("0x%I64x\n", s2.e_info);
+    u_long rs[2], r2s[2];
+    rs[0] = R_STATE_C;
+    rs[1] = R_STATE_E;
+    applyMove(rs, rs, r2s);
+    printf("0x%I64x\n", r2s[0]);
+    printf("0x%I64x\n", r2s[1]);
 }

@@ -161,10 +161,6 @@ scramble = scramble.split()
 scrambled_state = solved
 for move_name in scramble:
     scrambled_state += moves[move_name]
-print(moves["F2"].toState2())
-yeah = moves["F"].toState2()
-print(yeah)
-yeah3 = yeah + yeah
-print(yeah3)
-# print(scrambled_state)
+
+print(moves["R2"].toState2())
 
