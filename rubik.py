@@ -95,4 +95,6 @@ print(nibai(63278))
 faces = list(moves.keys())
 for face_name in faces:
     moves[face_name + "2"] = moves[face_name] * 2
+    moves[face_name + "'"] = moves[face_name] * 3
 
+print(moves)
