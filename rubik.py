@@ -160,4 +160,4 @@ print(scrambled_state.toState2().toState())
 scrambled_state = solved.toState2()
 for move_name in scramble:
     scrambled_state += moves[move_name].toState2()
-print(scrambled_state)
+print(scrambled_state.toState())
