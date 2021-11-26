@@ -13,6 +13,9 @@ class State():
         self.ep = ep
         self.eo = eo
     
+    def copy(self):
+        return State(self.cp.copy(), self.co.copy(), self.ep.copy(), self.eo.copy())
+    
     # 動作の適用
     # + 演算子を用いる
     def __add__(self, arg):
@@ -25,8 +28,14 @@ class State():
             nco.append((self.cp[j] + arg.co[i]) % 3)
         for i, j in enumerate(arg.ep):
             nep.append(self.ep[j])
-            neo.append(self.eo[j] ^ arg.co[i])
+            neo.append(self.eo[j] ^ arg.eo[i])
         return State(ncp, nco, nep, neo)
+    
+    def __mul__(self, arg: int):
+        ns = self.copy()
+        for _ in range(arg):
+            ns += ns
+        return ns
 
 # 完成形
 solved = State(
@@ -83,5 +92,7 @@ nibai.argtypes = (c_int32,)
 
 print(nibai(63278))
 
-move_names = list(moves.keys())
-print(move_names)
+faces = list(moves.keys())
+for face_name in faces:
+    moves[face_name + "2"] = moves[face_name] * 2
+
