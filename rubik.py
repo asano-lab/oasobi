@@ -25,17 +25,28 @@ class State():
         neo = []
         for i, j in enumerate(arg.cp):
             ncp.append(self.cp[j])
-            nco.append((self.cp[j] + arg.co[i]) % 3)
+            nco.append((self.co[j] + arg.co[i]) % 3)
         for i, j in enumerate(arg.ep):
             nep.append(self.ep[j])
             neo.append(self.eo[j] ^ arg.eo[i])
         return State(ncp, nco, nep, neo)
     
     def __mul__(self, arg: int):
-        ns = self.copy()
-        for _ in range(arg):
-            ns += ns
+        if arg <= 0:
+            return solved
+        s_add = self.copy()
+        ns = s_add
+        for _ in range(arg - 1):
+            ns += s_add
         return ns
+    
+    def __str__(self):
+        moji = str(self.cp) + "\n"
+        moji += str(self.co) + "\n"
+        moji += str(self.ep) + "\n"
+        moji += str(self.eo) + "\n"
+        return moji
+
 
 # 完成形
 solved = State(
@@ -97,4 +108,6 @@ for face_name in faces:
     moves[face_name + "2"] = moves[face_name] * 2
     moves[face_name + "'"] = moves[face_name] * 3
 
-print(moves)
+for k, v in moves.items():
+    print(k)
+    print(v)
