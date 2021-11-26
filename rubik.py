@@ -1,4 +1,4 @@
-from ctypes import CDLL, c_int32, c_uint64, Structure, c_ulonglong
+from ctypes import CDLL, c_uint64, Structure
 
 class cState(Structure):
     # コーナーの情報40bitとエッジの情報60bitに分けたい

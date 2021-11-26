@@ -22,21 +22,23 @@ typedef struct {
 
 // 動作の適用
 cState applyMove(const cState s1, const cState s2) {
-    int i, j, nco, neo;
+    int i, j;
     cState ns;
     ns.c_info = 0;
     ns.e_info = 0;
     for (i = 0; i < 8; i++) {
         j = getCp(s2.c_info, i);
-        ns.c_info = (ns.c_info << 3) | getCp(s1.c_info, j);
-        nco = (getCo(s1.c_info, j) + getCo(s2.c_info, i)) % 3;
-        ns.c_info = (ns.c_info << 2) | nco;
+        ns.c_info <<= 3;
+        ns.c_info |= getCp(s1.c_info, j);
+        ns.c_info <<= 2;
+        ns.c_info |= (getCo(s1.c_info, j) + getCo(s2.c_info, i)) % 3;
     }
     for (i = 0; i < 12; i++) {
         j = getEp(s2.e_info, i);
-        ns.e_info = (ns.e_info << 4) | getEp(s1.e_info, j);
-        neo = (getEo(s1.e_info, j) ^ getEo(s2.e_info, i));
-        ns.e_info = (ns.e_info << 1) | neo;
+        ns.e_info <<= 4;
+        ns.e_info |= getEp(s1.e_info, j);
+        ns.e_info <<= 1;
+        ns.e_info |= getEo(s1.e_info, j) ^ getEo(s2.e_info, i);
     }
     return ns;
 }
