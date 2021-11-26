@@ -1,4 +1,8 @@
-from ctypes import CDLL, c_int32, c_uint64, c_uint32
+from ctypes import CDLL, c_int32, c_uint64, Structure
+
+class Status(Structure):
+    # コーナーの情報40bitとエッジの情報60bitに分けたい
+    _fields_ = [("c_info", c_uint64), ("e_info", c_uint64)]
 
 clib = CDLL("./rubik.so")
 
