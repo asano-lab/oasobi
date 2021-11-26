@@ -1,18 +1,18 @@
-from ctypes import CDLL, c_uint64, Structure
+from ctypes import CDLL, c_uint64, Structure, c_ulonglong
 
 class cState(Structure):
     # コーナーの情報40bitとエッジの情報60bitに分けたい
     _fields_ = [("c_info", c_uint64), ("e_info", c_uint64)]
 
     def __init__(self, num: int):
-        self._fields_[0] = ("c_info", c_uint64(num >> 60))
-        self._fields_[1] = ("e_info", c_uint64(num & 0xfffffffffffffff))
+        self._fields_[0] = ("c_info", c_ulonglong(num >> 60))
+        self._fields_[1] = ("e_info", c_ulonglong(num & 0xfffffffffffffff))
     
     def getNum(self):
         c_info = self._fields_[0][1].value
         e_info = self._fields_[1][1].value
-        print(hex(c_info))
-        print(hex(e_info))
+        # print(hex(c_info))
+        # print(hex(e_info))
         return c_info << 60 | e_info
 
 # 資料通りのクラス
@@ -74,6 +74,7 @@ class State2():
     def __init__(self, num: int):
         self.num = num
         self.cst = cState(self.num)
+        print(self.cst._fields_)
     
     def toState(self):
         cp = []

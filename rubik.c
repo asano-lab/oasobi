@@ -21,11 +21,13 @@ typedef struct {
 } cState;
 
 // 動作の適用
-cState applyMove(const cState s1, const cState s2) {
+cState applyMove(cState s1, cState s2) {
     int i, j;
     cState ns;
     ns.c_info = 0;
     ns.e_info = 0;
+    printf("0x%I64x\n", s1.c_info);
+    printf("0x%I64x\n", s1.e_info);
     for (i = 0; i < 8; i++) {
         j = getCp(s2.c_info, i);
         ns.c_info <<= 3;
@@ -40,6 +42,8 @@ cState applyMove(const cState s1, const cState s2) {
         ns.e_info <<= 1;
         ns.e_info |= getEo(s1.e_info, j) ^ getEo(s2.e_info, i);
     }
+    printf("0x%I64x\n", ns.c_info);
+    printf("0x%I64x\n", ns.e_info);
     return ns;
 }
 
