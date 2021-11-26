@@ -1,4 +1,4 @@
-from ctypes import CDLL, c_int32, Structure, c_ulonglong
+from ctypes import CDLL, c_int32, c_ulonglong
 
 # 資料通りのクラス
 class State():
