@@ -71,6 +71,19 @@ class State2():
         self.num = num
         self.cst = cState(self.num)
     
+    def toState(self):
+        cp = []
+        co = []
+        ep = []
+        eo = []
+        for i in range(0, 40, 5):
+            cp.append(self.num >> (97 - i) & 0b111)
+            co.append(self.num >> (95 - i) & 0b11)
+        for i in range(0, 60, 5):
+            ep.append(self.num >> (56 - i) & 0b1111)
+            eo.append(self.num >> (55 - i) & 0b1)
+        return State(cp, co, ep, eo)
+    
     def __add__(self, arg):
         return State2(applyMove(self.cst, arg.cst).getNum())
     
@@ -141,7 +154,8 @@ scramble = scramble.split()
 scrambled_state = solved
 for move_name in scramble:
     scrambled_state += moves[move_name]
-print(scrambled_state.toState2())
+print(scrambled_state)
+print(scrambled_state.toState2().toState())
 
 scrambled_state = solved.toState2()
 for move_name in scramble:
