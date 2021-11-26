@@ -126,15 +126,9 @@ moves = {
 
 clib = CDLL("./rubik.so")
 
-nibai = clib.nibai
-nibai.restype = c_int32
-nibai.argtypes = (c_int32,)
-
 applyMove = clib.applyMove
 applyMove.restype = cState
 applyMove.argtypes = (cState, cState)
-
-print(nibai(63278))
 
 faces = list(moves.keys())
 for face_name in faces:

@@ -20,10 +20,6 @@ typedef struct {
     u_long e_info;
 } cState;
 
-int nibai(int x) {
-    return 2 * x;
-}
-
 // 動作の適用
 cState applyMove(const cState s1, const cState s2) {
     int i, j, nco, neo;
