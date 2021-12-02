@@ -4,6 +4,13 @@ from ctypes import CDLL, c_int32, c_ulonglong
 # U -> 0, D -> 1, L -> 2, R -> 3, F -> 4, B -> 5
 JPN_COLOR = {0: "白", 1: "青", 2: "橙", 3: "赤", 4: "緑", 5: "黄"}
 
+# 角のブロックの色, 各3色
+# U, Dの色を基準にして時計回りに並べる
+CORNER_COLOR = {
+    0: (0, 2, 5), 1: (0, 5, 3), 2: (0, 3, 4), 3: (0, 4, 2),
+    4: (1, 5, 2), 5: (1, 3, 5), 6: (1, 4, 3), 8: (1, 2, 4)
+}
+
 # 資料通りのクラス
 class State():
 
@@ -56,6 +63,9 @@ class State():
         moji += str(self.co) + "\n"
         moji += str(self.ep) + "\n"
         moji += str(self.eo) + "\n"
+        color_array = [[-1] * 18 for _ in range(3)]
+        color_array[0][0] = CORNER_COLOR[self.cp[0]][(3 - self.co[0]) % 3]
+        color_array[0][2] = CORNER_COLOR[self.cp[1]][(3 - self.co[0]) % 3]
         return moji
 
 class State2():
@@ -161,3 +171,5 @@ for move_name in scramble:
 
 print(scrambled_state.toState())
 print(JPN_COLOR)
+
+print(-2 % 3)
