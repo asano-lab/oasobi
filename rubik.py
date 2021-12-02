@@ -39,6 +39,14 @@ CENTER_INDICES = {
     "B": (1, 10), "L": (1, 13), "D": (1, 16)
 }
 
+# パーツの入れ替え???
+U2F_LIST = [
+    [3, 2, 6, 7, 0, 1, 5, 4],
+    [2, 1, 2, 1, 1, 2, 1, 2],
+    [7, 5, 9, 11, 6, 2, 10, 3, 4, 1, 8, 0],
+    [0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0]
+]
+
 # 資料通りのクラス
 class State():
 
@@ -82,7 +90,17 @@ class State():
     # U面がF面になったときの等価な盤面を返す
     def u2f(self):
         tmpst = self + change_color["UF"]
-        print(tmpst)
+        ncp = []
+        nco = []
+        nep = []
+        neo = []
+        for i in range(8):
+            ncp.append(U2F_LIST[0][tmpst.cp[i]])
+            nco.append((tmpst.co[i] + U2F_LIST[1][tmpst.cp[i]]) % 3)
+        for i in range(12):
+            nep.append(U2F_LIST[2][tmpst.ep[i]])
+            neo.append(tmpst.eo[i] ^ U2F_LIST[3][tmpst.ep[i]])
+        
     
     # 動作の適用
     # + 演算子を用いる
@@ -236,7 +254,7 @@ scrambled_state = solved.toState2()
 for move_name in scramble:
     scrambled_state += moves[move_name].toState2()
 
-print(scrambled_state.toState())
+# print(scrambled_state.toState())
 
 # print(moves["L"])
 # print(moves["R"])
