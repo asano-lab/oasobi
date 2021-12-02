@@ -218,10 +218,10 @@ scrambled_state = solved.toState2()
 for move_name in scramble:
     scrambled_state += moves[move_name].toState2()
 
-# print(scrambled_state.toState())
+print(scrambled_state.toState())
 
-print(moves["L"])
+# print(moves["L"])
 # print(moves["R"])
 # print(moves["R'"])
 # print(moves["B"])
-print(moves["F'"])
+# print(moves["F'"])
