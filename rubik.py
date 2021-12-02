@@ -153,6 +153,7 @@ solved = State(
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 )
 
+# 基本動作
 moves = {
     "U": State(
         [3, 0, 1, 2, 4, 5, 6, 7],
@@ -192,6 +193,23 @@ moves = {
     )
 }
 
+# 残りの基本操作を追加
+faces = list(moves.keys())
+for face_name in faces:
+    moves[face_name + "2"] = moves[face_name] * 2
+    moves[face_name + "'"] = moves[face_name] * 3
+
+# 色変換のための操作 (位置と回転のみ)
+# 全5種
+change_color = {
+    "UF": State(
+        [4, 5, 1, 0, 7, 6, 2, 3],
+        [2, 1, 2, 1, 1, 2, 1, 2],
+        [11, 9, 5, 7, 8, 1, 4, 0, 10, 2, 6, 3],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    )
+}
+
 clib = CDLL("./rubik.so")
 
 cull2 = c_ulonglong * 2
@@ -199,11 +217,6 @@ cull2 = c_ulonglong * 2
 applyMove = clib.applyMove
 applyMove.restype = c_int32
 applyMove.argtypes = (cull2, cull2, cull2)
-
-faces = list(moves.keys())
-for face_name in faces:
-    moves[face_name + "2"] = moves[face_name] * 2
-    moves[face_name + "'"] = moves[face_name] * 3
 
 scramble = "L D2 R U2 L F2 U2 L F2 R2 B2 R U' R' U2 F2 R' D B' F2"
 scramble = scramble.split()
@@ -225,3 +238,4 @@ print(scrambled_state.toState())
 # print(moves["R'"])
 # print(moves["B"])
 # print(moves["F'"])
+print(change_color["UF"])
