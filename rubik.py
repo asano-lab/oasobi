@@ -254,7 +254,9 @@ scrambled_state = solved.toState2()
 for move_name in scramble:
     scrambled_state += moves[move_name].toState2()
 
-# print(scrambled_state.toState())
+scrambled_state = scrambled_state.toState()
+print(scrambled_state)
+print(scrambled_state.u2f())
 
 # print(moves["L"])
 # print(moves["R"])
@@ -263,4 +265,4 @@ for move_name in scramble:
 # print(moves["F'"])
 # print(change_color["UF"])
 
-print(moves["F"].u2f())
+# print(moves["F"].u2f())
