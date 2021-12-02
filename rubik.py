@@ -66,7 +66,7 @@ class State():
         color_array = [[-1] * 18 for _ in range(3)]
         color_array[0][0] = CORNER_COLOR[self.cp[0]][-self.co[0] % 3]
         color_array[0][2] = CORNER_COLOR[self.cp[1]][-self.co[1] % 3]
-        color_array[0][3] = CORNER_COLOR[self.cp[3]][(self.co[3] - 1) % 3]
+        color_array[0][3] = CORNER_COLOR[self.cp[3]][(self.co[3] + 1) % 3]
         color_array[0][5] = CORNER_COLOR[self.cp[2]][(self.co[2]) % 3]
         print(color_array)
         return moji
@@ -174,4 +174,4 @@ for move_name in scramble:
 
 print(scrambled_state.toState())
 
-print(solved)
+print(moves["L"])
