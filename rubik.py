@@ -8,7 +8,7 @@ JPN_COLOR = {0: "白", 1: "青", 2: "橙", 3: "赤", 4: "緑", 5: "黄"}
 # U, Dの色を基準にして時計回りに並べる
 CORNER_COLOR = {
     0: (0, 2, 5), 1: (0, 5, 3), 2: (0, 3, 4), 3: (0, 4, 2),
-    4: (1, 5, 2), 5: (1, 3, 5), 6: (1, 4, 3), 8: (1, 2, 4)
+    4: (1, 5, 2), 5: (1, 3, 5), 6: (1, 4, 3), 7: (1, 2, 4)
 }
 
 # 資料通りのクラス
@@ -66,8 +66,8 @@ class State():
         color_array = [[-1] * 18 for _ in range(3)]
         color_array[0][0] = CORNER_COLOR[self.cp[0]][-self.co[0] % 3]
         color_array[0][2] = CORNER_COLOR[self.cp[1]][-self.co[1] % 3]
-        color_array[0][3] = CORNER_COLOR[self.cp[3]][(self.co[3] + 1) % 3]
-        color_array[0][5] = CORNER_COLOR[self.cp[2]][(self.co[2]) % 3]
+        color_array[0][3] = CORNER_COLOR[self.cp[3]][(1 - self.co[3]) % 3]
+        color_array[0][5] = CORNER_COLOR[self.cp[2]][(2 - self.co[2]) % 3]
         print(color_array)
         return moji
 
@@ -172,6 +172,8 @@ scrambled_state = solved.toState2()
 for move_name in scramble:
     scrambled_state += moves[move_name].toState2()
 
-print(scrambled_state.toState())
+# print(scrambled_state.toState())
 
 print(moves["L"])
+# print(moves["R"])
+print(moves["R'"])
