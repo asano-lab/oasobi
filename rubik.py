@@ -33,6 +33,12 @@ EDGE_PO2COLOR = {
     8: ((2, 16), (2, 10)), 9: ((1, 17), (2, 7)), 10: ((0, 16), (2, 4)), 11: ((1, 15), (2, 13))
 }
 
+# 中央パーツと色配列の添え字の対応
+CENTER_INDICES = {
+    "U": (1, 1), "F": (1, 4), "R": (1, 7),
+    "B": (1, 10), "L": (1, 13), "D": (1, 16)
+}
+
 # 資料通りのクラス
 class State():
 
@@ -86,6 +92,8 @@ class State():
         moji += str(self.ep) + "\n"
         moji += str(self.eo) + "\n"
         color_array = [[" "] * 18 for _ in range(3)]
+        for k, v in CENTER_INDICES.items():
+            color_array[v[0]][v[1]] = k
         for k, v in CORNER_PO2COLOR.items():
             cpk = self.cp[k]
             cok = self.co[k]
