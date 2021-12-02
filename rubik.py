@@ -18,11 +18,19 @@ EDGE_COLOR = {
     8: "DB", 9: "DR", 10: "DF", 11: "DL"
 }
 
+# 色配列への変換法則 (コーナーパーツ)
 CORNER_PO2COLOR = {
     0: ((0, 0), (0, 11), (0, 12)), 1: ((0, 2), (0, 8), (0, 9)),
     2: ((2, 2), (0, 5), (0, 6)), 3: ((2, 0), (0, 14), (0, 3)),
     4: ((2, 15), (2, 12), (2, 11)), 5: ((2, 17), (2, 9), (2, 8)),
     6: ((0, 17), (2, 6), (2, 5)), 7: ((0, 15), (2, 3), (2, 14))
+}
+
+# 色配列への変換法則 (エッジパーツ)
+EDGE_PO2COLOR = {
+    0: ((1, 11), (1, 12)), 1: ((1, 9), (1, 8)), 2: ((1, 5), (1, 6)), 3: ((1, 3), (1, 14)),
+    4: ((0, 1), (0, 10)), 5: ((1, 2), (0, 7)), 6: ((2, 1), (0, 4)), 7: ((1, 0), (0, 13)),
+    8: ((2, 16), (2, 10)), 9: ((1, 17), (2, 7)), 10: ((0, 16), (2, 4)), 11: ((1, 15), (2, 13))
 }
 
 # 資料通りのクラス
@@ -79,14 +87,15 @@ class State():
         moji += str(self.eo) + "\n"
         color_array = [[-1] * 18 for _ in range(3)]
         for k, v in CORNER_PO2COLOR.items():
+            cpk = self.cp[k]
+            cok = self.co[k]
             for i, jt in enumerate(v):
-                color_array[jt[0]][jt[1]] = CORNER_COLOR[self.cp[k]][(self.co[k] + i) % 3]
-        color_array[0][1] = EDGE_COLOR[self.ep[4]][self.eo[4]]
-        color_array[0][4] = EDGE_COLOR[self.ep[6]][self.eo[6] ^ 1]
-        color_array[0][7] = EDGE_COLOR[self.ep[5]][self.eo[5] ^ 1]
-        color_array[0][10] = EDGE_COLOR[self.ep[4]][self.eo[4] ^ 1]
-        color_array[0][13] = EDGE_COLOR[self.ep[7]][self.eo[7] ^ 1]
-        color_array[0][16] = EDGE_COLOR[self.ep[10]][self.eo[10]]
+                color_array[jt[0]][jt[1]] = CORNER_COLOR[cpk][(cok + i) % 3]
+        for k, v in EDGE_PO2COLOR.items():
+            epk = self.ep[k]
+            eok = self.eo[k]
+            for i, jt in enumerate(v):
+                color_array[jt[0]][jt[1]] = EDGE_COLOR[epk][eok ^ i]
         print(color_array)
         return moji
 
