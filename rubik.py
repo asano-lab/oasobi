@@ -109,6 +109,12 @@ class State():
         moji += str(self.ep) + "\n"
         moji += str(self.eo) + "\n"
         color_array = self.makeColorArray()
+        for ca in color_array:
+            for i, c in enumerate(ca):
+                moji += JPN_COLOR[c]
+                if i % 3 == 2:
+                    moji += " "
+            moji += "\n"
         return moji
 
 class State2():
