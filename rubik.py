@@ -1,5 +1,9 @@
 from ctypes import CDLL, c_int32, c_ulonglong
 
+# 日本仕様の色
+# U -> 0, D -> 1, L -> 2, R -> 3, F -> 4, B -> 5
+JPN_COLOR = {0: "白", 1: "青", 2: "橙", 3: "赤", 4: "緑", 5: "黄"}
+
 # 資料通りのクラス
 class State():
 
@@ -156,4 +160,4 @@ for move_name in scramble:
     scrambled_state += moves[move_name].toState2()
 
 print(scrambled_state.toState())
-
+print(JPN_COLOR)
