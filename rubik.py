@@ -65,7 +65,10 @@ class State():
         moji += str(self.eo) + "\n"
         color_array = [[-1] * 18 for _ in range(3)]
         color_array[0][0] = CORNER_COLOR[self.cp[0]][-self.co[0] % 3]
-        color_array[0][2] = CORNER_COLOR[self.cp[1]][-self.co[0] % 3]
+        color_array[0][2] = CORNER_COLOR[self.cp[1]][-self.co[1] % 3]
+        color_array[0][3] = CORNER_COLOR[self.cp[3]][(self.co[3] - 1) % 3]
+        color_array[0][5] = CORNER_COLOR[self.cp[2]][(self.co[2]) % 3]
+        print(color_array)
         return moji
 
 class State2():
@@ -163,15 +166,12 @@ scrambled_state = solved
 for move_name in scramble:
     scrambled_state += moves[move_name]
 
-print(scrambled_state)
+# print(scrambled_state)
 
 scrambled_state = solved.toState2()
 for move_name in scramble:
     scrambled_state += moves[move_name].toState2()
 
 print(scrambled_state.toState())
-print(JPN_COLOR)
 
-
-a = 1
-print(-a % 3)
+print(solved)
