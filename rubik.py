@@ -10,7 +10,12 @@ CORNER_COLOR = {
     4: "DBL", 5: "DRB", 6: "DFR", 7: "DLF"
 }
 
+# 辺のブロックの色, 各2色
+# 基準面の色が先頭
 EDGE_COLOR = {
+    0: "BL", 1: "BR", 2: "FR", 3: "FL",
+    4: "UB", 5: "UR", 6: "UF", 7: "UL",
+    8: "DB", 9: "DR", 10: "DF", 11: "DL"
 }
 
 # 資料通りのクラス
@@ -78,6 +83,7 @@ class State():
         color_array[0][14] = CORNER_COLOR[self.cp[3]][(2 - self.co[3]) % 3]
         color_array[0][15] = CORNER_COLOR[self.cp[7]][-self.co[7] % 3]
         color_array[0][17] = CORNER_COLOR[self.cp[6]][-self.co[6] % 3]
+        color_array[0][1] = EDGE_COLOR[self.ep[4]][self.eo[4]]
         print(color_array)
         return moji
 
@@ -186,4 +192,5 @@ for move_name in scramble:
 
 print(moves["L"])
 # print(moves["R"])
-print(moves["R'"])
+# print(moves["R'"])
+print(moves["B"])
