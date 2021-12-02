@@ -68,6 +68,14 @@ class State():
         color_array[0][2] = CORNER_COLOR[self.cp[1]][-self.co[1] % 3]
         color_array[0][3] = CORNER_COLOR[self.cp[3]][(1 - self.co[3]) % 3]
         color_array[0][5] = CORNER_COLOR[self.cp[2]][(2 - self.co[2]) % 3]
+        color_array[0][6] = CORNER_COLOR[self.cp[2]][(1 - self.co[2]) % 3]
+        color_array[0][8] = CORNER_COLOR[self.cp[1]][(2 - self.co[1]) % 3]
+        color_array[0][9] = CORNER_COLOR[self.cp[1]][(1 - self.co[1]) % 3]
+        color_array[0][11] = CORNER_COLOR[self.cp[0]][(2 - self.co[0]) % 3]
+        color_array[0][12] = CORNER_COLOR[self.cp[0]][(1 - self.co[0]) % 3]
+        color_array[0][14] = CORNER_COLOR[self.cp[3]][(2 - self.co[3]) % 3]
+        color_array[0][15] = CORNER_COLOR[self.cp[7]][-self.co[7] % 3]
+        color_array[0][17] = CORNER_COLOR[self.cp[6]][-self.co[6] % 3]
         print(color_array)
         return moji
 
