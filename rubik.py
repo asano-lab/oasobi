@@ -62,6 +62,23 @@ class State():
             s_num = (s_num << 1) | self.eo[i]
         return State2(s_num)
     
+    # 色配列の作成 (描画用)
+    def makeColorArray(self):
+        color_array = [[" "] * 18 for _ in range(3)]
+        for k, v in CENTER_INDICES.items():
+            color_array[v[0]][v[1]] = k
+        for k, v in CORNER_PO2COLOR.items():
+            cpk = self.cp[k]
+            cok = self.co[k]
+            for i, jt in enumerate(v):
+                color_array[jt[0]][jt[1]] = CORNER_COLOR[cpk][(cok + i) % 3]
+        for k, v in EDGE_PO2COLOR.items():
+            epk = self.ep[k]
+            eok = self.eo[k]
+            for i, jt in enumerate(v):
+                color_array[jt[0]][jt[1]] = EDGE_COLOR[epk][eok ^ i]
+        return color_array
+    
     # 動作の適用
     # + 演算子を用いる
     def __add__(self, arg):
@@ -91,20 +108,7 @@ class State():
         moji += str(self.co) + "\n"
         moji += str(self.ep) + "\n"
         moji += str(self.eo) + "\n"
-        color_array = [[" "] * 18 for _ in range(3)]
-        for k, v in CENTER_INDICES.items():
-            color_array[v[0]][v[1]] = k
-        for k, v in CORNER_PO2COLOR.items():
-            cpk = self.cp[k]
-            cok = self.co[k]
-            for i, jt in enumerate(v):
-                color_array[jt[0]][jt[1]] = CORNER_COLOR[cpk][(cok + i) % 3]
-        for k, v in EDGE_PO2COLOR.items():
-            epk = self.ep[k]
-            eok = self.eo[k]
-            for i, jt in enumerate(v):
-                color_array[jt[0]][jt[1]] = EDGE_COLOR[epk][eok ^ i]
-        print(color_array)
+        color_array = self.makeColorArray()
         return moji
 
 class State2():
