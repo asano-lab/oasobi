@@ -84,6 +84,7 @@ class State():
         color_array[0][15] = CORNER_COLOR[self.cp[7]][-self.co[7] % 3]
         color_array[0][17] = CORNER_COLOR[self.cp[6]][-self.co[6] % 3]
         color_array[0][1] = EDGE_COLOR[self.ep[4]][self.eo[4]]
+        color_array[0][4] = EDGE_COLOR[self.ep[6]][self.eo[6] ^ 1]
         print(color_array)
         return moji
 
@@ -193,4 +194,5 @@ for move_name in scramble:
 print(moves["L"])
 # print(moves["R"])
 # print(moves["R'"])
-print(moves["B"])
+# print(moves["B"])
+print(moves["F'"])
