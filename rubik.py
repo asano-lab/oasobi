@@ -4,10 +4,10 @@ from ctypes import CDLL, c_int32, c_ulonglong
 JPN_COLOR = {"U": "白", "D": "青", "L": "橙", "R": "赤", "F": "緑", "B": "黄"}
 
 # 角のブロックの色, 各3色
-# U, Dの色を基準にして時計回りに並べる
+# U, Dの色を基準にして反時計回りに並べる
 CORNER_COLOR = {
-    0: "ULB", 1: "UBR", 2: "URF", 3: "UFL",
-    4: "DBL", 5: "DRB", 6: "DFR", 7: "DLF"
+    0: "UBL", 1: "URB", 2: "UFR", 3: "ULF",
+    4: "DLB", 5: "DBR", 6: "DRF", 7: "DFL"
 }
 
 # 辺のブロックの色, 各2色
@@ -71,18 +71,18 @@ class State():
         moji += str(self.ep) + "\n"
         moji += str(self.eo) + "\n"
         color_array = [[-1] * 18 for _ in range(3)]
-        color_array[0][0] = CORNER_COLOR[self.cp[0]][-self.co[0] % 3]
-        color_array[0][2] = CORNER_COLOR[self.cp[1]][-self.co[1] % 3]
-        color_array[0][3] = CORNER_COLOR[self.cp[3]][(1 - self.co[3]) % 3]
-        color_array[0][5] = CORNER_COLOR[self.cp[2]][(2 - self.co[2]) % 3]
-        color_array[0][6] = CORNER_COLOR[self.cp[2]][(1 - self.co[2]) % 3]
-        color_array[0][8] = CORNER_COLOR[self.cp[1]][(2 - self.co[1]) % 3]
-        color_array[0][9] = CORNER_COLOR[self.cp[1]][(1 - self.co[1]) % 3]
-        color_array[0][11] = CORNER_COLOR[self.cp[0]][(2 - self.co[0]) % 3]
-        color_array[0][12] = CORNER_COLOR[self.cp[0]][(1 - self.co[0]) % 3]
-        color_array[0][14] = CORNER_COLOR[self.cp[3]][(2 - self.co[3]) % 3]
-        color_array[0][15] = CORNER_COLOR[self.cp[7]][-self.co[7] % 3]
-        color_array[0][17] = CORNER_COLOR[self.cp[6]][-self.co[6] % 3]
+        color_array[0][0] = CORNER_COLOR[self.cp[0]][self.co[0]]
+        color_array[0][2] = CORNER_COLOR[self.cp[1]][self.co[1]]
+        color_array[0][3] = CORNER_COLOR[self.cp[3]][(self.co[3] + 2) % 3]
+        color_array[0][5] = CORNER_COLOR[self.cp[2]][(self.co[2] + 1) % 3]
+        color_array[0][6] = CORNER_COLOR[self.cp[2]][(self.co[2] + 2) % 3]
+        color_array[0][8] = CORNER_COLOR[self.cp[1]][(self.co[1] + 1) % 3]
+        color_array[0][9] = CORNER_COLOR[self.cp[1]][(self.co[1] + 2) % 3]
+        color_array[0][11] = CORNER_COLOR[self.cp[0]][(self.co[0] + 1) % 3]
+        color_array[0][12] = CORNER_COLOR[self.cp[0]][(self.co[0] + 2) % 3]
+        color_array[0][14] = CORNER_COLOR[self.cp[3]][(self.co[3] + 1) % 3]
+        color_array[0][15] = CORNER_COLOR[self.cp[7]][self.co[7]]
+        color_array[0][17] = CORNER_COLOR[self.cp[6]][self.co[6]]
         color_array[0][1] = EDGE_COLOR[self.ep[4]][self.eo[4]]
         color_array[0][4] = EDGE_COLOR[self.ep[6]][self.eo[6] ^ 1]
         color_array[0][7] = EDGE_COLOR[self.ep[5]][self.eo[5] ^ 1]
