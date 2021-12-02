@@ -85,6 +85,10 @@ class State():
         color_array[0][17] = CORNER_COLOR[self.cp[6]][-self.co[6] % 3]
         color_array[0][1] = EDGE_COLOR[self.ep[4]][self.eo[4]]
         color_array[0][4] = EDGE_COLOR[self.ep[6]][self.eo[6] ^ 1]
+        color_array[0][7] = EDGE_COLOR[self.ep[5]][self.eo[5] ^ 1]
+        color_array[0][10] = EDGE_COLOR[self.ep[4]][self.eo[4] ^ 1]
+        color_array[0][13] = EDGE_COLOR[self.ep[7]][self.eo[7] ^ 1]
+        color_array[0][16] = EDGE_COLOR[self.ep[10]][self.eo[10]]
         print(color_array)
         return moji
 
