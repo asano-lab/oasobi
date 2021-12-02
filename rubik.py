@@ -100,7 +100,7 @@ class State():
         for i in range(12):
             nep.append(U2F_LIST[2][tmpst.ep[i]])
             neo.append(tmpst.eo[i] ^ U2F_LIST[3][tmpst.ep[i]])
-        
+        return State(ncp, nco, nep, neo)
     
     # 動作の適用
     # + 演算子を用いる
@@ -263,4 +263,4 @@ for move_name in scramble:
 # print(moves["F'"])
 # print(change_color["UF"])
 
-moves["R"].u2f()
+print(moves["F"].u2f())
