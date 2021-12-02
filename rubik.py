@@ -256,7 +256,7 @@ for move_name in scramble:
 
 scrambled_state = scrambled_state.toState()
 print(scrambled_state)
-print(scrambled_state.u2f())
+print(scrambled_state.u2f().u2f().u2f().u2f())
 
 # print(moves["L"])
 # print(moves["R"])
