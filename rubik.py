@@ -79,6 +79,11 @@ class State():
                 color_array[jt[0]][jt[1]] = EDGE_COLOR[epk][eok ^ i]
         return color_array
     
+    # U面がF面になったときの等価な盤面を返す
+    def u2f(self):
+        tmpst = self + change_color["UF"]
+        print(tmpst)
+    
     # 動作の適用
     # + 演算子を用いる
     def __add__(self, arg):
@@ -238,4 +243,6 @@ print(scrambled_state.toState())
 # print(moves["R'"])
 # print(moves["B"])
 # print(moves["F'"])
-print(change_color["UF"])
+# print(change_color["UF"])
+
+moves["R"].u2f()
