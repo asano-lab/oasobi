@@ -85,7 +85,7 @@ class State():
         moji += str(self.co) + "\n"
         moji += str(self.ep) + "\n"
         moji += str(self.eo) + "\n"
-        color_array = [[-1] * 18 for _ in range(3)]
+        color_array = [[" "] * 18 for _ in range(3)]
         for k, v in CORNER_PO2COLOR.items():
             cpk = self.cp[k]
             cok = self.co[k]
