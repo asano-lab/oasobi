@@ -303,33 +303,10 @@ for move_name in scramble:
 
 scrambled_state = scrambled_state.toState()
 print(scrambled_state)
-# print(scrambled_state.changeColor("UL"))
-# print(scrambled_state.changeColor("DB"))
-# print(scrambled_state.changeColor("BR"))
 
-# print(moves["L"])
-# print(moves["R"])
-# print(moves["R'"])
-# print(moves["B"])
-# print(moves["F'"])
-# print(change_color["UF"])
-# print(change_color["UR"])
-# print(change_color["UR"])
-
-# print(moves["F"].u2f())
-# print(moves["U'"])
-# print(moves["U'"].changeColor("FD"))
-# print(moves["R"].changeColor("UR"))
-# print(moves["U"].changeColor("DL"))
-# print(moves["R"].changeColor("DL"))
-# print((moves["B"] + moves["D'"]).changeColor("BR"))
-
-# 多分右回しと等価
-# cl = ["LF", "LF", "LF", "BU", "LF"]
-# test_st = solved.copy()
-# for i in cl:
-#     test_st += change_color[i]
-# print(test_st)
-
+eq_nums = [scrambled_state.toState2().num]
 for i in change_color:
-    print(solved.changeColor(i))
+    eq_nums.append(scrambled_state.changeColor(i).toState2().num)
+
+eq_nums = set(eq_nums)
+print(len(eq_nums))
