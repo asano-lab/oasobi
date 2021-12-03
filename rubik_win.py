@@ -248,17 +248,21 @@ print(change_color["FL"])
 
 def cleateReplaceParts(chclr: State):
     ll = [[-1] * 8, chclr.co.copy(), [-1] * 12, chclr.eo.copy()]
+    print(ll)
     for i, j in enumerate(chclr.cp):
         ll[0][j] = i
+        ll[1][j] = -chclr.co[i] % 3
     for i, j in enumerate(chclr.ep):
         ll[2][j] = i
+        ll[3][j] = chclr.eo[i]
+    print(ll)
     return ll
 
 # パーツの入れ替え辞書
 replace_parts = {}
 for k, v in change_color.items():
     replace_parts[k] = cleateReplaceParts(v)
-print(replace_parts["FL"])
+# print(replace_parts["FL"])
 replace_parts["FL"][1] = [2, 1, 2, 1, 1, 2, 1, 2]
 replace_parts["FL"][3] = [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1]
 
