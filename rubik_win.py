@@ -313,4 +313,5 @@ cl_list = [
 ]
 
 for i in cl_list:
+    print(i)
     print(change_color[i].toState2())
