@@ -305,7 +305,7 @@ scrambled_state = scrambled_state.toState()
 print(scrambled_state)
 # print(scrambled_state.changeColor("UL"))
 # print(scrambled_state.changeColor("DB"))
-print(scrambled_state.changeColor("BR"))
+# print(scrambled_state.changeColor("BR"))
 
 # print(moves["L"])
 # print(moves["R"])
@@ -322,7 +322,7 @@ print(scrambled_state.changeColor("BR"))
 # print(moves["R"].changeColor("UR"))
 # print(moves["U"].changeColor("DL"))
 # print(moves["R"].changeColor("DL"))
-print((moves["B"] + moves["D'"]).changeColor("BR"))
+# print((moves["B"] + moves["D'"]).changeColor("BR"))
 
 # 多分右回しと等価
 # cl = ["LF", "LF", "LF", "BU", "LF"]
@@ -330,3 +330,6 @@ print((moves["B"] + moves["D'"]).changeColor("BR"))
 # for i in cl:
 #     test_st += change_color[i]
 # print(test_st)
+
+for i in change_color:
+    print(solved.changeColor(i))
