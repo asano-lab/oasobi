@@ -234,6 +234,13 @@ for face_name in faces:
 # 予想以上に色の変換パターンが多そう
 # 全23種?
 change_color = {
+    # UDFBRL
+    "UR": State(
+        [3, 0, 1, 2, 7, 4, 5, 6],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [3, 0, 1, 2, 7, 4, 5, 6, 11, 8, 9, 10],
+        [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0]
+    ),
     # BFLRUD
     "BU": State(
         [4, 5, 1, 0, 7, 6, 2, 3],
@@ -283,8 +290,9 @@ print(scrambled_state)
 # print(moves["F'"])
 # print(change_color["UF"])
 # print(change_color["UR"])
+print(change_color["UR"])
 
 # print(moves["F"].u2f())
-print(moves["U'"])
+# print(moves["U'"])
 # print(moves["U'"].changeColor("BU"))
-print(moves["U'"].changeColor("LF"))
+# print(moves["U'"].changeColor("LF"))
