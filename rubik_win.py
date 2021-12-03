@@ -218,22 +218,22 @@ for face_name in faces:
 # 予想以上に色の変換パターンが多そう
 # 全23種?
 change_color = {
-    # UDFBRL
-    "UR": State(
+    # UDBFLR
+    "UL": State(
         [3, 0, 1, 2, 7, 4, 5, 6],
         [0, 0, 0, 0, 0, 0, 0, 0],
         [3, 0, 1, 2, 7, 4, 5, 6, 11, 8, 9, 10],
         [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0]
     ),
-    # BFLRUD
-    "BU": State(
+    # FBLRDU
+    "FD": State(
         [4, 5, 1, 0, 7, 6, 2, 3],
         [2, 1, 2, 1, 1, 2, 1, 2],
         [11, 9, 5, 7, 8, 1, 4, 0, 10, 2, 6, 3],
         [0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0]
     ),
-    # LRDUFB
-    "LF": State(
+    # RLUDFB
+    "RF": State(
         [4, 0, 3, 7, 5, 1, 2, 6],
         [1, 2, 1, 2, 2, 1, 2, 1],
         [8, 4, 6, 10, 0, 7, 3, 11, 1, 5, 2, 9],
@@ -241,8 +241,8 @@ change_color = {
     )
 }
 
-change_color["UB"] = change_color["UR"] * 2
-change_color["UL"] = change_color["UR"] * 3
+change_color["UB"] = change_color["UL"] * 2
+change_color["UR"] = change_color["UL"] * 3
 
 def cleateReplaceParts(chclr: State):
     ll = [[-1] * 8, chclr.co.copy(), [-1] * 12, chclr.eo.copy()]
@@ -292,10 +292,9 @@ scrambled_state = scrambled_state.toState()
 
 # print(moves["F"].u2f())
 # print(moves["U'"])
-# print(moves["U'"].changeColor("BU"))
-# print(moves["U'"].changeColor("LF"))
+print(moves["U'"].changeColor("FD"))
+# print(moves["R"].changeColor("UL"))
 # print(moves["R"].changeColor("BU"))
-print(moves["R'"].changeColor("UR"))
 
 # 多分右回しと等価
 # cl = ["LF", "LF", "LF", "BU", "LF"]
