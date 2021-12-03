@@ -285,7 +285,7 @@ for move_name in scramble:
 
 scrambled_state = scrambled_state.toState()
 # print(scrambled_state.changeColor("UL"))
-print(scrambled_state.changeColor("LD"))
+print(scrambled_state.changeColor("FL"))
 
 # print(moves["L"])
 # print(moves["R"])
@@ -300,8 +300,8 @@ print(scrambled_state.changeColor("LD"))
 # print(moves["U'"])
 # print(moves["U'"].changeColor("FD"))
 # print(moves["R"].changeColor("UR"))
-print(moves["U"].changeColor("FL"))
-print(moves["R"].changeColor("FL"))
+# print(moves["U"].changeColor("FL"))
+# print(moves["R"].changeColor("FL"))
 
 # 多分右回しと等価
 # cl = ["LF", "LF", "LF", "BU", "LF"]
