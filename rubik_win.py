@@ -39,28 +39,6 @@ CENTER_INDICES = {
     "B": (1, 10), "L": (1, 13), "D": (1, 16)
 }
 
-# パーツの入れ替え
-REPLACE_PARTS = {
-    "UR": [
-        [1, 2, 3, 0, 5, 6, 7, 4],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [1, 2, 3, 0, 5, 6, 7, 4, 9, 10, 11, 8],
-        [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0]
-    ],
-    "BU": [
-        [3, 2, 6, 7, 0, 1, 5, 4],
-        [2, 1, 2, 1, 1, 2, 1, 2],
-        [7, 5, 9, 11, 6, 2, 10, 3, 4, 1, 8, 0],
-        [0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0]
-    ],
-    "LF": [
-        [1, 5, 6, 2, 0, 4, 7, 3],
-        [1, 2, 1, 2, 2, 1, 2, 1],
-        [4, 8, 10, 6, 1, 9, 2, 5, 0, 11, 3, 7],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-    ]
-}
-
 # 資料通りのクラス
 class State():
 
@@ -103,7 +81,7 @@ class State():
     
     def changeColor(self, color_pattern):
         tmpst = self + change_color[color_pattern]
-        rp = REPLACE_PARTS[color_pattern]
+        rp = replace_parts[color_pattern]
         ncp = []
         nco = []
         nep = []
@@ -273,7 +251,10 @@ def cleateReplaceParts(chclr: State):
         ll[2][j] = i
     return ll
 
-REPLACE_PARTS["UB"] = cleateReplaceParts(change_color["UB"])
+# パーツの入れ替え辞書
+replace_parts = {}
+for k, v in change_color.items():
+    replace_parts[k] = cleateReplaceParts(v)
 
 clib = CDLL("./rubik_win.so")
 
@@ -310,9 +291,9 @@ print(scrambled_state)
 
 # print(moves["F"].u2f())
 # print(moves["U'"])
-# print(moves["U'"].changeColor("BU"))
+print(moves["U'"].changeColor("BU"))
 # print(moves["U'"].changeColor("LF"))
-print(moves["R"].changeColor("UB"))
+# print(moves["R"].changeColor("BU"))
 
 # 多分右回しと等価
 # cl = ["LF", "LF", "LF", "BU", "LF"]
