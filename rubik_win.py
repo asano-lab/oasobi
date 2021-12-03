@@ -248,14 +248,12 @@ print(change_color["FL"])
 
 def cleateReplaceParts(chclr: State):
     ll = [[-1] * 8, chclr.co.copy(), [-1] * 12, chclr.eo.copy()]
-    print(ll)
     for i, j in enumerate(chclr.cp):
         ll[0][j] = i
         ll[1][j] = -chclr.co[i] % 3
     for i, j in enumerate(chclr.ep):
         ll[2][j] = i
         ll[3][j] = chclr.eo[i]
-    print(ll)
     return ll
 
 # パーツの入れ替え辞書
@@ -305,6 +303,7 @@ scrambled_state = scrambled_state.toState()
 # print(moves["R"].changeColor("UR"))
 print(moves["U"].changeColor("FL"))
 print(moves["D'"].changeColor("FL"))
+print(moves["B2"].changeColor("FL"))
 # print(solved.changeColor("FL"))
 
 # 多分右回しと等価
