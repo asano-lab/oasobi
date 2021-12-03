@@ -304,6 +304,7 @@ for move_name in scramble:
 scrambled_state = scrambled_state.toState()
 print(scrambled_state)
 
+scrambled_state = moves["L"] + moves["U"]
 eq_nums = [scrambled_state.toState2().num]
 for i in change_color:
     eq_nums.append(scrambled_state.changeColor(i).toState2().num)
