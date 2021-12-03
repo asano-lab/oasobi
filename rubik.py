@@ -260,6 +260,8 @@ change_color = {
     )
 }
 
+change_color["UB"] = change_color["UR"]
+
 clib = CDLL("./rubik.so")
 
 cull2 = c_ulonglong * 2
@@ -296,4 +298,5 @@ for i in range(4):
 # print(change_color["UR"])
 
 # print(moves["F"].u2f())
+print(moves["U'"])
 print(moves["U'"].u2r())
