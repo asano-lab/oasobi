@@ -158,7 +158,9 @@ class State2():
         return State2(n_list[0] << 60 | n_list[1])
     
     def __str__(self):
-        return hex(self.num)
+        moji = hex(self.num >> 60) + "\n"
+        moji += hex(self.num & 0xfffffffffffffff)
+        return moji
 
 # 完成形
 solved = State(
@@ -277,7 +279,6 @@ def cleateReplaceParts(chclr: State):
 replace_parts = {}
 for k, v in change_color.items():
     replace_parts[k] = cleateReplaceParts(v)
-print(len(change_color), "パターン")
 
 clib = CDLL("./rubik_win.so")
 
@@ -304,10 +305,12 @@ for move_name in scramble:
 scrambled_state = scrambled_state.toState()
 print(scrambled_state)
 
-scrambled_state = moves["L"] + moves["U"]
-eq_nums = [scrambled_state.toState2().num]
-for i in change_color:
-    eq_nums.append(scrambled_state.changeColor(i).toState2().num)
+# Cで格納するための順番
+cl_list = [
+    "UL", "UR", "UB", "DF", "DL", "DR", "DB",
+    "LU", "LD", "LF", "LB", "RU", "RD", "RF", "RB",
+    "FU", "FD", "FL", "FR", "BU", "BD", "BL", "BR"
+]
 
-eq_nums = set(eq_nums)
-print(len(eq_nums))
+for i in cl_list:
+    print(change_color[i].toState2())
