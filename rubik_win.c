@@ -53,6 +53,10 @@ u_long CHANGE_COLOR[46] = {
     0x137d12ab36, 0x4329079ee159663
 };
 
+// パーツの入れ替え法則
+// 配列だけ定義し, 中身は関数で作成予定
+u_long REPLACE_PARTS[46];
+
 // 動作の適用
 int applyMove(const u_long *s1, const u_long *s2, u_long *ns) {
     int i, j;
