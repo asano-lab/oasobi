@@ -22,6 +22,11 @@
 typedef unsigned long long u_long;
 
 // 色変換のための状態
+// UL, UR, UB, DF, DL, DR, DB,
+// LU, LD, LF, LB, RU, RD, RF, RB,
+// FU, FD, FL, FR, BU, BD, BL, BR
+// の順
+// それぞれ2つの数値からなる
 u_long CHANGE_COLOR[46] = {
     0x60088e4298, 0x384657214cb4254,
     0x22180a6390, 0x194e1531c8952d0,
