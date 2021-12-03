@@ -249,6 +249,7 @@ change_color["BU"] = change_color["FD"] * 3
 change_color["DF"] = change_color["RF"] * 2
 change_color["LF"] = change_color["RF"] * 3
 change_color["LD"] = change_color["FD"] + change_color["UL"]
+change_color["BD"] = change_color["LD"] + change_color["UL"]
 change_color["FL"] = change_color["UL"] + change_color["FD"]
 
 def cleateReplaceParts(chclr: State):
@@ -293,7 +294,7 @@ scrambled_state = scrambled_state.toState()
 print(scrambled_state)
 # print(scrambled_state.changeColor("UL"))
 # print(scrambled_state.changeColor("DB"))
-print(scrambled_state.changeColor("LF"))
+print(scrambled_state.changeColor("BD"))
 
 # print(moves["L"])
 # print(moves["R"])
@@ -308,8 +309,8 @@ print(scrambled_state.changeColor("LF"))
 # print(moves["U'"])
 # print(moves["U'"].changeColor("FD"))
 # print(moves["R"].changeColor("UR"))
-print(moves["U"].changeColor("LF"))
-print(moves["R"].changeColor("LF"))
+print(moves["U"].changeColor("BD"))
+print(moves["R"].changeColor("BD"))
 
 # 多分右回しと等価
 # cl = ["LF", "LF", "LF", "BU", "LF"]
