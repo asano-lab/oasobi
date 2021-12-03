@@ -39,20 +39,21 @@ CENTER_INDICES = {
     "B": (1, 10), "L": (1, 13), "D": (1, 16)
 }
 
-# パーツの入れ替え???
-U2F_LIST = [
-    [3, 2, 6, 7, 0, 1, 5, 4],
-    [2, 1, 2, 1, 1, 2, 1, 2],
-    [7, 5, 9, 11, 6, 2, 10, 3, 4, 1, 8, 0],
-    [0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0]
-]
-
-U2R_LIST = [
-    [1, 5, 6, 2, 0, 4, 7, 3],
-    [1, 2, 1, 2, 2, 1, 2, 1],
-    [4, 8, 10, 6, 1, 9, 2, 5, 0, 11, 3, 7],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-]
+# パーツの入れ替え
+REPLACE_PARTS = {
+    "BU": [
+        [3, 2, 6, 7, 0, 1, 5, 4],
+        [2, 1, 2, 1, 1, 2, 1, 2],
+        [7, 5, 9, 11, 6, 2, 10, 3, 4, 1, 8, 0],
+        [0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0]
+    ],
+    "LF": [
+        [1, 5, 6, 2, 0, 4, 7, 3],
+        [1, 2, 1, 2, 2, 1, 2, 1],
+        [4, 8, 10, 6, 1, 9, 2, 5, 0, 11, 3, 7],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    ]
+}
 
 # 資料通りのクラス
 class State():
@@ -94,33 +95,19 @@ class State():
                 color_array[jt[0]][jt[1]] = EDGE_COLOR[epk][eok ^ i]
         return color_array
     
-    # U面がF面になったときの等価な盤面を返す
-    def u2f(self):
-        tmpst = self + change_color["UF"]
+    def changeColor(self, color_pattern):
+        tmpst = self + change_color[color_pattern]
+        rp = REPLACE_PARTS[color_pattern]
         ncp = []
         nco = []
         nep = []
         neo = []
         for i in range(8):
-            ncp.append(U2F_LIST[0][tmpst.cp[i]])
-            nco.append((tmpst.co[i] + U2F_LIST[1][tmpst.cp[i]]) % 3)
+            ncp.append(rp[0][tmpst.cp[i]])
+            nco.append((tmpst.co[i] + rp[1][tmpst.cp[i]]) % 3)
         for i in range(12):
-            nep.append(U2F_LIST[2][tmpst.ep[i]])
-            neo.append(tmpst.eo[i] ^ U2F_LIST[3][tmpst.ep[i]])
-        return State(ncp, nco, nep, neo)
-    
-    def u2r(self):
-        tmpst = self + change_color["UR"]
-        ncp = []
-        nco = []
-        nep = []
-        neo = []
-        for i, j in enumerate(tmpst.cp):
-            ncp.append(U2R_LIST[0][j])
-            nco.append((tmpst.co[i] + U2R_LIST[1][j]) % 3)
-        for i, j in enumerate(tmpst.ep):
-            nep.append(U2R_LIST[2][j])
-            neo.append(tmpst.eo[i] ^ U2R_LIST[3][j])
+            nep.append(rp[2][tmpst.ep[i]])
+            neo.append(tmpst.eo[i] ^ rp[3][tmpst.ep[i]])
         return State(ncp, nco, nep, neo)
     
     # 動作の適用
@@ -244,15 +231,18 @@ for face_name in faces:
     moves[face_name + "'"] = moves[face_name] * 3
 
 # 色変換のための操作 (位置と回転のみ)
-# 全5種
+# 予想以上に色の変換パターンが多そう
+# 全23種?
 change_color = {
-    "UF": State(
+    # BFLRUD
+    "BU": State(
         [4, 5, 1, 0, 7, 6, 2, 3],
         [2, 1, 2, 1, 1, 2, 1, 2],
         [11, 9, 5, 7, 8, 1, 4, 0, 10, 2, 6, 3],
         [0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0]
     ),
-    "UR": State(
+    # LRDUFB
+    "LF": State(
         [4, 0, 3, 7, 5, 1, 2, 6],
         [1, 2, 1, 2, 2, 1, 2, 1],
         [8, 4, 6, 10, 0, 7, 3, 11, 1, 5, 2, 9],
@@ -285,9 +275,6 @@ for move_name in scramble:
 
 scrambled_state = scrambled_state.toState()
 print(scrambled_state)
-for i in range(4):
-    scrambled_state = scrambled_state.u2f()
-    print(scrambled_state)
 
 # print(moves["L"])
 # print(moves["R"])
@@ -299,4 +286,5 @@ for i in range(4):
 
 # print(moves["F"].u2f())
 print(moves["U'"])
-print(moves["U'"].u2r())
+# print(moves["U'"].changeColor("BU"))
+print(moves["U'"].changeColor("LF"))
