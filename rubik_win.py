@@ -318,7 +318,7 @@ print(scrambled_state.changeColor("DR"))
 # print(moves["R"].changeColor("UR"))
 # print(moves["U"].changeColor("DL"))
 # print(moves["R"].changeColor("DL"))
-print((moves["B"] + moves["D'"]).changeColor("RD"))
+print((moves["B"] + moves["D'"]).changeColor("RB"))
 
 # 多分右回しと等価
 # cl = ["LF", "LF", "LF", "BU", "LF"]
