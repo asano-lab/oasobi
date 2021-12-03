@@ -41,6 +41,12 @@ CENTER_INDICES = {
 
 # パーツの入れ替え
 REPLACE_PARTS = {
+    "UR": [
+        [1, 2, 3, 0, 5, 6, 7, 4],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 2, 3, 0, 5, 6, 7, 4, 9, 10, 11, 8],
+        [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0]
+    ],
     "BU": [
         [3, 2, 6, 7, 0, 1, 5, 4],
         [2, 1, 2, 1, 1, 2, 1, 2],
@@ -290,16 +296,17 @@ print(scrambled_state)
 # print(moves["F'"])
 # print(change_color["UF"])
 # print(change_color["UR"])
-print(change_color["UR"])
+# print(change_color["UR"])
 
 # print(moves["F"].u2f())
 # print(moves["U'"])
 # print(moves["U'"].changeColor("BU"))
 # print(moves["U'"].changeColor("LF"))
+print(moves["R"].changeColor("UR"))
 
 # 多分右回しと等価
-cl = ["LF", "LF", "LF", "BU", "LF"]
-test_st = solved.copy()
-for i in cl:
-    test_st += change_color[i]
-print(test_st)
+# cl = ["LF", "LF", "LF", "BU", "LF"]
+# test_st = solved.copy()
+# for i in cl:
+#     test_st += change_color[i]
+# print(test_st)
