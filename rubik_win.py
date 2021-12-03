@@ -296,3 +296,10 @@ print(change_color["UR"])
 # print(moves["U'"])
 # print(moves["U'"].changeColor("BU"))
 # print(moves["U'"].changeColor("LF"))
+
+# 多分右回しと等価
+cl = ["LF", "LF", "LF", "BU", "LF"]
+test_st = solved.copy()
+for i in cl:
+    test_st += change_color[i]
+print(test_st)
