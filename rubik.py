@@ -47,6 +47,13 @@ U2F_LIST = [
     [0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0]
 ]
 
+U2R_LIST = [
+    [1, 5, 6, 2, 0, 4, 7, 3],
+    [1, 2, 1, 2, 2, 1, 2, 1],
+    [4, 8, 10, 6, 1, 9, 2, 5, 0, 11, 3, 7],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+]
+
 # 資料通りのクラス
 class State():
 
@@ -100,6 +107,20 @@ class State():
         for i in range(12):
             nep.append(U2F_LIST[2][tmpst.ep[i]])
             neo.append(tmpst.eo[i] ^ U2F_LIST[3][tmpst.ep[i]])
+        return State(ncp, nco, nep, neo)
+    
+    def u2r(self):
+        tmpst = self + change_color["UR"]
+        ncp = []
+        nco = []
+        nep = []
+        neo = []
+        for i, j in enumerate(tmpst.cp):
+            ncp.append(U2R_LIST[0][j])
+            nco.append((tmpst.co[i] + U2R_LIST[1][j]) % 3)
+        for i, j in enumerate(tmpst.ep):
+            nep.append(U2R_LIST[2][j])
+            neo.append(tmpst.eo[i] ^ U2R_LIST[3][j])
         return State(ncp, nco, nep, neo)
     
     # 動作の適用
@@ -272,6 +293,7 @@ for i in range(4):
 # print(moves["B"])
 # print(moves["F'"])
 # print(change_color["UF"])
-print(change_color["UR"])
+# print(change_color["UR"])
 
 # print(moves["F"].u2f())
+print(moves["U'"].u2r())
