@@ -295,8 +295,8 @@ scrambled_state = solved
 for move_name in scramble:
     scrambled_state += moves[move_name]
 
-# print(scrambled_state)
-print(moves["R2"].toState2())
+print(scrambled_state)
+# print(moves["R2"].toState2())
 
 scrambled_state = solved.toState2()
 for move_name in scramble:
