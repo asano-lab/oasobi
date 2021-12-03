@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 
 #define SOLVED_C (u_long)0x0110c8531c
 #define SOLVED_E (u_long)0x008864298e84a96
@@ -12,6 +11,8 @@
 
 #define getEp(e_info, n) (((e_info) >> (56 - 5 * (n))) & 0b1111)
 #define getEo(e_info, n) (((e_info) >> (55 - 5 * (n))) & 0b1)
+
+typedef unsigned long long u_long;
 
 // 動作の適用
 int applyMove(const u_long *s1, const u_long *s2, u_long *ns) {
@@ -40,6 +41,6 @@ int main(void) {
     rs[0] = R_STATE_C;
     rs[1] = R_STATE_E;
     applyMove(rs, rs, r2s);
-    printf("0x%lx\n", r2s[0]);
-    printf("0x%lx\n", r2s[1]);
+    printf("0x%I64x\n", r2s[0]);
+    printf("0x%I64x\n", r2s[1]);
 }
