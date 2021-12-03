@@ -217,6 +217,7 @@ for face_name in faces:
 # 色変換のための操作 (位置と回転のみ)
 # 予想以上に色の変換パターンが多そう
 # 全23種?
+# キーは上面と正面の順
 change_color = {
     # UDBFLR
     "UL": State(
@@ -243,6 +244,7 @@ change_color = {
 
 change_color["UB"] = change_color["UL"] * 2
 change_color["UR"] = change_color["UL"] * 3
+change_color["DB"] = change_color["FD"] * 2
 change_color["LD"] = change_color["FD"] + change_color["UL"]
 change_color["FL"] = change_color["UL"] + change_color["FD"]
 
@@ -284,8 +286,9 @@ for move_name in scramble:
     scrambled_state += moves[move_name].toState2()
 
 scrambled_state = scrambled_state.toState()
+print(scrambled_state)
 # print(scrambled_state.changeColor("UL"))
-print(scrambled_state.changeColor("FL"))
+print(scrambled_state.changeColor("DB"))
 
 # print(moves["L"])
 # print(moves["R"])
@@ -300,8 +303,8 @@ print(scrambled_state.changeColor("FL"))
 # print(moves["U'"])
 # print(moves["U'"].changeColor("FD"))
 # print(moves["R"].changeColor("UR"))
-# print(moves["U"].changeColor("FL"))
-# print(moves["R"].changeColor("FL"))
+print(moves["U"].changeColor("DB"))
+print(moves["R"].changeColor("DB"))
 
 # 多分右回しと等価
 # cl = ["LF", "LF", "LF", "BU", "LF"]
