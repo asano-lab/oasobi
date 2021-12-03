@@ -243,8 +243,7 @@ change_color = {
 
 change_color["UB"] = change_color["UL"] * 2
 change_color["UR"] = change_color["UL"] * 3
-change_color["FL"] = change_color["FD"] + change_color["UL"]
-print(change_color["FL"])
+change_color["LD"] = change_color["FD"] + change_color["UL"]
 
 def cleateReplaceParts(chclr: State):
     ll = [[-1] * 8, chclr.co.copy(), [-1] * 12, chclr.eo.copy()]
@@ -260,9 +259,6 @@ def cleateReplaceParts(chclr: State):
 replace_parts = {}
 for k, v in change_color.items():
     replace_parts[k] = cleateReplaceParts(v)
-# print(replace_parts["FL"])
-replace_parts["FL"][1] = [2, 1, 2, 1, 1, 2, 1, 2]
-replace_parts["FL"][3] = [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1]
 
 clib = CDLL("./rubik_win.so")
 
@@ -281,12 +277,14 @@ for move_name in scramble:
 
 # print(scrambled_state)
 
+
 scrambled_state = solved.toState2()
 for move_name in scramble:
     scrambled_state += moves[move_name].toState2()
 
 scrambled_state = scrambled_state.toState()
 # print(scrambled_state.changeColor("UL"))
+print(scrambled_state.changeColor("LD"))
 
 # print(moves["L"])
 # print(moves["R"])
@@ -301,9 +299,7 @@ scrambled_state = scrambled_state.toState()
 # print(moves["U'"])
 # print(moves["U'"].changeColor("FD"))
 # print(moves["R"].changeColor("UR"))
-print(moves["U"].changeColor("FL"))
-print(moves["D'"].changeColor("FL"))
-print(moves["B2"].changeColor("FL"))
+print(moves["U"].changeColor("LD"))
 # print(solved.changeColor("FL"))
 
 # 多分右回しと等価
