@@ -108,12 +108,12 @@ class State():
         nco = []
         nep = []
         neo = []
-        for i in range(8):
-            ncp.append(rp[0][tmpst.cp[i]])
-            nco.append((tmpst.co[i] + rp[1][tmpst.cp[i]]) % 3)
-        for i in range(12):
-            nep.append(rp[2][tmpst.ep[i]])
-            neo.append(tmpst.eo[i] ^ rp[3][tmpst.ep[i]])
+        for i, j in enumerate(tmpst.cp):
+            ncp.append(rp[0][j])
+            nco.append((tmpst.co[i] + rp[1][j]) % 3)
+        for i, j in enumerate(tmpst.ep):
+            nep.append(rp[2][j])
+            neo.append(tmpst.eo[i] ^ rp[3][j])
         return State(ncp, nco, nep, neo)
     
     # 動作の適用
@@ -263,7 +263,7 @@ change_color = {
     )
 }
 
-# change_color["UB"] = change_color["UR"]
+change_color["UB"] = change_color["UR"] * 2
 
 clib = CDLL("./rubik_win.so")
 
@@ -310,3 +310,5 @@ print(moves["R"].changeColor("UR"))
 # for i in cl:
 #     test_st += change_color[i]
 # print(test_st)
+
+print(change_color["UB"])
