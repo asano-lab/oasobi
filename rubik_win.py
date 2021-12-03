@@ -296,7 +296,7 @@ for move_name in scramble:
     scrambled_state += moves[move_name]
 
 # print(scrambled_state)
-
+print(moves["R2"].toState2())
 
 scrambled_state = solved.toState2()
 for move_name in scramble:
@@ -306,12 +306,12 @@ scrambled_state = scrambled_state.toState()
 print(scrambled_state)
 
 # Cで格納するための順番
-cl_list = [
-    "UL", "UR", "UB", "DF", "DL", "DR", "DB",
-    "LU", "LD", "LF", "LB", "RU", "RD", "RF", "RB",
-    "FU", "FD", "FL", "FR", "BU", "BD", "BL", "BR"
-]
+# cl_list = [
+#     "UL", "UR", "UB", "DF", "DL", "DR", "DB",
+#     "LU", "LD", "LF", "LB", "RU", "RD", "RF", "RB",
+#     "FU", "FD", "FL", "FR", "BU", "BD", "BL", "BR"
+# ]
 
-for i in cl_list:
-    print(i)
-    print(change_color[i].toState2())
+# for i in cl_list:
+#     print(i)
+#     print(change_color[i].toState2())
