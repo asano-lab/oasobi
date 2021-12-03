@@ -246,6 +246,7 @@ change_color["UB"] = change_color["UL"] * 2
 change_color["UR"] = change_color["UL"] * 3
 change_color["DB"] = change_color["FD"] * 2
 change_color["BU"] = change_color["FD"] * 3
+change_color["DF"] = change_color["RF"] * 2
 change_color["LD"] = change_color["FD"] + change_color["UL"]
 change_color["FL"] = change_color["UL"] + change_color["FD"]
 
@@ -289,7 +290,8 @@ for move_name in scramble:
 scrambled_state = scrambled_state.toState()
 print(scrambled_state)
 # print(scrambled_state.changeColor("UL"))
-print(scrambled_state.changeColor("BU"))
+# print(scrambled_state.changeColor("DB"))
+print(scrambled_state.changeColor("DF"))
 
 # print(moves["L"])
 # print(moves["R"])
@@ -304,8 +306,8 @@ print(scrambled_state.changeColor("BU"))
 # print(moves["U'"])
 # print(moves["U'"].changeColor("FD"))
 # print(moves["R"].changeColor("UR"))
-print(moves["U"].changeColor("BU"))
-print(moves["R"].changeColor("BU"))
+print(moves["U"].changeColor("DF"))
+print(moves["R"].changeColor("DF"))
 
 # 多分右回しと等価
 # cl = ["LF", "LF", "LF", "BU", "LF"]
