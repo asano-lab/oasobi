@@ -247,6 +247,7 @@ change_color["UR"] = change_color["UL"] * 3
 change_color["DB"] = change_color["FD"] * 2
 change_color["BU"] = change_color["FD"] * 3
 change_color["DF"] = change_color["RF"] * 2
+change_color["LF"] = change_color["RF"] * 3
 change_color["LD"] = change_color["FD"] + change_color["UL"]
 change_color["FL"] = change_color["UL"] + change_color["FD"]
 
@@ -264,6 +265,7 @@ def cleateReplaceParts(chclr: State):
 replace_parts = {}
 for k, v in change_color.items():
     replace_parts[k] = cleateReplaceParts(v)
+print(len(change_color), "パターン")
 
 clib = CDLL("./rubik_win.so")
 
@@ -291,7 +293,7 @@ scrambled_state = scrambled_state.toState()
 print(scrambled_state)
 # print(scrambled_state.changeColor("UL"))
 # print(scrambled_state.changeColor("DB"))
-print(scrambled_state.changeColor("DF"))
+print(scrambled_state.changeColor("LF"))
 
 # print(moves["L"])
 # print(moves["R"])
@@ -306,8 +308,8 @@ print(scrambled_state.changeColor("DF"))
 # print(moves["U'"])
 # print(moves["U'"].changeColor("FD"))
 # print(moves["R"].changeColor("UR"))
-print(moves["U"].changeColor("DF"))
-print(moves["R"].changeColor("DF"))
+print(moves["U"].changeColor("LF"))
+print(moves["R"].changeColor("LF"))
 
 # 多分右回しと等価
 # cl = ["LF", "LF", "LF", "BU", "LF"]
