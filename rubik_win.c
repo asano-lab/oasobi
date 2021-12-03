@@ -12,6 +12,13 @@
 #define getEp(e_info, n) (((e_info) >> (56 - 5 * (n))) & 0b1111)
 #define getEo(e_info, n) (((e_info) >> (55 - 5 * (n))) & 0b1)
 
+// 5の倍数であること前提
+#define getCp5(c_info, n) (((c_info) >> (37 - (n))) & 0b111)
+#define getCo5(c_info, n) (((c_info) >> ((35 - (n)))) & 0b11)
+
+#define getEp5(e_info, n) (((e_info) >> (56 - (n))) & 0b1111)
+#define getEo5(e_info, n) (((e_info) >> (55 - (n))) & 0b1)
+
 typedef unsigned long long u_long;
 
 // 色変換のための状態
@@ -46,19 +53,19 @@ int applyMove(const u_long *s1, const u_long *s2, u_long *ns) {
     int i, j;
     ns[0] = 0;
     ns[1] = 0;
-    for (i = 0; i < 8; i++) {
-        j = getCp(s2[0], i);
+    for (i = 0; i < 40; i += 5) {
+        j = getCp5(s2[0], i) * 5;
         ns[0] <<= 3;
-        ns[0] |= getCp(s1[0], j);
+        ns[0] |= getCp5(s1[0], j);
         ns[0] <<= 2;
-        ns[0] |= (getCo(s1[0], j) + getCo(s2[0], i)) % 3;
+        ns[0] |= (getCo5(s1[0], j) + getCo5(s2[0], i)) % 3;
     }
-    for (i = 0; i < 12; i++) {
-        j = getEp(s2[1], i);
+    for (i = 0; i < 60; i += 5) {
+        j = getEp5(s2[1], i) * 5;
         ns[1] <<= 4;
-        ns[1] |= getEp(s1[1], j);
+        ns[1] |= getEp5(s1[1], j);
         ns[1] <<= 1;
-        ns[1] |= getEo(s1[1], j) ^ getEo(s2[1], i);
+        ns[1] |= getEo5(s1[1], j) ^ getEo5(s2[1], i);
     }
     return 0;
 }
