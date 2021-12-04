@@ -6,6 +6,9 @@
 #define R_STATE_C (u_long)0x0274c81abc
 #define R_STATE_E (u_long)0x02a464118e80a96
 
+#define SCRAMBLED_STATE_C (u_long)0x83124d5bc2
+#define SCRAMBLED_STATE_E (u_long)0x2cd140b8c2ba990
+
 #define getCp(c_info, n) (((c_info) >> (37 - 5 * (n))) & 0b111)
 #define getCo(c_info, n) (((c_info) >> ((35 - 5 * (n)))) & 0b11)
 
@@ -137,16 +140,12 @@ int init(void) {
 }
 
 int main(void) {
-    u_long rs[2], r2s[2];
-    rs[0] = R_STATE_C;
-    rs[1] = R_STATE_E;
-    init();
-    applyMove(rs, rs, r2s);
-    // printf("0x%I64x\n", r2s[0]);
-    // printf("0x%I64x\n", r2s[1]);
-    // printf("0x%I64x\n", CHANGE_COLOR[45]);
-    for (int i = 0; i < 46; i += 2) {
-        printState(REPLACE_PARTS + i);
+    u_long ss[2], sscc[2];
+    ss[0] = SCRAMBLED_STATE_C;
+    ss[1] = SCRAMBLED_STATE_E;
+    printState(ss);
+    for (int i = 0; i < 23; i++) {
+        ;
     }
     return 0;
 }

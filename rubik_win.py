@@ -302,8 +302,9 @@ scrambled_state = solved.toState2()
 for move_name in scramble:
     scrambled_state += moves[move_name].toState2()
 
-scrambled_state = scrambled_state.toState()
 print(scrambled_state)
+scrambled_state = scrambled_state.toState()
+# print(scrambled_state)
 
 # Cで格納するための順番
 cl_list = [
@@ -314,5 +315,5 @@ cl_list = [
 
 for i in cl_list:
     tmpst = State(*replace_parts[i]).toState2()
-    print(tmpst)
+    # print(tmpst)
 
