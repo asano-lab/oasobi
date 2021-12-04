@@ -158,8 +158,8 @@ int createReplaceParts(const u_long *ch_pos, u_long *ch_parts) {
 int init(void) {
     int i, j;
     // 残りの基本操作を追加
-    for (i = 0; i < 6; i++) {
-        j = 12 + i * 4;
+    for (i = 0; i < 12; i += 2) {
+        j = 12 + i * 2;
         applyMove(MOVES + i, MOVES + i, MOVES + j);
         applyMove(MOVES + i, MOVES + j, MOVES + j + 2);
     }
