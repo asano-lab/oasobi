@@ -245,7 +245,7 @@ change_color = {
     # UD MIRROR
     "MIRROR": State(
         [4, 5, 6, 7, 0, 1, 2, 3],
-        [0, 0, 0, 0, 0, 0, 0, 0],
+        [2, 1, 2, 1, 1, 2, 1, 2],
         [0, 1, 2, 3, 8, 9, 10, 11, 4, 5, 6, 7],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     )
@@ -326,4 +326,5 @@ cl_list = [
 #     print(scrambled_state.changeColor(i).toState2())
 
 print(moves["R"].changeColor("MIRROR"))
+print(moves["D'"].changeColor("MIRROR"))
 
