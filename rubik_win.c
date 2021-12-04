@@ -108,7 +108,7 @@ int changeColor(const u_long *src, u_long *dst, int ch_rule) {
     }
     for (i = 0; i < 60; i += 5) {
         j = getEp5(tmpst[1], i) * 5;
-        dst[1] = dst[1] << 4 | getEp(rp[1], j);
+        dst[1] = dst[1] << 4 | getEp5(rp[1], j);
         dst[1] = dst[1] << 1 | (getEo5(tmpst[1], i) ^ getEo5(rp[1], j));
     }
     return 0;

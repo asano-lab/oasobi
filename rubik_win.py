@@ -295,14 +295,13 @@ scrambled_state = solved
 for move_name in scramble:
     scrambled_state += moves[move_name]
 
-print(scrambled_state)
+# print(scrambled_state)
 # print(moves["R2"].toState2())
 
 scrambled_state = solved.toState2()
 for move_name in scramble:
     scrambled_state += moves[move_name].toState2()
 
-print(scrambled_state)
 scrambled_state = scrambled_state.toState()
 # print(scrambled_state)
 
@@ -313,7 +312,7 @@ cl_list = [
     "FU", "FD", "FL", "FR", "BU", "BD", "BL", "BR"
 ]
 
+print(scrambled_state.toState2())
 for i in cl_list:
-    tmpst = State(*replace_parts[i]).toState2()
-    # print(tmpst)
+    print(scrambled_state.changeColor(i).toState2())
 
