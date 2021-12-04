@@ -120,5 +120,8 @@ int main(void) {
     printf("0x%I64x\n", r2s[0]);
     printf("0x%I64x\n", r2s[1]);
     printf("0x%I64x\n", CHANGE_COLOR[45]);
+    for (int i = 0; i < 46; i++) {
+        printf("0x%I64x\n", REPLACE_PARTS[i]);
+    }
     return 0;
 }
