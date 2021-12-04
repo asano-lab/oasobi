@@ -168,7 +168,7 @@ int createReplaceParts(const u_long *ch_pos, u_long *ch_parts) {
 
 // 状態の比較
 // 第一引数が第二引数以下の場合はそのまま, それ以外はポインタの中身を入れ替える
-int compareStates(u_long *min_st, u_long *max_st) {
+int compareSwapStates(u_long *min_st, u_long *max_st) {
     if (min_st[0] < max_st[0]) return 0;
     if (min_st[0] == max_st[0] && min_st[1] <= max_st[1]) return 0;
     u_long tmp = min_st[0];
