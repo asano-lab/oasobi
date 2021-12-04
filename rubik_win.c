@@ -115,7 +115,6 @@ int udMirror(const u_long *src, u_long *dst) {
         tmpst[1] = tmpst[1] << 4 | getEp5(src[1], j);
         tmpst[1] = tmpst[1] << 1 | getEo5(src[1], j);
     }
-    printState(tmpst);
     dst[0] = 0;
     dst[1] = 0;
     for (i = 0; i < 40; i += 5) {

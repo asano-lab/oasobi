@@ -338,22 +338,4 @@ cl_list = [
     "FU", "FD", "FL", "FR", "BU", "BD", "BL", "BR"
 ]
 
-scrambled_state = moves["R2"] + moves["B2"] + moves["U2"]
-
-scrambled_state_udm = scrambled_state.mirror("UD")
-scrambled_state_lrm = scrambled_state.mirror("LR")
-scrambled_state_fbm = scrambled_state.mirror("FB")
-
-stl = [
-    scrambled_state.toState2().num,
-    scrambled_state_udm.toState2().num,
-    scrambled_state_lrm.toState2().num,
-    scrambled_state_fbm.toState2().num
-]
-for i in cl_list:
-    stl.append(scrambled_state.changeColor(i).toState2().num)
-    stl.append(scrambled_state_udm.changeColor(i).toState2().num)
-    stl.append(scrambled_state_lrm.changeColor(i).toState2().num)
-    stl.append(scrambled_state_fbm.changeColor(i).toState2().num)
-
-print(len(set(stl)))
+print(scrambled_state.mirror("UD").toState2())
