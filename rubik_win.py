@@ -158,9 +158,9 @@ class State2():
         return State2(n_list[0] << 60 | n_list[1])
     
     def __str__(self):
-        moji = hex(self.num >> 60) + "\n"
-        moji += hex(self.num & 0xfffffffffffffff)
-        return moji
+        c_info = self.num >> 60
+        e_info = self.num & 0xfffffffffffffff
+        return "0x%010x, 0x%015x" % (c_info, e_info)
 
 # 完成形
 solved = State(
@@ -306,13 +306,13 @@ scrambled_state = scrambled_state.toState()
 print(scrambled_state)
 
 # Cで格納するための順番
-# cl_list = [
-#     "UL", "UR", "UB", "DF", "DL", "DR", "DB",
-#     "LU", "LD", "LF", "LB", "RU", "RD", "RF", "RB",
-#     "FU", "FD", "FL", "FR", "BU", "BD", "BL", "BR"
-# ]
+cl_list = [
+    "UL", "UR", "UB", "DF", "DL", "DR", "DB",
+    "LU", "LD", "LF", "LB", "RU", "RD", "RF", "RB",
+    "FU", "FD", "FL", "FR", "BU", "BD", "BL", "BR"
+]
 
-# for i in cl_list:
-#     print(i)
-#     print(change_color[i].toState2())
+for i in cl_list:
+    tmpst = State(*replace_parts[i]).toState2()
+    print(tmpst)
 
