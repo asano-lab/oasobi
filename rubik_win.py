@@ -107,11 +107,10 @@ class State():
         nep = [self.ep[i] for i in UD_MIRROR[1]]
         neo = [self.eo[i] for i in UD_MIRROR[1]]
         tmpst = State(ncp, nco, nep, neo)
-        # print(tmpst)
         nst = tmpst.copy()
         nst.cp = [UD_MIRROR[0][i] for i in tmpst.cp]
         nst.ep = [UD_MIRROR[1][i] for i in tmpst.ep]
-        print(nst)
+        return nst
     
     # 動作の適用
     # + 演算子を用いる
@@ -317,19 +316,22 @@ applyMove.argtypes = (cull2, cull2, cull2)
 scramble = "L D2 R U2 L F2 U2 L F2 R2 B2 R U' R' U2 F2 R' D B' F2"
 scramble = scramble.split()
 
+scramble_udm = "L' U2 R' D2 L' F2 D2 L' F2 R2 B2 R' D R D2 F2 R U' B F2"
+scramble_udm = scramble_udm.split()
+
 scrambled_state = solved
 for move_name in scramble:
     scrambled_state += moves[move_name]
 
-# print(scrambled_state)
-# print(moves["R2"].toState2())
+print(scrambled_state)
 
 scrambled_state = solved.toState2()
-for move_name in scramble:
+for move_name in scramble_udm:
     scrambled_state += moves[move_name].toState2()
 
 scrambled_state = scrambled_state.toState()
-# print(scrambled_state)
+print(scrambled_state)
+print(scrambled_state.udMirror())
 
 # Cで格納するための順番
 cl_list = [
@@ -337,10 +339,4 @@ cl_list = [
     "LU", "LD", "LF", "LB", "RU", "RD", "RF", "RB",
     "FU", "FD", "FL", "FR", "BU", "BD", "BL", "BR"
 ]
-
-# solved.udMirror()
-# moves["R"].udMirror()
-# moves["F"].udMirror()
-# moves["U"].udMirror()
-(moves["U"] + moves["B"]).udMirror()
 
