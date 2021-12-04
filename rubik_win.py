@@ -107,7 +107,11 @@ class State():
         nep = [self.ep[i] for i in UD_MIRROR[1]]
         neo = [self.eo[i] for i in UD_MIRROR[1]]
         tmpst = State(ncp, nco, nep, neo)
-        print(tmpst)
+        # print(tmpst)
+        nst = tmpst.copy()
+        nst.cp = [UD_MIRROR[0][i] for i in tmpst.cp]
+        nst.ep = [UD_MIRROR[1][i] for i in tmpst.ep]
+        print(nst)
     
     # 動作の適用
     # + 演算子を用いる
@@ -335,5 +339,8 @@ cl_list = [
 ]
 
 # solved.udMirror()
-moves["R"].udMirror()
+# moves["R"].udMirror()
+# moves["F"].udMirror()
+# moves["U"].udMirror()
+(moves["U"] + moves["B"]).udMirror()
 
