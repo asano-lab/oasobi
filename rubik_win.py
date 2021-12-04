@@ -251,10 +251,16 @@ moves = {
 # 残りの基本操作を追加
 faces = list(moves.keys())
 for face_name in faces:
-    print(face_name)
-    print(moves[face_name].toState2())
     moves[face_name + "2"] = moves[face_name] * 2
     moves[face_name + "'"] = moves[face_name] * 3
+
+faces = [
+    "U", "D", "L", "R", "F", "B", "U2", "U'", "D2", "D'", "L2", "L'",
+    "R2", "R'", "F2", "F'", "B2", "B'"
+]
+
+for i in faces:
+    print(moves[i].toState2())
 
 # 色変換のための操作 (位置と回転のみ)
 # 予想以上に色の変換パターンが多そう
