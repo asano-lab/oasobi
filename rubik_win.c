@@ -67,9 +67,9 @@ u_long CHANGE_COLOR[46] = {
 // 配列だけ定義し, 中身は関数で作成予定
 u_long REPLACE_PARTS[46] = {0};
 
-// 上下鏡写しの変換法則 (5倍)
-int UDM_CP5[8] = {20, 25, 30, 35, 0, 5, 10, 15};
-int UDM_EP5[12] = {0, 5, 10, 15, 40, 45, 50, 55, 20, 25, 30, 35};
+// 上下鏡写しの変換法則
+int UDM_CP[8] = {4, 5, 6, 7, 0, 1, 2, 3};
+int UDM_EP[12] = {0, 1, 2, 3, 8, 9, 10, 11, 4, 5, 6, 7};
 
 void printState(const u_long *state) {
     printf("0x%010I64x, 0x%015I64x\n", state[0], state[1]);
@@ -105,17 +105,28 @@ int changeColor(const u_long *src, u_long *dst, int ch_rule) {
 int udMirror(const u_long *src, u_long *dst) {
     int i, j, cmn;
     u_long tmpst[2] = {0};
-    dst[0] = 0;
-    dst[1] = 0;
     for (i = 0; i < 8; i++) {
-        j = UDM_CP5[i];
+        j = UDM_CP[i] * 5;
         tmpst[0] = tmpst[0] << 3 | getCp5(src[0], j);
         tmpst[0] = tmpst[0] << 2 | (3 - getCo5(src[0], j)) % 3;
     }
     for (i = 0; i < 12; i++) {
-        j = UDM_EP5[i];
+        j = UDM_EP[i] * 5;
         tmpst[1] = tmpst[1] << 4 | getEp5(src[1], j);
         tmpst[1] = tmpst[1] << 1 | getEo5(src[1], j);
+    }
+    printState(tmpst);
+    dst[0] = 0;
+    dst[1] = 0;
+    for (i = 0; i < 40; i += 5) {
+        j = getCp5(tmpst[0], i);
+        dst[0] = dst[0] << 3 | UDM_CP[j];
+        dst[0] = dst[0] << 2 | getCo5(tmpst[0], i);
+    }
+    for (i = 0; i < 60; i += 5) {
+        j = getEp5(tmpst[1], i);
+        dst[1] = dst[1] << 4 | UDM_EP[j];
+        dst[1] = dst[1] << 1 | getEo5(tmpst[1], i);
     }
     return 0;
 }
@@ -151,9 +162,7 @@ int main(void) {
     ss[1] = SCRAMBLED_STATE_E;
     init();
     printState(ss);
-    for (int i = 0; i < 23; i++) {
-        changeColor(ss, sscc, i);
-        printState(sscc);
-    }
+    udMirror(ss, sscc);
+    printState(sscc);
     return 0;
 }
