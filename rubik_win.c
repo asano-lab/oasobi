@@ -166,6 +166,26 @@ int createReplaceParts(const u_long *ch_pos, u_long *ch_parts) {
     return 0;
 }
 
+// 状態の比較
+// 第一引数が第二引数以下の場合はそのまま, それ以外はポインタの中身を入れ替える
+int compareStates(u_long *min_st, u_long *max_st) {
+    if (min_st[0] < max_st[0]) return 0;
+    if (min_st[0] == max_st[0] && min_st[1] <= max_st[1]) return 0;
+    u_long tmp = min_st[0];
+    min_st[0] = max_st[0];
+    max_st[0] = tmp;
+    tmp = min_st[1];
+    min_st[1] = max_st[1];
+    max_st[1] = tmp;
+    return 1;
+}
+
+// 状態の正規化
+// 色の変換, 鏡写し計48種を計算し, 最小の値を選択
+int normalState(const u_long *src, u_long *dst) {
+    return 0;
+}
+
 // 初期化関数
 int init(void) {
     int i, j;
