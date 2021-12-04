@@ -78,17 +78,13 @@ int applyMove(const u_long *s1, const u_long *s2, u_long *ns) {
     ns[1] = 0;
     for (i = 0; i < 40; i += 5) {
         j = getCp5(s2[0], i) * 5;
-        ns[0] <<= 3;
-        ns[0] |= getCp5(s1[0], j);
-        ns[0] <<= 2;
-        ns[0] |= (getCo5(s1[0], j) + getCo5(s2[0], i)) % 3;
+        ns[0] = ns[0] << 3 | getCp5(s1[0], j);
+        ns[0] = ns[0] << 2 | (getCo5(s1[0], j) + getCo5(s2[0], i)) % 3;
     }
     for (i = 0; i < 60; i += 5) {
         j = getEp5(s2[1], i) * 5;
-        ns[1] <<= 4;
-        ns[1] |= getEp5(s1[1], j);
-        ns[1] <<= 1;
-        ns[1] |= getEo5(s1[1], j) ^ getEo5(s2[1], i);
+        ns[1] = ns[1] << 4 | getEp5(s1[1], j);
+        ns[1] = ns[1] << 1 | (getEo5(s1[1], j) ^ getEo5(s2[1], i));
     }
     return 0;
 }
