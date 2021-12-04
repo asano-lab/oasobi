@@ -338,6 +338,8 @@ cl_list = [
     "FU", "FD", "FL", "FR", "BU", "BD", "BL", "BR"
 ]
 
+scrambled_state = moves["R2"] + moves["B2"] + moves["U2"]
+
 scrambled_state_udm = scrambled_state.mirror("UD")
 scrambled_state_lrm = scrambled_state.mirror("LR")
 scrambled_state_fbm = scrambled_state.mirror("FB")
