@@ -31,6 +31,17 @@
 
 typedef unsigned long long u_long;
 
+// 基本操作18種 (それぞれ2つの整数)
+// 初期は U, D, L, R, F, Bのみ
+u_long MOVES[36] = {
+    0x600888531c, 0x008867214c84a96,
+    0x0110ca6390, 0x008864298e952d0,
+    0x91101ed30e, 0xb088e4298084a86,
+    0x0274c81abc, 0x02a464118e80a96,
+    0x011be85159, 0x009b5428ee848b6,
+    0x2d90c1471c, 0x4c4861a98e0ca96
+};
+
 // 色変換のための状態
 // UL, UR, UB, DF, DL, DR, DB,
 // LU, LD, LF, LB, RU, RD, RF, RB,
@@ -103,7 +114,7 @@ int changeColor(const u_long *src, u_long *dst, int ch_rule) {
 
 // 上下ミラー
 int udMirror(const u_long *src, u_long *dst) {
-    int i, j, cmn;
+    int i, j;
     u_long tmpst[2] = {0};
     for (i = 0; i < 8; i++) {
         j = UDM_CP[i] * 5;

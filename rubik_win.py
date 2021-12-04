@@ -1,5 +1,13 @@
 from ctypes import CDLL, c_int32, c_ulonglong
 
+clib = CDLL("./rubik_win.so")
+
+cull2 = c_ulonglong * 2
+
+applyMove = clib.applyMove
+applyMove.restype = c_int32
+applyMove.argtypes = (cull2, cull2, cull2)
+
 # 日本仕様の色
 JPN_COLOR = {"U": "白", "D": "青", "L": "橙", "R": "赤", "F": "緑", "B": "黄"}
 
@@ -243,6 +251,8 @@ moves = {
 # 残りの基本操作を追加
 faces = list(moves.keys())
 for face_name in faces:
+    print(face_name)
+    print(moves[face_name].toState2())
     moves[face_name + "2"] = moves[face_name] * 2
     moves[face_name + "'"] = moves[face_name] * 3
 
@@ -310,14 +320,6 @@ replace_parts = {}
 for k, v in change_color.items():
     replace_parts[k] = cleateReplaceParts(v)
 
-clib = CDLL("./rubik_win.so")
-
-cull2 = c_ulonglong * 2
-
-applyMove = clib.applyMove
-applyMove.restype = c_int32
-applyMove.argtypes = (cull2, cull2, cull2)
-
 scramble = "L D2 R U2 L F2 U2 L F2 R2 B2 R U' R' U2 F2 R' D B' F2"
 scramble = scramble.split()
 
@@ -338,4 +340,4 @@ cl_list = [
     "FU", "FD", "FL", "FR", "BU", "BD", "BL", "BR"
 ]
 
-print(scrambled_state.mirror("UD").toState2())
+# print(scrambled_state.mirror("UD").toState2())
