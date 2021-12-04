@@ -19,6 +19,13 @@
 #define getEp5(e_info, n) (((e_info) >> (56 - (n))) & 0b1111)
 #define getEo5(e_info, n) (((e_info) >> (55 - (n))) & 0b1)
 
+// 適当な位置に値を配置
+#define putCp5(c_info, n, cp) ((c_info) | ((cp) << (37 - (n))))
+#define putCo5(c_info, n, co) ((c_info) | ((co) << (35 - (n))))
+
+#define putEp5(e_info, n, ep) ((e_info) | ((ep) << (56 - (n))))
+#define putEo5(e_info, n, eo) ((e_info) | ((eo) << (55 - (n))))
+
 typedef unsigned long long u_long;
 
 // 色変換のための状態
@@ -57,15 +64,6 @@ u_long CHANGE_COLOR[46] = {
 // 配列だけ定義し, 中身は関数で作成予定
 u_long REPLACE_PARTS[46];
 
-int init(void) {
-    int i, j;
-    for (i = 0; i < 23; i++) {
-        for (j = 0; j < 40; j += 5) {
-            ;
-        }
-    }
-}
-
 // 動作の適用
 int applyMove(const u_long *s1, const u_long *s2, u_long *ns) {
     int i, j;
@@ -88,12 +86,39 @@ int applyMove(const u_long *s1, const u_long *s2, u_long *ns) {
     return 0;
 }
 
+// 位置変換からパーツ変換の計算
+int createReplaceParts(const u_long *ch_pos, u_long *ch_parts) {
+    int i, j;
+    for (i = 0; i < 8; i++) {
+        j = getCp(ch_pos[0], i) * 5;
+        ch_parts[0] = putCp5(ch_parts[0], j, i);
+        ch_parts[0] = putCo5(ch_parts[0], j, (3 - getCo(ch_pos[0], i)) % 3);
+    }
+    for (i = 0; i < 12; i++) {
+        j = getEp(ch_pos[1], i) * 5;
+        ch_parts[1] = putCp5(ch_parts[1], j, i);
+        ch_parts[1] = putCo5(ch_parts[1], j, getCo(ch_pos[1], i));
+    }
+    return 0;
+}
+
+// 初期化関数
+int init(void) {
+    int i, j;
+    for (i = 0; i < 46; i += 2) {
+        createReplaceParts(CHANGE_COLOR + i, REPLACE_PARTS + i);
+    }
+    return 0;
+}
+
 int main(void) {
     u_long rs[2], r2s[2];
     rs[0] = R_STATE_C;
     rs[1] = R_STATE_E;
+    init();
     applyMove(rs, rs, r2s);
     printf("0x%I64x\n", r2s[0]);
     printf("0x%I64x\n", r2s[1]);
     printf("0x%I64x\n", CHANGE_COLOR[45]);
+    return 0;
 }
