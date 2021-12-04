@@ -40,6 +40,20 @@ CENTER_INDICES = {
 }
 
 # 向きを含めずに位置だけ
+MIRROR_POS = {
+    "UD": [
+        [4, 5, 6, 7, 0, 1, 2, 3],
+        [0, 1, 2, 3, 8, 9, 10, 11, 4, 5, 6, 7]
+    ],
+    "LR": [
+        [1, 0, 3, 2, 5, 4, 7, 6],
+        [1, 0, 3, 2, 4, 7, 6, 5, 8, 11, 10, 9]
+    ],
+    "FB": [
+        [3, 2, 1, 0, 7, 6, 5, 4],
+        [3, 2, 1, 0, 6, 5, 4, 7, 10, 9, 8, 11]
+    ]
+}
 UD_MIRROR = [
     [4, 5, 6, 7, 0, 1, 2, 3],
     [0, 1, 2, 3, 8, 9, 10, 11, 4, 5, 6, 7]
@@ -101,15 +115,17 @@ class State():
         return State(ncp, nco, nep, neo)
     
     # 上下鏡写しの等価盤面を作りたい
-    def udMirror(self):
-        ncp = [self.cp[i] for i in UD_MIRROR[0]]
-        nco = [-self.co[i] % 3 for i in UD_MIRROR[0]]
-        nep = [self.ep[i] for i in UD_MIRROR[1]]
-        neo = [self.eo[i] for i in UD_MIRROR[1]]
-        tmpst = State(ncp, nco, nep, neo)
+    def mirror(self, mirror_pattern):
+        mp = MIRROR_POS[mirror_pattern]
+        tmpst = State(
+            [self.cp[i] for i in mp[0]],
+            [-self.co[i] % 3 for i in mp[0]],
+            [self.ep[i] for i in mp[1]],
+            [self.eo[i] for i in mp[1]]
+        )
         nst = tmpst.copy()
-        nst.cp = [UD_MIRROR[0][i] for i in tmpst.cp]
-        nst.ep = [UD_MIRROR[1][i] for i in tmpst.ep]
+        nst.cp = [mp[0][i] for i in tmpst.cp]
+        nst.ep = [mp[1][i] for i in tmpst.ep]
         return nst
     
     # 動作の適用
@@ -259,13 +275,6 @@ change_color = {
         [1, 2, 1, 2, 2, 1, 2, 1],
         [8, 4, 6, 10, 0, 7, 3, 11, 1, 5, 2, 9],
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-    ),
-    # UD MIRROR
-    "MIRROR": State(
-        [4, 5, 6, 7, 0, 1, 2, 3],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 1, 2, 3, 8, 9, 10, 11, 4, 5, 6, 7],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     )
 }
 
@@ -324,7 +333,7 @@ for move_name in scramble:
     scrambled_state += moves[move_name]
 
 print(scrambled_state)
-print(scrambled_state.udMirror())
+print(scrambled_state.mirror("FB"))
 
 scrambled_state = solved.toState2()
 for move_name in scramble_udm:
