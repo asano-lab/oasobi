@@ -4,9 +4,18 @@ clib = CDLL("./rubik_win.so")
 
 cull2 = c_ulonglong * 2
 
+# 全動作適用後状態格納用
+cull36 = c_ulonglong * 36
+
+clib.init()
+
 applyMove = clib.applyMove
 applyMove.restype = c_int32
 applyMove.argtypes = (cull2, cull2, cull2)
+
+applyAllMoves = clib.applyAllMoves
+applyAllMoves.restype = c_int32
+applyAllMoves.argtypes = (cull2, cull36)
 
 # 日本仕様の色
 JPN_COLOR = {"U": "白", "D": "青", "L": "橙", "R": "赤", "F": "緑", "B": "黄"}
@@ -189,6 +198,12 @@ class State2():
             eo.append(self.num >> (55 - i) & 0b1)
         return State(cp, co, ep, eo)
     
+    def allNextStates(self):
+        nc_arr = cull36()
+        applyAllMoves(self.c_arr, nc_arr)
+        n_list = list(nc_arr)
+        return [State2(n_list[i * 2] << 60 | n_list[i * 2 + 1]) for i in range(18)]
+    
     def __add__(self, arg):
         nc_arr = cull2()
         applyMove(self.c_arr, arg.c_arr, nc_arr)
@@ -347,3 +362,6 @@ cl_list = [
 ]
 
 # print(scrambled_state.mirror("UD").toState2())
+nst2 = solved.toState2().allNextStates()
+for i in nst2:
+    print(i)
