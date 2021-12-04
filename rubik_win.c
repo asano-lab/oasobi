@@ -64,6 +64,10 @@ u_long CHANGE_COLOR[46] = {
 // 配列だけ定義し, 中身は関数で作成予定
 u_long REPLACE_PARTS[46] = {0};
 
+void printState(const u_long *state) {
+    printf("0x%010I64x, 0x%015I64x\n", state[0], state[1]);
+}
+
 // 動作の適用
 int applyMove(const u_long *s1, const u_long *s2, u_long *ns) {
     int i, j;
@@ -89,7 +93,6 @@ int applyMove(const u_long *s1, const u_long *s2, u_long *ns) {
 // 位置変換からパーツ変換の計算
 int createReplaceParts(const u_long *ch_pos, u_long *ch_parts) {
     int i, j;
-    // 初期化
     for (i = 0; i < 8; i++) {
         j = getCp(ch_pos[0], i) * 5;
         ch_parts[0] = putCp5(ch_parts[0], j, i);
@@ -105,7 +108,7 @@ int createReplaceParts(const u_long *ch_pos, u_long *ch_parts) {
 
 // 初期化関数
 int init(void) {
-    int i, j;
+    int i;
     for (i = 0; i < 46; i += 2) {
         createReplaceParts(CHANGE_COLOR + i, REPLACE_PARTS + i);
     }
@@ -122,7 +125,7 @@ int main(void) {
     // printf("0x%I64x\n", r2s[1]);
     // printf("0x%I64x\n", CHANGE_COLOR[45]);
     for (int i = 0; i < 46; i += 2) {
-        printf("0x%010I64x, 0x%015I64x\n", REPLACE_PARTS[i], REPLACE_PARTS[i + 1]);
+        printState(REPLACE_PARTS + i);
     }
     return 0;
 }
