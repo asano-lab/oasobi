@@ -101,6 +101,15 @@ int applyMove(const u_long *s1, const u_long *s2, u_long *ns) {
     return 0;
 }
 
+// 全18種の動作の適用
+// dstsには長さ36のu_long配列を与える
+int applyAllMoves(const u_long *src, u_long *dsts) {
+    for (int i = 0; i <= 36; i += 2) {
+        applyMove(src, MOVES + i, dsts + i);
+    }
+    return 0;
+}
+
 // 色変換
 int changeColor(const u_long *src, u_long *dst, int ch_rule) {
     u_long tmpst[2];
@@ -170,14 +179,15 @@ int init(void) {
 }
 
 int main(void) {
-    u_long ss[2], sscc[2];
-    // ss[0] = SCRAMBLED_STATE_C;
-    // ss[1] = SCRAMBLED_STATE_E;
-    ss[0] = SOLVED_C;
-    ss[1] = SOLVED_E;
+    u_long ss[2], sscc[2], aam[36];
+    ss[0] = SCRAMBLED_STATE_C;
+    ss[1] = SCRAMBLED_STATE_E;
+    // ss[0] = SOLVED_C;
+    // ss[1] = SOLVED_E;
     init();
-    for (int i = 0; i < 18; i++) {
-        printState(MOVES + i * 2);
+    applyAllMoves(ss, aam);
+    for (int i = 0; i < 36; i += 2) {
+        printState(aam + i);
     }
     return 0;
 }
