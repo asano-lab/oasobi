@@ -361,7 +361,8 @@ cl_list = [
     "FU", "FD", "FL", "FR", "BU", "BD", "BL", "BR"
 ]
 
-# print(scrambled_state.mirror("UD").toState2())
-nst2 = solved.toState2().allNextStates()
-for i in nst2:
-    print(i)
+print(scrambled_state)
+nst2 = scrambled_state.toState2().allNextStates()
+for i, j in enumerate(nst2):
+    print(faces[i])
+    print(j.toState())
