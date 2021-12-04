@@ -67,6 +67,10 @@ u_long CHANGE_COLOR[46] = {
 // 配列だけ定義し, 中身は関数で作成予定
 u_long REPLACE_PARTS[46] = {0};
 
+// 上下鏡写しの変換法則 (5倍)
+int UDM_CP5[8] = {20, 25, 30, 35, 0, 5, 10, 15};
+int UDM_EP5[12] = {0, 5, 10, 15, 40, 45, 50, 55, 20, 25, 30, 35};
+
 void printState(const u_long *state) {
     printf("0x%010I64x, 0x%015I64x\n", state[0], state[1]);
 }
@@ -94,6 +98,25 @@ int changeColor(const u_long *src, u_long *dst, int ch_rule) {
     u_long tmpst[2];
     applyMove(src, CHANGE_COLOR + ch_rule * 2, tmpst);
     applyMove(REPLACE_PARTS + ch_rule * 2, tmpst, dst);
+    return 0;
+}
+
+// 上下ミラー
+int udMirror(const u_long *src, u_long *dst) {
+    int i, j, cmn;
+    u_long tmpst[2] = {0};
+    dst[0] = 0;
+    dst[1] = 0;
+    for (i = 0; i < 8; i++) {
+        j = UDM_CP5[i];
+        tmpst[0] = tmpst[0] << 3 | getCp5(src[0], j);
+        tmpst[0] = tmpst[0] << 2 | (3 - getCo5(src[0], j)) % 3;
+    }
+    for (i = 0; i < 12; i++) {
+        j = UDM_EP5[i];
+        tmpst[1] = tmpst[1] << 4 | getEp5(src[1], j);
+        tmpst[1] = tmpst[1] << 1 | getEo5(src[1], j);
+    }
     return 0;
 }
 
