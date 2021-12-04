@@ -90,6 +90,27 @@ int applyMove(const u_long *s1, const u_long *s2, u_long *ns) {
     return 0;
 }
 
+// 色変換
+int changeColor(const u_long *src, u_long *dst, int ch_rule) {
+    int i, j;
+    u_long tmpst[2];
+    u_long *rp = REPLACE_PARTS + ch_rule * 2;
+    dst[0] = 0;
+    dst[1] = 0;
+    applyMove(src, CHANGE_COLOR + ch_rule * 2, tmpst);
+    for (i = 0; i < 40; i += 5) {
+        j = getCp5(tmpst[0], i) * 5;
+        dst[0] = dst[0] << 3 | getCp5(rp[0], j);
+        dst[0] = dst[0] << 2 | (getCo5(tmpst[0], i) + getCo5(rp[0], j)) % 3;
+    }
+    for (i = 0; i < 60; i += 5) {
+        j = getEp5(tmpst[1], i) * 5;
+        dst[1] = dst[1] << 3 | getEp(rp[1], j);
+        dst[1] = dst[1] << 2 | (getEo5(tmpst[1], i) ^ getEo5(rp[1], j));
+    }
+    return 0;
+}
+
 // 位置変換からパーツ変換の計算
 int createReplaceParts(const u_long *ch_pos, u_long *ch_parts) {
     int i, j;
