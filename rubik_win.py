@@ -39,6 +39,12 @@ CENTER_INDICES = {
     "B": (1, 10), "L": (1, 13), "D": (1, 16)
 }
 
+# 向きを含めずに位置だけ
+UD_MIRROR = [
+    [4, 5, 6, 7, 0, 1, 2, 3],
+    [0, 1, 2, 3, 8, 9, 10, 11, 4, 5, 6, 7]
+]
+
 # 資料通りのクラス
 class State():
 
@@ -93,6 +99,15 @@ class State():
             nep.append(rp[2][j])
             neo.append(tmpst.eo[i] ^ rp[3][j])
         return State(ncp, nco, nep, neo)
+    
+    # 上下鏡写しの等価盤面を作りたい
+    def udMirror(self):
+        ncp = [self.cp[i] for i in UD_MIRROR[0]]
+        nco = [-self.co[i] % 3 for i in UD_MIRROR[0]]
+        nep = [self.ep[i] for i in UD_MIRROR[1]]
+        neo = [self.eo[i] for i in UD_MIRROR[1]]
+        tmpst = State(ncp, nco, nep, neo)
+        print(tmpst)
     
     # 動作の適用
     # + 演算子を用いる
@@ -287,8 +302,6 @@ replace_parts = {}
 for k, v in change_color.items():
     replace_parts[k] = cleateReplaceParts(v)
 
-print(replace_parts["MIRROR"])
-
 clib = CDLL("./rubik_win.so")
 
 cull2 = c_ulonglong * 2
@@ -321,12 +334,6 @@ cl_list = [
     "FU", "FD", "FL", "FR", "BU", "BD", "BL", "BR"
 ]
 
-# print(scrambled_state.toState2())
-# for i in cl_list:
-#     print(scrambled_state.changeColor(i).toState2())
-
-print(change_color["MIRROR"])
-
-# print(moves["R"].changeColor("MIRROR"))
-# print(moves["D'"].changeColor("MIRROR"))
+# solved.udMirror()
+moves["R"].udMirror()
 
