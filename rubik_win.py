@@ -274,8 +274,8 @@ faces = [
     "R2", "R'", "F2", "F'", "B2", "B'"
 ]
 
-for i in faces:
-    print(moves[i].toState2())
+# for i in faces:
+#     print(moves[i].toState2())
 
 # 色変換のための操作 (位置と回転のみ)
 # 予想以上に色の変換パターンが多そう
