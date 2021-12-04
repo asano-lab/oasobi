@@ -241,6 +241,13 @@ change_color = {
         [1, 2, 1, 2, 2, 1, 2, 1],
         [8, 4, 6, 10, 0, 7, 3, 11, 1, 5, 2, 9],
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    ),
+    # UD MIRROR
+    "MIRROR": State(
+        [4, 5, 6, 7, 0, 1, 2, 3],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 1, 2, 3, 8, 9, 10, 11, 4, 5, 6, 7],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     )
 }
 
@@ -280,6 +287,8 @@ replace_parts = {}
 for k, v in change_color.items():
     replace_parts[k] = cleateReplaceParts(v)
 
+print(replace_parts["MIRROR"])
+
 clib = CDLL("./rubik_win.so")
 
 cull2 = c_ulonglong * 2
@@ -312,7 +321,9 @@ cl_list = [
     "FU", "FD", "FL", "FR", "BU", "BD", "BL", "BR"
 ]
 
-print(scrambled_state.toState2())
-for i in cl_list:
-    print(scrambled_state.changeColor(i).toState2())
+# print(scrambled_state.toState2())
+# for i in cl_list:
+#     print(scrambled_state.changeColor(i).toState2())
+
+print(moves["R"].changeColor("MIRROR"))
 
