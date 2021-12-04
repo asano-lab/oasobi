@@ -54,10 +54,6 @@ MIRROR_POS = {
         [3, 2, 1, 0, 6, 5, 4, 7, 10, 9, 8, 11]
     ]
 }
-UD_MIRROR = [
-    [4, 5, 6, 7, 0, 1, 2, 3],
-    [0, 1, 2, 3, 8, 9, 10, 11, 4, 5, 6, 7]
-]
 
 # 資料通りのクラス
 class State():
@@ -328,20 +324,12 @@ scramble = scramble.split()
 scramble_udm = "L' U2 R' D2 L' F2 D2 L' F2 R2 B2 R' D R D2 F2 R U' B F2"
 scramble_udm = scramble_udm.split()
 
-scrambled_state = solved
-for move_name in scramble:
-    scrambled_state += moves[move_name]
-
-print(scrambled_state)
-print(scrambled_state.mirror("FB"))
-
 scrambled_state = solved.toState2()
-for move_name in scramble_udm:
+for move_name in scramble:
     scrambled_state += moves[move_name].toState2()
 
 scrambled_state = scrambled_state.toState()
-print(scrambled_state)
-# print(scrambled_state.udMirror())
+# print(scrambled_state)
 
 # Cで格納するための順番
 cl_list = [
@@ -350,3 +338,13 @@ cl_list = [
     "FU", "FD", "FL", "FR", "BU", "BD", "BL", "BR"
 ]
 
+scrambled_state_udm = scrambled_state.mirror("UD")
+scrambled_state_lrm = scrambled_state.mirror("LR")
+scrambled_state_fbm = scrambled_state.mirror("FB")
+
+stl = [scrambled_state.toState2().num, scrambled_state_udm.toState2().num]
+for i in cl_list:
+    stl.append(scrambled_state.changeColor(i).toState2().num)
+    stl.append(scrambled_state_udm.changeColor(i).toState2().num)
+
+print(len(set(stl)))
