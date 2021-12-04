@@ -324,6 +324,7 @@ for move_name in scramble:
     scrambled_state += moves[move_name]
 
 print(scrambled_state)
+print(scrambled_state.udMirror())
 
 scrambled_state = solved.toState2()
 for move_name in scramble_udm:
@@ -331,7 +332,7 @@ for move_name in scramble_udm:
 
 scrambled_state = scrambled_state.toState()
 print(scrambled_state)
-print(scrambled_state.udMirror())
+# print(scrambled_state.udMirror())
 
 # Cで格納するための順番
 cl_list = [
