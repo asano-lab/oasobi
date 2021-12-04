@@ -145,7 +145,8 @@ int main(void) {
     ss[1] = SCRAMBLED_STATE_E;
     printState(ss);
     for (int i = 0; i < 23; i++) {
-        ;
+        changeColor(ss, sscc, i);
+        printState(sscc);
     }
     return 0;
 }
