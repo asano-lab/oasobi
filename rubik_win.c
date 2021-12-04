@@ -108,8 +108,8 @@ int changeColor(const u_long *src, u_long *dst, int ch_rule) {
     }
     for (i = 0; i < 60; i += 5) {
         j = getEp5(tmpst[1], i) * 5;
-        dst[1] = dst[1] << 3 | getEp(rp[1], j);
-        dst[1] = dst[1] << 2 | (getEo5(tmpst[1], i) ^ getEo5(rp[1], j));
+        dst[1] = dst[1] << 4 | getEp(rp[1], j);
+        dst[1] = dst[1] << 1 | (getEo5(tmpst[1], i) ^ getEo5(rp[1], j));
     }
     return 0;
 }
@@ -143,6 +143,7 @@ int main(void) {
     u_long ss[2], sscc[2];
     ss[0] = SCRAMBLED_STATE_C;
     ss[1] = SCRAMBLED_STATE_E;
+    init();
     printState(ss);
     for (int i = 0; i < 23; i++) {
         changeColor(ss, sscc, i);
