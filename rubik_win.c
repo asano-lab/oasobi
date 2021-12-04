@@ -118,11 +118,11 @@ int main(void) {
     rs[1] = R_STATE_E;
     init();
     applyMove(rs, rs, r2s);
-    printf("0x%I64x\n", r2s[0]);
-    printf("0x%I64x\n", r2s[1]);
-    printf("0x%I64x\n", CHANGE_COLOR[45]);
-    for (int i = 0; i < 46; i++) {
-        printf("0x%I64x\n", REPLACE_PARTS[i]);
+    // printf("0x%I64x\n", r2s[0]);
+    // printf("0x%I64x\n", r2s[1]);
+    // printf("0x%I64x\n", CHANGE_COLOR[45]);
+    for (int i = 0; i < 46; i += 2) {
+        printf("0x%010I64x, 0x%015I64x\n", REPLACE_PARTS[i], REPLACE_PARTS[i + 1]);
     }
     return 0;
 }
