@@ -3,9 +3,6 @@
 #define SOLVED_C (u_long)0x0110c8531c
 #define SOLVED_E (u_long)0x008864298e84a96
 
-#define R_STATE_C (u_long)0x0274c81abc
-#define R_STATE_E (u_long)0x02a464118e80a96
-
 #define SCRAMBLED_STATE_C (u_long)0x83124d5bc2
 #define SCRAMBLED_STATE_E (u_long)0x2cd140b8c2ba990
 
@@ -159,7 +156,13 @@ int createReplaceParts(const u_long *ch_pos, u_long *ch_parts) {
 
 // 初期化関数
 int init(void) {
-    int i;
+    int i, j;
+    // 残りの基本操作を追加
+    for (i = 0; i < 6; i++) {
+        j = 12 + i * 4;
+        applyMove(MOVES + i, MOVES + i, MOVES + j);
+        applyMove(MOVES + i, MOVES + j, MOVES + j + 2);
+    }
     for (i = 0; i < 46; i += 2) {
         createReplaceParts(CHANGE_COLOR + i, REPLACE_PARTS + i);
     }
@@ -173,8 +176,8 @@ int main(void) {
     ss[0] = SOLVED_C;
     ss[1] = SOLVED_E;
     init();
-    printState(ss);
-    udMirror(ss, sscc);
-    printState(sscc);
+    for (int i = 0; i < 18; i++) {
+        printState(MOVES + i * 2);
+    }
     return 0;
 }
