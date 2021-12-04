@@ -202,7 +202,7 @@ class State2():
         nc_arr = cull36()
         applyAllMoves(self.c_arr, nc_arr)
         n_list = list(nc_arr)
-        return [State2(n_list[i * 2] << 60 | n_list[i * 2 + 1]) for i in range(18)]
+        return [State2(n_list[i] << 60 | n_list[i + 1]) for i in range(0, 36, 2)]
     
     def __add__(self, arg):
         nc_arr = cull2()
