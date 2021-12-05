@@ -19,9 +19,9 @@ _applyAllMoves.restype = c_int32
 _applyAllMoves.argtypes = (cull2, cull36)
 
 # 正規化関数
-normalState = clib.normalState
-normalState.restype = c_int32
-normalState.argtypes = (cull2,)
+_normalState = clib.normalState
+_normalState.restype = c_int32
+_normalState.argtypes = (cull2,)
 
 # 正規化した次の状態を返す
 _applyAllMovesNormal = clib.applyAllMovesNormal
@@ -371,6 +371,12 @@ def num2state(num: int) -> State:
         return None
     return State(cp, co, ep, eo)
 
+# 一手後の正規化した状態のリストを返す
+def applyAllMovesNormal(num: int) -> list:
+    c_arr = cull2(num >> 60, num & 0xfffffffffffffff)
+    nc_arr = cull36()
+    _applyAllMovesNormal(c_arr, nc_arr)
+    return [nc_arr[i] << 60 | nc_arr[i + 1] for i in range(0, 36, 2)]
 
 # n文字右シフト
 def circularRShiftStr(moji: str, n: int) -> str:
@@ -517,7 +523,7 @@ cl_list = [
 # 色配列のサンプル
 ca_sample = [['D', 'L', 'U', 'B', 'L', 'R', 'U', 'L', 'L', 'F', 'B', 'L', 'B', 'R', 'R', 'L', 'U', 'L'], ['B', 'U', 'U', 'D', 'F', 'U', 'B', 'R', 'D', 'R', 'B', 'R', 'F', 'L', 'F', 'D', 'D', 'U'], ['U', 'F', 'F', 'U', 'F', 'F', 'D', 'R', 'B', 'D', 'D', 'R', 'D', 'B', 'B', 'F', 'L', 'R']]
 
-stt = inputState()
-if stt is not None:
-    print(stt)
-    print(stt.toState2())
+# stt = inputState()
+
+stt = solved.copy()
+print(applyAllMovesNormal(stt.toState2().num))
