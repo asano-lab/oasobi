@@ -963,7 +963,7 @@ def collectSamples(loop, tnd, shuffle_num):
                 smp_dic[dist - j].add(route[j])
         else:
             print("%2d手以上" % dist_max)
-            smp_dic[gt_key] = sst.toNumNormal()
+            smp_dic[gt_key].add(sst.toNumNormal())
         for k, v in smp_dic.items():
             if type(k) is int:
                 print("%2d手サンプル数：%d" % (k, len(v)))
