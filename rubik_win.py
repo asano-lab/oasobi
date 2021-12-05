@@ -392,6 +392,7 @@ class Search:
     def __init__(self):
         # 完成状態付近
         self.solved_neighbors = {0: set([solved.toNum()])}
+        self.target_neighbors = {}
 
     def searchSolvedNeighbors(self):
         t0 = time.time()
@@ -406,6 +407,29 @@ class Search:
             nsts -= past_sts
         print("新状態数（重複なし）：%d" % len(nsts))
         self.solved_neighbors[depth + 1] = nsts
+        print("所要時間：%6.2f秒" % (time.time() - t0))
+    
+    def searchTargetNeighbors(self, target: int, depth: int):
+        """
+        解きたい状態の近所を探索する
+        """
+        self.target_neighbors[0] = set([target])
+        for _ in range(depth):
+            self._searchNeighbors(self.target_neighbors)
+
+    def _searchNeighbors(self, neighbor_dic: dict):
+        t0 = time.time()
+        depth = max(neighbor_dic)
+        print("深さ%dの探索" % (depth + 1))
+        nsts = []
+        for st_num in neighbor_dic[depth]:
+            nsts += applyAllMovesNormal(st_num)
+        print("新状態数（重複あり）: %d" % len(nsts))
+        nsts = set(nsts)
+        for past_sts in neighbor_dic.values():
+            nsts -= past_sts
+        print("新状態数（重複なし）：%d" % len(nsts))
+        neighbor_dic[depth + 1] = nsts
         print("所要時間：%6.2f秒" % (time.time() - t0))
 
 def circularRShiftStr(moji: str, n: int) -> str:
@@ -553,5 +577,4 @@ cl_list = [
 ]
 
 srch = Search()
-for i in range(8):
-    srch.searchSolvedNeighbors()
+srch.searchTargetNeighbors(scrambled_state.toNum(), 5)
