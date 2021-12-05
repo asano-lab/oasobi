@@ -423,9 +423,10 @@ def applyAllMovesNormal(num: int) -> list:
     _applyAllMovesNormal(c_arr, nc_arr)
     return [nc_arr[i] << 60 | nc_arr[i + 1] for i in range(0, 36, 2)]
 
-def randomScramble(n):
+def randomScramble(n: int) -> State:
     """
-    指定した回数だけ完成状態からランダムに動かす
+    指定した回数だけ完成状態からランダムに動かす.
+    最短路は必ず引数以下になる.
     """
     st = solved.copy()
     for _ in range(n):
@@ -448,6 +449,7 @@ class Search:
         self.target_neighbors_depth = 0
         self.common_states = set()
         self.common_sub = -1
+        self.route = []
         self.dist = -1
 
     def calcSolvedNeighbors(self, depth):
@@ -554,10 +556,16 @@ class Search:
         neighbor_dic[depth + 1] = nsts
         print("所要時間：%6.2f秒" % (time.time() - t0))
     
+    def getRoute(self):
+        """
+        完成までの状態遷移を返す.
+        """
+        return self.route
+    
     def getSolveMoves(self):
         """
-        手数が分かっている前提で, 解く手順を返す
-        双方向探索前提
+        手数が分かっている前提で, 解く手順を返す.
+        双方向探索前提.
         """
         cmnst = list(self.common_states)
         # まずは辿る状態を求める
@@ -605,6 +613,7 @@ class Search:
                 if nsts_cmn:
                     break
             solved_route.append(list(nsts_cmn)[0])
+        self.route = solved_route
         return self.route2moves(solved_route)
     
     def getSolveMovesWithDat(self):
@@ -636,6 +645,7 @@ class Search:
             nsts &= self.target_neighbors[self.target_neighbors_depth - (i + 1)]
             target_route.append(list(nsts)[0])
         total_route = [target_route[-(i + 1)] for i in range(len(target_route) - 1)] + solved_route
+        self.route = total_route
         return self.route2moves(total_route)
     
     def route2moves(self, route: list):
@@ -924,7 +934,7 @@ def set2nparray(num_set):
 # print(srch.searchWithDat(6))
 # print(srch.getSolveMovesWithDat())
 
-def main():
+def createNpFiles():
     t0 = time.time()
     for i in range(8, 9):
         for j in range(LOOP_MAX):
@@ -938,6 +948,9 @@ def main():
             fnamew = NP_SN_PATH_FORMAT.format(i, j)
             np.save(fnamew, arr)
     print("所要時間：%.2f秒" % (time.time() - t0))
+
+def main():
+    pass
 
 if __name__ == "__main__":
     main()
