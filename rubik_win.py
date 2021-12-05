@@ -347,6 +347,7 @@ def cleateReplaceParts(chclr: State):
         ll[3][j] = chclr.eo[i]
     return ll
 
+# 数値からStateに変換
 def num2state(num: int) -> State:
     cp = []
     co = []
@@ -358,6 +359,8 @@ def num2state(num: int) -> State:
     for i in range(0, 60, 5):
         ep.append(num >> (56 - i) & 0b1111)
         eo.append(num >> (55 - i) & 0b1)
+    if len(set(cp)) != 8 or len(set(ep)) != 12:
+        return None
     return State(cp, co, ep, eo)
 
 # n文字右シフト
@@ -438,7 +441,6 @@ def inputState():
             if moji[:2] == "0x":
                 r_num = int(moji, 0)
                 st = num2state(r_num)
-                i = 6
                 break
             if (len(moji) < 9):
                 print("文字数が不足しています")
@@ -467,7 +469,7 @@ def inputState():
                     break
             else:
                 i += 1
-        if st is None and i >= 6:
+        if i >= 6:
             st = colorArray2State(color_array)
     return st
 
