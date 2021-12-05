@@ -10,13 +10,13 @@ cull36 = c_ulonglong * 36
 # 初期化関数を実行 (必須)
 clib.init()
 
-applyMove = clib.applyMove
-applyMove.restype = c_int32
-applyMove.argtypes = (cull2, cull2, cull2)
+_applyMove = clib.applyMove
+_applyMove.restype = c_int32
+_applyMove.argtypes = (cull2, cull2, cull2)
 
-applyAllMoves = clib.applyAllMoves
-applyAllMoves.restype = c_int32
-applyAllMoves.argtypes = (cull2, cull36)
+_applyAllMoves = clib.applyAllMoves
+_applyAllMoves.restype = c_int32
+_applyAllMoves.argtypes = (cull2, cull36)
 
 # 正規化関数
 normalState = clib.normalState
@@ -24,9 +24,9 @@ normalState.restype = c_int32
 normalState.argtypes = (cull2,)
 
 # 正規化した次の状態を返す
-applyAllMovesNormal = clib.applyAllMovesNormal
-applyAllMovesNormal.restype = c_int32
-applyAllMovesNormal.argtypes = (cull2, cull36)
+_applyAllMovesNormal = clib.applyAllMovesNormal
+_applyAllMovesNormal.restype = c_int32
+_applyAllMovesNormal.argtypes = (cull2, cull36)
 
 # 日本仕様の色
 JPN_COLOR = {"U": "白", "D": "青", "L": "橙", "R": "赤", "F": "緑", "B": "黄"}
@@ -222,13 +222,13 @@ class State2():
     
     def allNextStates(self):
         nc_arr = cull36()
-        applyAllMoves(self.c_arr, nc_arr)
+        _applyAllMoves(self.c_arr, nc_arr)
         n_list = list(nc_arr)
         return [State2(n_list[i] << 60 | n_list[i + 1]) for i in range(0, 36, 2)]
     
     def __add__(self, arg):
         nc_arr = cull2()
-        applyMove(self.c_arr, arg.c_arr, nc_arr)
+        _applyMove(self.c_arr, arg.c_arr, nc_arr)
         n_list = list(nc_arr)
         return State2(n_list[0] << 60 | n_list[1])
     
@@ -370,6 +370,7 @@ def num2state(num: int) -> State:
     if len(set(cp)) != 8 or len(set(ep)) != 12:
         return None
     return State(cp, co, ep, eo)
+
 
 # n文字右シフト
 def circularRShiftStr(moji: str, n: int) -> str:
