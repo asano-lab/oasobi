@@ -482,6 +482,25 @@ class Search:
                 print(cmns)
                 return self.dist
         return -1
+        
+    def searchWithDat(self, snd: int):
+        """
+        完成状態近傍はファイルに保存されているものとして探索
+        引数は完成状態近傍の深さ
+        """
+        # 片方向探索から
+        for i in range(snd + 1):
+            for j in range(LOOP_MAX):
+                fnamer = SN_PATH_FORMAT.format(i, j)
+                if not os.path.exists(fnamer):
+                    break
+                print(fnamer)
+                with open(fnamer, "rb") as f:
+                    known_states = pickle.load(f)
+                # 見つかったら終了
+                if self.target_num in known_states:
+                    return i
+        return -1
     
     def calcTargetNeighbors(self, depth: int):
         """
@@ -772,26 +791,6 @@ def createSolvedNeighborsFile():
 
     return False
 
-def searchWithDat(snd: int, target: State):
-    """
-    完成状態近傍はファイルに保存されているものとして探索
-    引数は完成状態近傍の深さ
-    """
-    target_num = target.toNumNormal()
-    # 片方向探索から
-    for i in range(snd + 1):
-        for j in range(LOOP_MAX):
-            fnamer = SN_PATH_FORMAT.format(i, j)
-            if not os.path.exists(fnamer):
-                break
-            print(fnamer)
-            with open(fnamer, "rb") as f:
-                solved_neighbors = pickle.load(f)
-            # 見つかったら終了
-            if target_num in solved_neighbors:
-                return i
-    pass
-
 # scramble = "L D2 R U2 L F2 U2 L F2 R2 B2 R U' R' U2 F2 R' D B' F2"
 # scramble = scramble.split()
 
@@ -812,6 +811,7 @@ def searchWithDat(snd: int, target: State):
 #     "FU", "FD", "FL", "FR", "BU", "BD", "BL", "BR"
 # ]
 
-scrambled_state = randomScramble(11)
+scrambled_state = randomScramble(8)
 print(scrambled_state)
-print(searchWithDat(8, scrambled_state))
+srch = Search(scrambled_state)
+print(srch.searchWithDat(8))
