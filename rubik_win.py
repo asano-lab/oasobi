@@ -394,10 +394,20 @@ class Search:
 
     def searchSolvedNeighbors(self):
         depth = max(self.solved_neighbors)
-        print(depth)
+        nsts = []
+        for st_num in self.solved_neighbors[depth]:
+            nsts += applyAllMovesNormal(st_num)
+        print(len(nsts))
+        nsts = set(nsts)
+        for past_sts in self.solved_neighbors.values():
+            nsts -= past_sts
+        print(len(nsts))
+        self.solved_neighbors[depth + 1] = nsts
 
-# n文字右シフト
 def circularRShiftStr(moji: str, n: int) -> str:
+    """
+    n文字右シフト
+    """
     l = len(moji)
     n = l - n % l
     return moji[n:] + moji[:n]
@@ -539,4 +549,5 @@ cl_list = [
 ]
 
 srch = Search()
-srch.searchSolvedNeighbors()
+for i in range(2):
+    srch.searchSolvedNeighbors()
