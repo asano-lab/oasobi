@@ -98,7 +98,7 @@ MIRROR_POS = {
     ]
 }
 
-ST_LEN_MAX = 5000000
+ST_LEN_MAX = 1000000
 
 # 資料通りのクラス
 class State():
@@ -643,7 +643,7 @@ def createSolvedNeighborsFile():
     """
     まずは全状態を洗い出したい
     """
-    dir_path = "./dat/"
+    dir_path = "./dat2/"
     searching = dir_path + "searching.json"
     path_format = dir_path + "act{:03d}_{:03d}.pickle"
     act_num = 0
@@ -784,7 +784,7 @@ for i, move_name in enumerate(scramble):
         break
     scrambled_state += moves[move_name]
 
-for i in range(2):
+for i in range(10):
     t0 = time.time()
     createSolvedNeighborsFile()
     print("%.2f秒経過" % (time.time() - t0))
