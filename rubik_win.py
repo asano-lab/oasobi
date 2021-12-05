@@ -354,19 +354,33 @@ def num2state(num: int) -> State:
         eo.append(num >> (55 - i) & 0b1)
     return State(cp, co, ep, eo)
 
-# n文字左シフト
-def circularLShiftStr(moji: str, n: int) -> str:
-    n %= len(moji)
+# n文字右シフト
+def circularRShiftStr(moji: str, n: int) -> str:
+    l = len(moji)
+    n = l - n % l
     return moji[n:] + moji[:n]
 
 # 色配列を順列・方向の配列に変換
 def colorArray2State(color_array):
+    cp = [-1] * 8
+    co = [-1] * 8
+    ep = [-1] * 12
+    eo = [-1] * 12
     for k, v in CORNER_PO2COLOR.items():
         p_colors = ""
         for sub1, sub2 in v:
             p_colors += color_array[sub1][sub2]
         print(p_colors)
-        print(circularLShiftStr(p_colors, -1))
+        for i in range(3):
+            spc = circularRShiftStr(p_colors, i)
+            if spc in CORNER_COLOR_INV:
+                cp[k] = CORNER_COLOR_INV[spc]
+                co[k] = i
+                break
+        else:
+            return None
+    print(cp)
+    print(co)
     pass
 
 # 標準入力
