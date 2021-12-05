@@ -402,30 +402,35 @@ class Search:
         self.solved_neighbors = {0: set([solved.toNum()])}
         self.target_neighbors = {}
 
-    def searchSolvedNeighbors(self):
-        t0 = time.time()
-        depth = max(self.solved_neighbors)
-        print("深さ%dの探索" % (depth + 1))
-        nsts = []
-        for st_num in self.solved_neighbors[depth]:
-            nsts += applyAllMovesNormal(st_num)
-        print("新状態数（重複あり）: %d" % len(nsts))
-        nsts = set(nsts)
-        for past_sts in self.solved_neighbors.values():
-            nsts -= past_sts
-        print("新状態数（重複なし）：%d" % len(nsts))
-        self.solved_neighbors[depth + 1] = nsts
-        print("所要時間：%6.2f秒" % (time.time() - t0))
+    def calcSolvedNeighbors(self, depth):
+        """
+        完成状態の近所を探索する
+        """
+        for _ in range(depth):
+            self._calcNeighbors(self.solved_neighbors)
     
-    def searchTargetNeighbors(self, target: int, depth: int):
+    def searchTargetInSolvedNeighbors(self, target: int):
+        """
+        完成状態の近所にターゲットが含まれているか確認
+        """
+        n_target = normalState(target)
+        for k, v in self.solved_neighbors.items():
+            if n_target in v:
+                return k
+        return -1
+    
+    def calcTargetNeighbors(self, target: int, depth: int):
         """
         解きたい状態の近所を探索する
         """
-        self.target_neighbors[0] = set([normalState(target)])
+        self.target_neighbors = {0: set([normalState(target)])}
         for _ in range(depth):
-            self._searchNeighbors(self.target_neighbors)
+            self._calcNeighbors(self.target_neighbors)
 
-    def _searchNeighbors(self, neighbor_dic: dict):
+    def _calcNeighbors(self, neighbor_dic: dict):
+        """
+        メインの探索
+        """
         t0 = time.time()
         depth = max(neighbor_dic)
         print("深さ%dの探索" % (depth + 1))
@@ -592,5 +597,8 @@ for move_name in scramble10:
     scrambled_state += moves[move_name]
 
 print(scrambled_state)
+scrambled_num = scrambled_state.toNum()
 srch = Search()
-srch.searchTargetNeighbors(scrambled_state.toNum(), 5)
+srch.calcSolvedNeighbors(5)
+print(srch.searchTargetInSolvedNeighbors(scrambled_num))
+srch.calcTargetNeighbors(scrambled_num, 4)
