@@ -390,7 +390,6 @@ def colorArray2State(color_array: list) -> State:
         p_colors = ""
         for sub1, sub2 in v:
             p_colors += color_array[sub1][sub2]
-        print(p_colors)
         for i in range(2):
             spc = circularRShiftStr(p_colors, i)
             if spc in EDGE_COLOR_INV:
@@ -399,6 +398,9 @@ def colorArray2State(color_array: list) -> State:
                 break
         else:
             return None
+    # パーツの重複チェック
+    if len(set(cp)) != 8 or len(set(ep)) != 12:
+        return None
     return State(cp, co, ep, eo)
 
 # 標準入力
