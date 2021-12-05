@@ -397,11 +397,15 @@ def applyAllMovesNormal(num: int) -> list:
 
 class Search:
 
-    def __init__(self):
+    def __init__(self, target: State):
+        self.target = target.copy()
+        self.target_num = normalState(target.toNum())
         # 完成状態付近
         self.solved_neighbors = {0: set([solved.toNum()])}
-        self.target_neighbors = {}
+        # ターゲット付近
+        self.target_neighbors = {0: set([self.target_num])}
         self.solved_neighbors_depth = 0
+        self.target_neighbors_depth = 0
 
     def calcSolvedNeighbors(self, depth):
         """
@@ -411,38 +415,36 @@ class Search:
             self._calcNeighbors(self.solved_neighbors)
         self.solved_neighbors_depth = max(self.solved_neighbors)
     
-    def searchTargetInSolvedNeighbors(self, target: int):
+    def searchTargetInSolvedNeighbors(self):
         """
         完成状態の近所にターゲットが含まれているか確認
         一方向探索
         """
-        n_target = normalState(target)
         for k, v in self.solved_neighbors.items():
-            if n_target in v:
+            if self.target in v:
                 return k
         return -1
     
-    def searchTargetBid(self, target, depth):
+    def searchTargetBid(self, depth):
         """
         双方向探索
         引数にはターゲット側からの探索深さを指定する
         """
-        dist = self.searchTargetInSolvedNeighbors(target)
+        dist = self.searchTargetInSolvedNeighbors()
         if dist >= 0:
             return dist
-        self.target_neighbors = {0: set([normalState(target)])}
         for i in range(depth):
             self._calcNeighbors(self.target_neighbors)
-            cmns = self.solved_neighbors[self.solved_neighbors_depth] & self.target_neighbors[i]
+            self.target_neighbors_depth = max(self.target_neighbors)
+            cmns = self.solved_neighbors[self.solved_neighbors_depth] & self.target_neighbors[self.target_neighbors_depth]
             if cmns:
-                return self.solved_neighbors_depth + i
+                return self.solved_neighbors_depth + self.target_neighbors_depth
         return -1
     
-    def calcTargetNeighbors(self, target: int, depth: int):
+    def calcTargetNeighbors(self, depth: int):
         """
         解きたい状態の近所を探索する
         """
-        self.target_neighbors = {0: set([normalState(target)])}
         for _ in range(depth):
             self._calcNeighbors(self.target_neighbors)
 
@@ -616,8 +618,7 @@ for i, move_name in enumerate(scramble):
     scrambled_state += moves[move_name]
 
 print(scrambled_state)
-scrambled_num = scrambled_state.toNum()
-srch = Search()
+srch = Search(scrambled_state)
 srch.calcSolvedNeighbors(6)
-print(srch.searchTargetInSolvedNeighbors(scrambled_num))
-print(srch.searchTargetBid(scrambled_num, 5))
+print(srch.searchTargetInSolvedNeighbors())
+print(srch.searchTargetBid(5))
