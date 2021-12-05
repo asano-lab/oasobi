@@ -356,6 +356,7 @@ def num2state(num: int) -> State:
 
 # n文字左シフト
 def circularLShiftStr(moji: str, n: int) -> str:
+    n %= len(moji)
     return moji[n:] + moji[:n]
 
 # 色配列を順列・方向の配列に変換
@@ -365,7 +366,7 @@ def colorArray2State(color_array):
         for sub1, sub2 in v:
             p_colors += color_array[sub1][sub2]
         print(p_colors)
-        print(circularLShiftStr(p_colors, 4))
+        print(circularLShiftStr(p_colors, -1))
     pass
 
 # 標準入力
