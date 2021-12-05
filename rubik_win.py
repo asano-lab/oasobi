@@ -1,4 +1,5 @@
 from ctypes import CDLL, c_int32, c_ulonglong
+import time
 
 clib = CDLL("./rubik_win.so")
 
@@ -393,16 +394,19 @@ class Search:
         self.solved_neighbors = {0: set([solved.toNum()])}
 
     def searchSolvedNeighbors(self):
+        t0 = time.time()
         depth = max(self.solved_neighbors)
+        print("深さ%dの探索" % (depth + 1))
         nsts = []
         for st_num in self.solved_neighbors[depth]:
             nsts += applyAllMovesNormal(st_num)
-        print(len(nsts))
+        print("新状態数（重複あり）: %d" % len(nsts))
         nsts = set(nsts)
         for past_sts in self.solved_neighbors.values():
             nsts -= past_sts
-        print(len(nsts))
+        print("新状態数（重複なし）：%d" % len(nsts))
         self.solved_neighbors[depth + 1] = nsts
+        print("所要時間：%6.2f秒" % (time.time() - t0))
 
 def circularRShiftStr(moji: str, n: int) -> str:
     """
@@ -549,5 +553,5 @@ cl_list = [
 ]
 
 srch = Search()
-for i in range(7):
+for i in range(5):
     srch.searchSolvedNeighbors()
