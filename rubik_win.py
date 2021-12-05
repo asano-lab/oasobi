@@ -611,13 +611,13 @@ cl_list = [
 # 10手の最短路を求められるかテスト
 scrambled_state = solved.copy()
 for i, move_name in enumerate(scramble):
-    if i > 6:
+    if i >= 10:
         break
     scrambled_state += moves[move_name]
 
 print(scrambled_state)
 scrambled_num = scrambled_state.toNum()
 srch = Search()
-srch.calcSolvedNeighbors(5)
+srch.calcSolvedNeighbors(6)
 print(srch.searchTargetInSolvedNeighbors(scrambled_num))
 print(srch.searchTargetBid(scrambled_num, 5))
