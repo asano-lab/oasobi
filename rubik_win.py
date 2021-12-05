@@ -904,8 +904,13 @@ def createSolvedNeighborsFile():
 #     "FU", "FD", "FL", "FR", "BU", "BD", "BL", "BR"
 # ]
 
-scrambled_state = randomScramble(20)
-print(scrambled_state)
-srch = Search(scrambled_state)
-print(srch.searchWithDat(6))
-print(srch.getSolveMovesWithDat())
+# scrambled_state = randomScramble(20)
+# print(scrambled_state)
+# srch = Search(scrambled_state)
+# print(srch.searchWithDat(6))
+# print(srch.getSolveMovesWithDat())
+
+for _ in range(2):
+    t0 = time.time()
+    createSolvedNeighborsFile()
+    print("%.2f経過" % (time.time() - t0))
