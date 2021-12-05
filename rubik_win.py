@@ -98,7 +98,7 @@ MIRROR_POS = {
     ]
 }
 
-ST_LEN_MAX = 100000
+ST_LEN_MAX = 1000000
 
 # 資料通りのクラス
 class State():
