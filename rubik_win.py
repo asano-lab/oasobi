@@ -5,6 +5,8 @@ import pickle
 import json
 import random
 import numpy as np
+import shutil
+import re
 
 clib = CDLL("./rubik_win.so")
 
@@ -114,7 +116,7 @@ NP_SN_PATH_FORMAT = NP_DIR_PATH + "act{:03d}_{:03d}.npy"
 
 # サンプルファイルフォーマット
 # 数値は判定できる最大手数
-SMP_PATH_FORMAT = DIR_PATH + "sample{:03d}.pickle"
+SMP_PATH_FORMAT = "./samples/sample{:03d}.pickle"
 
 # 資料通りのクラス
 class State():
@@ -914,11 +916,48 @@ def set2nparray(num_set):
         ll.append(st.cp + st.co + st.ep + st.eo)
     return np.array(ll, dtype="uint8")
 
+# バックアップして書き込み
+# .pickle のみ対応
+def writeAndBackup(fnamew, obj):
+    # バックアップ
+    if os.path.exists(fnamew):
+        m = re.match(r"(.*)(\.pickle)", fnamew)
+        fnamew_bu = m.groups()[0] + "_backup.pickle"
+        shutil.copyfile(fnamew, fnamew_bu)
+    
+    # 書き込み
+    with open(fnamew, "wb") as f:
+        pickle.dump(obj, f)
+
 def collectSamples(loop, tnd, shuffle_num):
     """
     サンプル収集用関数.
     """
-    fnamew = SMP_PATH_FORMAT.format(SOLVED_NEIGHBOR_DEPTH_MAX + tnd)
+    dist_max = SOLVED_NEIGHBOR_DEPTH_MAX + tnd
+    fnamew = SMP_PATH_FORMAT.format(dist_max)
+    # パスが存在しない場合は初期化
+    if not os.path.exists(fnamew):
+        smp_dic = {dist_max - i: set() for i in range(tnd)}
+        print(smp_dic)
+        writeAndBackup(fnamew, {})
+    else:
+        with open(fnamew, "rb") as f:
+            smp_dic = pickle.load(f)
+        for k, v in smp_dic.items():
+            print("%2d手サンプル数：%d" % (k, len(v)))
+    # for i in range(loop):
+    #     sst = randomScramble(shuffle_num)
+    #     srch = Search(sst, SOLVED_NEIGHBOR_DEPTH_MAX)
+    #     dist = srch.searchWithDat(tnd)
+    #     with open(fnamew, "rb") as f:
+    #         smp_dic = pickle.load(f)
+    #     if dist >= 0:
+    #         srch.getSolveMovesWithDat()
+    #         route = srch.getRoute()
+    #         for i in range(dist - SOLVED_NEIGHBOR_DEPTH_MAX):
+    #             smp_dic[dist - i].add(route[i])
+    #     else:
+    #         key = "gt%02d" % dist_max
     print(fnamew)
 
 # scramble = "L D2 R U2 L F2 U2 L F2 R2 B2 R U' R' U2 F2 R' D B' F2"
@@ -963,7 +1002,7 @@ def createNpFiles():
     print("所要時間：%.2f秒" % (time.time() - t0))
 
 def main():
-    collectSamples(3, 6, 20)
+    collectSamples(3, 5, 10)
 
 if __name__ == "__main__":
     main()
