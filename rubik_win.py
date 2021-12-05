@@ -584,5 +584,13 @@ cl_list = [
     "FU", "FD", "FL", "FR", "BU", "BD", "BL", "BR"
 ]
 
+# 10手の最短路を求められるかテスト
+scramble10 = "L D2 R U2 L F2 U2 L F2 R2"
+scramble10 = scramble10.split()
+scrambled_state = solved.copy()
+for move_name in scramble10:
+    scrambled_state += moves[move_name]
+
+print(scrambled_state)
 srch = Search()
 srch.searchTargetNeighbors(scrambled_state.toNum(), 5)
