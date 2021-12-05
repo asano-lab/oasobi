@@ -945,12 +945,14 @@ def collectSamples(loop, tnd, shuffle_num):
         smp_dic[gt_key] = set()
         writeAndBackup(fnamew, smp_dic)
     for i in range(5):
+        print("ランダムスクランブル：", end="")
         sst = randomScramble(shuffle_num)
         srch = Search(sst, SOLVED_NEIGHBOR_DEPTH_MAX)
         dist = srch.searchWithDat(tnd)
         with open(fnamew, "rb") as f:
             smp_dic = pickle.load(f)
         if dist >= 0:
+            print("最短%2d手：" % dist, end="")
             mvs = srch.getSolveMovesWithDat()
             for mv in mvs:
                 print(mv, end=" ")
@@ -959,6 +961,7 @@ def collectSamples(loop, tnd, shuffle_num):
             for j in range(dist - SOLVED_NEIGHBOR_DEPTH_MAX):
                 smp_dic[dist - j].add(route[j])
         else:
+            print("%2d手以上" % dist_max)
             smp_dic[gt_key] = sst.toNumNormal()
         for k, v in smp_dic.items():
             if type(k) is int:
