@@ -98,7 +98,7 @@ MIRROR_POS = {
     ]
 }
 
-ST_LEN_MAX = 1000000
+ST_LEN_MAX = 100000
 
 # 資料通りのクラス
 class State():
@@ -735,7 +735,7 @@ def createSolvedNeighborsFile():
         latest_fname = path_format.format(latest_act_num, latest_sub_num)
     # 更新しない場合, 最新ファイルの状態と足す
     else:
-        next_st_nums = known_st_nums + next_st_nums
+        next_st_nums = list(known_st_nums) + next_st_nums
 
     # 分割してファイルに保存
     while len(next_st_nums) > ST_LEN_MAX:
