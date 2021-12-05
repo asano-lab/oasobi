@@ -1013,9 +1013,24 @@ def createNpFiles():
             np.save(fnamew, arr)
     print("所要時間：%.2f秒" % (time.time() - t0))
 
+def createSampleNpFiles(dist_max):
+    """
+    サンプル辞書からnp配列ファイルを作る.
+    キーの数だけ作る.
+    """
+    fnamer = SMP_PATH_FORMAT.format(dist_max)
+    if not os.path.exists(fnamer):
+        return
+    with open(fnamer, "rb") as f:
+        smp_dic = pickle.load(f)
+    # print(smp_dic)
+    print(smp_dic[10])
+    pass
+
 def main():
     # collectSamples(5, 5, 12)
-    collectSamples(1000, 6, 20)
+    # collectSamples(1000, 6, 20)
+    createSampleNpFiles(14)
 
 if __name__ == "__main__":
     main()
