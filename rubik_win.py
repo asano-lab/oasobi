@@ -336,6 +336,94 @@ def cleateReplaceParts(chclr: State):
         ll[3][j] = chclr.eo[i]
     return ll
 
+def num2state(num: int) -> State:
+    cp = []
+    co = []
+    ep = []
+    eo = []
+    for i in range(0, 40, 5):
+        cp.append(num >> (97 - i) & 0b111)
+        co.append(num >> (95 - i) & 0b11)
+    for i in range(0, 60, 5):
+        ep.append(num >> (56 - i) & 0b1111)
+        eo.append(num >> (55 - i) & 0b1)
+    return State(cp, co, ep, eo)
+
+# 標準入力
+def inputCube():
+    # どうしても数値で入力したい人用
+    mens = "UDLRFB"
+    # 入力する面の順番
+    input_order = "UFRBLD"
+    # 色を標準入力から取得する際の置き方
+    input_uf = {
+        "U": "F", "F": "D", "R": "D",
+        "B": "D", "L": "D", "D": "B"
+    }
+    # 日本配色と面の対応
+    jpc2men = {
+        "w": "U", "b": "D", "o": "L",
+        "r": "R", "g": "F", "y": "B"
+    }
+    print("ルービックキューブの状態を入力")
+    print("入力する順番は\n1 2 3\n4 5 6\n7 8 9\nです")
+    print("色は英語の頭文字で入力してください（色番号や面も可）")
+    print("白: (0, w, U), 青: (1, b, D), 橙: (2, o, L), 赤: (3, r, R), 緑: (4, g, F), 黄: (5, y, B)")
+    print("最初からやり直したい場合は \"!\" を入力してください")
+    color_array = [[-1] * 18 for _ in range(3)]
+    cont = True
+    while cont:
+        i = 0
+        while i < 6:
+            men = input_order[i]
+            moji = input("中央が「{:s}」の面を上にし、「{:s}」を正面に持って上の色を入力してください：".format(JPN_COLOR[men], JPN_COLOR[input_uf[men]]))
+            if not moji:
+                break
+            if moji[0] == "!":
+                break
+            if moji[:2] == "0x":
+                r_num = int(moji, 0)
+                st = num2state(r_num)
+                i = 6
+                break
+            if (len(moji) < 9):
+                print("文字数が不足しています")
+                break
+            for j, c in enumerate(moji):
+                if j >= 9:
+                    continue
+                sub1 = j // 3
+                sub2 = i * 3 + j % 3
+                # 数値でもいい
+                if c.isdecimal():
+                    cn = int(c, 0)
+                    if 0 <= cn and cn < 6:
+                        color_array[sub1][sub2] = mens[cn]
+                    else:
+                        print("無効な入力です")
+                        break
+                # 色頭文字
+                elif c in jpc2men:
+                    color_array[sub1][sub2] = jpc2men[c]
+                # 面
+                elif c in mens:
+                    color_array[sub1][sub2] = c
+                else:
+                    print("無効な入力です")
+                    break
+            else:
+                i += 1
+        if i >= 6:
+            cont = False
+    moji = "\n"
+    for ca in color_array:
+        for i, c in enumerate(ca):
+            moji += JPN_COLOR[c]
+            if i % 3 == 2:
+                moji += " "
+        moji += "\n"
+    return moji
+
 # パーツの入れ替え辞書
 replace_parts = {}
 for k, v in change_color.items():
@@ -361,8 +449,4 @@ cl_list = [
     "FU", "FD", "FL", "FR", "BU", "BD", "BL", "BR"
 ]
 
-print(scrambled_state)
-nst2 = scrambled_state.toState2().allNextStates()
-for i, j in enumerate(nst2):
-    print(faces[i])
-    print(j.toState())
+print(inputCube())
