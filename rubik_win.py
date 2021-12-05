@@ -925,7 +925,7 @@ def set2nparray(num_set):
 # print(srch.getSolveMovesWithDat())
 
 def main():
-    for i in range(6):
+    for i in range(7, 8):
         for j in range(LOOP_MAX):
             fnamer = SN_PATH_FORMAT.format(i, j)
             if not os.path.exists(fnamer):
@@ -938,7 +938,7 @@ def main():
             np.save(fnamew, arr)
 
 if __name__ == "__main__":
-    # main()
-    fnamer = NP_SN_PATH_FORMAT.format(5, 0)
-    arr = np.load(fnamer)
-    print(arr.shape)
+    main()
+    # fnamer = NP_SN_PATH_FORMAT.format(5, 0)
+    # arr = np.load(fnamer)
+    # print(arr.shape)
