@@ -215,10 +215,10 @@ int init(void) {
 
 int main(void) {
     u_long ss[2], sscc[2], aam[36], nss[2];
-    // ss[0] = SCRAMBLED_STATE_C;
-    // ss[1] = SCRAMBLED_STATE_E;
-    ss[0] = SOLVED_C;
-    ss[1] = SOLVED_E;
+    ss[0] = SCRAMBLED_STATE_C;
+    ss[1] = SCRAMBLED_STATE_E;
+    // ss[0] = SOLVED_C;
+    // ss[1] = SOLVED_E;
     init();
     applyAllMoves(ss, aam);
     normalState(ss, nss);
