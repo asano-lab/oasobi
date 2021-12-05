@@ -532,5 +532,15 @@ ca_sample = [['D', 'L', 'U', 'B', 'L', 'R', 'U', 'L', 'L', 'F', 'B', 'L', 'B', '
 stt = solved.copy()
 nstl = applyAllMovesNormal(stt.toNum())
 nsts = set(nstl)
+nstl2 = []
 for i in nsts:
     print(num2state(i))
+    nstl2 += applyAllMovesNormal(i)
+
+nsts2 = set(nstl2)
+nsts2 -= nsts
+nsts2 -= set([solved.toNum()])
+print("2手: %d" % len(nsts2))
+for i in nsts2:
+    print(num2state(i))
+
