@@ -106,8 +106,8 @@ class State():
     def copy(self):
         return State(self.cp.copy(), self.co.copy(), self.ep.copy(), self.eo.copy())
     
-    # 数値で扱うクラスに変換
-    def toState2(self):
+    # 数値変換
+    def toNum(self):
         s_num = 0
         for i in range(8):
             s_num = (s_num << 3) | self.cp[i]
@@ -115,7 +115,11 @@ class State():
         for i in range(12):
             s_num = (s_num << 4) | self.ep[i]
             s_num = (s_num << 1) | self.eo[i]
-        return State2(s_num)
+        return s_num
+
+    # 数値で扱うクラスに変換
+    def toState2(self):
+        return State2(self.toNum())
     
     # 色配列の作成 (描画用)
     def makeColorArray(self):
@@ -526,4 +530,4 @@ ca_sample = [['D', 'L', 'U', 'B', 'L', 'R', 'U', 'L', 'L', 'F', 'B', 'L', 'B', '
 # stt = inputState()
 
 stt = solved.copy()
-print(applyAllMovesNormal(stt.toState2().num))
+print(applyAllMovesNormal(stt.toNum()))
