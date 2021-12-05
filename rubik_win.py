@@ -404,7 +404,7 @@ def colorArray2State(color_array: list) -> State:
     return State(cp, co, ep, eo)
 
 # 標準入力
-def inputCube():
+def inputState():
     # どうしても数値で入力したい人用
     mens = "UDLRFB"
     # 入力する面の順番
@@ -425,14 +425,14 @@ def inputCube():
     print("白: (0, w, U), 青: (1, b, D), 橙: (2, o, L), 赤: (3, r, R), 緑: (4, g, F), 黄: (5, y, B)")
     print("最初からやり直したい場合は \"!\" を入力してください")
     color_array = [[-1] * 18 for _ in range(3)]
-    cont = True
-    while cont:
+    st = None
+    while st is None:
         i = 0
         while i < 6:
             men = input_order[i]
             moji = input("中央が「{:s}」の面を上にし、「{:s}」を正面に持って上の色を入力してください：".format(JPN_COLOR[men], JPN_COLOR[input_uf[men]]))
             if not moji:
-                break
+                continue
             if moji[0] == "!":
                 break
             if moji[:2] == "0x":
@@ -468,15 +468,8 @@ def inputCube():
             else:
                 i += 1
         if i >= 6:
-            cont = False
-    moji = "\n"
-    for ca in color_array:
-        for i, c in enumerate(ca):
-            moji += JPN_COLOR[c]
-            if i % 3 == 2:
-                moji += " "
-        moji += "\n"
-    return moji
+            st = colorArray2State(color_array)
+    return st
 
 # パーツの入れ替え辞書
 replace_parts = {}
@@ -506,5 +499,6 @@ cl_list = [
 # 色配列のサンプル
 ca_sample = [['D', 'L', 'U', 'B', 'L', 'R', 'U', 'L', 'L', 'F', 'B', 'L', 'B', 'R', 'R', 'L', 'U', 'L'], ['B', 'U', 'U', 'D', 'F', 'U', 'B', 'R', 'D', 'R', 'B', 'R', 'F', 'L', 'F', 'D', 'D', 'U'], ['U', 'F', 'F', 'U', 'F', 'F', 'D', 'R', 'B', 'D', 'D', 'R', 'D', 'B', 'B', 'F', 'L', 'R']]
 
-print(colorArray2State(ca_sample))
-# print(scrambled_state.makeColorArray())
+stt = inputState()
+print(stt)
+print(stt.toState2())
