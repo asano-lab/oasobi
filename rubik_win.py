@@ -925,7 +925,8 @@ def set2nparray(num_set):
 # print(srch.getSolveMovesWithDat())
 
 def main():
-    for i in range(7, 8):
+    t0 = time.time()
+    for i in range(8, 9):
         for j in range(LOOP_MAX):
             fnamer = SN_PATH_FORMAT.format(i, j)
             if not os.path.exists(fnamer):
@@ -936,9 +937,7 @@ def main():
             print(arr.shape)
             fnamew = NP_SN_PATH_FORMAT.format(i, j)
             np.save(fnamew, arr)
+    print("所要時間：%.2f秒" % (time.time() - t0))
 
 if __name__ == "__main__":
     main()
-    # fnamer = NP_SN_PATH_FORMAT.format(5, 0)
-    # arr = np.load(fnamer)
-    # print(arr.shape)
