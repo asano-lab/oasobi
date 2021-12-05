@@ -439,7 +439,10 @@ def inputState():
             if moji[0] == "!":
                 break
             if moji[:2] == "0x":
-                r_num = int(moji, 0)
+                try:
+                    r_num = int(moji, 0)
+                except ValueError:
+                    continue
                 st = num2state(r_num)
                 break
             if (len(moji) < 9):
