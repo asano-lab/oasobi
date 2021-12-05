@@ -349,6 +349,10 @@ def num2state(num: int) -> State:
         eo.append(num >> (55 - i) & 0b1)
     return State(cp, co, ep, eo)
 
+# 色配列を順列・方向の配列に変換
+def colorArray2State():
+    pass
+
 # 標準入力
 def inputCube():
     # どうしても数値で入力したい人用
