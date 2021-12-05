@@ -432,8 +432,9 @@ def randomScramble(n):
 
 class Search:
 
-    def __init__(self, target: State):
+    def __init__(self, target: State, snd_max=8):
         self.target = target.copy()
+        self.snd_max = snd_max
         self.target_num = normalState(target.toNum())
         # 完成状態付近
         self.solved_neighbors = {0: set([solved.toNum()])}
@@ -442,6 +443,7 @@ class Search:
         self.solved_neighbors_depth = 0
         self.target_neighbors_depth = 0
         self.common_states = set()
+        self.common_sub = -1
         self.dist = -1
 
     def calcSolvedNeighbors(self, depth):
@@ -479,37 +481,38 @@ class Search:
             if cmns:
                 self.common_states = cmns
                 self.dist = self.solved_neighbors_depth + self.target_neighbors_depth
-                print(cmns)
                 return self.dist
         return -1
         
-    def searchWithDat(self, snd: int, tnd: int):
+    def searchWithDat(self, tnd: int):
         """
         完成状態近傍はファイルに保存されているものとして探索
         引数は完成状態近傍の深さ
         """
         snd_max_sub = -1
+        print("%d手以内を探索" % self.snd_max)
         # 片方向探索から
-        for i in range(snd + 1):
+        for i in range(self.snd_max + 1):
             for j in range(LOOP_MAX):
                 fnamer = SN_PATH_FORMAT.format(i, j)
                 if not os.path.exists(fnamer):
                     break
                 snd_max_sub = j
-                print(fnamer)
+                # print(fnamer)
                 with open(fnamer, "rb") as f:
                     known_states = pickle.load(f)
                 # 見つかったら終了
                 if self.target_num in known_states:
-                    return i
+                    self.dist = i
+                    return self.dist
         # ターゲット付近
         self.target_neighbors = {0: set([self.target_num])}
         for _ in range(tnd):
             self._calcNeighbors(self.target_neighbors)
             self.target_neighbors_depth = max(self.target_neighbors)
             for j in range(snd_max_sub + 1):
-                fnamer = SN_PATH_FORMAT.format(snd, j)
-                print(fnamer)
+                fnamer = SN_PATH_FORMAT.format(self.snd_max, j)
+                # print(fnamer)
                 with open(fnamer, "rb") as f:
                     known_states = pickle.load(f)
                 # 共通部分を計算
@@ -517,7 +520,7 @@ class Search:
                 if cmns:
                     self.common_states = cmns
                     self.common_sub = j
-                    self.dist = snd + self.target_neighbors_depth
+                    self.dist = self.snd_max + self.target_neighbors_depth
                     print(cmns)
                     return self.dist
         return -1
@@ -559,6 +562,48 @@ class Search:
         for i in range(self.solved_neighbors_depth):
             nsts = set(applyAllMovesNormal(solved_route[i]))
             nsts &= self.solved_neighbors[self.solved_neighbors_depth - (i + 1)]
+            solved_route.append(list(nsts)[0])
+        for i in range(self.target_neighbors_depth):
+            nsts = set(applyAllMovesNormal(target_route[i]))
+            nsts &= self.target_neighbors[self.target_neighbors_depth - (i + 1)]
+            target_route.append(list(nsts)[0])
+        total_route = [target_route[-(i + 1)] for i in range(len(target_route) - 1)] + solved_route
+        tmpst = self.target.copy()
+        solve_moves = []
+        for i, j in enumerate(total_route):
+            if i == 0:
+                continue
+            nstd = tmpst.applyAllMoves()
+            for k, v in nstd.items():
+                if v.toNumNormal() == j:
+                    solve_moves.append(k)
+                    tmpst = v.copy()
+                    break
+            else:
+                print("なんかおかしい")
+                return []
+        return solve_moves
+    
+    def getSolveMovesWithDat(self):
+        """
+        手数が分かっている前提で, 解く手順を返す
+        ファイルを用いる
+        """
+        cmnst = list(self.common_states)
+        # まずは辿る状態を求める
+        solved_route = [cmnst[0]]
+        target_route = [cmnst[0]]
+        for i in range(self.snd_max):
+            nsts = set(applyAllMovesNormal(solved_route[i]))
+            for j in range(LOOP_MAX):
+                fnamer = SN_PATH_FORMAT.format(self.snd_max - (i + 1), j)
+                if not os.path.exists(fnamer):
+                    break
+                print(fnamer)
+                with open(fnamer, "rb") as f:
+                    nsts &= pickle.load(f)
+                if nsts:
+                    break
             solved_route.append(list(nsts)[0])
         for i in range(self.target_neighbors_depth):
             nsts = set(applyAllMovesNormal(target_route[i]))
@@ -834,4 +879,5 @@ def createSolvedNeighborsFile():
 scrambled_state = randomScramble(13)
 print(scrambled_state)
 srch = Search(scrambled_state)
-print(srch.searchWithDat(8, 5))
+print(srch.searchWithDat(5))
+print(srch.getSolveMovesWithDat())
