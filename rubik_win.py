@@ -105,7 +105,10 @@ ST_LEN_MAX = 1000000
 LOOP_MAX = 2000
 
 DIR_PATH = "./dat2/"
+NP_DIR_PATH = "./np_dat/"
+
 SN_PATH_FORMAT = DIR_PATH + "act{:03d}_{:03d}.pickle"
+NP_SN_PATH_FORMAT = NP_DIR_PATH + "act{:03d}_{:03d}.npy"
 
 # 資料通りのクラス
 class State():
@@ -885,6 +888,16 @@ def createSolvedNeighborsFile():
 
     return False
 
+def set2nparray(num_set):
+    """
+    数値の集合をnumpy配列に変換する
+    """
+    ll = []
+    for num in num_set:
+        st = num2state(num)
+        ll.append(st.cp + st.co + st.ep + st.eo)
+    return np.array(ll, dtype="uint8")
+
 # scramble = "L D2 R U2 L F2 U2 L F2 R2 B2 R U' R' U2 F2 R' D B' F2"
 # scramble = scramble.split()
 
@@ -912,9 +925,17 @@ def createSolvedNeighborsFile():
 # print(srch.getSolveMovesWithDat())
 
 def main():
-    ll = [[1, 2], [3, 4]]
-    arr = np.array(ll, dtype="uint8")
-    print(arr.dtype)
+    for i in range(6):
+        for j in range(LOOP_MAX):
+            fnamer = SN_PATH_FORMAT.format(i, j)
+            if not os.path.exists(fnamer):
+                break
+            with open(fnamer, "rb") as f:
+                sts = pickle.load(f)
+            arr = set2nparray(sts)
+            print(arr.shape)
+            fnamew = NP_SN_PATH_FORMAT.format(i, j)
+            np.save(fnamew, arr)
 
 if __name__ == "__main__":
     main()
