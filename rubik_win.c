@@ -115,37 +115,37 @@ int applyAllMoves(const u_long *src, u_long *dsts) {
 
 // 色変換
 int changeColor(const u_long *src, u_long *dst, int ch_rule) {
-    u_long tmpst[2];
-    applyMove(src, CHANGE_COLOR + ch_rule * 2, tmpst);
-    applyMove(REPLACE_PARTS + ch_rule * 2, tmpst, dst);
+    u_long tmp_st[2];
+    applyMove(src, CHANGE_COLOR + ch_rule * 2, tmp_st);
+    applyMove(REPLACE_PARTS + ch_rule * 2, tmp_st, dst);
     return 0;
 }
 
 // 上下ミラー
 int udMirror(const u_long *src, u_long *dst) {
     int i, j;
-    u_long tmpst[2] = {0};
+    u_long tmp_st[2] = {0};
     for (i = 0; i < 8; i++) {
         j = UDM_CP[i] * 5;
-        tmpst[0] = tmpst[0] << 3 | getCp5(src[0], j);
-        tmpst[0] = tmpst[0] << 2 | (3 - getCo5(src[0], j)) % 3;
+        tmp_st[0] = tmp_st[0] << 3 | getCp5(src[0], j);
+        tmp_st[0] = tmp_st[0] << 2 | (3 - getCo5(src[0], j)) % 3;
     }
     for (i = 0; i < 12; i++) {
         j = UDM_EP[i] * 5;
-        tmpst[1] = tmpst[1] << 4 | getEp5(src[1], j);
-        tmpst[1] = tmpst[1] << 1 | getEo5(src[1], j);
+        tmp_st[1] = tmp_st[1] << 4 | getEp5(src[1], j);
+        tmp_st[1] = tmp_st[1] << 1 | getEo5(src[1], j);
     }
     dst[0] = 0;
     dst[1] = 0;
     for (i = 0; i < 40; i += 5) {
-        j = getCp5(tmpst[0], i);
+        j = getCp5(tmp_st[0], i);
         dst[0] = dst[0] << 3 | UDM_CP[j];
-        dst[0] = dst[0] << 2 | getCo5(tmpst[0], i);
+        dst[0] = dst[0] << 2 | getCo5(tmp_st[0], i);
     }
     for (i = 0; i < 60; i += 5) {
-        j = getEp5(tmpst[1], i);
+        j = getEp5(tmp_st[1], i);
         dst[1] = dst[1] << 4 | UDM_EP[j];
-        dst[1] = dst[1] << 1 | getEo5(tmpst[1], i);
+        dst[1] = dst[1] << 1 | getEo5(tmp_st[1], i);
     }
     return 0;
 }
@@ -166,23 +166,35 @@ int createReplaceParts(const u_long *ch_pos, u_long *ch_parts) {
     return 0;
 }
 
-// 状態の比較
-// 第一引数が第二引数以下の場合はそのまま, それ以外はポインタの中身を入れ替える
-int compareSwapStates(u_long *min_st, u_long *max_st) {
-    if (min_st[0] < max_st[0]) return 0;
-    if (min_st[0] == max_st[0] && min_st[1] <= max_st[1]) return 0;
-    u_long tmp = min_st[0];
-    min_st[0] = max_st[0];
-    max_st[0] = tmp;
-    tmp = min_st[1];
-    min_st[1] = max_st[1];
-    max_st[1] = tmp;
+// 状態の比較, 最小値の更新
+// 第一引数が第二引数以下の場合はそのまま
+// 第一引数の方が大きかったら値を更新
+int updateMinState(u_long *min_st, const u_long *target_st) {
+    if (min_st[0] < target_st[0]) return 0;
+    if (min_st[0] == target_st[0] && min_st[1] <= target_st[1]) return 0;
+    min_st[0] = target_st[0];
+    min_st[1] = target_st[1];
     return 1;
 }
 
 // 状態の正規化
 // 色の変換, 鏡写し計48種を計算し, 最小の値を選択
 int normalState(const u_long *src, u_long *dst) {
+    u_long mir_st[2], eq_st[2];
+    // 何も手を加えていない状態で初期化
+    dst[0] = src[0];
+    dst[1] = src[1];
+    udMirror(src, mir_st);
+    // ミラーと比較して小さい方をdstに格納
+    updateMinState(dst, mir_st);
+    // そのままとミラー両方で23種の色変換を行う
+    for (int i = 0; i < 23; i++) {
+        changeColor(src, eq_st, i);
+        updateMinState(dst, eq_st);
+        changeColor(mir_st, eq_st, i);
+        updateMinState(dst, eq_st);
+        printState(dst);
+    }
     return 0;
 }
 
@@ -202,15 +214,13 @@ int init(void) {
 }
 
 int main(void) {
-    u_long ss[2], sscc[2], aam[36];
+    u_long ss[2], sscc[2], aam[36], nss[2];
     // ss[0] = SCRAMBLED_STATE_C;
     // ss[1] = SCRAMBLED_STATE_E;
     ss[0] = SOLVED_C;
     ss[1] = SOLVED_E;
     init();
     applyAllMoves(ss, aam);
-    for (int i = 0; i < 36; i += 2) {
-        printState(aam + i);
-    }
+    normalState(ss, nss);
     return 0;
 }
