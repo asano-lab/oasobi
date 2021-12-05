@@ -101,6 +101,11 @@ MIRROR_POS = {
 
 ST_LEN_MAX = 1000000
 
+LOOP_MAX = 2000
+
+DIR_PATH = "./dat2/"
+SN_PATH_FORMAT = DIR_PATH + "act{:03d}_{:03d}.pickle"
+
 # 資料通りのクラス
 class State():
 
@@ -373,6 +378,11 @@ def cleateReplaceParts(chclr: State):
         ll[2][j] = i
         ll[3][j] = chclr.eo[i]
     return ll
+
+# パーツの入れ替え辞書を作成
+replace_parts = {}
+for k, v in change_color.items():
+    replace_parts[k] = cleateReplaceParts(v)
 
 def num2state(num: int) -> State:
     """
@@ -655,16 +665,14 @@ def createSolvedNeighborsFile():
     """
     まずは全状態を洗い出したい
     """
-    dir_path = "./dat2/"
-    searching = dir_path + "searching.json"
-    path_format = dir_path + "act{:03d}_{:03d}.pickle"
+    searching = DIR_PATH + "searching.json"
     act_num = 0
     sub_num = 0
 
     # まだ何も作られていない
     # 最初のファイルを作成し, 深さ1の探索も行う
     if not os.path.exists(searching):
-        fnamew = path_format.format(0, 0)
+        fnamew = SN_PATH_FORMAT.format(0, 0)
         with open(fnamew, "wb") as f:
             # 多分無意味だが一応正規化
             st_num = solved.toNumNormal()
@@ -679,14 +687,14 @@ def createSolvedNeighborsFile():
 
         # 副番号をインクリメントしてファイルの存在を確認
         sub_num += 1
-        fnamer = path_format.format(act_num, sub_num)
+        fnamer = SN_PATH_FORMAT.format(act_num, sub_num)
         # 存在しない (この深さの盤面はすべて探索済み)
         if not os.path.exists(fnamer):
             # 次の深さの最初のファイルを指定
             act_num += 1
             # 副番号はリセット
             sub_num = 0
-            fnamer = path_format.format(act_num, sub_num)
+            fnamer = SN_PATH_FORMAT.format(act_num, sub_num)
 
     print(fnamer, "から次の状態を計算")
 
@@ -719,7 +727,7 @@ def createSolvedNeighborsFile():
     # 探索済み状態との重複を削除
     for i in range(act_num + 2):
         j = 0
-        past_fname = path_format.format(i, j)
+        past_fname = SN_PATH_FORMAT.format(i, j)
         while os.path.exists(past_fname):
             with open(past_fname, "rb") as f:
                 # ループ終了時, 最新ファイルの状態が格納される
@@ -730,7 +738,7 @@ def createSolvedNeighborsFile():
             latest_act_num = i
             latest_sub_num = j
             j += 1
-            past_fname = path_format.format(i, j)
+            past_fname = SN_PATH_FORMAT.format(i, j)
     
     # リストに変換
     next_st_nums = list(next_st_nums)
@@ -744,7 +752,7 @@ def createSolvedNeighborsFile():
     if latest_act_num == act_num:
         latest_act_num += 1
         latest_sub_num = 0
-        latest_fname = path_format.format(latest_act_num, latest_sub_num)
+        latest_fname = SN_PATH_FORMAT.format(latest_act_num, latest_sub_num)
     # 更新しない場合, 最新ファイルの状態と足す
     else:
         next_st_nums = list(known_st_nums) + next_st_nums
@@ -757,17 +765,32 @@ def createSolvedNeighborsFile():
         next_st_nums = next_st_nums[ST_LEN_MAX:]
         # 最新番号の更新
         latest_sub_num += 1
-        latest_fname = path_format.format(latest_act_num, latest_sub_num)
+        latest_fname = SN_PATH_FORMAT.format(latest_act_num, latest_sub_num)
     if next_st_nums:
         with open(latest_fname, "wb") as f:
             pickle.dump(set(next_st_nums), f)
 
     return False
 
-# パーツの入れ替え辞書を作成
-replace_parts = {}
-for k, v in change_color.items():
-    replace_parts[k] = cleateReplaceParts(v)
+def searchWithDat(snd: int, target: State):
+    """
+    完成状態近傍はファイルに保存されているものとして探索
+    引数は完成状態近傍の深さ
+    """
+    target_num = target.toNumNormal()
+    # 片方向探索から
+    for i in range(snd + 1):
+        for j in range(LOOP_MAX):
+            fnamer = SN_PATH_FORMAT.format(i, j)
+            if not os.path.exists(fnamer):
+                break
+            print(fnamer)
+            with open(fnamer, "rb") as f:
+                solved_neighbors = pickle.load(f)
+            # 見つかったら終了
+            if target_num in solved_neighbors:
+                return i
+    pass
 
 # scramble = "L D2 R U2 L F2 U2 L F2 R2 B2 R U' R' U2 F2 R' D B' F2"
 # scramble = scramble.split()
@@ -789,5 +812,6 @@ for k, v in change_color.items():
 #     "FU", "FD", "FL", "FR", "BU", "BD", "BL", "BR"
 # ]
 
-scrambled_state = randomScramble(10)
+scrambled_state = randomScramble(11)
 print(scrambled_state)
+print(searchWithDat(8, scrambled_state))
