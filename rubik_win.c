@@ -179,21 +179,31 @@ int updateMinState(u_long *min_st, const u_long *target_st) {
 
 // 状態の正規化
 // 色の変換, 鏡写し計48種を計算し, 最小の値を選択
-int normalState(const u_long *src, u_long *dst) {
-    u_long mir_st[2], eq_st[2];
-    // 何も手を加えていない状態で初期化
-    dst[0] = src[0];
-    dst[1] = src[1];
-    udMirror(src, mir_st);
+// 与えたポインタの中身を直接書き換える
+int normalState(u_long *st) {
+    u_long origin[2], mirror[2], eq_st[2];
+    // 変更前の状態を保存
+    origin[0] = st[0];
+    origin[1] = st[1];
+    udMirror(origin, mirror);
     // ミラーと比較して小さい方をdstに格納
-    updateMinState(dst, mir_st);
+    updateMinState(st, mirror);
     // そのままとミラー両方で23種の色変換を行う
     for (int i = 0; i < 23; i++) {
-        changeColor(src, eq_st, i);
-        updateMinState(dst, eq_st);
-        changeColor(mir_st, eq_st, i);
-        updateMinState(dst, eq_st);
-        printState(dst);
+        changeColor(origin, eq_st, i);
+        updateMinState(st, eq_st);
+        changeColor(mirror, eq_st, i);
+        updateMinState(st, eq_st);
+    }
+    return 0;
+}
+
+// 全動作適用後それらを正規化してdstsに格納
+int applyAllMovesNormal(const u_long *src, u_long *dsts) {
+    // まずは普通に動作適用
+    applyAllMoves(src, dsts);
+    for (int i = 0; i < 36; i += 2) {
+        
     }
     return 0;
 }
@@ -220,7 +230,9 @@ int main(void) {
     // ss[0] = SOLVED_C;
     // ss[1] = SOLVED_E;
     init();
+    printState(ss);
     applyAllMoves(ss, aam);
-    normalState(ss, nss);
+    normalState(ss);
+    printState(ss);
     return 0;
 }
