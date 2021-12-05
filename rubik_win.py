@@ -4,9 +4,10 @@ clib = CDLL("./rubik_win.so")
 
 cull2 = c_ulonglong * 2
 
-# 全動作適用後状態格納用
+# 全動作適用後状態格納用配列
 cull36 = c_ulonglong * 36
 
+# 初期化関数を実行 (必須)
 clib.init()
 
 applyMove = clib.applyMove
@@ -16,6 +17,16 @@ applyMove.argtypes = (cull2, cull2, cull2)
 applyAllMoves = clib.applyAllMoves
 applyAllMoves.restype = c_int32
 applyAllMoves.argtypes = (cull2, cull36)
+
+# 正規化関数
+normalState = clib.normalState
+normalState.restype = c_int32
+normalState.argtypes = (cull2,)
+
+# 正規化した次の状態を返す
+applyAllMovesNormal = clib.applyAllMovesNormal
+applyAllMovesNormal.restype = c_int32
+applyAllMovesNormal.argtypes = (cull2, cull36)
 
 # 日本仕様の色
 JPN_COLOR = {"U": "白", "D": "青", "L": "橙", "R": "赤", "F": "緑", "B": "黄"}
@@ -285,12 +296,8 @@ faces = [
     "R2", "R'", "F2", "F'", "B2", "B'"
 ]
 
-# for i in faces:
-#     print(moves[i].toState2())
-
 # 色変換のための操作 (位置と回転のみ)
-# 予想以上に色の変換パターンが多そう
-# 全23種?
+# 全23種
 # キーは上面と正面の順
 change_color = {
     # UDBFLR
@@ -316,6 +323,7 @@ change_color = {
     )
 }
 
+# 残りの色変換は最初の3種から作成
 change_color["UB"] = change_color["UL"] * 2
 change_color["UR"] = change_color["UL"] * 3
 change_color["DB"] = change_color["FD"] * 2
@@ -480,7 +488,7 @@ def inputState():
             st = colorArray2State(color_array)
     return st
 
-# パーツの入れ替え辞書
+# パーツの入れ替え辞書を作成
 replace_parts = {}
 for k, v in change_color.items():
     replace_parts[k] = cleateReplaceParts(v)
