@@ -445,11 +445,12 @@ def inputState():
                 try:
                     r_num = int(moji, 0)
                 except ValueError:
-                    continue
+                    print("数値変換できません.")
+                    break
                 st = num2state(r_num)
                 break
             if (len(moji) < 9):
-                print("文字数が不足しています")
+                print("文字数が不足しています.")
                 break
             for j, c in enumerate(moji):
                 if j >= 9:
@@ -462,7 +463,7 @@ def inputState():
                     if 0 <= cn and cn < 6:
                         color_array[sub1][sub2] = mens[cn]
                     else:
-                        print("無効な入力です")
+                        print("無効な入力です.")
                         break
                 # 色頭文字
                 elif c in jpc2men:
@@ -471,7 +472,7 @@ def inputState():
                 elif c in mens:
                     color_array[sub1][sub2] = c
                 else:
-                    print("無効な入力です")
+                    print("無効な入力です.")
                     break
             else:
                 i += 1
