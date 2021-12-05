@@ -426,14 +426,17 @@ def inputState():
     print("入力する順番は\n1 2 3\n4 5 6\n7 8 9\nです.")
     print("色の頭文字, 面または面の番号で入力してください.")
     print("白: (0, w, U), 青: (1, b, D), 橙: (2, o, L), 赤: (3, r, R), 緑: (4, g, F), 黄: (5, y, B)")
-    print("最初からやり直したい場合は \"!\" を入力してください")
+    print("最初からやり直したい場合は \"!\" を入力してください.")
     color_array = [[-1] * 18 for _ in range(3)]
     st = None
     while st is None:
         i = 0
         while i < 6:
             men = input_order[i]
-            moji = input("中央が「{:s}」の面を上にし、「{:s}」を正面に持って上の色を入力してください：".format(JPN_COLOR[men], JPN_COLOR[input_uf[men]]))
+            try:
+                moji = input("中央が「{:s}」の面を上にし、「{:s}」を正面に持って上の色を入力してください：".format(JPN_COLOR[men], JPN_COLOR[input_uf[men]]))
+            except KeyboardInterrupt:
+                return None
             if not moji:
                 continue
             if moji[0] == "!":
@@ -505,5 +508,6 @@ cl_list = [
 ca_sample = [['D', 'L', 'U', 'B', 'L', 'R', 'U', 'L', 'L', 'F', 'B', 'L', 'B', 'R', 'R', 'L', 'U', 'L'], ['B', 'U', 'U', 'D', 'F', 'U', 'B', 'R', 'D', 'R', 'B', 'R', 'F', 'L', 'F', 'D', 'D', 'U'], ['U', 'F', 'F', 'U', 'F', 'F', 'D', 'R', 'B', 'D', 'D', 'R', 'D', 'B', 'B', 'F', 'L', 'R']]
 
 stt = inputState()
-print(stt)
-print(stt.toState2())
+if stt is not None:
+    print(stt)
+    print(stt.toState2())
