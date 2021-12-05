@@ -406,6 +406,7 @@ class Search:
         self.target_neighbors = {0: set([self.target_num])}
         self.solved_neighbors_depth = 0
         self.target_neighbors_depth = 0
+        self.common_states = set()
 
     def calcSolvedNeighbors(self, depth):
         """
@@ -433,11 +434,14 @@ class Search:
         dist = self.searchTargetInSolvedNeighbors()
         if dist >= 0:
             return dist
-        for i in range(depth):
+        for _ in range(depth):
             self._calcNeighbors(self.target_neighbors)
             self.target_neighbors_depth = max(self.target_neighbors)
+            # 共通部分を計算
             cmns = self.solved_neighbors[self.solved_neighbors_depth] & self.target_neighbors[self.target_neighbors_depth]
             if cmns:
+                self.common_states = cmns
+                print(cmns)
                 return self.solved_neighbors_depth + self.target_neighbors_depth
         return -1
     
@@ -465,6 +469,12 @@ class Search:
         print("新状態数（重複なし）：%d" % len(nsts))
         neighbor_dic[depth + 1] = nsts
         print("所要時間：%6.2f秒" % (time.time() - t0))
+    
+    def getSolveMoves(self):
+        """
+        手数が分かっている前提で, 解く手順を返す
+        """
+        pass
 
 def circularRShiftStr(moji: str, n: int) -> str:
     """
