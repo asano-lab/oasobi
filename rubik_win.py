@@ -530,4 +530,7 @@ ca_sample = [['D', 'L', 'U', 'B', 'L', 'R', 'U', 'L', 'L', 'F', 'B', 'L', 'B', '
 # stt = inputState()
 
 stt = solved.copy()
-print(applyAllMovesNormal(stt.toNum()))
+nstl = applyAllMovesNormal(stt.toNum())
+nsts = set(nstl)
+for i in nsts:
+    print(num2state(i))
