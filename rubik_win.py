@@ -478,12 +478,19 @@ class Search:
         手数が分かっている前提で, 解く手順を返す
         """
         cmnst = list(self.common_states)
-        solved_route = cmnst[:1]
+        # まずは辿る状態を求める
+        solved_route = [cmnst[0]]
+        target_route = [cmnst[0]]
         for i in range(self.solved_neighbors_depth):
             nsts = set(applyAllMovesNormal(solved_route[i]))
             nsts &= self.solved_neighbors[self.solved_neighbors_depth - (i + 1)]
             solved_route.append(list(nsts)[0])
+        for i in range(self.target_neighbors_depth):
+            nsts = set(applyAllMovesNormal(target_route[i]))
+            nsts &= self.target_neighbors[self.target_neighbors_depth - (i + 1)]
+            target_route.append(list(nsts)[0])
         print(solved_route)
+        print(target_route)
 
 def circularRShiftStr(moji: str, n: int) -> str:
     """
@@ -637,6 +644,8 @@ for i, move_name in enumerate(scramble):
     scrambled_state += moves[move_name]
 
 print(scrambled_state)
+print(solved.toNum())
+print(normalState(scrambled_state.toNum()))
 srch = Search(scrambled_state)
 srch.calcSolvedNeighbors(6)
 print(srch.searchTargetInSolvedNeighbors())
