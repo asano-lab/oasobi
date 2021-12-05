@@ -359,8 +359,10 @@ def cleateReplaceParts(chclr: State):
         ll[3][j] = chclr.eo[i]
     return ll
 
-# 数値からStateに変換
 def num2state(num: int) -> State:
+    """
+    数値からStateに変換
+    """
     cp = []
     co = []
     ep = []
@@ -375,12 +377,24 @@ def num2state(num: int) -> State:
         return None
     return State(cp, co, ep, eo)
 
-# 一手後の正規化した状態のリストを返す
 def applyAllMovesNormal(num: int) -> list:
+    """
+    一手後の正規化した状態のリストを返す
+    """
     c_arr = cull2(num >> 60, num & 0xfffffffffffffff)
     nc_arr = cull36()
     _applyAllMovesNormal(c_arr, nc_arr)
     return [nc_arr[i] << 60 | nc_arr[i + 1] for i in range(0, 36, 2)]
+
+class Search:
+
+    def __init__(self):
+        # 完成状態付近
+        self.solved_neighbors = {0: set([solved.toNum()])}
+
+    def searchSolvedNeighbors(self):
+        depth = max(self.solved_neighbors)
+        print(depth)
 
 # n文字右シフト
 def circularRShiftStr(moji: str, n: int) -> str:
@@ -515,7 +529,7 @@ for move_name in scramble:
     scrambled_state += moves[move_name].toState2()
 
 scrambled_state = scrambled_state.toState()
-print(scrambled_state)
+# print(scrambled_state)
 
 # Cで格納するための順番
 cl_list = [
@@ -524,23 +538,5 @@ cl_list = [
     "FU", "FD", "FL", "FR", "BU", "BD", "BL", "BR"
 ]
 
-# 色配列のサンプル
-ca_sample = [['D', 'L', 'U', 'B', 'L', 'R', 'U', 'L', 'L', 'F', 'B', 'L', 'B', 'R', 'R', 'L', 'U', 'L'], ['B', 'U', 'U', 'D', 'F', 'U', 'B', 'R', 'D', 'R', 'B', 'R', 'F', 'L', 'F', 'D', 'D', 'U'], ['U', 'F', 'F', 'U', 'F', 'F', 'D', 'R', 'B', 'D', 'D', 'R', 'D', 'B', 'B', 'F', 'L', 'R']]
-
-# stt = inputState()
-
-stt = solved.copy()
-nstl = applyAllMovesNormal(stt.toNum())
-nsts = set(nstl)
-nstl2 = []
-for i in nsts:
-    print(num2state(i))
-    nstl2 += applyAllMovesNormal(i)
-
-nsts2 = set(nstl2)
-nsts2 -= nsts
-nsts2 -= set([solved.toNum()])
-print("2手: %d" % len(nsts2))
-for i in nsts2:
-    print(num2state(i))
-
+srch = Search()
+srch.searchSolvedNeighbors()
