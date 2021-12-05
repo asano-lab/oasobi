@@ -378,6 +378,14 @@ def num2state(num: int) -> State:
         return None
     return State(cp, co, ep, eo)
 
+def normalState(num: int) -> int:
+    """
+    正規化関数
+    """
+    c_arr = cull2(num >> 60, num & 0xfffffffffffffff)
+    _normalState(c_arr)
+    return c_arr[0] << 60 | c_arr[1]
+
 def applyAllMovesNormal(num: int) -> list:
     """
     一手後の正規化した状態のリストを返す
@@ -413,7 +421,7 @@ class Search:
         """
         解きたい状態の近所を探索する
         """
-        self.target_neighbors[0] = set([target])
+        self.target_neighbors[0] = set([normalState(target)])
         for _ in range(depth):
             self._searchNeighbors(self.target_neighbors)
 
