@@ -102,6 +102,8 @@ MIRROR_POS = {
 
 ST_LEN_MAX = 1000000
 
+SOLVED_NEIGHBOR_DEPTH_MAX = 8
+
 LOOP_MAX = 2000
 
 DIR_PATH = "./dat2/"
@@ -109,6 +111,10 @@ NP_DIR_PATH = "./np_dat/"
 
 SN_PATH_FORMAT = DIR_PATH + "act{:03d}_{:03d}.pickle"
 NP_SN_PATH_FORMAT = NP_DIR_PATH + "act{:03d}_{:03d}.npy"
+
+# サンプルファイルフォーマット
+# 数値は判定できる最大手数
+SMP_PATH_FORMAT = DIR_PATH + "sample{:03d}.pickle"
 
 # 資料通りのクラス
 class State():
@@ -618,8 +624,8 @@ class Search:
     
     def getSolveMovesWithDat(self):
         """
-        手数が分かっている前提で, 解く手順を返す
-        ファイルを用いる
+        手数が分かっている前提で, 解く手順を返す.
+        ファイルを用いる.
         """
         # 片方向で見つかった場合
         if self.dist <= self.snd_max:
@@ -908,6 +914,13 @@ def set2nparray(num_set):
         ll.append(st.cp + st.co + st.ep + st.eo)
     return np.array(ll, dtype="uint8")
 
+def collectSamples(loop, tnd, shuffle_num):
+    """
+    サンプル収集用関数.
+    """
+    fnamew = SMP_PATH_FORMAT.format(SOLVED_NEIGHBOR_DEPTH_MAX + tnd)
+    print(fnamew)
+
 # scramble = "L D2 R U2 L F2 U2 L F2 R2 B2 R U' R' U2 F2 R' D B' F2"
 # scramble = scramble.split()
 
@@ -950,7 +963,7 @@ def createNpFiles():
     print("所要時間：%.2f秒" % (time.time() - t0))
 
 def main():
-    pass
+    collectSamples(3, 6, 20)
 
 if __name__ == "__main__":
     main()
