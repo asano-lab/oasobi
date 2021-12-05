@@ -553,5 +553,5 @@ cl_list = [
 ]
 
 srch = Search()
-for i in range(5):
+for i in range(8):
     srch.searchSolvedNeighbors()
