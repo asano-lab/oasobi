@@ -205,7 +205,6 @@ int applyAllMovesNormal(const u_long *src, u_long *dsts) {
     // 18状態すべて正規化
     for (int i = 0; i < 36; i += 2) {
         normalState(dsts + i);
-        printState(dsts + i);
     }
     return 0;
 }
