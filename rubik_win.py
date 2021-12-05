@@ -1014,7 +1014,8 @@ def createNpFiles():
     print("所要時間：%.2f秒" % (time.time() - t0))
 
 def main():
-    collectSamples(5, 5, 12)
+    # collectSamples(5, 5, 12)
+    collectSamples(1000, 6, 20)
 
 if __name__ == "__main__":
     main()
