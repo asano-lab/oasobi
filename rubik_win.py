@@ -667,11 +667,12 @@ for i, move_name in enumerate(scramble):
         break
     scrambled_state += moves[move_name]
 
+scrambled_state = inputState()
 print(scrambled_state)
 print(solved.toNum())
 print(normalState(scrambled_state.toNum()))
 srch = Search(scrambled_state)
 srch.calcSolvedNeighbors(6)
 print(srch.searchTargetInSolvedNeighbors())
-print(srch.searchTargetBid(5))
+print(srch.searchTargetBid(6))
 srch.getSolveMoves()
