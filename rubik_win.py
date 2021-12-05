@@ -584,11 +584,33 @@ class Search:
                 return []
         return solve_moves
     
+    def getSolveMovesWithDatOne(self):
+        """
+        片方向探索で見つかった場合の手順を求める関数
+        """
+        solved_route = [self.target_num]
+        for i in range(self.dist):
+            nsts = set(applyAllMovesNormal(solved_route[i]))
+            for j in range(LOOP_MAX):
+                fnamer = SN_PATH_FORMAT.format(self.dist - (i + 1), j)
+                if not os.path.exists(fnamer):
+                    break
+                # print(fnamer)
+                with open(fnamer, "rb") as f:
+                    nsts_cmn = nsts & pickle.load(f)
+                if nsts_cmn:
+                    break
+            solved_route.append(list(nsts_cmn)[0])
+        return self.route2moves(solved_route)
+    
     def getSolveMovesWithDat(self):
         """
         手数が分かっている前提で, 解く手順を返す
         ファイルを用いる
         """
+        # 片方向で見つかった場合
+        if self.dist <= self.snd_max:
+            return self.getSolveMovesWithDatOne()
         cmnst = list(self.common_states)
         # まずは辿る状態を求める
         solved_route = [cmnst[0]]
@@ -601,18 +623,24 @@ class Search:
                     break
                 print(fnamer)
                 with open(fnamer, "rb") as f:
-                    nsts &= pickle.load(f)
-                if nsts:
+                    nsts_cmn = nsts & pickle.load(f)
+                if nsts_cmn:
                     break
-            solved_route.append(list(nsts)[0])
+            solved_route.append(list(nsts_cmn)[0])
         for i in range(self.target_neighbors_depth):
             nsts = set(applyAllMovesNormal(target_route[i]))
             nsts &= self.target_neighbors[self.target_neighbors_depth - (i + 1)]
             target_route.append(list(nsts)[0])
         total_route = [target_route[-(i + 1)] for i in range(len(target_route) - 1)] + solved_route
+        return self.route2moves(total_route)
+    
+    def route2moves(self, route: list):
+        """
+        状態のリストから動作のリストを計算
+        """
         tmpst = self.target.copy()
         solve_moves = []
-        for i, j in enumerate(total_route):
+        for i, j in enumerate(route):
             if i == 0:
                 continue
             nstd = tmpst.applyAllMoves()
@@ -876,8 +904,8 @@ def createSolvedNeighborsFile():
 #     "FU", "FD", "FL", "FR", "BU", "BD", "BL", "BR"
 # ]
 
-scrambled_state = randomScramble(13)
+scrambled_state = randomScramble(20)
 print(scrambled_state)
 srch = Search(scrambled_state)
-print(srch.searchWithDat(5))
+print(srch.searchWithDat(6))
 print(srch.getSolveMovesWithDat())
