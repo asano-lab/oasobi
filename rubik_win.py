@@ -4,6 +4,7 @@ import os
 import pickle
 import json
 import random
+import numpy as np
 
 clib = CDLL("./rubik_win.so")
 
@@ -910,7 +911,11 @@ def createSolvedNeighborsFile():
 # print(srch.searchWithDat(6))
 # print(srch.getSolveMovesWithDat())
 
-for _ in range(2):
-    t0 = time.time()
-    createSolvedNeighborsFile()
-    print("%.2f経過" % (time.time() - t0))
+def main():
+    ll = [[1, 2], [3, 4]]
+    arr = np.array(ll, dtype="uint8")
+    print(arr.dtype)
+
+if __name__ == "__main__":
+    main()
+
