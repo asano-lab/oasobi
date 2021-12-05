@@ -3,6 +3,7 @@ import time
 import os
 import pickle
 import json
+import random
 
 clib = CDLL("./rubik_win.so")
 
@@ -303,16 +304,16 @@ moves = {
     )
 }
 
+moves_list = [
+    "U", "D", "L", "R", "F", "B", "U2", "U'", "D2", "D'",
+    "L2", "L'", "R2", "R'", "F2", "F'", "B2", "B'"
+]
+
 # 残りの基本操作を追加
 faces = list(moves.keys())
 for face_name in faces:
     moves[face_name + "2"] = moves[face_name] * 2
     moves[face_name + "'"] = moves[face_name] * 3
-
-faces = [
-    "U", "D", "L", "R", "F", "B", "U2", "U'", "D2", "D'", "L2", "L'",
-    "R2", "R'", "F2", "F'", "B2", "B'"
-]
 
 # 色変換のための操作 (位置と回転のみ)
 # 全23種
@@ -407,6 +408,17 @@ def applyAllMovesNormal(num: int) -> list:
     nc_arr = cull36()
     _applyAllMovesNormal(c_arr, nc_arr)
     return [nc_arr[i] << 60 | nc_arr[i + 1] for i in range(0, 36, 2)]
+
+def randomScramble(n):
+    """
+    指定した回数だけ完成状態からランダムに動かす
+    """
+    st = solved.copy()
+    for _ in range(n):
+        move_name = random.choice(moves_list)
+        print(move_name)
+        st += moves[move_name]
+    return st
 
 class Search:
 
@@ -757,34 +769,25 @@ replace_parts = {}
 for k, v in change_color.items():
     replace_parts[k] = cleateReplaceParts(v)
 
-scramble = "L D2 R U2 L F2 U2 L F2 R2 B2 R U' R' U2 F2 R' D B' F2"
-scramble = scramble.split()
+# scramble = "L D2 R U2 L F2 U2 L F2 R2 B2 R U' R' U2 F2 R' D B' F2"
+# scramble = scramble.split()
 
-scramble_udm = "L' U2 R' D2 L' F2 D2 L' F2 R2 B2 R' D R D2 F2 R U' B F2"
-scramble_udm = scramble_udm.split()
+# scramble_udm = "L' U2 R' D2 L' F2 D2 L' F2 R2 B2 R' D R D2 F2 R U' B F2"
+# scramble_udm = scramble_udm.split()
 
-scrambled_state = solved.toState2()
-for move_name in scramble:
-    scrambled_state += moves[move_name].toState2()
+# scrambled_state = solved.toState2()
+# for move_name in scramble:
+#     scrambled_state += moves[move_name].toState2()
 
-scrambled_state = scrambled_state.toState()
+# scrambled_state = scrambled_state.toState()
 # print(scrambled_state)
 
 # Cで格納するための順番
-cl_list = [
-    "UL", "UR", "UB", "DF", "DL", "DR", "DB",
-    "LU", "LD", "LF", "LB", "RU", "RD", "RF", "RB",
-    "FU", "FD", "FL", "FR", "BU", "BD", "BL", "BR"
-]
+# cl_list = [
+#     "UL", "UR", "UB", "DF", "DL", "DR", "DB",
+#     "LU", "LD", "LF", "LB", "RU", "RD", "RF", "RB",
+#     "FU", "FD", "FL", "FR", "BU", "BD", "BL", "BR"
+# ]
 
-# 10手の最短路を求められるかテスト
-scrambled_state = solved.copy()
-for i, move_name in enumerate(scramble):
-    if i >= 11:
-        break
-    scrambled_state += moves[move_name]
-
-for i in range(10):
-    t0 = time.time()
-    createSolvedNeighborsFile()
-    print("%.2f秒経過" % (time.time() - t0))
+scrambled_state = randomScramble(10)
+print(scrambled_state)
