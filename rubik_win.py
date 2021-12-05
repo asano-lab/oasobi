@@ -407,6 +407,7 @@ class Search:
         self.solved_neighbors_depth = 0
         self.target_neighbors_depth = 0
         self.common_states = set()
+        self.dist = -1
 
     def calcSolvedNeighbors(self, depth):
         """
@@ -423,6 +424,7 @@ class Search:
         """
         for k, v in self.solved_neighbors.items():
             if self.target in v:
+                self.dist = k
                 return k
         return -1
     
@@ -441,8 +443,9 @@ class Search:
             cmns = self.solved_neighbors[self.solved_neighbors_depth] & self.target_neighbors[self.target_neighbors_depth]
             if cmns:
                 self.common_states = cmns
+                self.dist = self.solved_neighbors_depth + self.target_neighbors_depth
                 print(cmns)
-                return self.solved_neighbors_depth + self.target_neighbors_depth
+                return self.dist
         return -1
     
     def calcTargetNeighbors(self, depth: int):
@@ -474,7 +477,13 @@ class Search:
         """
         手数が分かっている前提で, 解く手順を返す
         """
-        pass
+        cmnst = list(self.common_states)
+        solved_route = cmnst[:1]
+        for i in range(self.solved_neighbors_depth):
+            nsts = set(applyAllMovesNormal(solved_route[i]))
+            nsts &= self.solved_neighbors[self.solved_neighbors_depth - (i + 1)]
+            solved_route.append(list(nsts)[0])
+        print(solved_route)
 
 def circularRShiftStr(moji: str, n: int) -> str:
     """
@@ -632,3 +641,4 @@ srch = Search(scrambled_state)
 srch.calcSolvedNeighbors(6)
 print(srch.searchTargetInSolvedNeighbors())
 print(srch.searchTargetBid(5))
+srch.getSolveMoves()
