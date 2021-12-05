@@ -202,8 +202,10 @@ int normalState(u_long *st) {
 int applyAllMovesNormal(const u_long *src, u_long *dsts) {
     // まずは普通に動作適用
     applyAllMoves(src, dsts);
+    // 18状態すべて正規化
     for (int i = 0; i < 36; i += 2) {
-        
+        normalState(dsts + i);
+        printState(dsts + i);
     }
     return 0;
 }
@@ -227,12 +229,10 @@ int main(void) {
     u_long ss[2], sscc[2], aam[36], nss[2];
     ss[0] = SCRAMBLED_STATE_C;
     ss[1] = SCRAMBLED_STATE_E;
-    // ss[0] = SOLVED_C;
-    // ss[1] = SOLVED_E;
+    ss[0] = SOLVED_C;
+    ss[1] = SOLVED_E;
     init();
-    printState(ss);
-    applyAllMoves(ss, aam);
-    normalState(ss);
-    printState(ss);
+    // printState(ss);
+    applyAllMovesNormal(ss, aam);
     return 0;
 }
