@@ -939,14 +939,15 @@ def collectSamples(loop, tnd, shuffle_num):
     if not os.path.exists(fnamew):
         smp_dic = {dist_max - i: set() for i in range(tnd)}
         smp_dic["gt%d" % dist_max] = set()
-        print(smp_dic)
         writeAndBackup(fnamew, smp_dic)
     else:
         with open(fnamew, "rb") as f:
             smp_dic = pickle.load(f)
-        print(smp_dic)
         for k, v in smp_dic.items():
-            print("%s手サンプル数：%d" % (str(k), len(v)))
+            if type(k) is int:
+                print("%2d手サンプル数：%d" % (k, len(v)))
+            else:
+                print("%2d手以上サンプル数：%d" % (dist_max + 1, len(v)))
     # for i in range(loop):
     #     sst = randomScramble(shuffle_num)
     #     srch = Search(sst, SOLVED_NEIGHBOR_DEPTH_MAX)
