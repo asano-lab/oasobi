@@ -40,6 +40,12 @@ EDGE_COLOR = {
     8: "DB", 9: "DR", 10: "DF", 11: "DL"
 }
 
+EDGE_COLOR_INV = {
+    "BL": 0, "BR": 1, "FR": 2, "FL": 3,
+    "UB": 4, "UR": 5, "UF": 6, "UL": 7,
+    "DB": 8, "DR": 9, "DF": 10, "DL": 11
+}
+
 # 色配列への変換法則 (コーナーパーツ)
 CORNER_PO2COLOR = {
     0: ((0, 0), (0, 11), (0, 12)), 1: ((0, 2), (0, 8), (0, 9)),
@@ -361,16 +367,16 @@ def circularRShiftStr(moji: str, n: int) -> str:
     return moji[n:] + moji[:n]
 
 # 色配列を順列・方向の配列に変換
-def colorArray2State(color_array):
+def colorArray2State(color_array: list) -> State:
     cp = [-1] * 8
     co = [-1] * 8
     ep = [-1] * 12
     eo = [-1] * 12
+    # コーナー情報
     for k, v in CORNER_PO2COLOR.items():
         p_colors = ""
         for sub1, sub2 in v:
             p_colors += color_array[sub1][sub2]
-        print(p_colors)
         for i in range(3):
             spc = circularRShiftStr(p_colors, i)
             if spc in CORNER_COLOR_INV:
@@ -379,9 +385,21 @@ def colorArray2State(color_array):
                 break
         else:
             return None
-    print(cp)
-    print(co)
-    pass
+    # エッジ情報
+    for k, v in EDGE_PO2COLOR.items():
+        p_colors = ""
+        for sub1, sub2 in v:
+            p_colors += color_array[sub1][sub2]
+        print(p_colors)
+        for i in range(2):
+            spc = circularRShiftStr(p_colors, i)
+            if spc in EDGE_COLOR_INV:
+                ep[k] = EDGE_COLOR_INV[spc]
+                eo[k] = i
+                break
+        else:
+            return None
+    return State(cp, co, ep, eo)
 
 # 標準入力
 def inputCube():
@@ -486,5 +504,5 @@ cl_list = [
 # 色配列のサンプル
 ca_sample = [['D', 'L', 'U', 'B', 'L', 'R', 'U', 'L', 'L', 'F', 'B', 'L', 'B', 'R', 'R', 'L', 'U', 'L'], ['B', 'U', 'U', 'D', 'F', 'U', 'B', 'R', 'D', 'R', 'B', 'R', 'F', 'L', 'F', 'D', 'D', 'U'], ['U', 'F', 'F', 'U', 'F', 'F', 'D', 'R', 'B', 'D', 'D', 'R', 'D', 'B', 'B', 'F', 'L', 'R']]
 
-colorArray2State(ca_sample)
+print(colorArray2State(ca_sample))
 # print(scrambled_state.makeColorArray())
