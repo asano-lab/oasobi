@@ -538,7 +538,7 @@ class Search:
                     self.common_states = cmns
                     self.common_sub = j
                     self.dist = self.snd_max + self.target_neighbors_depth
-                    print(cmns)
+                    # print(cmns)
                     return self.dist
         return -1
     
@@ -944,27 +944,27 @@ def collectSamples(loop, tnd, shuffle_num):
         smp_dic = {dist_max - i: set() for i in range(tnd)}
         smp_dic[gt_key] = set()
         writeAndBackup(fnamew, smp_dic)
-    else:
-        with open(fnamew, "rb") as f:
-            smp_dic = pickle.load(f)
-        for k, v in smp_dic.items():
-            if type(k) is int:
-                print("%2d手サンプル数：%d" % (k, len(v)))
-            else:
-                print("%2d手以上サンプル数：%d" % (dist_max + 1, len(v)))
-    for i in range(loop):
+    for i in range(5):
         sst = randomScramble(shuffle_num)
         srch = Search(sst, SOLVED_NEIGHBOR_DEPTH_MAX)
         dist = srch.searchWithDat(tnd)
         with open(fnamew, "rb") as f:
             smp_dic = pickle.load(f)
         if dist >= 0:
-            srch.getSolveMovesWithDat()
+            mvs = srch.getSolveMovesWithDat()
+            for mv in mvs:
+                print(mv, end=" ")
+            print()
             route = srch.getRoute()
             for j in range(dist - SOLVED_NEIGHBOR_DEPTH_MAX):
-                smp_dic[dist - j].add(route[i])
+                smp_dic[dist - j].add(route[j])
         else:
             smp_dic[gt_key] = sst.toNumNormal()
+        for k, v in smp_dic.items():
+            if type(k) is int:
+                print("%2d手サンプル数：%d" % (k, len(v)))
+            else:
+                print("%2d手以上サンプル数：%d" % (dist_max + 1, len(v)))
         writeAndBackup(fnamew, smp_dic)
     
 
