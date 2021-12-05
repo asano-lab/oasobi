@@ -500,21 +500,20 @@ class Search:
             target_route.append(list(nsts)[0])
         total_route = [target_route[-(i + 1)] for i in range(len(target_route) - 1)] + solved_route
         tmpst = self.target.copy()
-        solve_actions = []
+        solve_moves = []
         for i, j in enumerate(total_route):
             if i == 0:
                 continue
             nstd = tmpst.applyAllMoves()
             for k, v in nstd.items():
-                v_num = v.toNumNormal()
-                if v_num == j:
-                    solve_actions.append(k)
+                if v.toNumNormal() == j:
+                    solve_moves.append(k)
                     tmpst = v.copy()
                     break
             else:
                 print("なんかおかしい")
                 return []
-        print(solve_actions)
+        return solve_moves
 
 def circularRShiftStr(moji: str, n: int) -> str:
     """
@@ -663,11 +662,11 @@ cl_list = [
 # 10手の最短路を求められるかテスト
 scrambled_state = solved.copy()
 for i, move_name in enumerate(scramble):
-    if i >= 10:
+    if i >= 11:
         break
     scrambled_state += moves[move_name]
 
-scrambled_state = inputState()
+# scrambled_state = inputState()
 print(scrambled_state)
 print(solved.toNum())
 print(normalState(scrambled_state.toNum()))
@@ -675,4 +674,7 @@ srch = Search(scrambled_state)
 srch.calcSolvedNeighbors(6)
 print(srch.searchTargetInSolvedNeighbors())
 print(srch.searchTargetBid(6))
-srch.getSolveMoves()
+sacts = srch.getSolveMoves()
+for i in sacts:
+    print(i, end=" ")
+print()
