@@ -529,7 +529,7 @@ class Search:
             self.target_neighbors_depth = max(self.target_neighbors)
             for j in range(snd_max_sub + 1):
                 fnamer = SN_PATH_FORMAT.format(self.snd_max, j)
-                print(fnamer)
+                # print(fnamer)
                 with open(fnamer, "rb") as f:
                     known_states = pickle.load(f)
                 # 共通部分を計算
@@ -947,7 +947,7 @@ def collectSamples(loop, tnd, shuffle_num):
         writeAndBackup(fnamew, smp_dic)
     with open(fnamew, "rb") as f:
         smp_dic = pickle.load(f)
-    for i in range(5):
+    for i in range(loop):
         print("スクランブル：", end="")
         sst = randomScramble(shuffle_num)
         srch = Search(sst, SOLVED_NEIGHBOR_DEPTH_MAX)
@@ -1014,7 +1014,7 @@ def createNpFiles():
     print("所要時間：%.2f秒" % (time.time() - t0))
 
 def main():
-    collectSamples(10, 5, 12)
+    collectSamples(5, 5, 12)
 
 if __name__ == "__main__":
     main()
