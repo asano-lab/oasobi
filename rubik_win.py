@@ -401,6 +401,7 @@ class Search:
         # 完成状態付近
         self.solved_neighbors = {0: set([solved.toNum()])}
         self.target_neighbors = {}
+        self.solved_neighbors_depth = 0
 
     def calcSolvedNeighbors(self, depth):
         """
@@ -408,15 +409,33 @@ class Search:
         """
         for _ in range(depth):
             self._calcNeighbors(self.solved_neighbors)
+        self.solved_neighbors_depth = max(self.solved_neighbors)
     
     def searchTargetInSolvedNeighbors(self, target: int):
         """
         完成状態の近所にターゲットが含まれているか確認
+        一方向探索
         """
         n_target = normalState(target)
         for k, v in self.solved_neighbors.items():
             if n_target in v:
                 return k
+        return -1
+    
+    def searchTargetBid(self, target, depth):
+        """
+        双方向探索
+        引数にはターゲット側からの探索深さを指定する
+        """
+        dist = self.searchTargetInSolvedNeighbors(target)
+        if dist >= 0:
+            return dist
+        self.target_neighbors = {0: set([normalState(target)])}
+        for i in range(depth):
+            self._calcNeighbors(self.target_neighbors)
+            cmns = self.solved_neighbors[self.solved_neighbors_depth] & self.target_neighbors[i]
+            if cmns:
+                return self.solved_neighbors_depth + i
         return -1
     
     def calcTargetNeighbors(self, target: int, depth: int):
@@ -590,10 +609,10 @@ cl_list = [
 ]
 
 # 10手の最短路を求められるかテスト
-scramble10 = "L D2 R U2 L F2 U2 L F2 R2"
-scramble10 = scramble10.split()
 scrambled_state = solved.copy()
-for move_name in scramble10:
+for i, move_name in enumerate(scramble):
+    if i > 6:
+        break
     scrambled_state += moves[move_name]
 
 print(scrambled_state)
@@ -601,4 +620,4 @@ scrambled_num = scrambled_state.toNum()
 srch = Search()
 srch.calcSolvedNeighbors(5)
 print(srch.searchTargetInSolvedNeighbors(scrambled_num))
-srch.calcTargetNeighbors(scrambled_num, 4)
+print(srch.searchTargetBid(scrambled_num, 5))
