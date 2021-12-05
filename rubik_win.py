@@ -439,8 +439,9 @@ def randomScramble(n: int) -> State:
     st = solved.copy()
     for _ in range(n):
         move_name = random.choice(moves_list)
-        print(move_name)
+        print(move_name, end=" ")
         st += moves[move_name]
+    print()
     return st
 
 class Search:
@@ -518,7 +519,9 @@ class Search:
                 # 見つかったら終了
                 if self.target_num in known_states:
                     self.dist = i
+                    print("発見")
                     return self.dist
+        print("双方向探索開始")
         # ターゲット付近
         self.target_neighbors = {0: set([self.target_num])}
         for _ in range(tnd):
@@ -642,7 +645,7 @@ class Search:
                 fnamer = SN_PATH_FORMAT.format(self.snd_max - (i + 1), j)
                 if not os.path.exists(fnamer):
                     break
-                print(fnamer)
+                # print(fnamer)
                 with open(fnamer, "rb") as f:
                     nsts_cmn = nsts & pickle.load(f)
                 if nsts_cmn:
@@ -935,10 +938,11 @@ def collectSamples(loop, tnd, shuffle_num):
     """
     dist_max = SOLVED_NEIGHBOR_DEPTH_MAX + tnd
     fnamew = SMP_PATH_FORMAT.format(dist_max)
+    gt_key = "gt%d" % dist_max
     # パスが存在しない場合は初期化
     if not os.path.exists(fnamew):
         smp_dic = {dist_max - i: set() for i in range(tnd)}
-        smp_dic["gt%d" % dist_max] = set()
+        smp_dic[gt_key] = set()
         writeAndBackup(fnamew, smp_dic)
     else:
         with open(fnamew, "rb") as f:
@@ -948,20 +952,21 @@ def collectSamples(loop, tnd, shuffle_num):
                 print("%2d手サンプル数：%d" % (k, len(v)))
             else:
                 print("%2d手以上サンプル数：%d" % (dist_max + 1, len(v)))
-    # for i in range(loop):
-    #     sst = randomScramble(shuffle_num)
-    #     srch = Search(sst, SOLVED_NEIGHBOR_DEPTH_MAX)
-    #     dist = srch.searchWithDat(tnd)
-    #     with open(fnamew, "rb") as f:
-    #         smp_dic = pickle.load(f)
-    #     if dist >= 0:
-    #         srch.getSolveMovesWithDat()
-    #         route = srch.getRoute()
-    #         for i in range(dist - SOLVED_NEIGHBOR_DEPTH_MAX):
-    #             smp_dic[dist - i].add(route[i])
-    #     else:
-    #         key = "gt%02d" % dist_max
-    print(fnamew)
+    for i in range(loop):
+        sst = randomScramble(shuffle_num)
+        srch = Search(sst, SOLVED_NEIGHBOR_DEPTH_MAX)
+        dist = srch.searchWithDat(tnd)
+        with open(fnamew, "rb") as f:
+            smp_dic = pickle.load(f)
+        if dist >= 0:
+            srch.getSolveMovesWithDat()
+            route = srch.getRoute()
+            for j in range(dist - SOLVED_NEIGHBOR_DEPTH_MAX):
+                smp_dic[dist - j].add(route[i])
+        else:
+            smp_dic[gt_key] = sst.toNumNormal()
+        writeAndBackup(fnamew, smp_dic)
+    
 
 # scramble = "L D2 R U2 L F2 U2 L F2 R2 B2 R U' R' U2 F2 R' D B' F2"
 # scramble = scramble.split()
@@ -1005,7 +1010,7 @@ def createNpFiles():
     print("所要時間：%.2f秒" % (time.time() - t0))
 
 def main():
-    collectSamples(3, 5, 10)
+    collectSamples(3, 5, 12)
 
 if __name__ == "__main__":
     main()
