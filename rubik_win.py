@@ -467,7 +467,7 @@ def inputState():
                     break
             else:
                 i += 1
-        if i >= 6:
+        if st is None and i >= 6:
             st = colorArray2State(color_array)
     return st
 
