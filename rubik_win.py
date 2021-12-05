@@ -785,4 +785,6 @@ for i, move_name in enumerate(scramble):
     scrambled_state += moves[move_name]
 
 for i in range(3):
+    t0 = time.time()
     createSolvedNeighborsFile()
+    print("%.2f秒経過" % (time.time() - t0))
