@@ -350,7 +350,13 @@ def num2state(num: int) -> State:
     return State(cp, co, ep, eo)
 
 # 色配列を順列・方向の配列に変換
-def colorArray2State():
+def colorArray2State(color_array):
+    for k, v in CORNER_PO2COLOR.items():
+        p_colors = ""
+        for sub1, sub2 in v:
+            p_colors += color_array[sub1][sub2]
+        # print(k, v)
+        print(p_colors)
     pass
 
 # 標準入力
@@ -444,7 +450,7 @@ for move_name in scramble:
     scrambled_state += moves[move_name].toState2()
 
 scrambled_state = scrambled_state.toState()
-# print(scrambled_state)
+print(scrambled_state)
 
 # Cで格納するための順番
 cl_list = [
@@ -453,4 +459,8 @@ cl_list = [
     "FU", "FD", "FL", "FR", "BU", "BD", "BL", "BR"
 ]
 
-print(inputCube())
+# 色配列のサンプル
+ca_sample = [['D', 'L', 'U', 'B', 'L', 'R', 'U', 'L', 'L', 'F', 'B', 'L', 'B', 'R', 'R', 'L', 'U', 'L'], ['B', 'U', 'U', 'D', 'F', 'U', 'B', 'R', 'D', 'R', 'B', 'R', 'F', 'L', 'F', 'D', 'D', 'U'], ['U', 'F', 'F', 'U', 'F', 'F', 'D', 'R', 'B', 'D', 'D', 'R', 'D', 'B', 'B', 'F', 'L', 'R']]
+
+colorArray2State(ca_sample)
+# print(scrambled_state.makeColorArray())
