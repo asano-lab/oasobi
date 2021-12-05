@@ -938,5 +938,7 @@ def main():
             np.save(fnamew, arr)
 
 if __name__ == "__main__":
-    main()
-
+    # main()
+    fnamer = NP_SN_PATH_FORMAT.format(5, 0)
+    arr = np.load(fnamer)
+    print(arr.shape)
