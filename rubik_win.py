@@ -27,6 +27,11 @@ CORNER_COLOR = {
     4: "DLB", 5: "DBR", 6: "DRF", 7: "DFL"
 }
 
+CORNER_COLOR_INV = {
+    "UBL": 0, "URB": 1, "UFR": 2, "ULF": 3,
+    "DLB": 4, "DBR": 5, "DRF": 6, "DFL": 7
+}
+
 # 辺のブロックの色, 各2色
 # 基準面の色が先頭
 EDGE_COLOR = {
@@ -464,3 +469,5 @@ ca_sample = [['D', 'L', 'U', 'B', 'L', 'R', 'U', 'L', 'L', 'F', 'B', 'L', 'B', '
 
 colorArray2State(ca_sample)
 # print(scrambled_state.makeColorArray())
+
+print(str(i for i in "ABC"))
