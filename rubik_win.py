@@ -117,6 +117,10 @@ class State():
             s_num = (s_num << 4) | self.ep[i]
             s_num = (s_num << 1) | self.eo[i]
         return s_num
+    
+    # 数値変換と正規化
+    def toNumNormal(self):
+        return normalState(self.toNum())
 
     # 数値で扱うクラスに変換
     def toState2(self):
@@ -167,6 +171,10 @@ class State():
         nst.cp = [mp[0][i] for i in tmpst.cp]
         nst.ep = [mp[1][i] for i in tmpst.ep]
         return nst
+    
+    # 全動作適用後の状態を辞書で返す
+    def applyAllMoves(self):
+        return {k: self + v for k, v in moves.items()}
     
     # 動作の適用
     # + 演算子を用いる
@@ -476,6 +484,7 @@ class Search:
     def getSolveMoves(self):
         """
         手数が分かっている前提で, 解く手順を返す
+        双方向探索前提
         """
         cmnst = list(self.common_states)
         # まずは辿る状態を求める
@@ -489,8 +498,23 @@ class Search:
             nsts = set(applyAllMovesNormal(target_route[i]))
             nsts &= self.target_neighbors[self.target_neighbors_depth - (i + 1)]
             target_route.append(list(nsts)[0])
-        print(solved_route)
-        print(target_route)
+        total_route = [target_route[-(i + 1)] for i in range(len(target_route) - 1)] + solved_route
+        tmpst = self.target.copy()
+        solve_actions = []
+        for i, j in enumerate(total_route):
+            if i == 0:
+                continue
+            nstd = tmpst.applyAllMoves()
+            for k, v in nstd.items():
+                v_num = v.toNumNormal()
+                if v_num == j:
+                    solve_actions.append(k)
+                    tmpst = v.copy()
+                    break
+            else:
+                print("なんかおかしい")
+                return []
+        print(solve_actions)
 
 def circularRShiftStr(moji: str, n: int) -> str:
     """
