@@ -978,25 +978,12 @@ def collectSamples(loop, tnd, shuffle_num):
 # scramble_udm = "L' U2 R' D2 L' F2 D2 L' F2 R2 B2 R' D R D2 F2 R U' B F2"
 # scramble_udm = scramble_udm.split()
 
-# scrambled_state = solved.toState2()
-# for move_name in scramble:
-#     scrambled_state += moves[move_name].toState2()
-
-# scrambled_state = scrambled_state.toState()
-# print(scrambled_state)
-
 # Cで格納するための順番
 # cl_list = [
 #     "UL", "UR", "UB", "DF", "DL", "DR", "DB",
 #     "LU", "LD", "LF", "LB", "RU", "RD", "RF", "RB",
 #     "FU", "FD", "FL", "FR", "BU", "BD", "BL", "BR"
 # ]
-
-# scrambled_state = randomScramble(20)
-# print(scrambled_state)
-# srch = Search(scrambled_state)
-# print(srch.searchWithDat(6))
-# print(srch.getSolveMovesWithDat())
 
 def createNpFiles():
     t0 = time.time()
@@ -1035,13 +1022,10 @@ def createSampleNpFiles(dist_max):
 
 
 def main():
-    # collectSamples(5, 5, 12)
-    # collectSamples(1000, 6, 20)
-    # createSampleNpFiles(14)
-    # a = np.load("./np_dat/sample014_015ijou.npy")
-    a = np.load("./np_dat/act008_000.npy")
-    print(a)
-    print(a.shape)
+    for _ in range(10):
+        t0 = time.time()
+        createSolvedNeighborsFile()
+        print("%.2f秒経過" % (time.time() - t0))
 
 if __name__ == "__main__":
     main()
