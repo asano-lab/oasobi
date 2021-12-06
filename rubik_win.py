@@ -1022,7 +1022,7 @@ def createSampleNpFiles(dist_max):
 
 
 def main():
-    for _ in range(10):
+    for _ in range(1):
         t0 = time.time()
         createSolvedNeighborsFile()
         print("%.2f秒経過" % (time.time() - t0))
