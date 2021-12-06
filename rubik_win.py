@@ -947,29 +947,32 @@ def collectSamples(loop, tnd, shuffle_num):
         writeAndBackup(fnamew, smp_dic)
     with open(fnamew, "rb") as f:
         smp_dic = pickle.load(f)
-    for i in range(loop):
-        print("スクランブル：", end="")
-        sst = randomScramble(shuffle_num)
-        srch = Search(sst, SOLVED_NEIGHBOR_DEPTH_MAX)
-        dist = srch.searchWithDat(tnd)
-        if dist >= 0:
-            print("最短%2d手：" % dist, end="")
-            mvs = srch.getSolveMovesWithDat()
-            for mv in mvs:
-                print(mv, end=" ")
-            print()
-            route = srch.getRoute()
-            for j in range(dist - SOLVED_NEIGHBOR_DEPTH_MAX):
-                smp_dic[dist - j].add(route[j])
-        else:
-            print("%2d手以上" % dist_max)
-            smp_dic[gt_key].add(sst.toNumNormal())
-        for k, v in smp_dic.items():
-            if type(k) is int:
-                print("%2d手サンプル数：%d" % (k, len(v)))
+    try:
+        for i in range(loop):
+            print("スクランブル：", end="")
+            sst = randomScramble(shuffle_num)
+            srch = Search(sst, SOLVED_NEIGHBOR_DEPTH_MAX)
+            dist = srch.searchWithDat(tnd)
+            if dist >= 0:
+                print("最短%2d手：" % dist, end="")
+                mvs = srch.getSolveMovesWithDat()
+                for mv in mvs:
+                    print(mv, end=" ")
+                print()
+                route = srch.getRoute()
+                for j in range(dist - SOLVED_NEIGHBOR_DEPTH_MAX):
+                    smp_dic[dist - j].add(route[j])
             else:
-                print("%2d手以上サンプル数：%d" % (dist_max + 1, len(v)))
-        writeAndBackup(fnamew, smp_dic)
+                print("%2d手以上" % (dist_max + 1))
+                smp_dic[gt_key].add(sst.toNumNormal())
+            for k, v in smp_dic.items():
+                if type(k) is int:
+                    print("%2d手サンプル数：%d" % (k, len(v)))
+                else:
+                    print("%2d手以上サンプル数：%d" % (dist_max + 1, len(v)))
+            writeAndBackup(fnamew, smp_dic)
+    except KeyboardInterrupt:
+        print("強制終了")
     
 
 # scramble = "L D2 R U2 L F2 U2 L F2 R2 B2 R U' R' U2 F2 R' D B' F2"
