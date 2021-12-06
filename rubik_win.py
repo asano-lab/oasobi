@@ -1022,10 +1022,11 @@ def createSampleNpFiles(dist_max):
 
 
 def main():
-    for _ in range(1):
-        t0 = time.time()
-        createSolvedNeighborsFile()
-        print("%.2f秒経過" % (time.time() - t0))
+    collectSamples(1000, 6, 19)
+    # for _ in range(1):
+    #     t0 = time.time()
+    #     createSolvedNeighborsFile()
+    #     print("%.2f秒経過" % (time.time() - t0))
 
 if __name__ == "__main__":
     main()
