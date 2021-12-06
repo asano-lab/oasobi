@@ -1038,7 +1038,9 @@ def main():
     # collectSamples(5, 5, 12)
     # collectSamples(1000, 6, 20)
     # createSampleNpFiles(14)
-    a = np.load("./np_dat/sample014_015ijou.npy")
+    # a = np.load("./np_dat/sample014_015ijou.npy")
+    a = np.load("./np_dat/act008_000.npy")
+    print(a)
     print(a.shape)
 
 if __name__ == "__main__":
