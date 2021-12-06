@@ -1037,7 +1037,9 @@ def createSampleNpFiles(dist_max):
 def main():
     # collectSamples(5, 5, 12)
     # collectSamples(1000, 6, 20)
-    createSampleNpFiles(14)
+    # createSampleNpFiles(14)
+    a = np.load("./np_dat/sample014_015ijou.npy")
+    print(a.shape)
 
 if __name__ == "__main__":
     main()
