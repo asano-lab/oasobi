@@ -1018,14 +1018,21 @@ def createSampleNpFiles(dist_max):
     サンプル辞書からnp配列ファイルを作る.
     キーの数だけ作る.
     """
+    smp_np_path_format = "./np_dat/sample{:03d}_{:03d}.npy".format
     fnamer = SMP_PATH_FORMAT.format(dist_max)
     if not os.path.exists(fnamer):
         return
     with open(fnamer, "rb") as f:
         smp_dic = pickle.load(f)
-    # print(smp_dic)
-    print(smp_dic[10])
-    pass
+    for k, v in smp_dic.items():
+        arr = set2nparray(v)
+        if type(k) is int:
+            fnamew = smp_np_path_format(dist_max, k)
+        else:
+            fnamew = "./np_dat/sample{:03d}_{:03d}ijou.npy".format(dist_max, dist_max + 1)
+        print(k, arr.shape)
+        np.save(fnamew, arr)
+
 
 def main():
     # collectSamples(5, 5, 12)
