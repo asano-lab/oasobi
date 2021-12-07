@@ -604,7 +604,7 @@ class Search:
         print("%d手以上%d手未満を探索" % (self.snd_max, self.snd_max + tnd))
         cmns_dic = {k: [] for k in self.target_neighbors}
         snd_max_sub = -1
-        min_depth = tnd - 1
+        upper_bound = tnd
         for i in range(LOOP_MAX):
             fnamer = SN_PATH_FORMAT.format(self.snd_max, i)
             if not os.path.exists(fnamer):
@@ -613,22 +613,22 @@ class Search:
             with open(fnamer, "rb") as f:
                 known_states = pickle.load(f)
             # 各集合との共通部分を計算 (和はリストが速い(?))
-            for k in range(min_depth + 1):
+            for k in range(upper_bound):
                 v = self.target_neighbors[k]
                 cmns = list(known_states & v)
-                if cmns and k < min_depth:
+                if cmns and k < upper_bound:
                     print("%d手以下確定" % self.snd_max + k)
-                    min_depth = k
+                    upper_bound = k + 1
                 cmns_dic[k] += cmns
-                if min_depth == 0:
+                if upper_bound == 1:
                     print("打ち切り")
                     break
         # 全共通部分を取得後, 最も近いものを確認
-        cmns = cmns_dic[min_depth]
+        cmns = cmns_dic[upper_bound - 1]
         if cmns:
             self.common_states = set(cmns)
-            self.dist = self.snd_max + i
-            self.target_neighbors_depth = i
+            self.dist = self.snd_max + upper_bound - 1
+            self.target_neighbors_depth = upper_bound - 1
             print(cmns)
             print(self.dist)
             return self.dist
