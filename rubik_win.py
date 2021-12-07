@@ -611,7 +611,7 @@ class Search:
             if not os.path.exists(fnamer):
                 break
             snd_max_sub = i
-            print(fnamer)
+            # print(fnamer)
             with open(fnamer, "rb") as f:
                 known_states = pickle.load(f)
             # 各集合との共通部分を計算 (和はリストが速い(?))
@@ -641,7 +641,7 @@ class Search:
                 # 全最深ファイルを確認
                 for i in range(snd_max_sub + 1):
                     fnamer = SN_PATH_FORMAT.format(self.snd_max, i)
-                    print(fnamer)
+                    # print(fnamer)
                     with open(fnamer, "rb") as f:
                         known_states = pickle.load(f)
                     cmns = known_states & nsts
@@ -1146,7 +1146,7 @@ def createSampleNpFiles(dist_max):
 
 
 def main():
-    collectSamples(3, 7, 16, True)
+    collectSamples(5, 7, 15, True)
     # srch = Search(scrambled_state)
     # srch.searchWithDat2(6)
     # print(srch.getSolveMovesWithDat())
