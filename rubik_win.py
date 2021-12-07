@@ -604,36 +604,45 @@ class Search:
         print("%d手以上%d手未満を探索" % (self.snd_max, self.snd_max + tnd))
         cmns_dic = {k: [] for k in self.target_neighbors}
         snd_max_sub = -1
+        min_depth = tnd - 1
         for i in range(LOOP_MAX):
             fnamer = SN_PATH_FORMAT.format(self.snd_max, i)
             if not os.path.exists(fnamer):
                 break
             snd_max_sub = i
-            # print(fnamer)
             with open(fnamer, "rb") as f:
                 known_states = pickle.load(f)
             # 各集合との共通部分を計算 (和はリストが速い(?))
-            for k, v in self.target_neighbors.items():
-                cmns_dic[k] += list(known_states & v)
-        # 全共通部分を取得後, 浅い要素から確認
-        for i in range(tnd):
-            cmns = cmns_dic[i]
-            if cmns:
-                self.common_states = set(cmns)
-                self.dist = self.snd_max + i
-                self.target_neighbors_depth = i
-                print(cmns)
-                print(self.dist)
-                return self.dist
+            for k in range(min_depth + 1):
+                v = self.target_neighbors[k]
+                cmns = list(known_states & v)
+                if cmns and k < min_depth:
+                    print("%d手以下確定" % self.snd_max + k)
+                    min_depth = k
+                cmns_dic[k] += cmns
+                if min_depth == 0:
+                    print("打ち切り")
+                    break
+        # 全共通部分を取得後, 最も近いものを確認
+        cmns = cmns_dic[min_depth]
+        if cmns:
+            self.common_states = set(cmns)
+            self.dist = self.snd_max + i
+            self.target_neighbors_depth = i
+            print(cmns)
+            print(self.dist)
+            return self.dist
+        del cmns_dic
         # 最深探索
         print("%d手を探索" % (self.snd_max + tnd))
         count = 0
         nsts = []
+        t0 = time.time()
+        count_max = len(self.target_neighbors[tnd - 1])
         for st_num in self.target_neighbors[tnd - 1]:
             nsts += applyAllMovesNormal(st_num)
             count += 1
-            if (count % self.SUBSET_MAX) == 0:
-                print("%dループ目" % count)
+            if (count % self.SUBSET_MAX) == 0 or count == count_max:
                 # 集合変換
                 nsts = set(nsts)
                 # 全最深ファイルを確認
@@ -653,6 +662,11 @@ class Search:
                         return self.dist
                 # 初期化
                 nsts = []
+                print("%d / %d 完了" % (count, count_max))
+                delta_t = int(time.time() - t0)
+                print("経過時間：%02d分%02d秒" % (delta_t // 60, delta_t % 60))
+        # あまりチェック
+        print(nsts)
         return -1
     
     def calcTargetNeighbors(self, depth: int):
@@ -664,9 +678,8 @@ class Search:
 
     def _calcNeighbors(self, neighbor_dic: dict):
         """
-        メインの探索
+        通常の探索.
         """
-        t0 = time.time()
         depth = max(neighbor_dic)
         print("深さ%dの探索" % (depth + 1))
         nsts = []
@@ -678,7 +691,6 @@ class Search:
             nsts -= past_sts
         print("新状態数（重複なし）：%d" % len(nsts))
         neighbor_dic[depth + 1] = nsts
-        print("所要時間：%6.2f秒" % (time.time() - t0))
     
     def getRoute(self):
         """
