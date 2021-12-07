@@ -202,8 +202,8 @@ int applyAllMovesNormal(const u_long *src, u_long *dsts) {
     // まずは普通に動作適用
     applyAllMoves(src, dsts);
     // 18状態すべて正規化
-    for (int i = 0; i < 36; i += 2) {
-        normalState(dsts + i);
+    for (int i = 0; i < 18; i++) {
+        normalState(dsts + i * 2);
     }
     return 0;
 }
@@ -231,8 +231,12 @@ int main(void) {
     // ss[1] = SOLVED_E;
     init();
     printState(ss);
-    // applyAllMovesNormal(ss, aam);
-    normalState(ss);
+    applyAllMovesNormal(ss, aam);
+    for (int i = 0; i < 36; i += 2) {
+        printState(aam + i);
+    }
+    // normalState(ss);
     printState(ss);
+    puts("あ");
     return 0;
 }
