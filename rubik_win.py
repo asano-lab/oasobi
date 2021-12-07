@@ -445,6 +445,7 @@ def randomScramble(n: int) -> State:
     return st
 
 class Search:
+    SUBSET_MAX = 100000
 
     def __init__(self, target: State, snd_max=8):
         self.target = target.copy()
@@ -588,12 +589,33 @@ class Search:
         for i in range(tnd):
             cmns = cmns_dic[i]
             if cmns:
-                self.common_states = cmns
-                self.common_sub = i
+                self.common_states = set(cmns)
                 self.dist = self.snd_max + i
                 print(cmns)
                 print(self.dist)
                 return self.dist
+        # 最深探索
+        count = 0
+        nsts = []
+        for st_num in self.target_neighbors[tnd - 1]:
+            nsts += applyAllMovesNormal(st_num)
+            count += 1
+            if (count % self.SUBSET_MAX) == 0:
+                # 全最深ファイルを確認
+                for i in range(snd_max_sub + 1):
+                    print(fnamer)
+                    with open(fnamer, "rb") as f:
+                        known_states = pickle.load(f)
+                    cmns = known_states & set(nsts)
+                    if cmns:
+                        self.common_states = cmns
+                        self.common_sub = i
+                        self.dist = self.snd_max + tnd
+                        print(cmns)
+                        print(self.dist)
+                        return self.dist
+                # 初期化
+                nsts = []
         return -1
     
     def calcTargetNeighbors(self, depth: int):
@@ -1078,9 +1100,11 @@ def createSampleNpFiles(dist_max):
 
 
 def main():
-    scrambled_state = randomScramble(15)
+    scrambled_state = randomScramble(18)
+    print(scrambled_state)
     srch = Search(scrambled_state)
     srch.searchWithDat2(6)
+    print(srch.getSolveMovesWithDat())
     # collectSamples(1000, 6, 19)
     # for _ in range(1):
     #     t0 = time.time()
