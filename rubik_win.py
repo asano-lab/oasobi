@@ -626,8 +626,8 @@ class Search:
                 print("打ち切り")
                 break
         # 全共通部分を取得後, 最も近いものを確認
-        cmns = cmns_dic[min_depth]
-        if cmns:
+        if min_depth in cmns_dic:
+            cmns = cmns_dic[min_depth]
             self.common_states = set(cmns)
             self.dist = self.snd_max + min_depth
             self.target_neighbors_depth = min_depth
@@ -1165,7 +1165,7 @@ def createSampleNpFiles(dist_max):
 
 
 def main():
-    collectSamples(100, 7, 0, 100)
+    collectSamples(1000, 7, 0, 100)
     # srch = Search(scrambled_state)
     # srch.searchWithDat2(6)
     # print(srch.getSolveMovesWithDat())
