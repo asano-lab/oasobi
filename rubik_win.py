@@ -582,7 +582,6 @@ class Search:
         最後の深さを探索する場合は部分集合で確認していく.
         手数が少ない状態の探索にはかえって効率が悪い?
         """
-        t0 = time.time()
         # まずは最後の深さの直前まで探索
         while max(self.target_neighbors) < tnd - 1:
             self._calcNeighbors(self.target_neighbors)
@@ -593,7 +592,6 @@ class Search:
                 fnamer = SN_PATH_FORMAT.format(i, j)
                 if not os.path.exists(fnamer):
                     break
-                print(fnamer)
                 with open(fnamer, "rb") as f:
                     known_states = pickle.load(f)
                 # 見つかったら終了
@@ -655,7 +653,6 @@ class Search:
                         return self.dist
                 # 初期化
                 nsts = []
-        print("所要時間：%.2f秒" % (time.time() - t0))
         return -1
     
     def calcTargetNeighbors(self, depth: int):
@@ -1048,7 +1045,7 @@ def writeAndBackup(fnamew, obj):
     with open(fnamew, "wb") as f:
         pickle.dump(obj, f)
 
-def collectSamples(loop, tnd, shuffle_num, dep=False):
+def collectSamples(loop, tnd, mode=0, shuffle_num=20):
     """
     サンプル収集用関数.
     """
@@ -1064,13 +1061,20 @@ def collectSamples(loop, tnd, shuffle_num, dep=False):
     with open(fnamew, "rb") as f:
         smp_dic = pickle.load(f)
     try:
-        for i in range(loop):
-            if dep:
+        for _ in range(loop):
+            t0 = time.time()
+            if mode == 0:
+                print("通常スクランブル：", end="")
+                sst = randomScramble(shuffle_num)
+            elif mode == 1:
                 print("冗長排除スクランブル：", end="")
                 sst = randomScrambleDependent(shuffle_num)
             else:
-                print("通常スクランブル：", end="")
-                sst = randomScramble(shuffle_num)
+                print("手入力")
+                sst = inputState()
+                if sst == None:
+                    break
+            print(sst)
             srch = Search(sst, SOLVED_NEIGHBOR_DEPTH_MAX)
             # dist = srch.searchWithDat(tnd)
             dist = srch.searchWithDat2(tnd)
@@ -1092,6 +1096,7 @@ def collectSamples(loop, tnd, shuffle_num, dep=False):
                 else:
                     print("%2d手以上サンプル数：%d" % (dist_max + 1, len(v)))
             writeAndBackup(fnamew, smp_dic)
+            print("所要時間：%.2f秒" % (time.time() - t0))
     except KeyboardInterrupt:
         print("強制終了")
     
@@ -1146,7 +1151,7 @@ def createSampleNpFiles(dist_max):
 
 
 def main():
-    collectSamples(5, 7, 15, True)
+    collectSamples(1, 7, 2, 20)
     # srch = Search(scrambled_state)
     # srch.searchWithDat2(6)
     # print(srch.getSolveMovesWithDat())
