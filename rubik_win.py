@@ -549,11 +549,11 @@ class Search:
         逆探索の深さ.
         ファイルを読み込む回数をできるだけ減らしたい.
         最後の深さを探索する場合は部分集合で確認していく.
+        手数が少ない状態の探索にはかえって効率が悪い?
         """
         # まずは最後の深さの直前まで探索
         while max(self.target_neighbors) < tnd - 1:
             self._calcNeighbors(self.target_neighbors)
-        snd_max_sub = -1
         print("%d手以下を探索" % (self.snd_max - 1))
         # 最深以外はターゲットのみを見る
         for i in range(self.snd_max):
@@ -561,7 +561,6 @@ class Search:
                 fnamer = SN_PATH_FORMAT.format(i, j)
                 if not os.path.exists(fnamer):
                     break
-                snd_max_sub = j
                 print(fnamer)
                 with open(fnamer, "rb") as f:
                     known_states = pickle.load(f)
@@ -572,23 +571,27 @@ class Search:
                     return self.dist
         # 最深部探索
         print("%d手以上を探索" % self.snd_max)
-        for i in range(snd_max_sub + 1):
-            fnamer = SN_PATH_FORMAT.format(self.snd_max, j)
+        cmns_dic = {k: set() for k in self.target_neighbors}
+        for i in range(LOOP_MAX):
+            fnamer = SN_PATH_FORMAT.format(self.snd_max, i)
+            if not os.path.exists(fnamer):
+                break
             print(fnamer)
             with open(fnamer, "rb") as f:
                 known_states = pickle.load(f)
             # 各集合との共通部分を計算
-            cmns_dic = {k: known_states & v for k, v in self.target_neighbors.items()}
-            # 浅い要素から確認
-            for j in range(tnd):
-                cmns = cmns_dic[j]
-                if cmns:
-                    self.common_states = cmns
-                    self.common_sub = j
-                    self.dist = self.snd_max + j
-                    print(cmns)
-                    print(self.dist)
-                    return self.dist
+            for k, v in self.target_neighbors.items():
+                cmns_dic[k] |= known_states & v
+        # 全共通部分を取得後, 浅い要素から確認
+        for i in range(tnd):
+            cmns = cmns_dic[i]
+            if cmns:
+                self.common_states = cmns
+                self.common_sub = i
+                self.dist = self.snd_max + i
+                print(cmns)
+                print(self.dist)
+                return self.dist
         return -1
     
     def calcTargetNeighbors(self, depth: int):
