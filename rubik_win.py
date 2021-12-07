@@ -571,17 +571,19 @@ class Search:
                     return self.dist
         # 最深部探索
         print("%d手以上を探索" % self.snd_max)
-        cmns_dic = {k: set() for k in self.target_neighbors}
+        cmns_dic = {k: [] for k in self.target_neighbors}
+        snd_max_sub = -1
         for i in range(LOOP_MAX):
             fnamer = SN_PATH_FORMAT.format(self.snd_max, i)
             if not os.path.exists(fnamer):
                 break
+            snd_max_sub = i
             print(fnamer)
             with open(fnamer, "rb") as f:
                 known_states = pickle.load(f)
-            # 各集合との共通部分を計算
+            # 各集合との共通部分を計算 (和はリストが速い(?))
             for k, v in self.target_neighbors.items():
-                cmns_dic[k] |= known_states & v
+                cmns_dic[k] += list(known_states & v)
         # 全共通部分を取得後, 浅い要素から確認
         for i in range(tnd):
             cmns = cmns_dic[i]
