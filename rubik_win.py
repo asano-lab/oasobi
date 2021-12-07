@@ -1025,11 +1025,22 @@ def createSampleNpFiles(dist_max):
 
 
 def main():
-    collectSamples(1000, 6, 19)
+    # collectSamples(1000, 6, 19)
     # for _ in range(1):
     #     t0 = time.time()
     #     createSolvedNeighborsFile()
     #     print("%.2f秒経過" % (time.time() - t0))
+    t0 = time.time()
+    for i in range(LOOP_MAX):
+        fnamer = SN_PATH_FORMAT.format(9, i)
+        if not os.path.exists(fnamer):
+            break
+        print(fnamer)
+        f = open(fnamer, "rb")
+        sts = pickle.load(f)
+        f.close()
+        print(len(sts))
+    print("{:.2f}秒".format(time.time() - t0))
 
 if __name__ == "__main__":
     main()
