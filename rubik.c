@@ -106,7 +106,7 @@ int applyMove(const u_long *s1, const u_long *s2, u_long *ns) {
 // 全18種の動作の適用
 // dstsには長さ36のu_long配列を与える
 int applyAllMoves(const u_long *src, u_long *dsts) {
-    for (int i = 0; i <= 36; i += 2) {
+    for (int i = 0; i < 36; i += 2) {
         applyMove(src, MOVES + i, dsts + i);
     }
     return 0;
