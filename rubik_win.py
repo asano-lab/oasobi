@@ -1151,7 +1151,7 @@ def createSampleNpFiles(dist_max):
 
 
 def main():
-    collectSamples(1, 7, 2, 20)
+    # collectSamples(1, 7, 2, 20)
     # srch = Search(scrambled_state)
     # srch.searchWithDat2(6)
     # print(srch.getSolveMovesWithDat())
@@ -1171,6 +1171,7 @@ def main():
     #     f.close()
     #     print(len(sts))
     # print("{:.2f}秒".format(time.time() - t0))
+    pass
 
 if __name__ == "__main__":
     main()
