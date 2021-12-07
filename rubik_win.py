@@ -1165,7 +1165,7 @@ def createSampleNpFiles(dist_max):
 
 
 def main():
-    collectSamples(100, 6, 1, 14)
+    collectSamples(1, 6, 1, 13)
     # srch = Search(scrambled_state)
     # srch.searchWithDat2(6)
     # print(srch.getSolveMovesWithDat())
