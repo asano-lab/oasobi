@@ -111,13 +111,14 @@ LOOP_MAX = 2000
 
 DIR_PATH = "./dat2/"
 NP_DIR_PATH = "./np_dat/"
+SMP_DIR_PATH = "./samples/"
 
 SN_PATH_FORMAT = DIR_PATH + "act{:03d}_{:03d}.pickle"
 NP_SN_PATH_FORMAT = NP_DIR_PATH + "act{:03d}_{:03d}.npy"
 
 # サンプルファイルフォーマット
 # 数値は判定できる最大手数
-SMP_PATH_FORMAT = "./samples/sample{:03d}.pickle"
+SMP_PATH_FORMAT = SMP_DIR_PATH + "sample{:03d}.pickle"
 
 # 資料通りのクラス
 class State():
@@ -1054,6 +1055,9 @@ def collectSamples(loop, tnd, mode=0, shuffle_num=20):
     gt_key = "gt%d" % dist_max
     # パスが存在しない場合は初期化
     if not os.path.exists(fnamew):
+        if not os.path.isdir(SMP_DIR_PATH):
+            os.mkdir(SMP_DIR_PATH)
+            print("ディレクトリ%sを作成" % SMP_DIR_PATH)
         smp_dic = {dist_max - i: set() for i in range(tnd)}
         smp_dic[gt_key] = set()
         print(fnamew + "を作成")
@@ -1151,7 +1155,7 @@ def createSampleNpFiles(dist_max):
 
 
 def main():
-    # collectSamples(1, 7, 2, 20)
+    collectSamples(1, 7, 1, 14)
     # srch = Search(scrambled_state)
     # srch.searchWithDat2(6)
     # print(srch.getSolveMovesWithDat())
@@ -1160,17 +1164,6 @@ def main():
     #     t0 = time.time()
     #     createSolvedNeighborsFile()
     #     print("%.2f秒経過" % (time.time() - t0))
-    t0 = time.time()
-    for i in range(LOOP_MAX):
-        fnamer = SN_PATH_FORMAT.format(9, i)
-        if not os.path.exists(fnamer):
-            break
-        print(fnamer)
-        f = open(fnamer, "rb")
-        sts = pickle.load(f)
-        f.close()
-        print(len(sts))
-    print("{:.2f}秒".format(time.time() - t0))
     pass
 
 if __name__ == "__main__":
