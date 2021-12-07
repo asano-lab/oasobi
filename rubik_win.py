@@ -498,11 +498,11 @@ class Search:
                 self.dist = self.solved_neighbors_depth + self.target_neighbors_depth
                 return self.dist
         return -1
-        
+
     def searchWithDat(self, tnd: int):
         """
         完成状態近傍はファイルに保存されているものとして探索
-        引数は完成状態近傍の深さ
+        引数は逆探索の深さ
         """
         snd_max_sub = -1
         print("%d手以内を探索" % self.snd_max)
@@ -540,6 +540,54 @@ class Search:
                     self.dist = self.snd_max + self.target_neighbors_depth
                     # print(cmns)
                     # print(self.dist)
+                    return self.dist
+        return -1
+        
+    def searchWithDat2(self, tnd: int):
+        """
+        完成状態近傍はファイルに保存されているものとして探索.
+        逆探索の深さ.
+        ファイルを読み込む回数をできるだけ減らしたい.
+        最後の深さを探索する場合は部分集合で確認していく.
+        """
+        # まずは最後の深さの直前まで探索
+        while max(self.target_neighbors) < tnd - 1:
+            self._calcNeighbors(self.target_neighbors)
+        snd_max_sub = -1
+        print("%d手以下を探索" % (self.snd_max - 1))
+        # 最深以外はターゲットのみを見る
+        for i in range(self.snd_max):
+            for j in range(LOOP_MAX):
+                fnamer = SN_PATH_FORMAT.format(i, j)
+                if not os.path.exists(fnamer):
+                    break
+                snd_max_sub = j
+                print(fnamer)
+                with open(fnamer, "rb") as f:
+                    known_states = pickle.load(f)
+                # 見つかったら終了
+                if self.target_num in known_states:
+                    self.dist = i
+                    print("発見")
+                    return self.dist
+        # 最深部探索
+        print("%d手以上を探索" % self.snd_max)
+        for i in range(snd_max_sub + 1):
+            fnamer = SN_PATH_FORMAT.format(self.snd_max, j)
+            print(fnamer)
+            with open(fnamer, "rb") as f:
+                known_states = pickle.load(f)
+            # 各集合との共通部分を計算
+            cmns_dic = {k: known_states & v for k, v in self.target_neighbors.items()}
+            # 浅い要素から確認
+            for j in range(tnd):
+                cmns = cmns_dic[j]
+                if cmns:
+                    self.common_states = cmns
+                    self.common_sub = j
+                    self.dist = self.snd_max + j
+                    print(cmns)
+                    print(self.dist)
                     return self.dist
         return -1
     
@@ -1025,22 +1073,25 @@ def createSampleNpFiles(dist_max):
 
 
 def main():
+    scrambled_state = randomScramble(15)
+    srch = Search(scrambled_state)
+    srch.searchWithDat2(6)
     # collectSamples(1000, 6, 19)
     # for _ in range(1):
     #     t0 = time.time()
     #     createSolvedNeighborsFile()
     #     print("%.2f秒経過" % (time.time() - t0))
-    t0 = time.time()
-    for i in range(LOOP_MAX):
-        fnamer = SN_PATH_FORMAT.format(9, i)
-        if not os.path.exists(fnamer):
-            break
-        print(fnamer)
-        f = open(fnamer, "rb")
-        sts = pickle.load(f)
-        f.close()
-        print(len(sts))
-    print("{:.2f}秒".format(time.time() - t0))
+    # t0 = time.time()
+    # for i in range(LOOP_MAX):
+    #     fnamer = SN_PATH_FORMAT.format(9, i)
+    #     if not os.path.exists(fnamer):
+    #         break
+    #     print(fnamer)
+    #     f = open(fnamer, "rb")
+    #     sts = pickle.load(f)
+    #     f.close()
+    #     print(len(sts))
+    # print("{:.2f}秒".format(time.time() - t0))
 
 if __name__ == "__main__":
     main()
