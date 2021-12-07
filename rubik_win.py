@@ -104,7 +104,8 @@ MIRROR_POS = {
 
 ST_LEN_MAX = 1000000
 
-SOLVED_NEIGHBOR_DEPTH_MAX = 8
+# 9にしてみる
+SOLVED_NEIGHBOR_DEPTH_MAX = 9
 
 LOOP_MAX = 2000
 
@@ -474,7 +475,7 @@ def randomScrambleDependent(n: int) -> State:
     return st
 
 class Search:
-    SUBSET_MAX = 100000
+    SUBSET_MAX = 1000000
 
     def __init__(self, target: State, snd_max=8):
         self.target = target.copy()
@@ -1047,7 +1048,7 @@ def writeAndBackup(fnamew, obj):
     with open(fnamew, "wb") as f:
         pickle.dump(obj, f)
 
-def collectSamples(loop, tnd, shuffle_num):
+def collectSamples(loop, tnd, shuffle_num, dep=False):
     """
     サンプル収集用関数.
     """
@@ -1058,15 +1059,21 @@ def collectSamples(loop, tnd, shuffle_num):
     if not os.path.exists(fnamew):
         smp_dic = {dist_max - i: set() for i in range(tnd)}
         smp_dic[gt_key] = set()
+        print(fnamew + "を作成")
         writeAndBackup(fnamew, smp_dic)
     with open(fnamew, "rb") as f:
         smp_dic = pickle.load(f)
     try:
         for i in range(loop):
-            print("スクランブル：", end="")
-            sst = randomScramble(shuffle_num)
+            if dep:
+                print("冗長排除スクランブル：", end="")
+                sst = randomScrambleDependent(shuffle_num)
+            else:
+                print("通常スクランブル：", end="")
+                sst = randomScramble(shuffle_num)
             srch = Search(sst, SOLVED_NEIGHBOR_DEPTH_MAX)
-            dist = srch.searchWithDat(tnd)
+            # dist = srch.searchWithDat(tnd)
+            dist = srch.searchWithDat2(tnd)
             if dist >= 0:
                 print("最短%2d手：" % dist, end="")
                 mvs = srch.getSolveMovesWithDat()
@@ -1139,8 +1146,7 @@ def createSampleNpFiles(dist_max):
 
 
 def main():
-    scrambled_state = randomScrambleDependent(18)
-    print(scrambled_state)
+    collectSamples(3, 7, 16, True)
     # srch = Search(scrambled_state)
     # srch.searchWithDat2(6)
     # print(srch.getSolveMovesWithDat())
