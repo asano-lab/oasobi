@@ -622,9 +622,9 @@ class Search:
                     min_depth = k
                     loop = k + 1
                 cmns_dic[k] += cmns
-                if min_depth == 0:
-                    print("打ち切り")
-                    break
+            if min_depth == 0:
+                print("打ち切り")
+                break
         # 全共通部分を取得後, 最も近いものを確認
         cmns = cmns_dic[min_depth]
         if cmns:
@@ -1165,7 +1165,7 @@ def createSampleNpFiles(dist_max):
 
 
 def main():
-    collectSamples(1, 6, 1, 13)
+    collectSamples(1, 6, 1, 9)
     # srch = Search(scrambled_state)
     # srch.searchWithDat2(6)
     # print(srch.getSolveMovesWithDat())
