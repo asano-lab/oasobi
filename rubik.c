@@ -229,6 +229,7 @@ int main(void) {
     init();
     printState(ss);
 
-    applyAllMovesNormal(ss, aam);
+    // applyAllMovesNormal(ss, aam);
+    applyAllMoves(ss, aam);
     return 0;
 }
