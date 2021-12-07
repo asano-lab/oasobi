@@ -444,6 +444,35 @@ def randomScramble(n: int) -> State:
     print()
     return st
 
+def randomScrambleDependent(n: int) -> State:
+    """
+    依存関係にある動作のみでランダムに動かす.
+    R, R2やR, L, Rなど明らかに冗長なものを排除.
+    """
+    ind_faces = {"U": "D", "D": "U", "R": "L", "L": "R", "F": "B", "B": "F"}
+    st = solved.copy()
+    prev_faces = []
+    count = 0
+    while count < n:
+        # print(prev_faces)
+        move_name = random.choice(moves_list)
+        face = move_name[0]
+        if face in prev_faces:
+            # print(move_name)
+            # print("冗長な動作")
+            continue
+        if len(prev_faces) == 1 and ind_faces[face] == prev_faces[0]:
+            # print(move_name)
+            # print("平行の動作")
+            prev_faces.append(face)
+        else:
+            prev_faces = [face]
+        st += moves[move_name]
+        print(move_name, end=" ")
+        count += 1
+    print()
+    return st
+
 class Search:
     SUBSET_MAX = 100000
 
@@ -552,6 +581,7 @@ class Search:
         最後の深さを探索する場合は部分集合で確認していく.
         手数が少ない状態の探索にはかえって効率が悪い?
         """
+        t0 = time.time()
         # まずは最後の深さの直前まで探索
         while max(self.target_neighbors) < tnd - 1:
             self._calcNeighbors(self.target_neighbors)
@@ -604,13 +634,16 @@ class Search:
             nsts += applyAllMovesNormal(st_num)
             count += 1
             if (count % self.SUBSET_MAX) == 0:
+                print("%dループ目" % count)
+                # 集合変換
+                nsts = set(nsts)
                 # 全最深ファイルを確認
                 for i in range(snd_max_sub + 1):
                     fnamer = SN_PATH_FORMAT.format(self.snd_max, i)
                     print(fnamer)
                     with open(fnamer, "rb") as f:
                         known_states = pickle.load(f)
-                    cmns = known_states & set(nsts)
+                    cmns = known_states & nsts
                     if cmns:
                         self.common_states = cmns
                         self.common_sub = i
@@ -621,6 +654,7 @@ class Search:
                         return self.dist
                 # 初期化
                 nsts = []
+        print("所要時間：%.2f秒" % (time.time() - t0))
         return -1
     
     def calcTargetNeighbors(self, depth: int):
@@ -1105,11 +1139,11 @@ def createSampleNpFiles(dist_max):
 
 
 def main():
-    scrambled_state = randomScramble(18)
+    scrambled_state = randomScrambleDependent(18)
     print(scrambled_state)
-    srch = Search(scrambled_state)
-    srch.searchWithDat2(6)
-    print(srch.getSolveMovesWithDat())
+    # srch = Search(scrambled_state)
+    # srch.searchWithDat2(6)
+    # print(srch.getSolveMovesWithDat())
     # collectSamples(1000, 6, 19)
     # for _ in range(1):
     #     t0 = time.time()
