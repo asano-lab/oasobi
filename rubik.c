@@ -225,7 +225,7 @@ int init(void) {
 
 int main(void) {
     u_long ss[2], sscc[2], nss[2];
-    u_long aam[40] = {};
+    u_long aam[36] = {};
     ss[0] = SCRAMBLED_STATE_C;
     ss[1] = SCRAMBLED_STATE_E;
     ss[0] = SOLVED_C;
@@ -234,11 +234,10 @@ int main(void) {
     init();
     // printState(ss);
     applyAllMovesNormal(ss, aam);
-    for (int i = 0; i < 40; i += 2) {
+    for (int i = 0; i < 36; i += 2) {
         printState(aam + i);
     }
     // normalState(ss);
     printState(ss);
-    puts("あ");
     return 0;
 }
