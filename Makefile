@@ -3,7 +3,7 @@ animal_shogi.exe: animal_shogi.c animal_shogi.h
 fibo.exe: fibo.c
 	gcc fibo.c -o fibo.exe -Wall
 rubik.exe: rubik.c
-	gcc rubik.c -o rubik.exe -Wall
+	gcc rubik.c -o rubik.exe -Wall -fstack-usage
 rubik_win.exe: rubik_win.c
 	gcc rubik_win.c -o rubik_win.exe -Wall
 rubik.so: rubik.c
