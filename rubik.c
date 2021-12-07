@@ -82,7 +82,7 @@ int UDM_CP[8] = {4, 5, 6, 7, 0, 1, 2, 3};
 int UDM_EP[12] = {0, 1, 2, 3, 8, 9, 10, 11, 4, 5, 6, 7};
 
 void printState(const u_long *state) {
-    printf("0x%lx, 0x%lx\n", state[0], state[1]);
+    printf("0x%010lx, 0x%015lx\n", state[0], state[1]);
 }
 
 // 動作の適用
@@ -230,7 +230,9 @@ int main(void) {
     // ss[0] = SOLVED_C;
     // ss[1] = SOLVED_E;
     init();
-    // printState(ss);
-    applyAllMovesNormal(ss, aam);
+    printState(ss);
+    // applyAllMovesNormal(ss, aam);
+    normalState(ss);
+    printState(ss);
     return 0;
 }
