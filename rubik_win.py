@@ -555,7 +555,7 @@ class Search:
         # まずは最後の深さの直前まで探索
         while max(self.target_neighbors) < tnd - 1:
             self._calcNeighbors(self.target_neighbors)
-        print("%d手以下を探索" % (self.snd_max - 1))
+        print("%d手未満を探索" % self.snd_max)
         # 最深以外はターゲットのみを見る
         for i in range(self.snd_max):
             for j in range(LOOP_MAX):
@@ -568,10 +568,11 @@ class Search:
                 # 見つかったら終了
                 if self.target_num in known_states:
                     self.dist = i
+                    self.target_neighbors_depth = 0
                     print("発見")
                     return self.dist
         # 最深部探索
-        print("%d手以上を探索" % self.snd_max)
+        print("%d手以上%d手未満を探索" % (self.snd_max, self.snd_max + tnd))
         cmns_dic = {k: [] for k in self.target_neighbors}
         snd_max_sub = -1
         for i in range(LOOP_MAX):
@@ -591,10 +592,12 @@ class Search:
             if cmns:
                 self.common_states = set(cmns)
                 self.dist = self.snd_max + i
+                self.target_neighbors_depth = i
                 print(cmns)
                 print(self.dist)
                 return self.dist
         # 最深探索
+        print("%d手を探索" % (self.snd_max + tnd))
         count = 0
         nsts = []
         for st_num in self.target_neighbors[tnd - 1]:
@@ -603,6 +606,7 @@ class Search:
             if (count % self.SUBSET_MAX) == 0:
                 # 全最深ファイルを確認
                 for i in range(snd_max_sub + 1):
+                    fnamer = SN_PATH_FORMAT.format(self.snd_max, i)
                     print(fnamer)
                     with open(fnamer, "rb") as f:
                         known_states = pickle.load(f)
@@ -611,6 +615,7 @@ class Search:
                         self.common_states = cmns
                         self.common_sub = i
                         self.dist = self.snd_max + tnd
+                        self.target_neighbors_depth = tnd
                         print(cmns)
                         print(self.dist)
                         return self.dist
