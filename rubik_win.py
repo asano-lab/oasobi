@@ -1168,8 +1168,10 @@ def main():
     fnamer = SMP_PATH_FORMAT.format(16)
     with open(fnamer, "rb") as f:
         smp_dic = pickle.load(f)
+    # smp_dic["gt16"] = set()
     for k, v in smp_dic.items():
         print(k, len(v))
+    # writeAndBackup(fnamer, smp_dic)
     pass
 
 if __name__ == "__main__":
