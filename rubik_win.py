@@ -129,8 +129,7 @@ def oneHot(hot, n):
     """
     one-hotリストを作成して返す.
     """
-    ohl = [int(i == hot) for i in range(n)] + ["#"]
-    return ohl
+    return [int(i == hot) for i in range(n)]
 
 # 資料通りのクラス
 class State():
@@ -1205,4 +1204,4 @@ if __name__ == "__main__":
     # main()
     scs = randomScramble(100)
     print(scs)
-    print(scs.toBinaryList())
+    print(len(scs.toBinaryList()))
