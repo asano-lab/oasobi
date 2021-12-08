@@ -119,6 +119,11 @@ NP_SN_PATH_FORMAT = NP_DIR_PATH + "act{:03d}_{:03d}.npy"
 # 数値は判定できる最大手数
 SMP_PATH_FORMAT = "./samples/sample{:03d}.pickle"
 
+# 秒を時間分秒のタプルで返す
+def s2hms(s):
+    s = int(s)
+    return s // 3600, s % 3600 // 60, s % 60
+
 # 資料通りのクラス
 class State():
 
@@ -1074,14 +1079,15 @@ def collectSamples(loop, tnd, mode=0, shuffle_num=20):
         writeAndBackup(fnamew, smp_dic)
     with open(fnamew, "rb") as f:
         smp_dic = pickle.load(f)
+    t0 = time.time()
     try:
         for _ in range(loop):
-            t0 = time.time()
+            t1 = time.time()
             if mode == 0:
-                print("通常スクランブル：", end="")
+                print("通常スクランブル%d手：" % shuffle_num, end="")
                 sst = randomScramble(shuffle_num)
             elif mode == 1:
-                print("冗長排除スクランブル：", end="")
+                print("冗長排除スクランブル%d手：" % shuffle_num, end="")
                 sst = randomScrambleDependent(shuffle_num)
             else:
                 print("手入力")
@@ -1110,10 +1116,10 @@ def collectSamples(loop, tnd, mode=0, shuffle_num=20):
                 else:
                     print("%2d手以上サンプル数：%d" % (dist_max + 1, len(v)))
             writeAndBackup(fnamew, smp_dic)
-            print("所要時間：%.2f秒" % (time.time() - t0))
+            print("所要時間：%02d時間%02d分%02d秒" % s2hms(time.time() - t1))
     except KeyboardInterrupt:
         print("強制終了")
-    
+    print("総計算時間：%02d時間%02d分%02d秒" % s2hms(time.time() - t0))
 
 # scramble = "L D2 R U2 L F2 U2 L F2 R2 B2 R U' R' U2 F2 R' D B' F2"
 # scramble = scramble.split()
@@ -1164,14 +1170,8 @@ def createSampleNpFiles(dist_max):
         np.save(fnamew, arr)
 
 def main():
-    # collectSamples(1000, 7, 0, 100)
-    fnamer = SMP_PATH_FORMAT.format(16)
-    with open(fnamer, "rb") as f:
-        smp_dic = pickle.load(f)
-    # smp_dic["gt16"] = set()
-    for k, v in smp_dic.items():
-        print(k, len(v))
-    # writeAndBackup(fnamer, smp_dic)
+    # collectSamples(100, 7, 0, 100)
+    collectSamples(100, 7, 1, 16)
     pass
 
 if __name__ == "__main__":
