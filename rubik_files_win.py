@@ -58,10 +58,14 @@ def sampleAct9():
 
 if __name__ == "__main__":
     # sampleAct9()
-    fnamer = SUBSET_PATH_FORMAT.format(9)
-    sts = readPickleFile(fnamer)
-    arr = set2nparrayBin(sts)
-    print(arr)
-    print(arr.shape)
+    # fnamer = SUBSET_PATH_FORMAT.format(9)
+    # sts = readPickleFile(fnamer)
+    # arr = set2nparrayBin(sts)
+    # print(arr)
+    # print(arr.shape)
     fnamew = BIN_SUBSET_NP_PATH_FORMAT.format(9)
-    np.save(fnamew, arr)
+    # np.save(fnamew, arr)
+    arr = np.load(fnamew)
+    print(arr.shape)
+    for i in range(10):
+        print(sum(arr[i]))
