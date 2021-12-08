@@ -4,6 +4,9 @@
 #define SOLVED_C (u_long)0x0110c8531c
 #define SOLVED_E (u_long)0x008864298e84a96
 
+#define SCRAMBLED_STATE_C (u_long)0x83124d5bc2
+#define SCRAMBLED_STATE_E (u_long)0x2cd140b8c2ba990
+
 #define getCp(c_info, n) (((c_info) >> (37 - 5 * (n))) & 0b111)
 #define getCo(c_info, n) (((c_info) >> ((35 - 5 * (n)))) & 0b11)
 
@@ -79,7 +82,7 @@ int UDM_CP[8] = {4, 5, 6, 7, 0, 1, 2, 3};
 int UDM_EP[12] = {0, 1, 2, 3, 8, 9, 10, 11, 4, 5, 6, 7};
 
 void printState(const u_long *state) {
-    printf("0x%lx, 0x%lx\n", state[0], state[1]);
+    printf("0x%010lx, 0x%015lx\n", state[0], state[1]);
 }
 
 // 動作の適用
@@ -103,7 +106,7 @@ int applyMove(const u_long *s1, const u_long *s2, u_long *ns) {
 // 全18種の動作の適用
 // dstsには長さ36のu_long配列を与える
 int applyAllMoves(const u_long *src, u_long *dsts) {
-    for (int i = 0; i <= 36; i += 2) {
+    for (int i = 0; i < 36; i += 2) {
         applyMove(src, MOVES + i, dsts + i);
     }
     return 0;
@@ -201,8 +204,6 @@ int applyAllMovesNormal(const u_long *src, u_long *dsts) {
     // 18状態すべて正規化
     for (int i = 0; i < 36; i += 2) {
         normalState(dsts + i);
-        printState(dsts + i);
-        printf("%d\n", i);
     }
     return 0;
 }
@@ -223,13 +224,18 @@ int init(void) {
 }
 
 int main(void) {
-    u_long ss[2], sscc[2], aam[38], nss[2];
+    u_long ss[2];
+    u_long aam[36] = {};
+    ss[0] = SCRAMBLED_STATE_C;
+    ss[1] = SCRAMBLED_STATE_E;
     ss[0] = SOLVED_C;
     ss[1] = SOLVED_E;
+
     init();
     printState(ss);
-
-    // applyAllMovesNormal(ss, aam);
-    applyAllMoves(ss, aam);
+    applyAllMovesNormal(ss, aam);
+    for (int i = 0; i < 36; i += 2) {
+        printState(aam + i);
+    }
     return 0;
 }

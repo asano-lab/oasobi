@@ -104,7 +104,8 @@ MIRROR_POS = {
 
 ST_LEN_MAX = 1000000
 
-SOLVED_NEIGHBOR_DEPTH_MAX = 8
+# 9にしてみる
+SOLVED_NEIGHBOR_DEPTH_MAX = 9
 
 LOOP_MAX = 2000
 
@@ -444,7 +445,37 @@ def randomScramble(n: int) -> State:
     print()
     return st
 
+def randomScrambleDependent(n: int) -> State:
+    """
+    依存関係にある動作のみでランダムに動かす.
+    R, R2やR, L, Rなど明らかに冗長なものを排除.
+    """
+    ind_faces = {"U": "D", "D": "U", "R": "L", "L": "R", "F": "B", "B": "F"}
+    st = solved.copy()
+    prev_faces = []
+    count = 0
+    while count < n:
+        # print(prev_faces)
+        move_name = random.choice(moves_list)
+        face = move_name[0]
+        if face in prev_faces:
+            # print(move_name)
+            # print("冗長な動作")
+            continue
+        if len(prev_faces) == 1 and ind_faces[face] == prev_faces[0]:
+            # print(move_name)
+            # print("平行の動作")
+            prev_faces.append(face)
+        else:
+            prev_faces = [face]
+        st += moves[move_name]
+        print(move_name, end=" ")
+        count += 1
+    print()
+    return st
+
 class Search:
+    SUBSET_MAX = 1000000
 
     def __init__(self, target: State, snd_max=8):
         self.target = target.copy()
@@ -498,11 +529,11 @@ class Search:
                 self.dist = self.solved_neighbors_depth + self.target_neighbors_depth
                 return self.dist
         return -1
-        
+
     def searchWithDat(self, tnd: int):
         """
         完成状態近傍はファイルに保存されているものとして探索
-        引数は完成状態近傍の深さ
+        引数は逆探索の深さ
         """
         snd_max_sub = -1
         print("%d手以内を探索" % self.snd_max)
@@ -541,6 +572,87 @@ class Search:
                     # print(cmns)
                     # print(self.dist)
                     return self.dist
+        return -1
+        
+    def searchWithDat2(self, tnd: int):
+        """
+        完成状態近傍はファイルに保存されているものとして探索.
+        逆探索の深さ.
+        ファイルを読み込む回数をできるだけ減らしたい.
+        最後の深さを探索する場合は部分集合で確認していく.
+        手数が少ない状態の探索にはかえって効率が悪い?
+        """
+        # まずは最後の深さの直前まで探索
+        while max(self.target_neighbors) < tnd - 1:
+            self._calcNeighbors(self.target_neighbors)
+        print("%d手未満を探索" % self.snd_max)
+        # 最深以外はターゲットのみを見る
+        for i in range(self.snd_max):
+            for j in range(LOOP_MAX):
+                fnamer = SN_PATH_FORMAT.format(i, j)
+                if not os.path.exists(fnamer):
+                    break
+                with open(fnamer, "rb") as f:
+                    known_states = pickle.load(f)
+                # 見つかったら終了
+                if self.target_num in known_states:
+                    self.dist = i
+                    self.target_neighbors_depth = 0
+                    print("発見")
+                    return self.dist
+        # 最深部探索
+        print("%d手以上%d手未満を探索" % (self.snd_max, self.snd_max + tnd))
+        cmns_dic = {k: [] for k in self.target_neighbors}
+        snd_max_sub = -1
+        for i in range(LOOP_MAX):
+            fnamer = SN_PATH_FORMAT.format(self.snd_max, i)
+            if not os.path.exists(fnamer):
+                break
+            snd_max_sub = i
+            # print(fnamer)
+            with open(fnamer, "rb") as f:
+                known_states = pickle.load(f)
+            # 各集合との共通部分を計算 (和はリストが速い(?))
+            for k, v in self.target_neighbors.items():
+                cmns_dic[k] += list(known_states & v)
+        # 全共通部分を取得後, 浅い要素から確認
+        for i in range(tnd):
+            cmns = cmns_dic[i]
+            if cmns:
+                self.common_states = set(cmns)
+                self.dist = self.snd_max + i
+                self.target_neighbors_depth = i
+                print(cmns)
+                print(self.dist)
+                return self.dist
+        # 最深探索
+        print("%d手を探索" % (self.snd_max + tnd))
+        count = 0
+        nsts = []
+        for st_num in self.target_neighbors[tnd - 1]:
+            nsts += applyAllMovesNormal(st_num)
+            count += 1
+            if (count % self.SUBSET_MAX) == 0:
+                print("%dループ目" % count)
+                # 集合変換
+                nsts = set(nsts)
+                # 全最深ファイルを確認
+                for i in range(snd_max_sub + 1):
+                    fnamer = SN_PATH_FORMAT.format(self.snd_max, i)
+                    # print(fnamer)
+                    with open(fnamer, "rb") as f:
+                        known_states = pickle.load(f)
+                    cmns = known_states & nsts
+                    if cmns:
+                        self.common_states = cmns
+                        self.common_sub = i
+                        self.dist = self.snd_max + tnd
+                        self.target_neighbors_depth = tnd
+                        print(cmns)
+                        print(self.dist)
+                        return self.dist
+                # 初期化
+                nsts = []
         return -1
     
     def calcTargetNeighbors(self, depth: int):
@@ -933,7 +1045,7 @@ def writeAndBackup(fnamew, obj):
     with open(fnamew, "wb") as f:
         pickle.dump(obj, f)
 
-def collectSamples(loop, tnd, shuffle_num):
+def collectSamples(loop, tnd, mode=0, shuffle_num=20):
     """
     サンプル収集用関数.
     """
@@ -944,15 +1056,28 @@ def collectSamples(loop, tnd, shuffle_num):
     if not os.path.exists(fnamew):
         smp_dic = {dist_max - i: set() for i in range(tnd)}
         smp_dic[gt_key] = set()
+        print(fnamew + "を作成")
         writeAndBackup(fnamew, smp_dic)
     with open(fnamew, "rb") as f:
         smp_dic = pickle.load(f)
     try:
-        for i in range(loop):
-            print("スクランブル：", end="")
-            sst = randomScramble(shuffle_num)
+        for _ in range(loop):
+            t0 = time.time()
+            if mode == 0:
+                print("通常スクランブル：", end="")
+                sst = randomScramble(shuffle_num)
+            elif mode == 1:
+                print("冗長排除スクランブル：", end="")
+                sst = randomScrambleDependent(shuffle_num)
+            else:
+                print("手入力")
+                sst = inputState()
+                if sst == None:
+                    break
+            print(sst)
             srch = Search(sst, SOLVED_NEIGHBOR_DEPTH_MAX)
-            dist = srch.searchWithDat(tnd)
+            # dist = srch.searchWithDat(tnd)
+            dist = srch.searchWithDat2(tnd)
             if dist >= 0:
                 print("最短%2d手：" % dist, end="")
                 mvs = srch.getSolveMovesWithDat()
@@ -971,6 +1096,7 @@ def collectSamples(loop, tnd, shuffle_num):
                 else:
                     print("%2d手以上サンプル数：%d" % (dist_max + 1, len(v)))
             writeAndBackup(fnamew, smp_dic)
+            print("所要時間：%.2f秒" % (time.time() - t0))
     except KeyboardInterrupt:
         print("強制終了")
     
@@ -1025,22 +1151,27 @@ def createSampleNpFiles(dist_max):
 
 
 def main():
+    # collectSamples(1, 7, 2, 20)
+    # srch = Search(scrambled_state)
+    # srch.searchWithDat2(6)
+    # print(srch.getSolveMovesWithDat())
     # collectSamples(1000, 6, 19)
     # for _ in range(1):
     #     t0 = time.time()
     #     createSolvedNeighborsFile()
     #     print("%.2f秒経過" % (time.time() - t0))
-    t0 = time.time()
-    for i in range(LOOP_MAX):
-        fnamer = SN_PATH_FORMAT.format(9, i)
-        if not os.path.exists(fnamer):
-            break
-        print(fnamer)
-        f = open(fnamer, "rb")
-        sts = pickle.load(f)
-        f.close()
-        print(len(sts))
-    print("{:.2f}秒".format(time.time() - t0))
+    # t0 = time.time()
+    # for i in range(LOOP_MAX):
+    #     fnamer = SN_PATH_FORMAT.format(9, i)
+    #     if not os.path.exists(fnamer):
+    #         break
+    #     print(fnamer)
+    #     f = open(fnamer, "rb")
+    #     sts = pickle.load(f)
+    #     f.close()
+    #     print(len(sts))
+    # print("{:.2f}秒".format(time.time() - t0))
+    pass
 
 if __name__ == "__main__":
     main()
