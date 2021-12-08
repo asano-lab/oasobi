@@ -5,7 +5,7 @@
 /a.out
 /*.exe
 /*.so
-/dat
 /dat2
 /np_dat
 /samples
+/__pycache__

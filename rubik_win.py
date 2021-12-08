@@ -111,13 +111,14 @@ LOOP_MAX = 2000
 
 DIR_PATH = "./dat2/"
 NP_DIR_PATH = "./np_dat/"
+SMP_DIR_PATH = "./samples/"
 
 SN_PATH_FORMAT = DIR_PATH + "act{:03d}_{:03d}.pickle"
 NP_SN_PATH_FORMAT = NP_DIR_PATH + "act{:03d}_{:03d}.npy"
 
 # サンプルファイルフォーマット
 # 数値は判定できる最大手数
-SMP_PATH_FORMAT = "./samples/sample{:03d}.pickle"
+SMP_PATH_FORMAT = SMP_DIR_PATH + "sample{:03d}.pickle"
 
 # 秒を時間分秒のタプルで返す
 def s2hms(s):
