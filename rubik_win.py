@@ -1195,13 +1195,6 @@ def createSampleNpFiles(dist_max):
         print(k, arr.shape)
         np.save(fnamew, arr)
 
-def main():
-    # collectSamples(100, 7, 0, 100)
-    collectSamples(100, 7, 1, 16)
-    pass
-
 if __name__ == "__main__":
-    # main()
-    scs = randomScramble(100)
-    print(scs)
-    print(len(scs.toBinaryList()))
+    collectSamples(100, 7, 0, 100)
+    # collectSamples(100, 7, 1, 16)
