@@ -3,9 +3,21 @@ import pickle
 import os
 import random
 import time
+import numpy as np
 import rubik_win
 
 SUBSET_PATH_FORMAT = rubik_win.SMP_DIR_PATH + "subset_act{:03d}.pickle"
+
+def set2nparrayBin(num_set):
+    """
+    数値の集合をnumpy配列に変換する.
+    ただしワンホットでバイナリ化.
+    """
+    ll = []
+    for num in num_set:
+        st = rubik_win.num2state(num)
+        ll.append(st.toBinaryList())
+    return np.array(ll, dtype="uint8")
 
 def readPickleFile(fnamer: str):
     """
@@ -44,7 +56,8 @@ def sampleAct9():
 
 if __name__ == "__main__":
     # sampleAct9()
-    a = [1, 2, 3, 4, 5]
-    random.shuffle(a)
-    print(a)
-    pass
+    fnamer = SUBSET_PATH_FORMAT.format(9)
+    sts = readPickleFile(fnamer)
+    arr = set2nparrayBin(sts)
+    print(arr)
+    print(arr.shape)
