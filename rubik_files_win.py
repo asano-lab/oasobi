@@ -8,6 +8,8 @@ import rubik_win
 
 SUBSET_PATH_FORMAT = rubik_win.SMP_DIR_PATH + "subset_act{:03d}.pickle"
 
+BIN_SUBSET_NP_PATH_FORMAT = rubik_win.NP_DIR_PATH + "bin_subset_act{:03d}.npy"
+
 def set2nparrayBin(num_set):
     """
     数値の集合をnumpy配列に変換する.
@@ -61,3 +63,5 @@ if __name__ == "__main__":
     arr = set2nparrayBin(sts)
     print(arr)
     print(arr.shape)
+    fnamew = BIN_SUBSET_NP_PATH_FORMAT.format(9)
+    np.save(fnamew, arr)
