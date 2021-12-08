@@ -1163,28 +1163,13 @@ def createSampleNpFiles(dist_max):
         print(k, arr.shape)
         np.save(fnamew, arr)
 
-
 def main():
-    collectSamples(1000, 7, 0, 100)
-    # srch = Search(scrambled_state)
-    # srch.searchWithDat2(6)
-    # print(srch.getSolveMovesWithDat())
-    # collectSamples(1000, 6, 19)
-    # for _ in range(1):
-    #     t0 = time.time()
-    #     createSolvedNeighborsFile()
-    #     print("%.2f秒経過" % (time.time() - t0))
-    # t0 = time.time()
-    # for i in range(LOOP_MAX):
-    #     fnamer = SN_PATH_FORMAT.format(9, i)
-    #     if not os.path.exists(fnamer):
-    #         break
-    #     print(fnamer)
-    #     f = open(fnamer, "rb")
-    #     sts = pickle.load(f)
-    #     f.close()
-    #     print(len(sts))
-    # print("{:.2f}秒".format(time.time() - t0))
+    # collectSamples(1000, 7, 0, 100)
+    fnamer = SMP_PATH_FORMAT.format(16)
+    with open(fnamer, "rb") as f:
+        smp_dic = pickle.load(f)
+    for k, v in smp_dic.items():
+        print(k, len(v))
     pass
 
 if __name__ == "__main__":
