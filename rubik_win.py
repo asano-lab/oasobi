@@ -129,7 +129,8 @@ def oneHot(hot, n):
     """
     one-hotリストを作成して返す.
     """
-    return [int(i == hot) for i in range(n)]
+    ohl = [int(i == hot) for i in range(n)] + ["#"]
+    return ohl
 
 # 資料通りのクラス
 class State():
@@ -162,8 +163,14 @@ class State():
         """
         bl = []
         for i in self.cp:
-            bl += []
-        pass
+            bl += oneHot(i, 8)
+        for i in self.co:
+            bl += oneHot(i, 3)
+        for i in self.ep:
+            bl += oneHot(i, 12)
+        for i in self.eo:
+            bl += oneHot(i, 2)
+        return bl
     
     # 数値変換と正規化
     def toNumNormal(self):
@@ -1196,4 +1203,6 @@ def main():
 
 if __name__ == "__main__":
     # main()
-    print(oneHot(0, 5))
+    scs = randomScramble(100)
+    print(scs)
+    print(scs.toBinaryList())
