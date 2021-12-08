@@ -125,6 +125,12 @@ def s2hms(s):
     s = int(s)
     return s // 3600, s % 3600 // 60, s % 60
 
+def oneHot(hot, n):
+    """
+    one-hotリストを作成して返す.
+    """
+    return [int(i == hot) for i in range(n)]
+
 # 資料通りのクラス
 class State():
 
@@ -147,6 +153,17 @@ class State():
             s_num = (s_num << 4) | self.ep[i]
             s_num = (s_num << 1) | self.eo[i]
         return s_num
+    
+    def toBinaryList(self):
+        """
+        01だけのリストに変換(256値)
+        各値をone-hotに変換.
+        例：cpの5 -> [0, 0, 0, 0, 0, 1, 0, 0]
+        """
+        bl = []
+        for i in self.cp:
+            bl += []
+        pass
     
     # 数値変換と正規化
     def toNumNormal(self):
@@ -188,8 +205,10 @@ class State():
             neo.append(tmpst.eo[i] ^ rp[3][j])
         return State(ncp, nco, nep, neo)
     
-    # 上下鏡写しの等価盤面を作りたい
     def mirror(self, mirror_pattern):
+        """
+        鏡写しの等価状態作成.
+        """
         mp = MIRROR_POS[mirror_pattern]
         tmpst = State(
             [self.cp[i] for i in mp[0]],
@@ -1176,4 +1195,5 @@ def main():
     pass
 
 if __name__ == "__main__":
-    main()
+    # main()
+    print(oneHot(0, 5))

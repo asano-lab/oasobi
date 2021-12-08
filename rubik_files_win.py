@@ -43,5 +43,8 @@ def sampleAct9():
     print("%02d:%02d:%02d" % rubik_win.s2hms(time.time() - t0))
 
 if __name__ == "__main__":
-    sampleAct9()
+    # sampleAct9()
+    a = [1, 2, 3, 4, 5]
+    random.shuffle(a)
+    print(a)
     pass
