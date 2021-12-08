@@ -626,14 +626,17 @@ class Search:
                 print(cmns)
                 print(self.dist)
                 return self.dist
+        del cmns_dic
         # 最深探索
         print("%d手を探索" % (self.snd_max + tnd))
         count = 0
         nsts = []
+        count_max = len(self.target_neighbors[tnd - 1])
+        t0 = time.time()
         for st_num in self.target_neighbors[tnd - 1]:
             nsts += applyAllMovesNormal(st_num)
             count += 1
-            if (count % self.SUBSET_MAX) == 0:
+            if (count % self.SUBSET_MAX) == 0 or count == count_max:
                 print("%dループ目" % count)
                 # 集合変換
                 nsts = set(nsts)
@@ -652,8 +655,12 @@ class Search:
                         print(cmns)
                         print(self.dist)
                         return self.dist
+                print("%d / %d 探索済み" % (count, count_max))
+                delta_t = int(time.time() - t0)
+                print("経過時間：%02d分%02d秒" % (delta_t // 60, delta_t % 60))
                 # 初期化
                 nsts = []
+        print(nsts)
         return -1
     
     def calcTargetNeighbors(self, depth: int):
@@ -1155,7 +1162,7 @@ def createSampleNpFiles(dist_max):
 
 
 def main():
-    collectSamples(1, 7, 1, 14)
+    collectSamples(3, 7, 1, 16)
     # srch = Search(scrambled_state)
     # srch.searchWithDat2(6)
     # print(srch.getSolveMovesWithDat())
