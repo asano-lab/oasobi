@@ -233,5 +233,8 @@ int main(void) {
     init();
     // printState(ss);
     applyAllMovesNormal(ss, aam);
+    for (int i = 0; i < 36; i += 2) {
+        printState(aam + i);
+    }
     return 0;
 }
