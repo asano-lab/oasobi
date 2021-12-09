@@ -269,6 +269,19 @@ class State():
             ns += s_add
         return ns
     
+    def __eq__(self, arg):
+        """
+        等号演算子の処理.
+        全リストを比較して全てが一致したら真.
+        """
+        if self.cp != arg.cp:
+            return False
+        if self.co != arg.co:
+            return False
+        if self.ep != arg.ep:
+            return False
+        return self.eo == arg.eo
+    
     def __str__(self):
         moji = str(self.cp) + "\n"
         moji += str(self.co) + "\n"
@@ -1201,9 +1214,9 @@ if __name__ == "__main__":
     sample_scrambled_state = randomScrambleDependent(100)
     print(sample_scrambled_state)
     for i in COLOR_PATTERN_LIST:
-        num1 = sample_scrambled_state.changeColor(i).toNum()
-        num2 = sample_scrambled_state.changeColor2(i).toNum()
-        if num1 == num2:
+        st1 = sample_scrambled_state.changeColor(i)
+        st2 = sample_scrambled_state.changeColor2(i)
+        if st1 == st2:
             print("正しい")
         else:
             print("正しくない")
