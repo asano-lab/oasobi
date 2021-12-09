@@ -93,11 +93,26 @@ def sampleAct10():
     rubik_win.writeAndBackup(fnamew, act10_subset)
     print("%02d:%02d:%02d" % rubik_win.s2hms(time.time() - t0))
 
-if __name__ == "__main__":
-    # sampleAct10()
-    fnamer = SUBSET_PATH_FORMAT.format(9)
+def createSampleNpFile(act_num, binary=False):
+    """
+    サンプル集合からnp配列に変換.
+    """
+    t0 = time.time()
+    fnamer = SUBSET_PATH_FORMAT.format(act_num)
+    print(fnamer + "からnp配列を作成")
     sts = readPickleFile(fnamer)
-    print(len(sts))
-    fnamew = SUBSET_NP_PATH_FORMAT.format(9)
-    print(fnamew)
+    if sts is None:
+        return
+    if binary:
+        arr = set2nparrayBin(sts)
+    else:
+        arr = rubik_win.set2nparray(sts)
+    print(arr.shape)
+    print(arr)
+    fnamew = SUBSET_NP_PATH_FORMAT.format(act_num)
+    np.save(fnamew, arr)
+    print("%02d:%02d:%02d" % rubik_win.s2hms(time.time() - t0))
+
+if __name__ == "__main__":
+    createSampleNpFile(10)
     pass

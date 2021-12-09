@@ -1160,21 +1160,6 @@ def collectSamples(loop, tnd, mode=0, shuffle_num=20):
 #     "FU", "FD", "FL", "FR", "BU", "BD", "BL", "BR"
 # ]
 
-def createNpFiles():
-    t0 = time.time()
-    for i in range(8, 9):
-        for j in range(LOOP_MAX):
-            fnamer = SN_PATH_FORMAT.format(i, j)
-            if not os.path.exists(fnamer):
-                break
-            with open(fnamer, "rb") as f:
-                sts = pickle.load(f)
-            arr = set2nparray(sts)
-            print(arr.shape)
-            fnamew = NP_SN_PATH_FORMAT.format(i, j)
-            np.save(fnamew, arr)
-    print("所要時間：%.2f秒" % (time.time() - t0))
-
 def createSampleNpFiles(dist_max):
     """
     サンプル辞書からnp配列ファイルを作る.
