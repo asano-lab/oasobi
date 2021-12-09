@@ -34,24 +34,25 @@ def readPickleFile(fnamer: str):
     f.close()
     return obj
 
-def sampleAct9():
+def sampleActLT10(act_num, ratio):
     """
-    9手状態のデータ数が多すぎるのでランダム抽出したい.
-    3億6千万くらいあるので, 1000分の1取り出したい.
+    0 ~ 9手状態のデータ数からランダム抽出.
     """
     t0 = time.time()
     st_subset = []
     for i in range(rubik_win.LOOP_MAX):
-        fnamer = rubik_win.SN_PATH_FORMAT.format(9, i)
+        fnamer = rubik_win.SN_PATH_FORMAT.format(act_num, i)
         sts = readPickleFile(fnamer)
         if sts is None:
             break
         print(fnamer + "からロード")
-        smp_num = len(sts) // 1000
+        smp_num = int(len(sts) * ratio)
         print("使うデータ数：%d" % smp_num)
         st_subset += random.sample(list(sts), smp_num)
-    fnamew = SUBSET_PATH_FORMAT.format(9)
+    fnamew = SUBSET_PATH_FORMAT.format(act_num)
     print("部分集合のサイズ：%d" % len(st_subset))
+    # シャッフルを追加 (なんとなく)
+    random.shuffle(st_subset)
     # 集合にして保存
     rubik_win.writeAndBackup(fnamew, set(st_subset))
     print("%02d:%02d:%02d" % rubik_win.s2hms(time.time() - t0))
@@ -116,5 +117,5 @@ def createSampleNpFile(act_num, binary=False):
     print("%02d:%02d:%02d" % rubik_win.s2hms(time.time() - t0))
 
 if __name__ == "__main__":
-    createSampleNpFile(10, True)
+    sampleActLT10(8, 0.015)
     pass
