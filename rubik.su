@@ -1,0 +1,11 @@
+rubik.c:84:6:printState	32	static
+rubik.c:89:5:applyMove	16	static
+rubik.c:108:5:applyAllMoves	48	static
+rubik.c:116:5:changeColor	80	static
+rubik.c:124:5:udMirror	80	static
+rubik.c:153:5:createReplaceParts	16	static
+rubik.c:171:5:updateMinState	16	static
+rubik.c:182:5:normalState	112	static
+rubik.c:201:5:applyAllMovesNormal	48	static
+rubik.c:212:5:init	32	static
+rubik.c:226:5:main	352	static
