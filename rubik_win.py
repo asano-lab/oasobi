@@ -86,6 +86,14 @@ CENTER_INDICES = {
     "B": (1, 10), "L": (1, 13), "D": (1, 16)
 }
 
+# 23種の全色変換パターン
+# Cで格納するための順番
+COLOR_PATTERN_LIST = [
+    "UL", "UR", "UB", "DF", "DL", "DR", "DB",
+    "LU", "LD", "LF", "LB", "RU", "RD", "RF", "RB",
+    "FU", "FD", "FL", "FR", "BU", "BD", "BL", "BR"
+]
+
 # 向きを含めずに位置だけ
 MIRROR_POS = {
     "UD": [
@@ -210,6 +218,12 @@ class State():
             nep.append(rp[2][j])
             neo.append(tmpst.eo[i] ^ rp[3][j])
         return State(ncp, nco, nep, neo)
+    
+    def changeColor2(self, color_pattern):
+        """
+        両サイドから足せば同じ結果が得られるはず
+        """
+        return change_color_inv[color_pattern] + self + change_color[color_pattern]
     
     def mirror(self, mirror_pattern):
         """
@@ -1155,18 +1169,8 @@ def collectSamples(loop, tnd, mode=0, shuffle_num=20):
         print("強制終了")
     print("総計算時間：%02d時間%02d分%02d秒" % s2hms(time.time() - t0))
 
-# scramble = "L D2 R U2 L F2 U2 L F2 R2 B2 R U' R' U2 F2 R' D B' F2"
-# scramble = scramble.split()
-
 # scramble_udm = "L' U2 R' D2 L' F2 D2 L' F2 R2 B2 R' D R D2 F2 R U' B F2"
 # scramble_udm = scramble_udm.split()
-
-# Cで格納するための順番
-# cl_list = [
-#     "UL", "UR", "UB", "DF", "DL", "DR", "DB",
-#     "LU", "LD", "LF", "LB", "RU", "RD", "RF", "RB",
-#     "FU", "FD", "FL", "FR", "BU", "BD", "BL", "BR"
-# ]
 
 def createSampleNpFiles(dist_max):
     """
@@ -1189,9 +1193,17 @@ def createSampleNpFiles(dist_max):
         np.save(fnamew, arr)
 
 if __name__ == "__main__":
-    # collectSamples(1000, 7, 0, 25)
-    # collectSamples(100, 7, 1, 16)
-    for k, v in change_color_inv.items():
-        print(k)
-        print(change_color[k])
-        print(v)
+    # sample_scramble = "L D2 R U2 L F2 U2 L F2 R2 B2 R U' R' U2 F2 R' D B' F2"
+    # sample_scramble = sample_scramble.split()
+    # sample_scrambled_state = solved.copy()
+    # for move_name in sample_scramble:
+    #     sample_scrambled_state += moves[move_name]
+    sample_scrambled_state = randomScrambleDependent(100)
+    print(sample_scrambled_state)
+    for i in COLOR_PATTERN_LIST:
+        num1 = sample_scrambled_state.changeColor(i).toNum()
+        num2 = sample_scrambled_state.changeColor2(i).toNum()
+        if num1 == num2:
+            print("正しい")
+        else:
+            print("正しくない")
