@@ -117,5 +117,6 @@ def createSampleNpFile(act_num, binary=False):
     print("%02d:%02d:%02d" % rubik_win.s2hms(time.time() - t0))
 
 if __name__ == "__main__":
-    sampleActLT10(8, 0.015)
+    # sampleActLT10(7, 0.2)
+    # createSampleNpFile(7)
     pass
