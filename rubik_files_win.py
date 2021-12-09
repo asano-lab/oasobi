@@ -62,8 +62,36 @@ def sampleAct10():
     9手状態から1手で到達できる状態を計算し, 既知の状態を除外する.
     8, 9手状態だけ除外すれば問題ない??
     """
+    t0 = time.time()
+    act10_subset = []
+    for i in range(rubik_win.LOOP_MAX):
+        fnamer = rubik_win.SN_PATH_FORMAT.format(9, i)
+        sts = readPickleFile(fnamer)
+        if sts is None:
+            break
+        print(fnamer + "からロード")
+        smp_num = len(sts) // 10000
+        print("次の状態を計算するデータ数：%d" % smp_num)
+        sts = random.sample(list(sts), smp_num)
+        # 10手状態の候補を計算
+        for st_num in sts:
+            act10_subset += rubik_win.applyAllMovesNormal(st_num)
+    print("重複排除前状態数：%d" % len(act10_subset))
+    # 重複排除
+    act10_subset = set(act10_subset)
+    for i in range(10):
+        for j in range(rubik_win.LOOP_MAX):
+            fnamer = rubik_win.SN_PATH_FORMAT.format(i, j)
+            sts = readPickleFile(fnamer)
+            if sts is None:
+                break
+            print(fnamer + "との重複排除")
+            act10_subset -= sts
+            print("暫定状態数：%d" % len(act10_subset))
+    print("10手サンプル数：%d" % len(act10_subset))
     fnamew = SUBSET_PATH_FORMAT.format(10)
-    print(fnamew)
+    rubik_win.writeAndBackup(fnamew, act10_subset)
+    print("%02d:%02d:%02d" % rubik_win.s2hms(time.time() - t0))
 
 if __name__ == "__main__":
     sampleAct10()
