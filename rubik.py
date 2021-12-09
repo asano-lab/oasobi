@@ -1072,6 +1072,15 @@ def collectSamples(loop, tnd, mode=0, shuffle_num=20):
         writeAndBackup(fnamew, smp_dic)
     with open(fnamew, "rb") as f:
         smp_dic = pickle.load(f)
+    # 最初のサンプル数も保存
+    len_dic = {}
+    print("過去のサンプル数")
+    for k, v in smp_dic.items():
+        len_dic[k] = len(v)
+        if type(k) is int:
+            print("%2d手サンプル数：%d" % (k, len_dic[k]))
+        else:
+            print("%2d手以上サンプル数：%d" % (dist_max + 1, len_dic[k]))
     try:
         for _ in range(loop):
             t1 = time.time()
@@ -1103,10 +1112,12 @@ def collectSamples(loop, tnd, mode=0, shuffle_num=20):
                 print("%2d手以上" % (dist_max + 1))
                 smp_dic[gt_key].add(sst.toNumNormal())
             for k, v in smp_dic.items():
+                smp_len = len(v)
+                smp_inc = smp_len - len_dic[k]
                 if type(k) is int:
-                    print("%2d手サンプル数：%d" % (k, len(v)))
+                    print("%2d手サンプル数：%d (+%d)" % (k, smp_len, smp_inc))
                 else:
-                    print("%2d手以上サンプル数：%d" % (dist_max + 1, len(v)))
+                    print("%2d手以上サンプル数：%d (+%d)" % (dist_max + 1, smp_len, smp_inc))
             writeAndBackup(fnamew, smp_dic)
             print("所要時間：%02d時間%02d分%02d秒" % s2hms(time.time() - t1))
     except KeyboardInterrupt:
@@ -1163,5 +1174,5 @@ def createSampleNpFiles(dist_max):
         np.save(fnamew, arr)
 
 if __name__ == "__main__":
-    collectSamples(10, 7, 0, 23)
+    collectSamples(10, 7, 0, 17)
     pass
