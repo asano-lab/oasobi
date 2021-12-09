@@ -120,6 +120,11 @@ NP_SN_PATH_FORMAT = NP_DIR_PATH + "act{:03d}_{:03d}.npy"
 # 数値は判定できる最大手数
 SMP_PATH_FORMAT = SMP_DIR_PATH + "sample{:03d}.pickle"
 
+# 秒を時間分秒のタプルで返す
+def s2hms(s):
+    s = int(s)
+    return s // 3600, s % 3600 // 60, s % 60
+
 # 資料通りのクラス
 class State():
 
@@ -637,13 +642,11 @@ class Search:
             nsts += applyAllMovesNormal(st_num)
             count += 1
             if (count % self.SUBSET_MAX) == 0 or count == count_max:
-                print("%dループ目" % count)
                 # 集合変換
                 nsts = set(nsts)
                 # 全最深ファイルを確認
                 for i in range(snd_max_sub + 1):
                     fnamer = SN_PATH_FORMAT.format(self.snd_max, i)
-                    # print(fnamer)
                     with open(fnamer, "rb") as f:
                         known_states = pickle.load(f)
                     cmns = known_states & nsts
@@ -656,8 +659,7 @@ class Search:
                         print(self.dist)
                         return self.dist
                 print("%d / %d 探索済み" % (count, count_max))
-                delta_t = int(time.time() - t0)
-                print("経過時間：%02d分%02d秒" % (delta_t // 60, delta_t % 60))
+                print("経過時間：%02d時間%02d分%02d秒" % s2hms(time.time() - t0))
                 # 初期化
                 nsts = []
         print(nsts)
@@ -674,19 +676,17 @@ class Search:
         """
         メインの探索
         """
-        t0 = time.time()
         depth = max(neighbor_dic)
         print("深さ%dの探索" % (depth + 1))
         nsts = []
         for st_num in neighbor_dic[depth]:
             nsts += applyAllMovesNormal(st_num)
-        print("新状態数（重複あり）: %d" % len(nsts))
+        # print("新状態数（重複あり）: %d" % len(nsts))
         nsts = set(nsts)
         for past_sts in neighbor_dic.values():
             nsts -= past_sts
         print("新状態数（重複なし）：%d" % len(nsts))
         neighbor_dic[depth + 1] = nsts
-        print("所要時間：%6.2f秒" % (time.time() - t0))
     
     def getRoute(self):
         """
@@ -1057,6 +1057,7 @@ def collectSamples(loop, tnd, mode=0, shuffle_num=20):
     """
     サンプル収集用関数.
     """
+    t0 = time.time()
     dist_max = SOLVED_NEIGHBOR_DEPTH_MAX + tnd
     fnamew = SMP_PATH_FORMAT.format(dist_max)
     gt_key = "gt%d" % dist_max
@@ -1071,14 +1072,23 @@ def collectSamples(loop, tnd, mode=0, shuffle_num=20):
         writeAndBackup(fnamew, smp_dic)
     with open(fnamew, "rb") as f:
         smp_dic = pickle.load(f)
+    # 最初のサンプル数も保存
+    len_dic = {}
+    print("過去のサンプル数")
+    for k, v in smp_dic.items():
+        len_dic[k] = len(v)
+        if type(k) is int:
+            print("%2d手サンプル数：%d" % (k, len_dic[k]))
+        else:
+            print("%2d手以上サンプル数：%d" % (dist_max + 1, len_dic[k]))
     try:
         for _ in range(loop):
-            t0 = time.time()
+            t1 = time.time()
             if mode == 0:
-                print("通常スクランブル：", end="")
+                print("通常スクランブル%d手：" % shuffle_num, end="")
                 sst = randomScramble(shuffle_num)
             elif mode == 1:
-                print("冗長排除スクランブル：", end="")
+                print("冗長排除スクランブル%d手：" % shuffle_num, end="")
                 sst = randomScrambleDependent(shuffle_num)
             else:
                 print("手入力")
@@ -1102,14 +1112,17 @@ def collectSamples(loop, tnd, mode=0, shuffle_num=20):
                 print("%2d手以上" % (dist_max + 1))
                 smp_dic[gt_key].add(sst.toNumNormal())
             for k, v in smp_dic.items():
+                smp_len = len(v)
+                smp_inc = smp_len - len_dic[k]
                 if type(k) is int:
-                    print("%2d手サンプル数：%d" % (k, len(v)))
+                    print("%2d手サンプル数：%d (+%d)" % (k, smp_len, smp_inc))
                 else:
-                    print("%2d手以上サンプル数：%d" % (dist_max + 1, len(v)))
+                    print("%2d手以上サンプル数：%d (+%d)" % (dist_max + 1, smp_len, smp_inc))
             writeAndBackup(fnamew, smp_dic)
-            print("所要時間：%.2f秒" % (time.time() - t0))
+            print("所要時間：%02d時間%02d分%02d秒" % s2hms(time.time() - t1))
     except KeyboardInterrupt:
         print("強制終了")
+    print("総計算時間：%02d時間%02d分%02d秒" % s2hms(time.time() - t0))
     
 
 # scramble = "L D2 R U2 L F2 U2 L F2 R2 B2 R U' R' U2 F2 R' D B' F2"
@@ -1160,18 +1173,6 @@ def createSampleNpFiles(dist_max):
         print(k, arr.shape)
         np.save(fnamew, arr)
 
-
-def main():
-    collectSamples(3, 7, 1, 16)
-    # srch = Search(scrambled_state)
-    # srch.searchWithDat2(6)
-    # print(srch.getSolveMovesWithDat())
-    # collectSamples(1000, 6, 19)
-    # for _ in range(1):
-    #     t0 = time.time()
-    #     createSolvedNeighborsFile()
-    #     print("%.2f秒経過" % (time.time() - t0))
-    pass
-
 if __name__ == "__main__":
-    main()
+    collectSamples(10, 7, 0, 17)
+    pass
