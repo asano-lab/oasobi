@@ -291,6 +291,10 @@ class State():
         return moji
 
 class State2():
+    """
+    数値で扱うクラス.
+    確認用で使う.
+    """
 
     def __init__(self, num: int):
         self.num = num
@@ -1124,7 +1128,7 @@ def collectSamples(loop, tnd, mode=0, shuffle_num=20):
             else:
                 print("手入力")
                 sst = inputState()
-                if sst == None:
+                if sst is None:
                     break
             print(sst)
             srch = Search(sst, SOLVED_NEIGHBOR_DEPTH_MAX)
@@ -1182,8 +1186,9 @@ if __name__ == "__main__":
     # sample_scrambled_state = solved.copy()
     # for move_name in sample_scramble:
     #     sample_scrambled_state += moves[move_name]
-    sample_scrambled_state = randomScrambleDependent(100)
-    print(sample_scrambled_state)
-    for i in COLOR_PATTERN_LIST:
-        st1 = sample_scrambled_state.changeColor(i)
-        print(st1.toNum())
+    # sample_scrambled_state = randomScrambleDependent(100)
+    # print(sample_scrambled_state)
+    # for i in COLOR_PATTERN_LIST:
+    #     st1 = sample_scrambled_state.changeColor(i)
+    #     print(st1.toNum())
+    collectSamples(1, 7, 2)
