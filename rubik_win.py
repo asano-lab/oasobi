@@ -94,6 +94,15 @@ COLOR_PATTERN_LIST = [
     "FU", "FD", "FL", "FR", "BU", "BD", "BL", "BR"
 ]
 
+# 逆の色変換の対応表
+COLOR_PATTERN_INV = {
+    "UL": "UR", "FD": "BU", "RF": "LF", "UB": "UB", "UR": "UL",
+    "DB": "DB", "BU": "FD", "DF": "DF", "LF": "RF", "LD": "BR",
+    "BD": "BD", "RD": "BL", "FL": "LU", "DL": "DL", "BL": "RD",
+    "DR": "DR", "LB": "LB", "LU": "FL", "RB": "RB", "RU": "FR",
+    "FU": "FU", "FR": "RU", "BR": "LD"
+}
+
 # 向きを含めずに位置だけ
 MIRROR_POS = {
     "UD": [
@@ -1213,10 +1222,8 @@ if __name__ == "__main__":
     #     sample_scrambled_state += moves[move_name]
     sample_scrambled_state = randomScrambleDependent(100)
     print(sample_scrambled_state)
-    for i in COLOR_PATTERN_LIST:
-        st1 = sample_scrambled_state.changeColor(i)
-        st2 = sample_scrambled_state.changeColor2(i)
-        if st1 == st2:
-            print("正しい")
-        else:
-            print("正しくない")
+    for k1, v1 in change_color.items():
+        for k2, v2 in change_color_inv.items():
+            if v1 == v2:
+                print("\"%s\": \"%s\", " % (k1, k2), end="")
+        pass
