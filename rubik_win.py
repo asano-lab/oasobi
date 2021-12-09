@@ -414,6 +414,11 @@ change_color["FR"] = change_color["FU"] + change_color["RF"]
 change_color["BR"] = change_color["BU"] + change_color["RF"]
 
 def cleateReplaceParts(chclr: State):
+    """
+    パーツの置き換え操作.
+    左から足す状態と考えていい??
+    全てchange_colorに含まれるはず.
+    """
     ll = [[-1] * 8, chclr.co.copy(), [-1] * 12, chclr.eo.copy()]
     for i, j in enumerate(chclr.cp):
         ll[0][j] = i
@@ -425,8 +430,11 @@ def cleateReplaceParts(chclr: State):
 
 # パーツの入れ替え辞書を作成
 replace_parts = {}
+change_color_inv = {}
 for k, v in change_color.items():
-    replace_parts[k] = cleateReplaceParts(v)
+    ll = cleateReplaceParts(v)
+    replace_parts[k] = ll
+    change_color_inv[k] = State(*ll)
 
 def num2state(num: int) -> State:
     """
@@ -1181,5 +1189,9 @@ def createSampleNpFiles(dist_max):
         np.save(fnamew, arr)
 
 if __name__ == "__main__":
-    collectSamples(1000, 7, 0, 25)
+    # collectSamples(1000, 7, 0, 25)
     # collectSamples(100, 7, 1, 16)
+    for k, v in change_color_inv.items():
+        print(k)
+        print(change_color[k])
+        print(v)
