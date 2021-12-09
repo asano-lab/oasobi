@@ -7,8 +7,8 @@ import numpy as np
 import rubik_win
 
 SUBSET_PATH_FORMAT = rubik_win.SMP_DIR_PATH + "subset_act{:03d}.pickle"
-
 BIN_SUBSET_NP_PATH_FORMAT = rubik_win.NP_DIR_PATH + "bin_subset_act{:03d}.npy"
+SUBSET_NP_PATH_FORMAT = rubik_win.NP_DIR_PATH + "subset_act{:03d}.npy"
 
 def set2nparrayBin(num_set):
     """
@@ -94,4 +94,10 @@ def sampleAct10():
     print("%02d:%02d:%02d" % rubik_win.s2hms(time.time() - t0))
 
 if __name__ == "__main__":
-    sampleAct10()
+    # sampleAct10()
+    fnamer = SUBSET_PATH_FORMAT.format(9)
+    sts = readPickleFile(fnamer)
+    print(len(sts))
+    fnamew = SUBSET_NP_PATH_FORMAT.format(9)
+    print(fnamew)
+    pass
