@@ -4,3 +4,8 @@
 /test_dir
 /a.out
 /*.exe
+/*.so
+/dat2
+/np_dat
+/samples
+/__pycache__

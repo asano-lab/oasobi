@@ -8,7 +8,7 @@ import numpy as np
 import shutil
 import re
 
-clib = CDLL("./rubik.so")
+clib = CDLL("./rubik_win.so")
 
 cull2 = c_ulonglong * 2
 
@@ -86,6 +86,23 @@ CENTER_INDICES = {
     "B": (1, 10), "L": (1, 13), "D": (1, 16)
 }
 
+# 23種の全色変換パターン
+# Cで格納するための順番
+COLOR_PATTERN_LIST = [
+    "UL", "UR", "UB", "DF", "DL", "DR", "DB",
+    "LU", "LD", "LF", "LB", "RU", "RD", "RF", "RB",
+    "FU", "FD", "FL", "FR", "BU", "BD", "BL", "BR"
+]
+
+# 逆の色変換の対応表
+COLOR_PATTERN_INV = {
+    "UL": "UR", "FD": "BU", "RF": "LF", "UB": "UB", "UR": "UL",
+    "DB": "DB", "BU": "FD", "DF": "DF", "LF": "RF", "LD": "BR",
+    "BD": "BD", "RD": "BL", "FL": "LU", "DL": "DL", "BL": "RD",
+    "DR": "DR", "LB": "LB", "LU": "FL", "RB": "RB", "RU": "FR",
+    "FU": "FU", "FR": "RU", "BR": "LD"
+}
+
 # 向きを含めずに位置だけ
 MIRROR_POS = {
     "UD": [
@@ -125,6 +142,12 @@ def s2hms(s):
     s = int(s)
     return s // 3600, s % 3600 // 60, s % 60
 
+def oneHot(hot, n):
+    """
+    one-hotリストを作成して返す.
+    """
+    return [int(i == hot) for i in range(n)]
+
 # 資料通りのクラス
 class State():
 
@@ -147,6 +170,23 @@ class State():
             s_num = (s_num << 4) | self.ep[i]
             s_num = (s_num << 1) | self.eo[i]
         return s_num
+    
+    def toBinaryList(self):
+        """
+        01だけのリストに変換(256値)
+        各値をone-hotに変換.
+        例：cpの5 -> [0, 0, 0, 0, 0, 1, 0, 0]
+        """
+        bl = []
+        for i in self.cp:
+            bl += oneHot(i, 8)
+        for i in self.co:
+            bl += oneHot(i, 3)
+        for i in self.ep:
+            bl += oneHot(i, 12)
+        for i in self.eo:
+            bl += oneHot(i, 2)
+        return bl
     
     # 数値変換と正規化
     def toNumNormal(self):
@@ -174,22 +214,15 @@ class State():
         return color_array
     
     def changeColor(self, color_pattern):
-        tmpst = self + change_color[color_pattern]
-        rp = replace_parts[color_pattern]
-        ncp = []
-        nco = []
-        nep = []
-        neo = []
-        for i, j in enumerate(tmpst.cp):
-            ncp.append(rp[0][j])
-            nco.append((tmpst.co[i] + rp[1][j]) % 3)
-        for i, j in enumerate(tmpst.ep):
-            nep.append(rp[2][j])
-            neo.append(tmpst.eo[i] ^ rp[3][j])
-        return State(ncp, nco, nep, neo)
-    
-    # 上下鏡写しの等価盤面を作りたい
+        """
+        色変換メソッド.
+        """
+        return change_color[COLOR_PATTERN_INV[color_pattern]] + self + change_color[color_pattern]
+
     def mirror(self, mirror_pattern):
+        """
+        鏡写しの等価状態作成.
+        """
         mp = MIRROR_POS[mirror_pattern]
         tmpst = State(
             [self.cp[i] for i in mp[0]],
@@ -230,6 +263,19 @@ class State():
             ns += s_add
         return ns
     
+    def __eq__(self, arg):
+        """
+        等号演算子の処理.
+        全リストを比較して全てが一致したら真.
+        """
+        if self.cp != arg.cp:
+            return False
+        if self.co != arg.co:
+            return False
+        if self.ep != arg.ep:
+            return False
+        return self.eo == arg.eo
+    
     def __str__(self):
         moji = str(self.cp) + "\n"
         moji += str(self.co) + "\n"
@@ -245,6 +291,10 @@ class State():
         return moji
 
 class State2():
+    """
+    数値で扱うクラス.
+    確認用で使う.
+    """
 
     def __init__(self, num: int):
         self.num = num
@@ -387,21 +437,6 @@ change_color["RU"] = change_color["RB"] + change_color["FD"]
 change_color["FU"] = change_color["FL"] + change_color["RF"]
 change_color["FR"] = change_color["FU"] + change_color["RF"]
 change_color["BR"] = change_color["BU"] + change_color["RF"]
-
-def cleateReplaceParts(chclr: State):
-    ll = [[-1] * 8, chclr.co.copy(), [-1] * 12, chclr.eo.copy()]
-    for i, j in enumerate(chclr.cp):
-        ll[0][j] = i
-        ll[1][j] = -chclr.co[i] % 3
-    for i, j in enumerate(chclr.ep):
-        ll[2][j] = i
-        ll[3][j] = chclr.eo[i]
-    return ll
-
-# パーツの入れ替え辞書を作成
-replace_parts = {}
-for k, v in change_color.items():
-    replace_parts[k] = cleateReplaceParts(v)
 
 def num2state(num: int) -> State:
     """
@@ -610,34 +645,43 @@ class Search:
         print("%d手以上%d手未満を探索" % (self.snd_max, self.snd_max + tnd))
         cmns_dic = {k: [] for k in self.target_neighbors}
         snd_max_sub = -1
+        min_depth = tnd
+        loop = tnd
         for i in range(LOOP_MAX):
             fnamer = SN_PATH_FORMAT.format(self.snd_max, i)
             if not os.path.exists(fnamer):
                 break
             snd_max_sub = i
-            # print(fnamer)
             with open(fnamer, "rb") as f:
                 known_states = pickle.load(f)
             # 各集合との共通部分を計算 (和はリストが速い(?))
-            for k, v in self.target_neighbors.items():
-                cmns_dic[k] += list(known_states & v)
-        # 全共通部分を取得後, 浅い要素から確認
-        for i in range(tnd):
-            cmns = cmns_dic[i]
-            if cmns:
-                self.common_states = set(cmns)
-                self.dist = self.snd_max + i
-                self.target_neighbors_depth = i
-                print(cmns)
-                print(self.dist)
-                return self.dist
+            for k in range(loop):
+                v = self.target_neighbors[k]
+                cmns = list(known_states & v)
+                if cmns and k < min_depth:
+                    print("%d手以下確定" % (self.snd_max + k))
+                    min_depth = k
+                    loop = k + 1
+                cmns_dic[k] += cmns
+            if min_depth == 0:
+                print("打ち切り")
+                break
+        # 全共通部分を取得後, 最も近いものを確認
+        if min_depth in cmns_dic:
+            cmns = cmns_dic[min_depth]
+            self.common_states = set(cmns)
+            self.dist = self.snd_max + min_depth
+            self.target_neighbors_depth = min_depth
+            print(cmns)
+            print(self.dist)
+            return self.dist
         del cmns_dic
         # 最深探索
         print("%d手を探索" % (self.snd_max + tnd))
         count = 0
         nsts = []
-        count_max = len(self.target_neighbors[tnd - 1])
         t0 = time.time()
+        count_max = len(self.target_neighbors[tnd - 1])
         for st_num in self.target_neighbors[tnd - 1]:
             nsts += applyAllMovesNormal(st_num)
             count += 1
@@ -647,6 +691,7 @@ class Search:
                 # 全最深ファイルを確認
                 for i in range(snd_max_sub + 1):
                     fnamer = SN_PATH_FORMAT.format(self.snd_max, i)
+                    # print(fnamer)
                     with open(fnamer, "rb") as f:
                         known_states = pickle.load(f)
                     cmns = known_states & nsts
@@ -658,10 +703,12 @@ class Search:
                         print(cmns)
                         print(self.dist)
                         return self.dist
-                print("%d / %d 探索済み" % (count, count_max))
-                print("経過時間：%02d時間%02d分%02d秒" % s2hms(time.time() - t0))
                 # 初期化
                 nsts = []
+                print("%d / %d 完了" % (count, count_max))
+                delta_t = int(time.time() - t0)
+                print("経過時間：%02d分%02d秒" % (delta_t // 60, delta_t % 60))
+        # あまりチェック
         print(nsts)
         return -1
     
@@ -674,14 +721,14 @@ class Search:
 
     def _calcNeighbors(self, neighbor_dic: dict):
         """
-        メインの探索
+        通常の探索.
         """
         depth = max(neighbor_dic)
         print("深さ%dの探索" % (depth + 1))
         nsts = []
         for st_num in neighbor_dic[depth]:
             nsts += applyAllMovesNormal(st_num)
-        # print("新状態数（重複あり）: %d" % len(nsts))
+        print("新状態数（重複あり）: %d" % len(nsts))
         nsts = set(nsts)
         for past_sts in neighbor_dic.values():
             nsts -= past_sts
@@ -1057,30 +1104,18 @@ def collectSamples(loop, tnd, mode=0, shuffle_num=20):
     """
     サンプル収集用関数.
     """
-    t0 = time.time()
     dist_max = SOLVED_NEIGHBOR_DEPTH_MAX + tnd
     fnamew = SMP_PATH_FORMAT.format(dist_max)
     gt_key = "gt%d" % dist_max
     # パスが存在しない場合は初期化
     if not os.path.exists(fnamew):
-        if not os.path.isdir(SMP_DIR_PATH):
-            os.mkdir(SMP_DIR_PATH)
-            print("ディレクトリ%sを作成" % SMP_DIR_PATH)
         smp_dic = {dist_max - i: set() for i in range(tnd)}
         smp_dic[gt_key] = set()
         print(fnamew + "を作成")
         writeAndBackup(fnamew, smp_dic)
     with open(fnamew, "rb") as f:
         smp_dic = pickle.load(f)
-    # 最初のサンプル数も保存
-    len_dic = {}
-    print("過去のサンプル数")
-    for k, v in smp_dic.items():
-        len_dic[k] = len(v)
-        if type(k) is int:
-            print("%2d手サンプル数：%d" % (k, len_dic[k]))
-        else:
-            print("%2d手以上サンプル数：%d" % (dist_max + 1, len_dic[k]))
+    t0 = time.time()
     try:
         for _ in range(loop):
             t1 = time.time()
@@ -1093,7 +1128,7 @@ def collectSamples(loop, tnd, mode=0, shuffle_num=20):
             else:
                 print("手入力")
                 sst = inputState()
-                if sst == None:
+                if sst is None:
                     break
             print(sst)
             srch = Search(sst, SOLVED_NEIGHBOR_DEPTH_MAX)
@@ -1112,46 +1147,18 @@ def collectSamples(loop, tnd, mode=0, shuffle_num=20):
                 print("%2d手以上" % (dist_max + 1))
                 smp_dic[gt_key].add(sst.toNumNormal())
             for k, v in smp_dic.items():
-                smp_len = len(v)
-                smp_inc = smp_len - len_dic[k]
                 if type(k) is int:
-                    print("%2d手サンプル数：%d (+%d)" % (k, smp_len, smp_inc))
+                    print("%2d手サンプル数：%d" % (k, len(v)))
                 else:
-                    print("%2d手以上サンプル数：%d (+%d)" % (dist_max + 1, smp_len, smp_inc))
+                    print("%2d手以上サンプル数：%d" % (dist_max + 1, len(v)))
             writeAndBackup(fnamew, smp_dic)
             print("所要時間：%02d時間%02d分%02d秒" % s2hms(time.time() - t1))
     except KeyboardInterrupt:
         print("強制終了")
     print("総計算時間：%02d時間%02d分%02d秒" % s2hms(time.time() - t0))
-    
-
-# scramble = "L D2 R U2 L F2 U2 L F2 R2 B2 R U' R' U2 F2 R' D B' F2"
-# scramble = scramble.split()
 
 # scramble_udm = "L' U2 R' D2 L' F2 D2 L' F2 R2 B2 R' D R D2 F2 R U' B F2"
 # scramble_udm = scramble_udm.split()
-
-# Cで格納するための順番
-# cl_list = [
-#     "UL", "UR", "UB", "DF", "DL", "DR", "DB",
-#     "LU", "LD", "LF", "LB", "RU", "RD", "RF", "RB",
-#     "FU", "FD", "FL", "FR", "BU", "BD", "BL", "BR"
-# ]
-
-def createNpFiles():
-    t0 = time.time()
-    for i in range(8, 9):
-        for j in range(LOOP_MAX):
-            fnamer = SN_PATH_FORMAT.format(i, j)
-            if not os.path.exists(fnamer):
-                break
-            with open(fnamer, "rb") as f:
-                sts = pickle.load(f)
-            arr = set2nparray(sts)
-            print(arr.shape)
-            fnamew = NP_SN_PATH_FORMAT.format(i, j)
-            np.save(fnamew, arr)
-    print("所要時間：%.2f秒" % (time.time() - t0))
 
 def createSampleNpFiles(dist_max):
     """
@@ -1174,5 +1181,14 @@ def createSampleNpFiles(dist_max):
         np.save(fnamew, arr)
 
 if __name__ == "__main__":
-    collectSamples(10, 7, 0, 17)
-    pass
+    # sample_scramble = "L D2 R U2 L F2 U2 L F2 R2 B2 R U' R' U2 F2 R' D B' F2"
+    # sample_scramble = sample_scramble.split()
+    # sample_scrambled_state = solved.copy()
+    # for move_name in sample_scramble:
+    #     sample_scrambled_state += moves[move_name]
+    # sample_scrambled_state = randomScrambleDependent(100)
+    # print(sample_scrambled_state)
+    # for i in COLOR_PATTERN_LIST:
+    #     st1 = sample_scrambled_state.changeColor(i)
+    #     print(st1.toNum())
+    collectSamples(1, 7, 2)
