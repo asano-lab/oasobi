@@ -234,6 +234,12 @@ class State():
         """
         return change_color_inv[color_pattern] + self + change_color[color_pattern]
     
+    def changeColor3(self, color_pattern):
+        """
+        逆の色変換が分かっていれば状態辞書は1つでいいはず.
+        """
+        return change_color[COLOR_PATTERN_INV[color_pattern]] + self + change_color[color_pattern]
+
     def mirror(self, mirror_pattern):
         """
         鏡写しの等価状態作成.
@@ -1222,8 +1228,12 @@ if __name__ == "__main__":
     #     sample_scrambled_state += moves[move_name]
     sample_scrambled_state = randomScrambleDependent(100)
     print(sample_scrambled_state)
-    for k1, v1 in change_color.items():
-        for k2, v2 in change_color_inv.items():
-            if v1 == v2:
-                print("\"%s\": \"%s\", " % (k1, k2), end="")
-        pass
+    for i in COLOR_PATTERN_LIST:
+        st1 = sample_scrambled_state.changeColor(i)
+        st3 = sample_scrambled_state.changeColor3(i)
+        print(st1)
+        print(st3)
+        if st1 == st3:
+            print("正しい")
+        else:
+            print("正しくない")
