@@ -105,14 +105,16 @@ def createSampleNpFile(act_num, binary=False):
         return
     if binary:
         arr = set2nparrayBin(sts)
+        fnamew = BIN_SUBSET_NP_PATH_FORMAT.format(act_num)
     else:
         arr = rubik_win.set2nparray(sts)
+        fnamew = SUBSET_NP_PATH_FORMAT.format(act_num)
+    print(fnamew + "に書き込み")
     print(arr.shape)
     print(arr)
-    fnamew = SUBSET_NP_PATH_FORMAT.format(act_num)
     np.save(fnamew, arr)
     print("%02d:%02d:%02d" % rubik_win.s2hms(time.time() - t0))
 
 if __name__ == "__main__":
-    createSampleNpFile(10)
+    createSampleNpFile(10, True)
     pass
