@@ -214,29 +214,8 @@ class State():
         return color_array
     
     def changeColor(self, color_pattern):
-        tmpst = self + change_color[color_pattern]
-        rp = replace_parts[color_pattern]
-        ncp = []
-        nco = []
-        nep = []
-        neo = []
-        for i, j in enumerate(tmpst.cp):
-            ncp.append(rp[0][j])
-            nco.append((tmpst.co[i] + rp[1][j]) % 3)
-        for i, j in enumerate(tmpst.ep):
-            nep.append(rp[2][j])
-            neo.append(tmpst.eo[i] ^ rp[3][j])
-        return State(ncp, nco, nep, neo)
-    
-    def changeColor2(self, color_pattern):
         """
-        両サイドから足せば同じ結果が得られるはず
-        """
-        return change_color_inv[color_pattern] + self + change_color[color_pattern]
-    
-    def changeColor3(self, color_pattern):
-        """
-        逆の色変換が分かっていれば状態辞書は1つでいいはず.
+        色変換メソッド.
         """
         return change_color[COLOR_PATTERN_INV[color_pattern]] + self + change_color[color_pattern]
 
@@ -454,29 +433,6 @@ change_color["RU"] = change_color["RB"] + change_color["FD"]
 change_color["FU"] = change_color["FL"] + change_color["RF"]
 change_color["FR"] = change_color["FU"] + change_color["RF"]
 change_color["BR"] = change_color["BU"] + change_color["RF"]
-
-def cleateReplaceParts(chclr: State):
-    """
-    パーツの置き換え操作.
-    左から足す状態と考えていい??
-    全てchange_colorに含まれるはず.
-    """
-    ll = [[-1] * 8, chclr.co.copy(), [-1] * 12, chclr.eo.copy()]
-    for i, j in enumerate(chclr.cp):
-        ll[0][j] = i
-        ll[1][j] = -chclr.co[i] % 3
-    for i, j in enumerate(chclr.ep):
-        ll[2][j] = i
-        ll[3][j] = chclr.eo[i]
-    return ll
-
-# パーツの入れ替え辞書を作成
-replace_parts = {}
-change_color_inv = {}
-for k, v in change_color.items():
-    ll = cleateReplaceParts(v)
-    replace_parts[k] = ll
-    change_color_inv[k] = State(*ll)
 
 def num2state(num: int) -> State:
     """
@@ -1230,10 +1186,4 @@ if __name__ == "__main__":
     print(sample_scrambled_state)
     for i in COLOR_PATTERN_LIST:
         st1 = sample_scrambled_state.changeColor(i)
-        st3 = sample_scrambled_state.changeColor3(i)
-        print(st1)
-        print(st3)
-        if st1 == st3:
-            print("正しい")
-        else:
-            print("正しくない")
+        print(st1.toNum())
