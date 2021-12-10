@@ -615,6 +615,7 @@ class Search:
         print("%d手以上%d手未満を探索" % (self.snd_max, self.snd_max + tnd))
         cmns_dic = {k: [] for k in self.target_neighbors}
         snd_max_sub = -1
+        min_dist = tnd
         for i in range(LOOP_MAX):
             fnamer = SN_PATH_FORMAT.format(self.snd_max, i)
             if not os.path.exists(fnamer):
@@ -625,7 +626,11 @@ class Search:
                 known_states = pickle.load(f)
             # 各集合との共通部分を計算 (和はリストが速い(?))
             for k, v in self.target_neighbors.items():
-                cmns_dic[k] += list(known_states & v)
+                cmns = list(known_states & v)
+                if cmns and k < min_dist:
+                    min_dist = k
+                    print("%d手以下確定" % (k + self.snd_max))
+                cmns_dic[k] += cmns
         # 全共通部分を取得後, 浅い要素から確認
         for i in range(tnd):
             cmns = cmns_dic[i]
@@ -1178,5 +1183,5 @@ def createSampleNpFiles(dist_max):
         np.save(fnamew, arr)
 
 if __name__ == "__main__":
-    collectSamples(1, 7, 2, 8)
+    collectSamples(1, 7, 1, 9)
     pass
