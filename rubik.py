@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 from ctypes import CDLL, c_int32, c_ulonglong
 import time
 import os
@@ -930,12 +931,16 @@ def inputState():
 
 def createSolvedNeighborsFile():
     """
-    まずは全状態を洗い出したい
+    完成状態近傍ファイルを作成する関数.
     """
+    t0 = time.time()
     searching = DIR_PATH + "searching.json"
     act_num = 0
     sub_num = 0
 
+    if not os.path.isdir(DIR_PATH):
+        os.mkdir(DIR_PATH)
+        print("ディレクトリ%sを作成" % DIR_PATH)
     # まだ何も作られていない
     # 最初のファイルを作成し, 深さ1の探索も行う
     if not os.path.exists(searching):
@@ -964,16 +969,13 @@ def createSolvedNeighborsFile():
             fnamer = SN_PATH_FORMAT.format(act_num, sub_num)
 
     print(fnamer, "から次の状態を計算")
-
     # ロード
     with open(fnamer, "rb") as f:
         prev_st_nums = pickle.load(f)
-
     print("探索状態数：{:d}".format(len(prev_st_nums)))
 
-    next_st_nums = []
-
     # 次の状態を計算
+    next_st_nums = []
     while prev_st_nums:
         st_num = prev_st_nums.pop()
         next_st_nums += applyAllMovesNormal(st_num)
@@ -1036,7 +1038,7 @@ def createSolvedNeighborsFile():
     if next_st_nums:
         with open(latest_fname, "wb") as f:
             pickle.dump(set(next_st_nums), f)
-
+    print("%02d:%02d:%02d" % s2hms(time.time() - t0))
     return False
 
 def set2nparray(num_set):
@@ -1183,5 +1185,7 @@ def createSampleNpFiles(dist_max):
         np.save(fnamew, arr)
 
 if __name__ == "__main__":
-    collectSamples(100, 7, 0, 20)
+    # collectSamples(100, 7, 0, 20)
+    for _ in range(8):
+        createSolvedNeighborsFile()
     pass
