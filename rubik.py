@@ -138,7 +138,7 @@ class State():
         return State(self.cp.copy(), self.co.copy(), self.ep.copy(), self.eo.copy())
     
     # 数値変換
-    def toNum(self):
+    def toNum(self) -> int:
         s_num = 0
         for i in range(8):
             s_num = (s_num << 3) | self.cp[i]
@@ -242,6 +242,7 @@ class State():
                 if i % 3 == 2:
                     moji += " "
             moji += "\n"
+        moji += hex(self.toNum()) + "\n"
         return moji
 
 class State2():
@@ -1177,5 +1178,5 @@ def createSampleNpFiles(dist_max):
         np.save(fnamew, arr)
 
 if __name__ == "__main__":
-    collectSamples(1, 7, 0, 8)
+    collectSamples(1, 7, 2, 8)
     pass
