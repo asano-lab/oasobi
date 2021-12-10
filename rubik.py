@@ -964,6 +964,10 @@ def createSolvedNeighborsFile():
         if not os.path.exists(fnamer):
             # 次の深さの最初のファイルを指定
             act_num += 1
+            # 探索8手までで終了させる
+            if act_num > 8:
+                print("全9手状態を発見")
+                return True
             # 副番号はリセット
             sub_num = 0
             fnamer = SN_PATH_FORMAT.format(act_num, sub_num)
@@ -1186,6 +1190,7 @@ def createSampleNpFiles(dist_max):
 
 if __name__ == "__main__":
     # collectSamples(100, 7, 0, 20)
-    for _ in range(8):
-        createSolvedNeighborsFile()
+    for _ in range(100):
+        if createSolvedNeighborsFile():
+            break
     pass
