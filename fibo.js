@@ -9,5 +9,5 @@ const fibo = (n) => {
 }
 
 const t0 = new Date().getTime();
-console.log(fibo(34));
+console.log(fibo(45));
 console.log((new Date().getTime() - t0) / 1000);
