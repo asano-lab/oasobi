@@ -1189,8 +1189,5 @@ def createSampleNpFiles(dist_max):
         np.save(fnamew, arr)
 
 if __name__ == "__main__":
-    # collectSamples(100, 7, 0, 20)
-    for _ in range(100):
-        if createSolvedNeighborsFile():
-            break
+    collectSamples(1, 7, 0, 8)
     pass
