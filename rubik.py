@@ -1189,5 +1189,5 @@ def createSampleNpFiles(dist_max):
         np.save(fnamew, arr)
 
 if __name__ == "__main__":
-    collectSamples(1, 7, 0, 8)
+    collectSamples(1, 7, 1, 15)
     pass
