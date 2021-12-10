@@ -583,16 +583,14 @@ class Search:
     def searchWithDat2(self, tnd: int):
         """
         完成状態近傍はファイルに保存されているものとして探索.
-        逆探索の深さ.
+        引数は逆探索の深さ.
         ファイルを読み込む回数をできるだけ減らしたい.
-        最後の深さを探索する場合は部分集合で確認していく.
-        手数が少ない状態の探索にはかえって効率が悪い?
+        最後の深さを探索する場合, 部分集合でチェックしていく.
+        手数が少ない状態の探索にはかえって効率が悪い.
         """
-        # まずは最後の深さの直前まで探索
-        while max(self.target_neighbors) < tnd - 1:
-            self._calcNeighbors(self.target_neighbors)
+        t0 = time.time()
         print("%d手未満を探索" % self.snd_max)
-        # 最深以外はターゲットのみを見る
+        # まずは完成状態近傍の最深ファイル以外をチェック
         for i in range(self.snd_max):
             for j in range(LOOP_MAX):
                 fnamer = SN_PATH_FORMAT.format(i, j)
@@ -606,7 +604,13 @@ class Search:
                     self.target_neighbors_depth = 0
                     print("発見")
                     return self.dist
-        # 最深部探索
+        print("経過時間：%02d時間%02d分%02d秒" % s2hms(time.time() - t0))
+        # ターゲット近傍の探索開始
+        print("逆方向探索")
+        while max(self.target_neighbors) < tnd - 1:
+            self._calcNeighbors(self.target_neighbors)
+        print("経過時間：%02d時間%02d分%02d秒" % s2hms(time.time() - t0))
+        # 完成状態近傍最深ファイルをチェック
         print("%d手以上%d手未満を探索" % (self.snd_max, self.snd_max + tnd))
         cmns_dic = {k: [] for k in self.target_neighbors}
         snd_max_sub = -1
@@ -632,12 +636,12 @@ class Search:
                 print(self.dist)
                 return self.dist
         del cmns_dic
-        # 最深探索
+        print("経過時間：%02d時間%02d分%02d秒" % s2hms(time.time() - t0))
+        # ターゲット最深探索
         print("%d手を探索" % (self.snd_max + tnd))
         count = 0
         nsts = []
         count_max = len(self.target_neighbors[tnd - 1])
-        t0 = time.time()
         for st_num in self.target_neighbors[tnd - 1]:
             nsts += applyAllMovesNormal(st_num)
             count += 1
@@ -667,7 +671,7 @@ class Search:
     
     def calcTargetNeighbors(self, depth: int):
         """
-        解きたい状態の近所を探索する
+        解きたい状態の近所を探索する.
         """
         for _ in range(depth):
             self._calcNeighbors(self.target_neighbors)
@@ -730,7 +734,7 @@ class Search:
     
     def getSolveMovesWithDatOne(self):
         """
-        片方向探索で見つかった場合の手順を求める関数
+        片方向探索で見つかった場合の手順を求める関数.
         """
         solved_route = [self.target_num]
         for i in range(self.dist):
@@ -739,7 +743,6 @@ class Search:
                 fnamer = SN_PATH_FORMAT.format(self.dist - (i + 1), j)
                 if not os.path.exists(fnamer):
                     break
-                # print(fnamer)
                 with open(fnamer, "rb") as f:
                     nsts_cmn = nsts & pickle.load(f)
                 if nsts_cmn:
@@ -1174,5 +1177,5 @@ def createSampleNpFiles(dist_max):
         np.save(fnamew, arr)
 
 if __name__ == "__main__":
-    collectSamples(100, 7, 0, 20)
+    collectSamples(1, 7, 0, 8)
     pass
