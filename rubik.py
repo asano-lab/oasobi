@@ -1105,7 +1105,8 @@ def collectSamples(loop, tnd, mode=0, shuffle_num=20):
         else:
             printLog("%2d手以上サンプル数：%d" % (dist_max + 1, len_dic[k]))
     try:
-        for _ in range(loop):
+        for i in range(loop):
+            printLog(f"{i + 1}ループ目")
             if mode == 0:
                 printLog("通常スクランブル%d手：" % shuffle_num, end="")
                 sst = randomScramble(shuffle_num)
@@ -1115,7 +1116,7 @@ def collectSamples(loop, tnd, mode=0, shuffle_num=20):
             else:
                 printLog("手入力")
                 sst = inputState()
-                if sst == None:
+                if sst is None:
                     break
             printLog(sst)
             srch = Search(sst, SOLVED_NEIGHBOR_DEPTH_MAX)
@@ -1189,7 +1190,7 @@ def main():
             except FileNotFoundError:
                 print(f"「{LOG_PATH}」の作成失敗.")
                 return
-    collectSamples(10, 7, 0, 8)
+    collectSamples(1000, 7, 1, 16)
 
 if __name__ == "__main__":
     main()
