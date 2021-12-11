@@ -121,7 +121,8 @@ NP_SN_PATH_FORMAT = NP_DIR_PATH + "act{:03d}_{:03d}.npy"
 # 数値は判定できる最大手数
 SMP_PATH_FORMAT = SMP_DIR_PATH + "sample{:03d}.pickle"
 
-LOG_PATH = None
+# LOG_PATH = None
+LOG_PATH = "./log/collect_sample_log.txt"
 
 # 秒を時間分秒のタプルで返す
 def s2hms(s):
@@ -1105,7 +1106,6 @@ def collectSamples(loop, tnd, mode=0, shuffle_num=20):
             printLog("%2d手以上サンプル数：%d" % (dist_max + 1, len_dic[k]))
     try:
         for _ in range(loop):
-            t1 = time.time()
             if mode == 0:
                 printLog("通常スクランブル%d手：" % shuffle_num, end="")
                 sst = randomScramble(shuffle_num)
@@ -1141,7 +1141,7 @@ def collectSamples(loop, tnd, mode=0, shuffle_num=20):
                 else:
                     printLog("%2d手以上サンプル数：%d (+%d)" % (dist_max + 1, smp_len, smp_inc))
             writeAndBackup(fnamew, smp_dic)
-            printLog("所要時間：%02d時間%02d分%02d秒" % s2hms(time.time() - t1))
+            printLog("経過時間：%02d時間%02d分%02d秒" % s2hms(time.time() - t0))
     except KeyboardInterrupt:
         printLog("強制終了")
     printLog("総計算時間：%02d時間%02d分%02d秒" % s2hms(time.time() - t0))
@@ -1182,10 +1182,14 @@ def createSampleNpFiles(dist_max):
 
 def main():
     if LOG_PATH is not None:
-        if not os.path.isfile(LOG_PATH):
-            print(f"「{LOG_PATH}」が存在しません.")
-            return
-    collectSamples(10, 7, 0, 20)
+        if not os.path.exists(LOG_PATH):
+            try:
+                with open(LOG_PATH, "w") as f:
+                    print(f"「{LOG_PATH}」を作成.")
+            except FileNotFoundError:
+                print(f"「{LOG_PATH}」の作成失敗.")
+                return
+    collectSamples(10, 7, 0, 8)
 
 if __name__ == "__main__":
     main()
