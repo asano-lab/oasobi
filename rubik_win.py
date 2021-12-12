@@ -1191,4 +1191,4 @@ if __name__ == "__main__":
     # for i in COLOR_PATTERN_LIST:
     #     st1 = sample_scrambled_state.changeColor(i)
     #     print(st1.toNum())
-    collectSamples(1, 7, 2)
+    collectSamples(100, 7)
