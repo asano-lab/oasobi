@@ -131,14 +131,25 @@ def checkSetSize(depth=7):
             # print(fnamer)
         print(f"{i}手状態数：{set_siz}")
 
+def createNpz():
+    """
+    npzファイルを作成.
+    """
+    for i in range(7):
+        fnamer = rubik_win.SN_PATH_FORMAT.format(i, 0)
+        sts = readPickleFile(fnamer)
+        if len(sts) > 100000:
+            sts = random.sample(list(sts), 100000)
+        else:
+            sts = list(sts)
+            random.shuffle(sts)
+        len_sts = len(sts)
+        test_sts = len_sts // 7
+        print(len_sts - test_sts, test_sts)
+    pass
+
 if __name__ == "__main__":
-    arr1 = np.random.random([2, 3])
-    arr2 = np.ones([4, 5], dtype="uint8")
-    print(arr1)
-    print(arr2)
-    np.savez("./np_dat/npz_test", arr1=arr1, arr2=arr2)
-    larr = np.load("./np_dat/npz_test.npz")
-    print(larr.files)
+    createNpz()
     # sampleActLT10(7, 0.2)
     # createSampleNpFile(7)
     pass
