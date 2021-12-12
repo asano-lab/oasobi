@@ -116,8 +116,11 @@ def createSampleNpFile(act_num, binary=False):
     np.save(fnamew, arr)
     print("%02d:%02d:%02d" % rubik_win.s2hms(time.time() - t0))
 
-if __name__ == "__main__":
-    for i in range(8):
+def checkSetSize(depth=7):
+    """
+    集合サイズ確認.
+    """
+    for i in range(depth + 1):
         set_siz = 0
         for j in range(rubik_win.LOOP_MAX):
             fnamer = rubik_win.SN_PATH_FORMAT.format(i, j)
@@ -127,6 +130,9 @@ if __name__ == "__main__":
             set_siz += len(sts)
             # print(fnamer)
         print(f"{i}手状態数：{set_siz}")
+
+if __name__ == "__main__":
+    checkSetSize()
     # sampleActLT10(7, 0.2)
     # createSampleNpFile(7)
     pass
