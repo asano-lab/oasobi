@@ -9,6 +9,7 @@ import rubik_win
 SUBSET_PATH_FORMAT = rubik_win.SMP_DIR_PATH + "subset_act{:03d}.pickle"
 BIN_SUBSET_NP_PATH_FORMAT = rubik_win.NP_DIR_PATH + "bin_subset_act{:03d}.npy"
 SUBSET_NP_PATH_FORMAT = rubik_win.NP_DIR_PATH + "subset_act{:03d}.npy"
+TT_NPZ_PATH_FORMAT = rubik_win.NP_DIR_PATH + "train_test_act{:03d}.npz"
 
 def set2nparrayBin(num_set):
     """
@@ -143,9 +144,12 @@ def createNpz():
         else:
             sts = list(sts)
             random.shuffle(sts)
-        len_sts = len(sts)
-        test_sts = len_sts // 7
-        print(len_sts - test_sts, test_sts)
+        len_all = len(sts)
+        len_test = len_all // 7
+        print(f"訓練用データ数：{len_all - len_test}, テスト用データ数：{len_test}")
+        test_sts = set(sts[:len_test])
+        train_sts = set(sts) - test_sts
+        print(len(train_sts), len(test_sts))
     pass
 
 if __name__ == "__main__":
