@@ -139,6 +139,9 @@ def createNpz():
     for i in range(7):
         fnamer = rubik_win.SN_PATH_FORMAT.format(i, 0)
         sts = readPickleFile(fnamer)
+        if sts is None:
+            break
+        print(fnamer)
         if len(sts) > 100000:
             sts = random.sample(list(sts), 100000)
         else:
@@ -149,7 +152,10 @@ def createNpz():
         print(f"訓練用データ数：{len_all - len_test}, テスト用データ数：{len_test}")
         test_sts = set(sts[:len_test])
         train_sts = set(sts) - test_sts
-        print(len(train_sts), len(test_sts))
+        fnamew = TT_NPZ_PATH_FORMAT.format(i)
+        test_arr = rubik_win.set2nparray(test_sts)
+        train_arr = rubik_win.set2nparray(train_sts)
+        print(test_arr.shape, train_arr.shape)
     pass
 
 if __name__ == "__main__":
