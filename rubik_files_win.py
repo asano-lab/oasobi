@@ -161,7 +161,12 @@ def createNpz():
     pass
 
 if __name__ == "__main__":
-    createNpz()
+    # createNpz()
+    for i in range(7):
+        fnamer = TT_NPZ_PATH_FORMAT.format(i)
+        arrs = np.load(fnamer)
+        print(arrs.files)
+        print(arrs["train"].shape, arrs["test"].shape)
     # sampleActLT10(7, 0.2)
     # createSampleNpFile(7)
     pass
