@@ -86,6 +86,23 @@ CENTER_INDICES = {
     "B": (1, 10), "L": (1, 13), "D": (1, 16)
 }
 
+# 23種の全色変換パターン
+# Cで格納するための順番
+COLOR_PATTERN_LIST = [
+    "UL", "UR", "UB", "DF", "DL", "DR", "DB",
+    "LU", "LD", "LF", "LB", "RU", "RD", "RF", "RB",
+    "FU", "FD", "FL", "FR", "BU", "BD", "BL", "BR"
+]
+
+# 逆の色変換の対応表
+COLOR_PATTERN_INV = {
+    "UL": "UR", "FD": "BU", "RF": "LF", "UB": "UB", "UR": "UL",
+    "DB": "DB", "BU": "FD", "DF": "DF", "LF": "RF", "LD": "BR",
+    "BD": "BD", "RD": "BL", "FL": "LU", "DL": "DL", "BL": "RD",
+    "DR": "DR", "LB": "LB", "LU": "FL", "RB": "RB", "RU": "FR",
+    "FU": "FU", "FR": "RU", "BR": "LD"
+}
+
 # 向きを含めずに位置だけ
 MIRROR_POS = {
     "UD": [
@@ -197,20 +214,11 @@ class State():
         return color_array
     
     def changeColor(self, color_pattern):
-        tmpst = self + change_color[color_pattern]
-        rp = replace_parts[color_pattern]
-        ncp = []
-        nco = []
-        nep = []
-        neo = []
-        for i, j in enumerate(tmpst.cp):
-            ncp.append(rp[0][j])
-            nco.append((tmpst.co[i] + rp[1][j]) % 3)
-        for i, j in enumerate(tmpst.ep):
-            nep.append(rp[2][j])
-            neo.append(tmpst.eo[i] ^ rp[3][j])
-        return State(ncp, nco, nep, neo)
-    
+        """
+        色変換メソッド.
+        """
+        return change_color[COLOR_PATTERN_INV[color_pattern]] + self + change_color[color_pattern]
+
     def mirror(self, mirror_pattern):
         """
         鏡写しの等価状態作成.
@@ -255,6 +263,19 @@ class State():
             ns += s_add
         return ns
     
+    def __eq__(self, arg):
+        """
+        等号演算子の処理.
+        全リストを比較して全てが一致したら真.
+        """
+        if self.cp != arg.cp:
+            return False
+        if self.co != arg.co:
+            return False
+        if self.ep != arg.ep:
+            return False
+        return self.eo == arg.eo
+    
     def __str__(self):
         moji = str(self.cp) + "\n"
         moji += str(self.co) + "\n"
@@ -270,6 +291,10 @@ class State():
         return moji
 
 class State2():
+    """
+    数値で扱うクラス.
+    確認用で使う.
+    """
 
     def __init__(self, num: int):
         self.num = num
@@ -412,21 +437,6 @@ change_color["RU"] = change_color["RB"] + change_color["FD"]
 change_color["FU"] = change_color["FL"] + change_color["RF"]
 change_color["FR"] = change_color["FU"] + change_color["RF"]
 change_color["BR"] = change_color["BU"] + change_color["RF"]
-
-def cleateReplaceParts(chclr: State):
-    ll = [[-1] * 8, chclr.co.copy(), [-1] * 12, chclr.eo.copy()]
-    for i, j in enumerate(chclr.cp):
-        ll[0][j] = i
-        ll[1][j] = -chclr.co[i] % 3
-    for i, j in enumerate(chclr.ep):
-        ll[2][j] = i
-        ll[3][j] = chclr.eo[i]
-    return ll
-
-# パーツの入れ替え辞書を作成
-replace_parts = {}
-for k, v in change_color.items():
-    replace_parts[k] = cleateReplaceParts(v)
 
 def num2state(num: int) -> State:
     """
@@ -1118,7 +1128,7 @@ def collectSamples(loop, tnd, mode=0, shuffle_num=20):
             else:
                 print("手入力")
                 sst = inputState()
-                if sst == None:
+                if sst is None:
                     break
             print(sst)
             srch = Search(sst, SOLVED_NEIGHBOR_DEPTH_MAX)
@@ -1147,33 +1157,8 @@ def collectSamples(loop, tnd, mode=0, shuffle_num=20):
         print("強制終了")
     print("総計算時間：%02d時間%02d分%02d秒" % s2hms(time.time() - t0))
 
-# scramble = "L D2 R U2 L F2 U2 L F2 R2 B2 R U' R' U2 F2 R' D B' F2"
-# scramble = scramble.split()
-
 # scramble_udm = "L' U2 R' D2 L' F2 D2 L' F2 R2 B2 R' D R D2 F2 R U' B F2"
 # scramble_udm = scramble_udm.split()
-
-# Cで格納するための順番
-# cl_list = [
-#     "UL", "UR", "UB", "DF", "DL", "DR", "DB",
-#     "LU", "LD", "LF", "LB", "RU", "RD", "RF", "RB",
-#     "FU", "FD", "FL", "FR", "BU", "BD", "BL", "BR"
-# ]
-
-def createNpFiles():
-    t0 = time.time()
-    for i in range(8, 9):
-        for j in range(LOOP_MAX):
-            fnamer = SN_PATH_FORMAT.format(i, j)
-            if not os.path.exists(fnamer):
-                break
-            with open(fnamer, "rb") as f:
-                sts = pickle.load(f)
-            arr = set2nparray(sts)
-            print(arr.shape)
-            fnamew = NP_SN_PATH_FORMAT.format(i, j)
-            np.save(fnamew, arr)
-    print("所要時間：%.2f秒" % (time.time() - t0))
 
 def createSampleNpFiles(dist_max):
     """
@@ -1196,5 +1181,14 @@ def createSampleNpFiles(dist_max):
         np.save(fnamew, arr)
 
 if __name__ == "__main__":
-    collectSamples(1000, 7, 0, 25)
-    # collectSamples(100, 7, 1, 16)
+    # sample_scramble = "L D2 R U2 L F2 U2 L F2 R2 B2 R U' R' U2 F2 R' D B' F2"
+    # sample_scramble = sample_scramble.split()
+    # sample_scrambled_state = solved.copy()
+    # for move_name in sample_scramble:
+    #     sample_scrambled_state += moves[move_name]
+    # sample_scrambled_state = randomScrambleDependent(100)
+    # print(sample_scrambled_state)
+    # for i in COLOR_PATTERN_LIST:
+    #     st1 = sample_scrambled_state.changeColor(i)
+    #     print(st1.toNum())
+    collectSamples(100, 7)
