@@ -117,6 +117,16 @@ def createSampleNpFile(act_num, binary=False):
     print("%02d:%02d:%02d" % rubik_win.s2hms(time.time() - t0))
 
 if __name__ == "__main__":
+    for i in range(8):
+        set_siz = 0
+        for j in range(rubik_win.LOOP_MAX):
+            fnamer = rubik_win.SN_PATH_FORMAT.format(i, j)
+            sts = readPickleFile(fnamer)
+            if sts is None:
+                break
+            set_siz += len(sts)
+            # print(fnamer)
+        print(f"{i}手状態数：{set_siz}")
     # sampleActLT10(7, 0.2)
     # createSampleNpFile(7)
     pass
