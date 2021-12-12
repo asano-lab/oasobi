@@ -132,15 +132,13 @@ def checkSetSize(depth=7):
         print(f"{i}手状態数：{set_siz}")
 
 if __name__ == "__main__":
-    for i in range(7, 11):
-        fnamer = SUBSET_PATH_FORMAT.format(i)
-        sts = readPickleFile(fnamer)
-        if sts is None:
-            break
-        st = rubik_win.num2state(random.choice(list(sts)))
-        print(st)
-        srch = rubik_win.Search(st, 9)
-        print(srch.searchWithDat2(7))
+    arr1 = np.random.random([2, 3])
+    arr2 = np.ones([4, 5], dtype="uint8")
+    print(arr1)
+    print(arr2)
+    np.savez("./np_dat/npz_test", arr1=arr1, arr2=arr2)
+    larr = np.load("./np_dat/npz_test.npz")
+    print(larr.files)
     # sampleActLT10(7, 0.2)
     # createSampleNpFile(7)
     pass
