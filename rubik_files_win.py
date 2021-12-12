@@ -137,6 +137,7 @@ def createNpz():
     npzファイルを作成.
     """
     for i in range(7):
+        t1 = time.time()
         fnamer = rubik_win.SN_PATH_FORMAT.format(i, 0)
         sts = readPickleFile(fnamer)
         if sts is None:
@@ -152,10 +153,11 @@ def createNpz():
         print(f"訓練用データ数：{len_all - len_test}, テスト用データ数：{len_test}")
         test_sts = set(sts[:len_test])
         train_sts = set(sts) - test_sts
-        fnamew = TT_NPZ_PATH_FORMAT.format(i)
         test_arr = rubik_win.set2nparray(test_sts)
         train_arr = rubik_win.set2nparray(train_sts)
-        print(test_arr.shape, train_arr.shape)
+        fnamew = TT_NPZ_PATH_FORMAT.format(i)
+        np.savez(fnamew, train=train_arr, test=test_arr)
+        print("%02d:%02d:%02d" % rubik_win.s2hms(time.time() - t1))
     pass
 
 if __name__ == "__main__":
