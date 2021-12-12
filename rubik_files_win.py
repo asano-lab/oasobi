@@ -135,10 +135,15 @@ def checkSetSize(depth=7):
 def createNpz():
     """
     npzファイルを作成.
+    7手以降は用意されている部分集合から作成.
+    それぞれ最大10万とする.
     """
-    for i in range(7):
+    for i in range(11):
         t1 = time.time()
-        fnamer = rubik_win.SN_PATH_FORMAT.format(i, 0)
+        if i < 7:
+            fnamer = rubik_win.SN_PATH_FORMAT.format(i, 0)
+        else:
+            fnamer = SUBSET_PATH_FORMAT.format(i)
         sts = readPickleFile(fnamer)
         if sts is None:
             break
@@ -156,17 +161,18 @@ def createNpz():
         test_arr = rubik_win.set2nparray(test_sts)
         train_arr = rubik_win.set2nparray(train_sts)
         fnamew = TT_NPZ_PATH_FORMAT.format(i)
-        np.savez(fnamew, train=train_arr, test=test_arr)
+        np.savez_compressed(fnamew, train=train_arr, test=test_arr)
+        print(f"{fnamew}を作成.")
         print("%02d:%02d:%02d" % rubik_win.s2hms(time.time() - t1))
-    pass
 
 if __name__ == "__main__":
-    # createNpz()
-    for i in range(7):
-        fnamer = TT_NPZ_PATH_FORMAT.format(i)
-        arrs = np.load(fnamer)
-        print(arrs.files)
-        print(arrs["train"].shape, arrs["test"].shape)
+    createNpz()
+    # checkSetSize()
+    # for i in range(7):
+    #     fnamer = TT_NPZ_PATH_FORMAT.format(i)
+    #     arrs = np.load(fnamer)
+    #     print(arrs.files)
+    #     print(arrs["train"].shape, arrs["test"].shape)
     # sampleActLT10(7, 0.2)
     # createSampleNpFile(7)
     pass
