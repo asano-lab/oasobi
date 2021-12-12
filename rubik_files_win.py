@@ -10,6 +10,7 @@ SUBSET_PATH_FORMAT = rubik_win.SMP_DIR_PATH + "subset_act{:03d}.pickle"
 BIN_SUBSET_NP_PATH_FORMAT = rubik_win.NP_DIR_PATH + "bin_subset_act{:03d}.npy"
 SUBSET_NP_PATH_FORMAT = rubik_win.NP_DIR_PATH + "subset_act{:03d}.npy"
 TT_NPZ_PATH_FORMAT = rubik_win.NP_DIR_PATH + "train_test_act{:03d}.npz"
+ONEHOT_TT_NPZ_PATH_FORMAT = rubik_win.NP_DIR_PATH + "onehot_train_test_act{:03d}.npz"
 
 def set2nparrayBin(num_set):
     """
@@ -132,7 +133,7 @@ def checkSetSize(depth=7):
             # print(fnamer)
         print(f"{i}手状態数：{set_siz}")
 
-def createNpz():
+def createNpz(binary=False):
     """
     npzファイルを作成.
     7手以降は用意されている部分集合から作成.
@@ -158,21 +159,27 @@ def createNpz():
         print(f"訓練用データ数：{len_all - len_test}, テスト用データ数：{len_test}")
         test_sts = set(sts[:len_test])
         train_sts = set(sts) - test_sts
-        test_arr = rubik_win.set2nparray(test_sts)
-        train_arr = rubik_win.set2nparray(train_sts)
-        fnamew = TT_NPZ_PATH_FORMAT.format(i)
-        np.savez_compressed(fnamew, train=train_arr, test=test_arr)
+        # ワンホット
+        if binary:
+            test_arr = set2nparrayBin(test_sts)
+            train_arr = set2nparrayBin(train_sts)
+            fnamew = ONEHOT_TT_NPZ_PATH_FORMAT.format(i)
+        else:
+            test_arr = rubik_win.set2nparray(test_sts)
+            train_arr = rubik_win.set2nparray(train_sts)
+            fnamew = TT_NPZ_PATH_FORMAT.format(i)
         print(f"{fnamew}を作成.")
+        np.savez_compressed(fnamew, train=train_arr, test=test_arr)
         print("%02d:%02d:%02d" % rubik_win.s2hms(time.time() - t1))
 
 if __name__ == "__main__":
-    # createNpz()
+    createNpz(True)
     # checkSetSize()
-    for i in range(11):
-        fnamer = TT_NPZ_PATH_FORMAT.format(i)
-        arrs = np.load(fnamer)
-        print(arrs.files)
-        print(arrs["train"].shape, arrs["test"].shape)
+    # for i in range(11):
+    #     fnamer = TT_NPZ_PATH_FORMAT.format(i)
+    #     arrs = np.load(fnamer)
+    #     print(arrs.files)
+    #     print(arrs["train"].shape, arrs["test"].shape)
     # sampleActLT10(7, 0.2)
     # createSampleNpFile(7)
     pass
