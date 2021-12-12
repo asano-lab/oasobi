@@ -173,13 +173,15 @@ def createNpz(binary=False):
         print("%02d:%02d:%02d" % rubik_win.s2hms(time.time() - t1))
 
 if __name__ == "__main__":
-    createNpz(True)
+    # createNpz(True)
     # checkSetSize()
-    # for i in range(11):
-    #     fnamer = TT_NPZ_PATH_FORMAT.format(i)
-    #     arrs = np.load(fnamer)
-    #     print(arrs.files)
-    #     print(arrs["train"].shape, arrs["test"].shape)
+    for i in range(11):
+        # fnamer = TT_NPZ_PATH_FORMAT.format(i)
+        fnamer = ONEHOT_TT_NPZ_PATH_FORMAT.format(i)
+        print(fnamer)
+        arrs = np.load(fnamer)
+        print(arrs.files)
+        print(arrs["train"].shape, arrs["test"].shape)
     # sampleActLT10(7, 0.2)
     # createSampleNpFile(7)
     pass
