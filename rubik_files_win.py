@@ -132,7 +132,15 @@ def checkSetSize(depth=7):
         print(f"{i}手状態数：{set_siz}")
 
 if __name__ == "__main__":
-    checkSetSize()
+    for i in range(7, 11):
+        fnamer = SUBSET_PATH_FORMAT.format(i)
+        sts = readPickleFile(fnamer)
+        if sts is None:
+            break
+        st = rubik_win.num2state(random.choice(list(sts)))
+        print(st)
+        srch = rubik_win.Search(st, 9)
+        print(srch.searchWithDat2(7))
     # sampleActLT10(7, 0.2)
     # createSampleNpFile(7)
     pass

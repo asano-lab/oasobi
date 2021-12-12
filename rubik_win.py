@@ -621,11 +621,8 @@ class Search:
         逆探索の深さ.
         ファイルを読み込む回数をできるだけ減らしたい.
         最後の深さを探索する場合は部分集合で確認していく.
-        手数が少ない状態の探索にはかえって効率が悪い?
+        手数が少ない状態の探索にはかえって効率が悪い.
         """
-        # まずは最後の深さの直前まで探索
-        while max(self.target_neighbors) < tnd - 1:
-            self._calcNeighbors(self.target_neighbors)
         print("%d手未満を探索" % self.snd_max)
         # 最深以外はターゲットのみを見る
         for i in range(self.snd_max):
@@ -641,6 +638,9 @@ class Search:
                     self.target_neighbors_depth = 0
                     print("発見")
                     return self.dist
+        # 最後の深さの直前まで探索
+        while max(self.target_neighbors) < tnd - 1:
+            self._calcNeighbors(self.target_neighbors)
         # 最深部探索
         print("%d手以上%d手未満を探索" % (self.snd_max, self.snd_max + tnd))
         cmns_dic = {k: [] for k in self.target_neighbors}
