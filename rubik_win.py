@@ -1115,6 +1115,16 @@ def collectSamples(loop, tnd, mode=0, shuffle_num=20):
         writeAndBackup(fnamew, smp_dic)
     with open(fnamew, "rb") as f:
         smp_dic = pickle.load(f)
+    # 開始時のサンプル数を格納
+    smp_len_dic = {}
+    print("開始時")
+    for k, v in smp_dic.items():
+        smp_len = len(v)
+        if type(k) is int:
+            print("%2d手サンプル数：%d" % (k, smp_len))
+        else:
+            print("%2d手以上サンプル数：%d" % (dist_max + 1, smp_len))
+        smp_len_dic[k] = smp_len
     t0 = time.time()
     try:
         for _ in range(loop):
@@ -1147,10 +1157,12 @@ def collectSamples(loop, tnd, mode=0, shuffle_num=20):
                 print("%2d手以上" % (dist_max + 1))
                 smp_dic[gt_key].add(sst.toNumNormal())
             for k, v in smp_dic.items():
+                smp_len = len(v)
+                smp_inc = smp_len - smp_len_dic[k]
                 if type(k) is int:
-                    print("%2d手サンプル数：%d" % (k, len(v)))
+                    print("%2d手サンプル数：%d (+%d)" % (k, smp_len, smp_inc))
                 else:
-                    print("%2d手以上サンプル数：%d" % (dist_max + 1, len(v)))
+                    print("%2d手以上サンプル数：%d (+%d)" % (dist_max + 1, smp_len, smp_inc))
             writeAndBackup(fnamew, smp_dic)
             print("所要時間：%02d時間%02d分%02d秒" % s2hms(time.time() - t1))
     except KeyboardInterrupt:
@@ -1191,4 +1203,4 @@ if __name__ == "__main__":
     # for i in COLOR_PATTERN_LIST:
     #     st1 = sample_scrambled_state.changeColor(i)
     #     print(st1.toNum())
-    collectSamples(100, 7)
+    collectSamples(100, 7, 0, 100)
