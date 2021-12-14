@@ -9,6 +9,8 @@ import rubik_win
 SUBSET_PATH_FORMAT = rubik_win.SMP_DIR_PATH + "subset_act{:03d}.pickle"
 BIN_SUBSET_NP_PATH_FORMAT = rubik_win.NP_DIR_PATH + "bin_subset_act{:03d}.npy"
 SUBSET_NP_PATH_FORMAT = rubik_win.NP_DIR_PATH + "subset_act{:03d}.npy"
+TT_NPZ_PATH_FORMAT = rubik_win.NP_DIR_PATH + "train_test_act{:03d}.npz"
+ONEHOT_TT_NPZ_PATH_FORMAT = rubik_win.NP_DIR_PATH + "onehot_train_test_act{:03d}.npz"
 
 def set2nparrayBin(num_set):
     """
@@ -34,24 +36,25 @@ def readPickleFile(fnamer: str):
     f.close()
     return obj
 
-def sampleAct9():
+def sampleActLT10(act_num, ratio):
     """
-    9手状態のデータ数が多すぎるのでランダム抽出したい.
-    3億6千万くらいあるので, 1000分の1取り出したい.
+    0 ~ 9手状態のデータ数からランダム抽出.
     """
     t0 = time.time()
     st_subset = []
     for i in range(rubik_win.LOOP_MAX):
-        fnamer = rubik_win.SN_PATH_FORMAT.format(9, i)
+        fnamer = rubik_win.SN_PATH_FORMAT.format(act_num, i)
         sts = readPickleFile(fnamer)
         if sts is None:
             break
         print(fnamer + "からロード")
-        smp_num = len(sts) // 1000
+        smp_num = int(len(sts) * ratio)
         print("使うデータ数：%d" % smp_num)
         st_subset += random.sample(list(sts), smp_num)
-    fnamew = SUBSET_PATH_FORMAT.format(9)
+    fnamew = SUBSET_PATH_FORMAT.format(act_num)
     print("部分集合のサイズ：%d" % len(st_subset))
+    # シャッフルを追加 (なんとなく)
+    random.shuffle(st_subset)
     # 集合にして保存
     rubik_win.writeAndBackup(fnamew, set(st_subset))
     print("%02d:%02d:%02d" % rubik_win.s2hms(time.time() - t0))
@@ -93,11 +96,92 @@ def sampleAct10():
     rubik_win.writeAndBackup(fnamew, act10_subset)
     print("%02d:%02d:%02d" % rubik_win.s2hms(time.time() - t0))
 
-if __name__ == "__main__":
-    # sampleAct10()
-    fnamer = SUBSET_PATH_FORMAT.format(9)
+def createSampleNpFile(act_num, binary=False):
+    """
+    サンプル集合からnp配列に変換.
+    """
+    t0 = time.time()
+    fnamer = SUBSET_PATH_FORMAT.format(act_num)
+    print(fnamer + "からnp配列を作成")
     sts = readPickleFile(fnamer)
-    print(len(sts))
-    fnamew = SUBSET_NP_PATH_FORMAT.format(9)
-    print(fnamew)
+    if sts is None:
+        return
+    if binary:
+        arr = set2nparrayBin(sts)
+        fnamew = BIN_SUBSET_NP_PATH_FORMAT.format(act_num)
+    else:
+        arr = rubik_win.set2nparray(sts)
+        fnamew = SUBSET_NP_PATH_FORMAT.format(act_num)
+    print(fnamew + "に書き込み")
+    print(arr.shape)
+    print(arr)
+    np.save(fnamew, arr)
+    print("%02d:%02d:%02d" % rubik_win.s2hms(time.time() - t0))
+
+def checkSetSize(depth=7):
+    """
+    集合サイズ確認.
+    """
+    for i in range(depth + 1):
+        set_siz = 0
+        for j in range(rubik_win.LOOP_MAX):
+            fnamer = rubik_win.SN_PATH_FORMAT.format(i, j)
+            sts = readPickleFile(fnamer)
+            if sts is None:
+                break
+            set_siz += len(sts)
+            # print(fnamer)
+        print(f"{i}手状態数：{set_siz}")
+
+def createNpz(binary=False):
+    """
+    npzファイルを作成.
+    7手以降は用意されている部分集合から作成.
+    それぞれ最大10万とする.
+    """
+    for i in range(11):
+        t1 = time.time()
+        if i < 7:
+            fnamer = rubik_win.SN_PATH_FORMAT.format(i, 0)
+        else:
+            fnamer = SUBSET_PATH_FORMAT.format(i)
+        sts = readPickleFile(fnamer)
+        if sts is None:
+            break
+        print(fnamer)
+        if len(sts) > 100000:
+            sts = random.sample(list(sts), 100000)
+        else:
+            sts = list(sts)
+            random.shuffle(sts)
+        len_all = len(sts)
+        len_test = len_all // 7
+        print(f"訓練用データ数：{len_all - len_test}, テスト用データ数：{len_test}")
+        test_sts = set(sts[:len_test])
+        train_sts = set(sts) - test_sts
+        # ワンホット
+        if binary:
+            test_arr = set2nparrayBin(test_sts)
+            train_arr = set2nparrayBin(train_sts)
+            fnamew = ONEHOT_TT_NPZ_PATH_FORMAT.format(i)
+        else:
+            test_arr = rubik_win.set2nparray(test_sts)
+            train_arr = rubik_win.set2nparray(train_sts)
+            fnamew = TT_NPZ_PATH_FORMAT.format(i)
+        print(f"{fnamew}を作成.")
+        np.savez_compressed(fnamew, train=train_arr, test=test_arr)
+        print("%02d:%02d:%02d" % rubik_win.s2hms(time.time() - t1))
+
+if __name__ == "__main__":
+    # createNpz(True)
+    # checkSetSize()
+    for i in range(11):
+        # fnamer = TT_NPZ_PATH_FORMAT.format(i)
+        fnamer = ONEHOT_TT_NPZ_PATH_FORMAT.format(i)
+        print(fnamer)
+        arrs = np.load(fnamer)
+        print(arrs.files)
+        print(arrs["train"].shape, arrs["test"].shape)
+    # sampleActLT10(7, 0.2)
+    # createSampleNpFile(7)
     pass
