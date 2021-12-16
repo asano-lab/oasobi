@@ -5,7 +5,7 @@ import random
 import time
 import numpy as np
 import rubik_win
-from rubik_win import SMP_DIR_PATH, SMP_PATH_FORMAT
+from rubik_win import SMP_DIR_PATH, SMP_PATH_FORMAT, writeAndBackup
 
 SUBSET_PATH_FORMAT = rubik_win.SMP_DIR_PATH + "subset_act{:03d}.pickle"
 BIN_SUBSET_NP_PATH_FORMAT = rubik_win.NP_DIR_PATH + "bin_subset_act{:03d}.npy"
@@ -182,6 +182,9 @@ def mergeSampleFiles16(fnamer1: str):
     keys = [i for i in range(10, 17)] + ["gt16"]
     fnamer1 = SMP_DIR_PATH + fnamer1
     smp_dic1 = readPickleFile(fnamer1)
+    if smp_dic1 is None:
+        print(f"{smp_dic1}が存在しません.")
+        return
     fnamer2 = MERGED_SMP_PATH
     smp_dic2 = readPickleFile(fnamer2)
     if smp_dic2 is None:
@@ -190,6 +193,7 @@ def mergeSampleFiles16(fnamer1: str):
             pickle.dump(None, f)
         fnamer2 = SMP_PATH_FORMAT.format(16)
         smp_dic2 = readPickleFile(fnamer2)
+    smp_dic3 = {}
     print(f"結合するファイル：\n{fnamer1}\n{fnamer2}")
     fnamew = MERGED_SMP_PATH
     print(f"書き込み先：\n{fnamew}")
@@ -198,7 +202,8 @@ def mergeSampleFiles16(fnamer1: str):
         smp2 = smp_dic2[i]
         smp3 = smp1 | smp2
         print(i, len(smp1), len(smp2), len(smp3))
-    pass
+        smp_dic3[i] = smp3
+    writeAndBackup(fnamew, smp_dic3)
 
 if __name__ == "__main__":
     mergeSampleFiles16("sample016_sonoda_desktop.pickle")
