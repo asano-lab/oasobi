@@ -183,7 +183,7 @@ def mergeSampleFiles16(fnamer1: str):
     fnamer1 = SMP_DIR_PATH + fnamer1
     smp_dic1 = readPickleFile(fnamer1)
     if smp_dic1 is None:
-        print(f"{smp_dic1}が存在しません.")
+        print(f"{fnamer1}が存在しません.")
         return
     fnamer2 = MERGED_SMP_PATH
     smp_dic2 = readPickleFile(fnamer2)
