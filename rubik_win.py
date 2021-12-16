@@ -621,11 +621,8 @@ class Search:
         逆探索の深さ.
         ファイルを読み込む回数をできるだけ減らしたい.
         最後の深さを探索する場合は部分集合で確認していく.
-        手数が少ない状態の探索にはかえって効率が悪い?
+        手数が少ない状態の探索にはかえって効率が悪い.
         """
-        # まずは最後の深さの直前まで探索
-        while max(self.target_neighbors) < tnd - 1:
-            self._calcNeighbors(self.target_neighbors)
         print("%d手未満を探索" % self.snd_max)
         # 最深以外はターゲットのみを見る
         for i in range(self.snd_max):
@@ -641,6 +638,9 @@ class Search:
                     self.target_neighbors_depth = 0
                     print("発見")
                     return self.dist
+        # 最後の深さの直前まで探索
+        while max(self.target_neighbors) < tnd - 1:
+            self._calcNeighbors(self.target_neighbors)
         # 最深部探索
         print("%d手以上%d手未満を探索" % (self.snd_max, self.snd_max + tnd))
         cmns_dic = {k: [] for k in self.target_neighbors}
@@ -1115,6 +1115,16 @@ def collectSamples(loop, tnd, mode=0, shuffle_num=20):
         writeAndBackup(fnamew, smp_dic)
     with open(fnamew, "rb") as f:
         smp_dic = pickle.load(f)
+    # 開始時のサンプル数を格納
+    smp_len_dic = {}
+    print("開始時")
+    for k, v in smp_dic.items():
+        smp_len = len(v)
+        if type(k) is int:
+            print("%2d手サンプル数：%d" % (k, smp_len))
+        else:
+            print("%2d手以上サンプル数：%d" % (dist_max + 1, smp_len))
+        smp_len_dic[k] = smp_len
     t0 = time.time()
     try:
         for _ in range(loop):
@@ -1147,10 +1157,12 @@ def collectSamples(loop, tnd, mode=0, shuffle_num=20):
                 print("%2d手以上" % (dist_max + 1))
                 smp_dic[gt_key].add(sst.toNumNormal())
             for k, v in smp_dic.items():
+                smp_len = len(v)
+                smp_inc = smp_len - smp_len_dic[k]
                 if type(k) is int:
-                    print("%2d手サンプル数：%d" % (k, len(v)))
+                    print("%2d手サンプル数：%d (+%d)" % (k, smp_len, smp_inc))
                 else:
-                    print("%2d手以上サンプル数：%d" % (dist_max + 1, len(v)))
+                    print("%2d手以上サンプル数：%d (+%d)" % (dist_max + 1, smp_len, smp_inc))
             writeAndBackup(fnamew, smp_dic)
             print("所要時間：%02d時間%02d分%02d秒" % s2hms(time.time() - t1))
     except KeyboardInterrupt:
@@ -1191,4 +1203,4 @@ if __name__ == "__main__":
     # for i in COLOR_PATTERN_LIST:
     #     st1 = sample_scrambled_state.changeColor(i)
     #     print(st1.toNum())
-    collectSamples(1, 7, 2)
+    collectSamples(100, 7, 0, 100)
