@@ -1183,7 +1183,7 @@ def createSampleNpFiles(dist_max):
         np.save(fnamew, arr)
 
 def main():
-    if not LOG_PATH:
+    if LOG_PATH is not None:
         if not os.path.exists(LOG_PATH):
             try:
                 with open(LOG_PATH, "w") as f:
