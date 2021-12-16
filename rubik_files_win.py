@@ -179,8 +179,10 @@ def mergeSampleFiles16():
     各PCで作ったサンプルファイルの統合.
     最大16手判定を前提.
     """
-    print(MERGED_SMP_PATH)
-    print(SMP_PATH_FORMAT.format(16))
+    fnamer = SMP_PATH_FORMAT.format(16)
+    smp_dic1 = readPickleFile(fnamer)
+    for k, v in smp_dic1.items():
+        print(k, len(v))
     pass
 
 if __name__ == "__main__":
