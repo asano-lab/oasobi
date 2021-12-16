@@ -179,17 +179,22 @@ def mergeSampleFiles16(fnamer1: str):
     各PCで作ったサンプルファイルの統合.
     最大16手判定を前提.
     """
+    keys = [i for i in range(10, 17)] + ["gt16"]
     fnamer1 = SMP_DIR_PATH + fnamer1
     smp_dic1 = readPickleFile(fnamer1)
-    smp_dic2 = readPickleFile(MERGED_SMP_PATH)
+    fnamer2 = MERGED_SMP_PATH
+    smp_dic2 = readPickleFile(fnamer2)
     if smp_dic2 is None:
         print("None")
         with open(MERGED_SMP_PATH, "wb") as f:
             pickle.dump(None, f)
         fnamer2 = SMP_PATH_FORMAT.format(16)
         smp_dic2 = readPickleFile(fnamer2)
-    for k, v in smp_dic2.items():
-        print(k, len(v))
+    print(f"結合するファイル：\n{fnamer1}\n{fnamer2}")
+    fnamew = MERGED_SMP_PATH
+    print(f"書き込み先：\n{fnamew}")
+    for i in keys:
+        print(i, len(smp_dic1[i]), len(smp_dic2[i]))
     pass
 
 if __name__ == "__main__":
