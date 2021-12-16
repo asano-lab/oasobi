@@ -194,7 +194,10 @@ def mergeSampleFiles16(fnamer1: str):
     fnamew = MERGED_SMP_PATH
     print(f"書き込み先：\n{fnamew}")
     for i in keys:
-        print(i, len(smp_dic1[i]), len(smp_dic2[i]))
+        smp1 = smp_dic1[i]
+        smp2 = smp_dic2[i]
+        smp3 = smp1 | smp2
+        print(i, len(smp1), len(smp2), len(smp3))
     pass
 
 if __name__ == "__main__":
