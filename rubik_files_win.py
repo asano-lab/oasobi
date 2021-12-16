@@ -5,12 +5,14 @@ import random
 import time
 import numpy as np
 import rubik_win
+from rubik_win import SMP_DIR_PATH
 
 SUBSET_PATH_FORMAT = rubik_win.SMP_DIR_PATH + "subset_act{:03d}.pickle"
 BIN_SUBSET_NP_PATH_FORMAT = rubik_win.NP_DIR_PATH + "bin_subset_act{:03d}.npy"
 SUBSET_NP_PATH_FORMAT = rubik_win.NP_DIR_PATH + "subset_act{:03d}.npy"
 TT_NPZ_PATH_FORMAT = rubik_win.NP_DIR_PATH + "train_test_act{:03d}.npz"
 ONEHOT_TT_NPZ_PATH_FORMAT = rubik_win.NP_DIR_PATH + "onehot_train_test_act{:03d}.npz"
+MERGED_SMP_PATH = SMP_DIR_PATH + "merged_sample016.pickle"
 
 def set2nparrayBin(num_set):
     """
@@ -171,17 +173,25 @@ def createNpz(binary=False):
         print(f"{fnamew}を作成.")
         np.savez_compressed(fnamew, train=train_arr, test=test_arr)
         print("%02d:%02d:%02d" % rubik_win.s2hms(time.time() - t1))
+    
+def mergeSampleFiles():
+    """
+    各PCで作ったサンプルファイルの統合
+    """
+    print(MERGED_SMP_PATH)
+    pass
 
 if __name__ == "__main__":
+    mergeSampleFiles()
     # createNpz(True)
     # checkSetSize()
-    for i in range(11):
-        # fnamer = TT_NPZ_PATH_FORMAT.format(i)
-        fnamer = ONEHOT_TT_NPZ_PATH_FORMAT.format(i)
-        print(fnamer)
-        arrs = np.load(fnamer)
-        print(arrs.files)
-        print(arrs["train"].shape, arrs["test"].shape)
+    # for i in range(11):
+    #     # fnamer = TT_NPZ_PATH_FORMAT.format(i)
+    #     fnamer = ONEHOT_TT_NPZ_PATH_FORMAT.format(i)
+    #     print(fnamer)
+    #     arrs = np.load(fnamer)
+    #     print(arrs.files)
+    #     print(arrs["train"].shape, arrs["test"].shape)
     # sampleActLT10(7, 0.2)
     # createSampleNpFile(7)
     pass
