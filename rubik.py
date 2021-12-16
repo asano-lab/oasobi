@@ -116,7 +116,7 @@ SMP_DIR_PATH = "./samples/"
 LOG_DIR_PATH = "./log/"
 
 LOG_PATH = None
-LOG_PATH = LOG_DIR_PATH + "collect_sample_log.txt"
+# LOG_PATH = LOG_DIR_PATH + "collect_sample_log.txt"
 
 SN_PATH_FORMAT = DIR_PATH + "act{:03d}_{:03d}.pickle"
 NP_SN_PATH_FORMAT = NP_DIR_PATH + "act{:03d}_{:03d}.npy"
