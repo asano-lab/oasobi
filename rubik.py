@@ -113,6 +113,10 @@ LOOP_MAX = 2000
 DIR_PATH = "./dat2/"
 NP_DIR_PATH = "./np_dat/"
 SMP_DIR_PATH = "./samples/"
+LOG_DIR_PATH = "./log/"
+
+LOG_PATH = None
+LOG_PATH = LOG_DIR_PATH + "collect_sample_log.txt"
 
 SN_PATH_FORMAT = DIR_PATH + "act{:03d}_{:03d}.pickle"
 NP_SN_PATH_FORMAT = NP_DIR_PATH + "act{:03d}_{:03d}.npy"
@@ -120,9 +124,6 @@ NP_SN_PATH_FORMAT = NP_DIR_PATH + "act{:03d}_{:03d}.npy"
 # サンプルファイルフォーマット
 # 数値は判定できる最大手数
 SMP_PATH_FORMAT = SMP_DIR_PATH + "sample{:03d}.pickle"
-
-LOG_PATH = None
-# LOG_PATH = "./log/collect_sample_log.txt"
 
 # 秒を時間分秒のタプルで返す
 def s2hms(s):
@@ -1182,7 +1183,7 @@ def createSampleNpFiles(dist_max):
         np.save(fnamew, arr)
 
 def main():
-    if LOG_PATH is not None:
+    if not LOG_PATH:
         if not os.path.exists(LOG_PATH):
             try:
                 with open(LOG_PATH, "w") as f:
