@@ -5,7 +5,7 @@ import random
 import time
 import numpy as np
 import rubik_win
-from rubik_win import SMP_DIR_PATH
+from rubik_win import SMP_DIR_PATH, SMP_PATH_FORMAT
 
 SUBSET_PATH_FORMAT = rubik_win.SMP_DIR_PATH + "subset_act{:03d}.pickle"
 BIN_SUBSET_NP_PATH_FORMAT = rubik_win.NP_DIR_PATH + "bin_subset_act{:03d}.npy"
@@ -174,13 +174,15 @@ def createNpz(binary=False):
         np.savez_compressed(fnamew, train=train_arr, test=test_arr)
         print("%02d:%02d:%02d" % rubik_win.s2hms(time.time() - t1))
     
-def mergeSampleFiles():
+def mergeSampleFiles16():
     """
-    各PCで作ったサンプルファイルの統合
+    各PCで作ったサンプルファイルの統合.
+    最大16手判定を前提.
     """
     print(MERGED_SMP_PATH)
+    print(SMP_PATH_FORMAT.format(16))
     pass
 
 if __name__ == "__main__":
-    mergeSampleFiles()
+    mergeSampleFiles16()
     pass
