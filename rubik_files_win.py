@@ -174,17 +174,19 @@ def createNpz(binary=False):
         np.savez_compressed(fnamew, train=train_arr, test=test_arr)
         print("%02d:%02d:%02d" % rubik_win.s2hms(time.time() - t1))
     
-def mergeSampleFiles16():
+def mergeSampleFiles16(fnamer1: str):
     """
     各PCで作ったサンプルファイルの統合.
     最大16手判定を前提.
     """
-    fnamer = SMP_PATH_FORMAT.format(16)
-    smp_dic1 = readPickleFile(fnamer)
+    fnamer1 = SMP_DIR_PATH + fnamer1
+    print(fnamer1)
+    fnamer2 = SMP_PATH_FORMAT.format(16)
+    smp_dic1 = readPickleFile(fnamer1)
     for k, v in smp_dic1.items():
         print(k, len(v))
     pass
 
 if __name__ == "__main__":
-    mergeSampleFiles16()
+    mergeSampleFiles16("sample016_sonoda_desktop.pickle")
     pass
