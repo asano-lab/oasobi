@@ -121,8 +121,8 @@ NP_SN_PATH_FORMAT = NP_DIR_PATH + "act{:03d}_{:03d}.npy"
 # 数値は判定できる最大手数
 SMP_PATH_FORMAT = SMP_DIR_PATH + "sample{:03d}.pickle"
 
-# LOG_PATH = None
-LOG_PATH = "./log/collect_sample_log.txt"
+LOG_PATH = None
+# LOG_PATH = "./log/collect_sample_log.txt"
 
 # 秒を時間分秒のタプルで返す
 def s2hms(s):
@@ -1190,7 +1190,7 @@ def main():
             except FileNotFoundError:
                 print(f"「{LOG_PATH}」の作成失敗.")
                 return
-    collectSamples(1000, 7, 1, 16)
+    collectSamples(1000, 7, 0, 100)
 
 if __name__ == "__main__":
     main()
