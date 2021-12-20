@@ -206,5 +206,6 @@ def mergeSampleFiles16(fnamer1: str):
     writeAndBackup(fnamew, smp_dic3)
 
 if __name__ == "__main__":
-    mergeSampleFiles16("sample016_sonoda_desktop.pickle")
+    # mergeSampleFiles16("sample016_sonoda_desktop.pickle")
+    mergeSampleFiles16("sample016_asahi_server.pickle")
     pass
