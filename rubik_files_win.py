@@ -5,12 +5,17 @@ import random
 import time
 import numpy as np
 import rubik_win
+from rubik_win import (
+    SMP_DIR_PATH, SMP_PATH_FORMAT, SOLVED_NEIGHBOR_DEPTH_MAX,
+    Search, num2state, s2hms, writeAndBackup
+)
 
 SUBSET_PATH_FORMAT = rubik_win.SMP_DIR_PATH + "subset_act{:03d}.pickle"
 BIN_SUBSET_NP_PATH_FORMAT = rubik_win.NP_DIR_PATH + "bin_subset_act{:03d}.npy"
 SUBSET_NP_PATH_FORMAT = rubik_win.NP_DIR_PATH + "subset_act{:03d}.npy"
 TT_NPZ_PATH_FORMAT = rubik_win.NP_DIR_PATH + "train_test_act{:03d}.npz"
 ONEHOT_TT_NPZ_PATH_FORMAT = rubik_win.NP_DIR_PATH + "onehot_train_test_act{:03d}.npz"
+MERGED_SMP_PATH = SMP_DIR_PATH + "merged_sample016.pickle"
 
 def set2nparrayBin(num_set):
     """
@@ -171,17 +176,82 @@ def createNpz(binary=False):
         print(f"{fnamew}を作成.")
         np.savez_compressed(fnamew, train=train_arr, test=test_arr)
         print("%02d:%02d:%02d" % rubik_win.s2hms(time.time() - t1))
+    
+def mergeSampleFiles16(fnamer1: str):
+    """
+    各PCで作ったサンプルファイルの統合.
+    最大16手判定を前提.
+    """
+    keys = [i for i in range(10, 17)] + ["gt16"]
+    fnamer1 = SMP_DIR_PATH + fnamer1
+    smp_dic1 = readPickleFile(fnamer1)
+    if smp_dic1 is None:
+        print(f"{fnamer1}が存在しません.")
+        return
+    fnamer2 = MERGED_SMP_PATH
+    smp_dic2 = readPickleFile(fnamer2)
+    if smp_dic2 is None:
+        print("None")
+        with open(MERGED_SMP_PATH, "wb") as f:
+            pickle.dump(None, f)
+        fnamer2 = SMP_PATH_FORMAT.format(16)
+        smp_dic2 = readPickleFile(fnamer2)
+    smp_dic3 = {}
+    print(f"結合するファイル：\n{fnamer1}\n{fnamer2}")
+    fnamew = MERGED_SMP_PATH
+    print(f"書き込み先：\n{fnamew}")
+    for i in keys:
+        smp1 = smp_dic1[i]
+        smp2 = smp_dic2[i]
+        smp3 = smp1 | smp2
+        print(i, len(smp1), len(smp2), len(smp3))
+        smp_dic3[i] = smp3
+    writeAndBackup(fnamew, smp_dic3)
+
+def sampleFileTest(n: int):
+    """
+    集めたサンプルが指定した手数になっているかチェック.
+    """
+    # 読み込みファイルは固定
+    t0 = time.time()
+    fnamer = MERGED_SMP_PATH
+    smp_dic = readPickleFile(fnamer)
+    if smp_dic is None:
+        print(f"{fnamer}が存在しません.")
+        return
+    for k, v in smp_dic.items():
+        smp_len = len(v)
+        if type(k) is int:
+            print("%2d手サンプル数：%d" % (k, smp_len))
+        else:
+            print("%2d手以上サンプル数：%d" % (17, smp_len))
+    if n < 10 or 16 < n:
+        key = "gt16"
+    else:
+        key = n
+    stn = random.choice(list(smp_dic[key]))
+    st = num2state(stn)
+    del smp_dic
+    try:
+        print(st)
+        srch = Search(st, SOLVED_NEIGHBOR_DEPTH_MAX)
+        dist = srch.searchWithDat2(7)
+        if dist >= 0:
+            print("最短%2d手：" % dist, end="")
+            mvs = srch.getSolveMovesWithDat()
+            for mv in mvs:
+                print(mv, end=" ")
+            print()
+            route = srch.getRoute()
+            print(route)
+        else:
+            print("%2d手以上" % (17))
+    except KeyboardInterrupt:
+        print("強制終了")
+    print("総計算時間：%02d時間%02d分%02d秒" % s2hms(time.time() - t0))
 
 if __name__ == "__main__":
-    # createNpz(True)
-    # checkSetSize()
-    for i in range(11):
-        # fnamer = TT_NPZ_PATH_FORMAT.format(i)
-        fnamer = ONEHOT_TT_NPZ_PATH_FORMAT.format(i)
-        print(fnamer)
-        arrs = np.load(fnamer)
-        print(arrs.files)
-        print(arrs["train"].shape, arrs["test"].shape)
-    # sampleActLT10(7, 0.2)
-    # createSampleNpFile(7)
+    # mergeSampleFiles16("sample016_sonoda_desktop.pickle")
+    # mergeSampleFiles16("sample016_asahi_server.pickle")
+    sampleFileTest(14)
     pass
