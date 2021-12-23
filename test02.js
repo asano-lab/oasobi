@@ -35,6 +35,9 @@ text.addEventListener("input", (e) => {
         if (!comp) {
             console.log("削除");
             prev_value = text.value;
+        } else {
+            console.log("削除無効");
+            text.value = prev_value;
         }
     }
     else {
