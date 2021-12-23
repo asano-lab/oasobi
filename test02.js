@@ -1,28 +1,47 @@
+const text = document.getElementById("text1");
+// console.log(text);
 
-let graphID = document.getElementById("graph");
+let VALID_VALUES = ["0", "1"];
 
-let data = {
-    labels: [0,2,4,6,8,10],
-    datasets: [{
-        label: 'Data 1',
-        data: [1,4,2,7,1,6],
-        steppedLine: true
-    }, {
-        label: 'Data 2'
-    }] 
-};
+let DELETE_TYPES = ["deleteContentBackward", "deleteContentForward"];
 
-let options = {};
+let prev_value = text.value;
 
-let myChart = new Chart(graphID, {
-    type: 'line',
-    data: data,
-    options: options,
+let comp = false;
+
+// text.addEventListener("textInput", (e) => {
+//     console.log(e);
+// });
+
+text.addEventListener("input", (e) => {
+    console.log(e);
+    console.log(prev_value);
+    if (e.data !== null) {
+        console.log(e.data.length);
+    }
+    console.log(comp);
+
+    if (e.isComposing) {
+        console.log(e.data);
+        text.value = prev_value;
+        comp = true;
+    }
+    else if (VALID_VALUES.includes(e.data)) {
+        prev_value = text.value;
+        console.log("有効な入力");
+        comp = false;
+    }
+    else if (DELETE_TYPES.includes(e.inputType)) {
+        if (!comp) {
+            console.log("削除");
+            prev_value = text.value;
+        } else {
+            console.log("削除無効");
+            text.value = prev_value;
+        }
+    }
+    else {
+        text.value = prev_value;
+        comp = false;
+    }
 });
-
-function addData() {
-	myChart.data.labels = [2,4,6,8,10,12];
-	myChart.data.datasets[0].data = [4,2,7,1,6,9];
-	myChart.data.datasets[1].data = [2,9,4,1,2,8];
-	myChart.update();
-}
