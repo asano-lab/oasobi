@@ -1,6 +1,5 @@
 import os
 import pickle
-import os
 import random
 import time
 import numpy as np
@@ -253,5 +252,6 @@ def sampleFileTest(n: int):
 if __name__ == "__main__":
     # mergeSampleFiles16("sample016_sonoda_desktop.pickle")
     # mergeSampleFiles16("sample016_asahi_server.pickle")
-    sampleFileTest(14)
+    # sampleFileTest(14)
+    print(os.getlogin())
     pass
