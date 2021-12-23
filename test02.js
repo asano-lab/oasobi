@@ -70,9 +70,11 @@ text.addEventListener("keydown", (e) => {
     end = text.selectionEnd;
     console.log(start, end);
     console.log(e);
+
     if (VALID_CODES.includes(e.code)) {
         mae = prev_value.slice(0, start);
         ato = prev_value.slice(end, prev_value.length);
+
         if (e.code == "Digit0") {
             text.value = mae + "0" + ato;
             text.selectionStart = start + 1;
@@ -81,8 +83,7 @@ text.addEventListener("keydown", (e) => {
             text.value = mae + "1" + ato;
             text.selectionStart = start + 1;
             text.selectionEnd = start + 1;
-        }
-        if (e.code == "Backspace") {
+        } else if (e.code == "Backspace") {
             if (start == end) {
                 text.value = mae.slice(0, -1) + ato;
                 if (start > 0) {
@@ -94,8 +95,7 @@ text.addEventListener("keydown", (e) => {
                 text.selectionStart = start;
                 text.selectionEnd = start;
             }
-        }
-        else if (e.code == "Delete") {
+        } else if (e.code == "Delete") {
             if (start == end) {
                 text.value = mae + ato.slice(1, ato.length);
             } else {
