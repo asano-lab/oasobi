@@ -4,6 +4,7 @@ import random
 import time
 import numpy as np
 import rubik_win
+import socket
 from rubik_win import (
     SMP_DIR_PATH, SMP_PATH_FORMAT, SOLVED_NEIGHBOR_DEPTH_MAX,
     Search, num2state, s2hms, writeAndBackup
@@ -254,4 +255,5 @@ if __name__ == "__main__":
     # mergeSampleFiles16("sample016_asahi_server.pickle")
     # sampleFileTest(14)
     print(os.getlogin())
+    print(socket.gethostname())
     pass
