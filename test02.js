@@ -7,17 +7,20 @@ let DELETE_TYPES = ["deleteContentBackward", "deleteContentForward"];
 
 let prev_value = text.value;
 
-text.addEventListener("textInput", (e) => {
-    console.log(e);
-});
+// text.addEventListener("textInput", (e) => {
+//     console.log(e);
+// });
 
 text.addEventListener("input", (e) => {
     console.log(e);
     console.log(prev_value);
+    if (e.data !== null) {
+        console.log(e.data.length);
+    }
     if (e.isComposing) {
         console.log(e.data);
         text.value = prev_value;
-        return false;
+        e.preventDefault();
     }
     else if (VALID_VALUES.includes(e.data)) {
         prev_value = text.value;
