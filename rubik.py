@@ -8,6 +8,8 @@ import random
 import numpy as np
 import shutil
 import re
+import sys
+import socket
 
 clib = CDLL("./rubik.so")
 
@@ -125,13 +127,21 @@ NP_SN_PATH_FORMAT = NP_DIR_PATH + "act{:03d}_{:03d}.npy"
 # 数値は判定できる最大手数
 SMP_PATH_FORMAT = SMP_DIR_PATH + "sample{:03d}.pickle"
 
+# ホスト名でファイル名指定
+SMP_PATH_FORMAT_ID = SMP_DIR_PATH + "sample{:03d}_{:s}.pickle"
+
+VERBOSE = 1
+
 # 秒を時間分秒のタプルで返す
 def s2hms(s):
     s = int(s)
     return s // 3600, s % 3600 // 60, s % 60
 
 # ログファイルに書き出し
+# VERBOSEが0以下なら何もしない
 def printLog(moji="", end="\n"):
+    if VERBOSE <= 0:
+        return
     if LOG_PATH is None:
         print(moji, end=end)
     else:
@@ -629,7 +639,8 @@ class Search:
             if not os.path.exists(fnamer):
                 break
             snd_max_sub = i
-            # printLog(fnamer)
+            if VERBOSE >= 2:
+                printLog(fnamer + "をロード")
             with open(fnamer, "rb") as f:
                 known_states = pickle.load(f)
             # 各集合との共通部分を計算 (和はリストが速い(?))
@@ -662,12 +673,15 @@ class Search:
             if (count % self.SUBSET_MAX) == 0 or count == count_max:
                 # 集合変換
                 nsts = set(nsts)
-                # 全最深ファイルを確認
+                # 完成状態からの全最深ファイルを確認 (主に9手目)
                 for i in range(snd_max_sub + 1):
                     fnamer = SN_PATH_FORMAT.format(self.snd_max, i)
+                    if VERBOSE >= 2:
+                        printLog(fnamer + "をロード")
                     with open(fnamer, "rb") as f:
                         known_states = pickle.load(f)
                     cmns = known_states & nsts
+                    # 共通部分を発見
                     if cmns:
                         self.common_states = cmns
                         self.common_sub = i
@@ -699,11 +713,12 @@ class Search:
         nsts = []
         for st_num in neighbor_dic[depth]:
             nsts += applyAllMovesNormal(st_num)
-        # printLog("新状態数（重複あり）: %d" % len(nsts))
+        if VERBOSE >= 2:
+            printLog("新状態数（重複あり）: %d" % len(nsts))
         nsts = set(nsts)
         for past_sts in neighbor_dic.values():
             nsts -= past_sts
-        printLog("新状態数（重複なし）：%d" % len(nsts))
+        printLog("新状態数（重複なし）: %d" % len(nsts))
         neighbor_dic[depth + 1] = nsts
     
     def getRoute(self):
@@ -1080,19 +1095,21 @@ def writeAndBackup(fnamew, obj):
 def collectSamples(loop, tnd, mode=0, shuffle_num=20):
     """
     サンプル収集用関数.
+    ファイル名をホスト名から取得.
     """
     t0 = time.time()
     dist_max = SOLVED_NEIGHBOR_DEPTH_MAX + tnd
-    fnamew = SMP_PATH_FORMAT.format(dist_max)
+    # fnamew = SMP_PATH_FORMAT.format(dist_max)
+    fnamew = SMP_PATH_FORMAT_ID.format(dist_max, socket.gethostname())
     gt_key = "gt%d" % dist_max
     # パスが存在しない場合は初期化
     if not os.path.exists(fnamew):
         if not os.path.isdir(SMP_DIR_PATH):
             os.mkdir(SMP_DIR_PATH)
-            printLog("ディレクトリ%sを作成" % SMP_DIR_PATH)
+            print("ディレクトリ%sを作成" % SMP_DIR_PATH)
         smp_dic = {dist_max - i: set() for i in range(tnd)}
         smp_dic[gt_key] = set()
-        printLog(fnamew + "を作成")
+        print(fnamew + "を作成")
         writeAndBackup(fnamew, smp_dic)
     with open(fnamew, "rb") as f:
         smp_dic = pickle.load(f)
@@ -1146,8 +1163,8 @@ def collectSamples(loop, tnd, mode=0, shuffle_num=20):
             printLog("経過時間：%02d時間%02d分%02d秒" % s2hms(time.time() - t0))
     except KeyboardInterrupt:
         printLog("強制終了")
-    printLog("総計算時間：%02d時間%02d分%02d秒" % s2hms(time.time() - t0))
-    
+    finally:
+        printLog("総計算時間：%02d時間%02d分%02d秒" % s2hms(time.time() - t0))
 
 # scramble = "L D2 R U2 L F2 U2 L F2 R2 B2 R U' R' U2 F2 R' D B' F2"
 # scramble = scramble.split()
@@ -1179,10 +1196,21 @@ def createSampleNpFiles(dist_max):
             fnamew = smp_np_path_format(dist_max, k)
         else:
             fnamew = "./np_dat/sample{:03d}_{:03d}ijou.npy".format(dist_max, dist_max + 1)
-        printLog(k, arr.shape)
+        print(k, arr.shape)
         np.save(fnamew, arr)
 
 def main():
+    global VERBOSE, LOG_PATH
+    try:
+        VERBOSE = int(sys.argv[1])
+    except ValueError:
+        VERBOSE = 1
+    except IndexError:
+        VERBOSE = 1
+    try:
+        LOG_PATH = LOG_DIR_PATH + sys.argv[2]
+    except IndexError:
+        LOG_PATH = None
     if LOG_PATH is not None:
         if not os.path.exists(LOG_PATH):
             try:
@@ -1195,6 +1223,5 @@ def main():
     collectSamples(1000, 7, 1, 16)
 
 if __name__ == "__main__":
-    # main()
-    collectSamples(1000, 7, 0, 100)
+    main()
     pass

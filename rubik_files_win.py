@@ -1,10 +1,10 @@
 import os
 import pickle
-import os
 import random
 import time
 import numpy as np
 import rubik_win
+import socket
 from rubik_win import (
     SMP_DIR_PATH, SMP_PATH_FORMAT, SOLVED_NEIGHBOR_DEPTH_MAX,
     Search, num2state, s2hms, writeAndBackup
@@ -251,7 +251,7 @@ def sampleFileTest(n: int):
     print("総計算時間：%02d時間%02d分%02d秒" % s2hms(time.time() - t0))
 
 if __name__ == "__main__":
-    # mergeSampleFiles16("sample016_sonoda_desktop.pickle")
+    mergeSampleFiles16("sample016_sonoda_desktop.pickle")
     # mergeSampleFiles16("sample016_asahi_server.pickle")
-    sampleFileTest(14)
+    # sampleFileTest(14)
     pass
