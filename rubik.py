@@ -8,6 +8,7 @@ import random
 import numpy as np
 import shutil
 import re
+import socket
 
 clib = CDLL("./rubik.so")
 
@@ -124,6 +125,9 @@ NP_SN_PATH_FORMAT = NP_DIR_PATH + "act{:03d}_{:03d}.npy"
 # サンプルファイルフォーマット
 # 数値は判定できる最大手数
 SMP_PATH_FORMAT = SMP_DIR_PATH + "sample{:03d}.pickle"
+
+# ホスト名でファイル名指定
+SMP_PATH_FORMAT_ID = SMP_DIR_PATH + "sample{:03d}_{:s}.pickle"
 
 # 秒を時間分秒のタプルで返す
 def s2hms(s):
@@ -1080,10 +1084,12 @@ def writeAndBackup(fnamew, obj):
 def collectSamples(loop, tnd, mode=0, shuffle_num=20):
     """
     サンプル収集用関数.
+    ファイル名をホスト名から取得.
     """
     t0 = time.time()
     dist_max = SOLVED_NEIGHBOR_DEPTH_MAX + tnd
-    fnamew = SMP_PATH_FORMAT.format(dist_max)
+    # fnamew = SMP_PATH_FORMAT.format(dist_max)
+    fnamew = SMP_PATH_FORMAT_ID.format(dist_max, socket.gethostname())
     gt_key = "gt%d" % dist_max
     # パスが存在しない場合は初期化
     if not os.path.exists(fnamew):
@@ -1196,5 +1202,5 @@ def main():
 
 if __name__ == "__main__":
     # main()
-    print(os.uname()[1])
+    print(SMP_PATH_FORMAT_ID.format(16, socket.gethostname()))
     pass
