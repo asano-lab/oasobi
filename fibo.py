@@ -8,5 +8,5 @@ def fibo(n):
     return fibo(n - 1) + fibo(n - 2)
 
 t0 = time.time()
-print(fibo(34))
+print(fibo(37))
 print(time.time() - t0)

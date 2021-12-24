@@ -1,11 +1,14 @@
 import os
 import pickle
-import os
 import random
 import time
 import numpy as np
 import rubik_win
-from rubik_win import SMP_DIR_PATH, SMP_PATH_FORMAT, writeAndBackup
+import socket
+from rubik_win import (
+    SMP_DIR_PATH, SMP_PATH_FORMAT, SOLVED_NEIGHBOR_DEPTH_MAX,
+    Search, num2state, s2hms, writeAndBackup
+)
 
 SUBSET_PATH_FORMAT = rubik_win.SMP_DIR_PATH + "subset_act{:03d}.pickle"
 BIN_SUBSET_NP_PATH_FORMAT = rubik_win.NP_DIR_PATH + "bin_subset_act{:03d}.npy"
@@ -205,6 +208,52 @@ def mergeSampleFiles16(fnamer1: str):
         smp_dic3[i] = smp3
     writeAndBackup(fnamew, smp_dic3)
 
+def sampleFileTest(n: int):
+    """
+    集めたサンプルが指定した手数になっているかチェック.
+    """
+    # 読み込みファイルは固定
+    t0 = time.time()
+    fnamer = MERGED_SMP_PATH
+    smp_dic = readPickleFile(fnamer)
+    if smp_dic is None:
+        print(f"{fnamer}が存在しません.")
+        return
+    for k, v in smp_dic.items():
+        smp_len = len(v)
+        if type(k) is int:
+            print("%2d手サンプル数：%d" % (k, smp_len))
+        else:
+            print("%2d手以上サンプル数：%d" % (17, smp_len))
+    if n < 10 or 16 < n:
+        key = "gt16"
+    else:
+        key = n
+    stn = random.choice(list(smp_dic[key]))
+    st = num2state(stn)
+    del smp_dic
+    try:
+        print(st)
+        srch = Search(st, SOLVED_NEIGHBOR_DEPTH_MAX)
+        dist = srch.searchWithDat2(7)
+        if dist >= 0:
+            print("最短%2d手：" % dist, end="")
+            mvs = srch.getSolveMovesWithDat()
+            for mv in mvs:
+                print(mv, end=" ")
+            print()
+            route = srch.getRoute()
+            print(route)
+        else:
+            print("%2d手以上" % (17))
+    except KeyboardInterrupt:
+        print("強制終了")
+    print("総計算時間：%02d時間%02d分%02d秒" % s2hms(time.time() - t0))
+
 if __name__ == "__main__":
-    mergeSampleFiles16("sample016_sonoda_desktop.pickle")
+    # mergeSampleFiles16("sample016_sonoda_desktop.pickle")
+    # mergeSampleFiles16("sample016_asahi_server.pickle")
+    # sampleFileTest(14)
+    print(os.getlogin())
+    print(socket.gethostname())
     pass

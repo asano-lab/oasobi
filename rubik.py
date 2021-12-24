@@ -1183,7 +1183,7 @@ def createSampleNpFiles(dist_max):
         np.save(fnamew, arr)
 
 def main():
-    if not LOG_PATH:
+    if LOG_PATH is not None:
         if not os.path.exists(LOG_PATH):
             try:
                 with open(LOG_PATH, "w") as f:
@@ -1191,7 +1191,8 @@ def main():
             except FileNotFoundError:
                 print(f"「{LOG_PATH}」の作成失敗.")
                 return
-    collectSamples(1000, 7, 0, 100)
+    # collectSamples(1000, 7, 0, 100)
+    collectSamples(1000, 7, 1, 16)
 
 if __name__ == "__main__":
     # main()
