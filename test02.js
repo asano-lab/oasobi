@@ -15,15 +15,25 @@ let comp = false;
 
 let start, end;
 
-const resetSelection = () => {
+const resetTextSelection = () => {
     text.selectionStart = start;
     text.selectionEnd = end;
+};
+
+const setTextSelection = (s1, s2) => {
+    if (s1 < s2) {
+        text.selectionStart = s1;
+        text.selectionEnd = s2;
+    } else {
+        text.selectionStart = s2;
+        text.selectionEnd = s1;
+    }
 };
 
 text.addEventListener("textInput", (e) => {
     console.log(e.data);
     console.log(start, end);
-    setTimeout(resetSelection, 1);
+    setTimeout(resetTextSelection, 1);
     e.preventDefault();
 });
 
@@ -84,12 +94,10 @@ text.addEventListener("keydown", (e) => {
 
         if (e.code == "Digit0") {
             text.value = mae + "0" + ato;
-            text.selectionStart = start + 1;
-            text.selectionEnd = start + 1;
+            setTextSelection(start + 1, start + 1);
         } else if (e.code == "Digit1") {
             text.value = mae + "1" + ato;
-            text.selectionStart = start + 1;
-            text.selectionEnd = start + 1;
+            setTextSelection(start + 1, start + 1);
         } else if (e.code == "Backspace") {
             if (start == end) {
                 text.value = mae.slice(0, -1) + ato;
