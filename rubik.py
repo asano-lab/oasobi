@@ -8,6 +8,7 @@ import random
 import numpy as np
 import shutil
 import re
+import sys
 import socket
 
 clib = CDLL("./rubik.so")
@@ -128,6 +129,8 @@ SMP_PATH_FORMAT = SMP_DIR_PATH + "sample{:03d}.pickle"
 
 # ホスト名でファイル名指定
 SMP_PATH_FORMAT_ID = SMP_DIR_PATH + "sample{:03d}_{:s}.pickle"
+
+VERBOSE = 1
 
 # 秒を時間分秒のタプルで返す
 def s2hms(s):
@@ -1201,6 +1204,16 @@ def main():
     collectSamples(1000, 7, 1, 16)
 
 if __name__ == "__main__":
+    try:
+        VERBOSE = int(sys.argv[1])
+    except ValueError:
+        print("int変換できない")
+        VERBOSE = 1
+    except IndexError:
+        print("引数が足りない")
+        VERBOSE = 1
+    print(VERBOSE)
     # main()
-    print(SMP_PATH_FORMAT_ID.format(16, socket.gethostname()))
+    # print(SMP_PATH_FORMAT_ID.format(16, socket.gethostname()))
+    print(sys.argv)
     pass
