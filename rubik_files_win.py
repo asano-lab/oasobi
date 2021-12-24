@@ -251,7 +251,7 @@ def sampleFileTest(n: int):
     print("総計算時間：%02d時間%02d分%02d秒" % s2hms(time.time() - t0))
 
 if __name__ == "__main__":
-    # mergeSampleFiles16("sample016_sonoda_desktop.pickle")
-    mergeSampleFiles16("sample016_asahi_server.pickle")
+    mergeSampleFiles16("sample016_sonoda_desktop.pickle")
+    # mergeSampleFiles16("sample016_asahi_server.pickle")
     # sampleFileTest(14)
     pass
