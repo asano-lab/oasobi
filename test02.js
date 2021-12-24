@@ -6,7 +6,7 @@ let password = document.getElementById("text2");
 const VALID_VALUES = ["0", "1"];
 const VALID_CODES = [
     "Digit0", "Digit1", "Backspace", "Delete",
-    "ArrowLeft", "ArrowRight"
+    "ArrowLeft", "ArrowRight", "KeyA"
 ];
 
 let DELETE_TYPES = ["deleteContentBackward", "deleteContentForward"];
@@ -152,6 +152,10 @@ text.addEventListener("keydown", (e) => {
                 } else if (start < prev_value.length) {
                     setTextSelection(start + 1, start + 1);
                 }
+            }
+        } else if (e.code == "KeyA") {
+            if (e.ctrlKey) {
+                setTextSelection(0, prev_value.length);
             }
         }
         [start, end] = getTextSelection();
