@@ -120,11 +120,19 @@ text.addEventListener("keydown", (e) => {
             setTextSelection(start, start);
         } else if (e.code == "ArrowLeft") {
             if (start > 0) {
-                setTextSelection(start - 1, start - 1);
+                if (e.shiftKey) {
+                    setTextSelection(start - 1, end);
+                } else {
+                    setTextSelection(start - 1, end - 1);
+                }
             }
         } else if (e.code == "ArrowRight") {
             if (start < prev_value.length) {
-                setTextSelection(start + 1, start + 1);
+                if (e.shiftKey) {
+                    setTextSelection(start, end + 1);
+                } else {
+                    setTextSelection(start + 1, end + 1);
+                }
             }
         }
         start = text.selectionStart;
