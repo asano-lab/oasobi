@@ -2,7 +2,10 @@ const text = document.getElementById("text1");
 // console.log(text);
 
 const VALID_VALUES = ["0", "1"];
-const VALID_CODES = ["Digit0", "Digit1", "Backspace", "Delete"];
+const VALID_CODES = [
+    "Digit0", "Digit1", "Backspace", "Delete",
+    "ArrowLeft", "ArrowRight"
+];
 
 let DELETE_TYPES = ["deleteContentBackward", "deleteContentForward"];
 
@@ -12,11 +15,15 @@ let comp = false;
 
 let start, end;
 
-text.addEventListener("textInput", (e) => {
-    console.log(e);
-    console.log(start, end);
+const resetSelection = () => {
     text.selectionStart = start;
     text.selectionEnd = end;
+};
+
+text.addEventListener("textInput", (e) => {
+    console.log(e.data);
+    console.log(start, end);
+    setTimeout(resetSelection, 1);
     e.preventDefault();
 });
 
@@ -66,12 +73,12 @@ text.addEventListener("input", (e) => {
 
 text.addEventListener("keydown", (e) => {
     let mae, ato;
-    start = text.selectionStart;
-    end = text.selectionEnd;
-    console.log(start, end);
     console.log(e);
-
     if (VALID_CODES.includes(e.code)) {
+        start = text.selectionStart;
+        end = text.selectionEnd;
+        console.log(start, end);
+
         mae = prev_value.slice(0, start);
         ato = prev_value.slice(end, prev_value.length);
 
@@ -103,18 +110,26 @@ text.addEventListener("keydown", (e) => {
             }
             text.selectionStart = start;
             text.selectionEnd = start;
+        } else if (e.code == "ArrowLeft") {
+            if (start > 0) {
+                text.selectionStart = start - 1;
+                text.selectionEnd = start - 1;
+            }
+        } else if (e.code == "ArrowRight") {
+            if (start < prev_value.length) {
+                text.selectionStart = start + 1;
+                text.selectionEnd = start + 1;
+            }
         }
+        start = text.selectionStart;
+        end = text.selectionEnd;
+
         prev_value = text.value;
-    } else if (e.code == "ArrowLeft") {
-        if (start > 0) {
-            text.selectionStart = start - 1;
-            text.selectionEnd = start - 1;
-        }
-    } else if (e.code == "ArrowRight") {
-        if (start < prev_value.length) {
-            text.selectionStart = start + 1;
-            text.selectionEnd = start + 1;
-        }
+    } else {
+        text.value = prev_value + " ";
+        text.value = prev_value;
+        text.selectionStart = start;
+        text.selectionEnd = end;
     }
     e.preventDefault();
 });
@@ -122,4 +137,8 @@ text.addEventListener("keydown", (e) => {
 text.addEventListener("compositionend", (e) => {
     console.log("yeah");
     console.log(e);
+});
+
+text.addEventListener("change", (e) => {
+    console.log("changed!!");
 });
