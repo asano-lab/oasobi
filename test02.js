@@ -47,7 +47,7 @@ text.addEventListener("input", (e) => {
     // console.log(text.selectionEnd);
     text.selectionStart = start;
     text.selectionEnd = end;
-    e.preventDefault();
+    // e.preventDefault();
     // console.log(e);
     // console.log(prev_value);
     // if (e.data !== null) {
@@ -164,11 +164,6 @@ text.addEventListener("keydown", (e) => {
         text.selectionEnd = end;
     }
     e.preventDefault();
-});
-
-text.addEventListener("compositionend", (e) => {
-    console.log("yeah");
-    console.log(e);
 });
 
 password.addEventListener("input", (e) => {
