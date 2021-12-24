@@ -154,16 +154,17 @@ text.addEventListener("keydown", (e) => {
                 }
             }
         }
-        start = text.selectionStart;
-        end = text.selectionEnd;
-
+        [start, end] = getTextSelection();
         prev_value = text.value;
     } else {
         text.value = prev_value;
-        text.selectionStart = start;
-        text.selectionEnd = end;
     }
     e.preventDefault();
+});
+
+text.addEventListener("click", (e) => {
+    console.log(e);
+    [start, end] = getTextSelection();
 });
 
 password.addEventListener("input", (e) => {
