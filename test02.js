@@ -13,7 +13,7 @@ let prev_value = text.value;
 
 let comp = false;
 
-let start, end;
+let start, end, base;
 
 const resetTextSelection = () => {
     text.selectionStart = start;
@@ -119,19 +119,38 @@ text.addEventListener("keydown", (e) => {
             }
             setTextSelection(start, start);
         } else if (e.code == "ArrowLeft") {
-            if (start > 0) {
-                if (e.shiftKey) {
-                    setTextSelection(start - 1, end);
-                } else {
-                    setTextSelection(start - 1, end - 1);
+            if (e.shiftKey) {
+                if (start == end) {
+                    base = start;
+                    setTextSelection(start - 1, base);
+                } else if (base < end) {
+                    setTextSelection(base, end - 1);
+                } else if (start > 0) {
+                    setTextSelection(start - 1, base);
+                }
+            } else {
+                if (start != end) {
+                    setTextSelection(start, start);
+                } else if (start > 0) {
+                    setTextSelection(start - 1, start - 1);
                 }
             }
         } else if (e.code == "ArrowRight") {
-            if (start < prev_value.length) {
-                if (e.shiftKey) {
-                    setTextSelection(start, end + 1);
-                } else {
-                    setTextSelection(start + 1, end + 1);
+            if (e.shiftKey) {
+                if (start == end) {
+                    base = start;
+                    setTextSelection(base, end + 1);
+                } else if (start < base) {
+                    setTextSelection(start + 1, base);
+                }
+                else if (start > 0) {
+                    setTextSelection(base, end + 1);
+                }
+            } else {
+                if (start != end) {
+                    setTextSelection(end, end);
+                } else if (start < prev_value.length) {
+                    setTextSelection(start + 1, start + 1);
                 }
             }
         }
@@ -140,7 +159,6 @@ text.addEventListener("keydown", (e) => {
 
         prev_value = text.value;
     } else {
-        text.value = prev_value + " ";
         text.value = prev_value;
         text.selectionStart = start;
         text.selectionEnd = end;
