@@ -42,6 +42,7 @@ text.addEventListener("select", (e) => {
 });
 
 text.addEventListener("input", (e) => {
+    console.log(e);
     text.value = prev_value;
     // console.log(text.selectionStart);
     // console.log(text.selectionEnd);
