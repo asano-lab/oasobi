@@ -184,3 +184,15 @@ password.addEventListener("input", (e) => {
 password.addEventListener("keydown", (e) => {
     password.type = "password";
 });
+
+function getAllEvents(element) {
+    let result = [];
+    for (const key in element) {
+        if (key.indexOf('on') === 0) {
+            result.push(key);
+        }
+    }
+    return result;
+}
+
+console.log(getAllEvents(password));
