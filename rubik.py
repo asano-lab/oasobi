@@ -1219,8 +1219,8 @@ def main():
             except FileNotFoundError:
                 print(f"「{LOG_PATH}」の作成失敗.")
                 return
-    # collectSamples(1000, 7, 0, 100)
-    collectSamples(1000, 7, 1, 16)
+    collectSamples(10000, 7, 0, 100)
+    # collectSamples(1000, 7, 1, 16)
 
 if __name__ == "__main__":
     main()
