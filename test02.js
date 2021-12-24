@@ -36,11 +36,9 @@ const getTextSelection = () => {
     return [text.selectionStart, text.selectionEnd]
 };
 
-text.addEventListener("textInput", (e) => {
-    console.log(e.data);
-    console.log(start, end);
-    setTimeout(resetTextSelection, 1);
-    e.preventDefault();
+text.addEventListener("select", (e) => {
+    console.log(e);
+    setTextSelection(start, end);
 });
 
 text.addEventListener("input", (e) => {
@@ -173,10 +171,6 @@ text.addEventListener("compositionend", (e) => {
     console.log(e);
 });
 
-text.addEventListener("change", (e) => {
-    console.log("changed!!");
-});
-
 password.addEventListener("input", (e) => {
     password.type = "text";
 });
@@ -189,10 +183,17 @@ function getAllEvents(element) {
     let result = [];
     for (const key in element) {
         if (key.indexOf('on') === 0) {
-            result.push(key);
+            result.push(key.slice(2, key.length));
         }
     }
     return result;
 }
 
-console.log(getAllEvents(password));
+// let all_events = getAllEvents(text);
+// for (const event of all_events) {
+//     console.log(event);
+//     text.addEventListener(event, (e) => {
+//         console.log(event);
+//         console.log(e);
+//     });
+// }
