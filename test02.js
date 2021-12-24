@@ -30,6 +30,10 @@ const setTextSelection = (s1, s2) => {
     }
 };
 
+const getTextSelection = () => {
+    return [text.selectionStart, text.selectionEnd]
+};
+
 text.addEventListener("textInput", (e) => {
     console.log(e.data);
     console.log(start, end);
@@ -85,8 +89,7 @@ text.addEventListener("keydown", (e) => {
     let mae, ato;
     console.log(e);
     if (VALID_CODES.includes(e.code)) {
-        start = text.selectionStart;
-        end = text.selectionEnd;
+        [start, end] = getTextSelection();
         console.log(start, end);
 
         mae = prev_value.slice(0, start);
@@ -102,13 +105,11 @@ text.addEventListener("keydown", (e) => {
             if (start == end) {
                 text.value = mae.slice(0, -1) + ato;
                 if (start > 0) {
-                    text.selectionStart = start - 1;
-                    text.selectionEnd = start - 1;
+                    setTextSelection(start - 1, start - 1);
                 }
             } else {
                 text.value = mae + ato;
-                text.selectionStart = start;
-                text.selectionEnd = start;
+                setTextSelection(start, start);
             }
         } else if (e.code == "Delete") {
             if (start == end) {
@@ -116,17 +117,14 @@ text.addEventListener("keydown", (e) => {
             } else {
                 text.value = mae + ato;
             }
-            text.selectionStart = start;
-            text.selectionEnd = start;
+            setTextSelection(start, start);
         } else if (e.code == "ArrowLeft") {
             if (start > 0) {
-                text.selectionStart = start - 1;
-                text.selectionEnd = start - 1;
+                setTextSelection(start - 1, start - 1);
             }
         } else if (e.code == "ArrowRight") {
             if (start < prev_value.length) {
-                text.selectionStart = start + 1;
-                text.selectionEnd = start + 1;
+                setTextSelection(start + 1, start + 1);
             }
         }
         start = text.selectionStart;
