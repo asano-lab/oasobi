@@ -1,6 +1,8 @@
 const text = document.getElementById("text1");
 // console.log(text);
 
+let password = document.getElementById("text2");
+
 const VALID_VALUES = ["0", "1"];
 const VALID_CODES = [
     "Digit0", "Digit1", "Backspace", "Delete",
@@ -173,4 +175,12 @@ text.addEventListener("compositionend", (e) => {
 
 text.addEventListener("change", (e) => {
     console.log("changed!!");
+});
+
+password.addEventListener("input", (e) => {
+    password.type = "text";
+});
+
+password.addEventListener("keydown", (e) => {
+    password.type = "password";
 });
