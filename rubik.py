@@ -10,6 +10,7 @@ import shutil
 import re
 import sys
 import socket
+import datetime
 
 clib = CDLL("./rubik.so")
 
@@ -128,7 +129,7 @@ NP_SN_PATH_FORMAT = NP_DIR_PATH + "act{:03d}_{:03d}.npy"
 SMP_PATH_FORMAT = SMP_DIR_PATH + "sample{:03d}.pickle"
 
 # ホスト名でファイル名指定
-SMP_PATH_FORMAT_ID = SMP_DIR_PATH + "sample{:03d}_{:s}.pickle"
+SMP_PATH_FORMAT_ID = SMP_DIR_PATH + "sample{:03d}_{:s}_{:s}.pickle"
 
 VERBOSE = 1
 
@@ -1100,7 +1101,9 @@ def collectSamples(loop, tnd, mode=0, shuffle_num=20):
     t0 = time.time()
     dist_max = SOLVED_NEIGHBOR_DEPTH_MAX + tnd
     # fnamew = SMP_PATH_FORMAT.format(dist_max)
-    fnamew = SMP_PATH_FORMAT_ID.format(dist_max, socket.gethostname())
+    datetime_jst = datetime.datetime.now() + datetime.timedelta(hours=9)
+    print(datetime_jst) 
+    fnamew = SMP_PATH_FORMAT_ID.format(dist_max, socket.gethostname(), datetime_jst.strftime('%Y%m%d_%H%M%S'))
     gt_key = "gt%d" % dist_max
     # パスが存在しない場合は初期化
     if not os.path.exists(fnamew):
