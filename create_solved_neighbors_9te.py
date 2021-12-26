@@ -127,7 +127,7 @@ def _createSolvedNeighborsFile(max_depth=9):
 def createSolvedNeighborsFile():
     t0 = time.time()
     for _ in range(LOOP_MAX):
-        if _createSolvedNeighborsFile(6):
+        if _createSolvedNeighborsFile(9):
             break
     print("%02d:%02d:%02d" % s2hms(time.time() - t0))
 
