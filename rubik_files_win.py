@@ -208,21 +208,24 @@ def mergeSampleFiles16(fnamer1: str):
         smp_dic3[i] = smp3
     writeAndBackup(fnamew, smp_dic3)
 
-def sampleFileTest(n: int):
+def sampleFileTest(fnamer: str, n: int):
     """
     集めたサンプルが指定した手数になっているかチェック.
+    ファイル名指定制に変更.
     """
     # 読み込みファイルは固定
     t0 = time.time()
-    fnamer = MERGED_SMP_PATH
+    # fnamer = MERGED_SMP_PATH
+    fnamer = SMP_DIR_PATH + fnamer
     smp_dic = readPickleFile(fnamer)
     if smp_dic is None:
         print(f"{fnamer}が存在しません.")
         return
+    print(f"{fnamer}をロード")
     for k, v in smp_dic.items():
         smp_len = len(v)
         if type(k) is int:
-            print("%2d手サンプル数：%d" % (k, smp_len))
+            print("%2d手サンプル数　　：%d" % (k, smp_len))
         else:
             print("%2d手以上サンプル数：%d" % (17, smp_len))
     if n < 10 or 16 < n:
@@ -271,5 +274,6 @@ if __name__ == "__main__":
     # mergeSampleFiles16("sample016_sonoda_desktop.pickle")
     # mergeSampleFiles16("sample016_asahi_server.pickle")
     # sampleFileTest(14)
-    checkSampleSetSize("sample016_cf-sz6f_20211227_185753.pickle")
+    # checkSampleSetSize("sample016_cf-sz6f_20211227_185753.pickle")
+    sampleFileTest("sample016_cf-sz6f_20211227_185753.pickle", 16)
     pass
