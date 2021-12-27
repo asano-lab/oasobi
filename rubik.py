@@ -1101,7 +1101,8 @@ def collectSamples(loop, tnd, mode=0, shuffle_num=20):
     t0 = time.time()
     dist_max = SOLVED_NEIGHBOR_DEPTH_MAX + tnd
     # fnamew = SMP_PATH_FORMAT.format(dist_max)
-    datetime_jst = datetime.datetime.now() + datetime.timedelta(hours=9)
+    datetime_utc = datetime.datetime.utcnow() 
+    datetime_jst = datetime_utc + datetime.timedelta(hours=9)
     fnamew = SMP_PATH_FORMAT_ID.format(dist_max, socket.gethostname(), datetime_jst.strftime('%Y%m%d_%H%M%S'))
     gt_key = "gt%d" % dist_max
     # パスが存在しない場合は初期化
