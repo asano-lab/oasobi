@@ -147,6 +147,19 @@ def printLog(moji="", end="\n"):
         with open(LOG_PATH, "a") as f:
             print(moji, file=f, end=end)
 
+def readPickleFile(fnamer: str):
+    """
+    pickleファイルを読み込む用.
+    ファイルが存在しなければNoneを返す.
+    Noneを書き込んだファイルは知らん.
+    """
+    if not os.path.exists(fnamer):
+        return None
+    f = open(fnamer, "rb")
+    obj = pickle.load(f)
+    f.close()
+    return obj
+
 # 資料通りのクラス
 class State():
 
