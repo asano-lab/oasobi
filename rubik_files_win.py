@@ -16,7 +16,7 @@ SUBSET_NP_PATH_FORMAT = rubik_win.NP_DIR_PATH + "subset_act{:03d}.npy"
 TT_NPZ_PATH_FORMAT = rubik_win.NP_DIR_PATH + "train_test_act{:03d}.npz"
 ONEHOT_TT_NPZ_PATH_FORMAT = rubik_win.NP_DIR_PATH + "onehot_train_test_act{:03d}.npz"
 MERGED_SMP_PATH = SMP_DIR_PATH + "merged_sample016.pickle"
-# MERGED_SMP_PATH = SMP_DIR_PATH + "merged_sample016_test.pickle"
+MERGED_SMP_PATH = SMP_DIR_PATH + "merged_sample016_test.pickle"
 
 def set2nparrayBin(num_set):
     """
@@ -276,21 +276,30 @@ def checkSampleSetSize(fnamer: str):
             print("{:s}".format(i), end=": ")
         print(len(smp_dic[i]))
 
-if __name__ == "__main__":
-    # print(os.listdir(SMP_DIR_PATH))
-    p = re.compile(r"sample\d{3}_.+_\d+_\d+.pickle")
+def mergeSampleFilesMatch16(reg_exp: str):
+    """
+    各PCで作ったサンプルファイルの統合.
+    最大16手判定を前提.
+    正規表現でマッチするファイル全て結合.
+    """
+    p = re.compile(reg_exp)
     for fnamer in os.listdir(SMP_DIR_PATH):
         m = p.match(fnamer)
         if m:
             print(fnamer)
-            mergeSampleFiles16(fnamer)
-            os.remove(SMP_DIR_PATH + fnamer)
+            # mergeSampleFiles16(fnamer)
+            # os.remove(SMP_DIR_PATH + fnamer)
         else:
             # print(fnamer)
             pass
+
+if __name__ == "__main__":
+    # mergeSampleFilesMatch16(r"sample_ipmsb-gs_20211224_200000.pickle")
+    # print(os.listdir(SMP_DIR_PATH))
     # mergeSampleFiles16("sample016_sonoda_desktop.pickle")
     # mergeSampleFiles16("sample016_asahi_server.pickle")
     # sampleFileTest(14)
     # checkSampleSetSize("sample016_cf-sz6f_20211227_185753.pickle")
     # sampleFileTest("sample016_cf-sz6f_20211227_185753.pickle", 16)
+    mergeSampleFiles16("sample_ipmsb-gs_20211224_200000.pickle")
     pass
