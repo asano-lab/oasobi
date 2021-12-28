@@ -128,7 +128,7 @@ NP_SN_PATH_FORMAT = NP_DIR_PATH + "act{:03d}_{:03d}.npy"
 SMP_PATH_FORMAT = SMP_DIR_PATH + "sample{:03d}.pickle"
 
 # ホスト名でファイル名指定
-SMP_PATH_FORMAT_ID = SMP_DIR_PATH + "sample{:03d}_{:s}_{:s}.pickle"
+SMP_PATH_FORMAT_ID = SMP_DIR_PATH + "{:s}_sample{:03d}_{:s}@{:s}.pickle"
 
 VERBOSE = 1
 
@@ -1130,12 +1130,12 @@ def collectSamples(loop, tnd, mode=0, shuffle_times=20):
     """
     t0 = time.time()
     dist_max = SOLVED_NEIGHBOR_DEPTH_MAX + tnd
-    # fnamew = SMP_PATH_FORMAT.format(dist_max)
-    # fnamew = SMP_PATH_FORMAT_ID.format(dist_max, socket.gethostname())
-    sample_name = input("読み込む、または作成するサンプルの名前(sample_name)を入力\n\
-Tip: sample"+str(shuffle_times).zfill(3)+"_"+socket.gethostname()+"_{sample_name}.pickle\n")
+    _fnamew = SMP_PATH_FORMAT_ID.format(
+        "(sample_name)", dist_max, os.environ.get("USER"), socket.gethostname())
+    print("ヒント: %s" % _fnamew)
+    sample_name = input("読み込む、または作成するサンプルの名前(sample_name)を入力")
     fnamew = SMP_PATH_FORMAT_ID.format(
-        shuffle_times, socket.gethostname(), sample_name)
+        sample_name, dist_max, os.environ.get("USER"), socket.gethostname())
     gt_key = "gt%d" % dist_max
     # パスが存在しない場合は初期化
     if not os.path.exists(fnamew):
@@ -1237,6 +1237,7 @@ def createSampleNpFiles(dist_max):
         print(k, arr.shape)
         np.save(fnamew, arr)
 
+
 def main():
     global VERBOSE, LOG_PATH
     try:
@@ -1258,8 +1259,9 @@ def main():
                 print(f"「{LOG_PATH}」の作成失敗.")
                 return
     shuffle_times = int(
-        input("シャッフル回数(shuffle_times)を入力\n"))
+        input("シャッフル回数(shuffle_times)を入力"))
     collectSamples(1000, 7, 1, shuffle_times)
+
 
 if __name__ == "__main__":
     main()
