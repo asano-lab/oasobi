@@ -1131,7 +1131,7 @@ def collectSamples(loop, tnd, mode=0, shuffle_times=20):
     t0 = time.time()
     dist_max = SOLVED_NEIGHBOR_DEPTH_MAX + tnd
     _fnamew = SMP_PATH_FORMAT_ID.format(
-        "(sample_name)", dist_max, os.environ.get("USER"), socket.gethostname())
+        "{sample_name}", dist_max, os.environ.get("USER"), socket.gethostname())
     print("ヒント: %s" % _fnamew)
     sample_name = input("読み込む、または作成するサンプルの名前(sample_name)を入力")
     fnamew = SMP_PATH_FORMAT_ID.format(
