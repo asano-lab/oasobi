@@ -6,7 +6,7 @@ import numpy as np
 import rubik_win
 import re
 from rubik_win import (
-    SMP_DIR_PATH, SMP_PATH_FORMAT, SOLVED_NEIGHBOR_DEPTH_MAX,
+    SMP_DIR_PATH, SOLVED_NEIGHBOR_DEPTH_MAX,
     Search, num2state, s2hms, writeAndBackup
 )
 
