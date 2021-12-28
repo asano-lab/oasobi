@@ -6,8 +6,6 @@ import random
 import numpy as np
 import shutil
 import re
-import sys
-import socket
 
 clib = CDLL("./rubik.so")
 

@@ -1,4 +1,4 @@
-# !/usr/bin/python3
+#!/usr/bin/python3
 from ctypes import CDLL, c_int32, c_ulonglong
 import time
 import os
