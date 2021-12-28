@@ -75,5 +75,6 @@ if __name__ == "__main__":
     # checkSampleSetSize("sample_merged_20211224_200000.pickle")
     # checkSampleSetSize("sample_ipmsb-gs_20211224_200000.pickle")
     # checkSampleSetSize("sample100_z370_20211227_142520.pickle")
-    sampleFileTest("sample_ipmsb-gs_20211224_200000.pickle", 100)
+    # checkSampleSetSize("sample100_z370_20211227_204711.pickle")
+    sampleFileTest("sample_ipmsb-gs_20211224_200000.pickle", 16)
     pass
