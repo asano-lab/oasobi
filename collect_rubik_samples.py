@@ -5,7 +5,7 @@ import pickle
 import sys
 from rubik_module import (
     SOLVED_NEIGHBOR_DEPTH_MAX, SMP_PATH_FORMAT_ID,
-    SMP_DIR_PATH, VERBOSE, LOG_PATH, LOG_DIR_PATH, setVERBOSE,
+    SMP_DIR_PATH, LOG_PATH, LOG_DIR_PATH, setLOG_PATH, setVERBOSE,
     writeAndBackup, printLog,
     randomScramble, randomScrambleDependent,
     inputState, s2hms, Search
@@ -85,17 +85,18 @@ def collectSamples(loop, tnd, mode=0, shuffle_num=20):
         printLog("総計算時間：%02d時間%02d分%02d秒" % s2hms(time.time() - t0))
 
 def main():
-    global VERBOSE, LOG_PATH
     try:
-        VERBOSE = int(sys.argv[1])
+        verbose = int(sys.argv[1])
     except ValueError:
-        VERBOSE = 1
+        verbose = 1
     except IndexError:
-        VERBOSE = 1
+        verbose = 1
+    setVERBOSE(verbose)
     try:
-        LOG_PATH = LOG_DIR_PATH + sys.argv[2]
+        log_path = LOG_DIR_PATH + sys.argv[2]
     except IndexError:
-        LOG_PATH = None
+        log_path = None
+    setLOG_PATH(log_path)
     if LOG_PATH is not None:
         if not os.path.exists(LOG_PATH):
             try:

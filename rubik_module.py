@@ -159,12 +159,19 @@ def readPickleFile(fnamer: str):
     f.close()
     return obj
 
-def setVERBOSE(x):
+def setVERBOSE(verbose):
     """
-    VERBOSeの設定
+    VERBOSEの設定
     """
     global VERBOSE
-    VERBOSE = x
+    VERBOSE = verbose
+
+def setLOG_PATH(log_path):
+    """
+    LOG_PATHの設定
+    """
+    global LOG_PATH
+    LOG_PATH = log_path
 
 # 資料通りのクラス
 class State():
