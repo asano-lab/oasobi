@@ -16,7 +16,7 @@ SUBSET_NP_PATH_FORMAT = rubik_win.NP_DIR_PATH + "subset_act{:03d}.npy"
 TT_NPZ_PATH_FORMAT = rubik_win.NP_DIR_PATH + "train_test_act{:03d}.npz"
 ONEHOT_TT_NPZ_PATH_FORMAT = rubik_win.NP_DIR_PATH + "onehot_train_test_act{:03d}.npz"
 MERGED_SMP_PATH = SMP_DIR_PATH + "merged_sample016.pickle"
-# MERGED_SMP_PATH = SMP_DIR_PATH + "merged_sample016_test.pickle"
+MERGED_SMP_PATH = SMP_DIR_PATH + "merged_sample016_test.pickle"
 
 def set2nparrayBin(num_set):
     """
@@ -195,10 +195,11 @@ def mergeSampleFiles16(fnamer1: str):
         print("None")
         with open(MERGED_SMP_PATH, "wb") as f:
             pickle.dump(None, f)
-        fnamer2 = SMP_PATH_FORMAT.format(16)
-        smp_dic2 = readPickleFile(fnamer2)
+        smp_dic2 = {k: set() for k in keys}
+        print(f"サンプルを{fnamer1}で初期化")
+    else:
+        print(f"結合するファイル：\n{fnamer1}\n{fnamer2}")
     smp_dic3 = {}
-    print(f"結合するファイル：\n{fnamer1}\n{fnamer2}")
     fnamew = MERGED_SMP_PATH
     print(f"書き込み先：\n{fnamew}")
     for i in keys:
@@ -277,13 +278,13 @@ def checkSampleSetSize(fnamer: str):
 
 if __name__ == "__main__":
     # print(os.listdir(SMP_DIR_PATH))
-    p = re.compile(r"sample016_z370_\d*_\d*.pickle")
+    p = re.compile(r"sample100_z370_\d*_\d*.pickle")
     for fnamer in os.listdir(SMP_DIR_PATH):
         m = p.match(fnamer)
         if m:
             # print(fnamer)
             mergeSampleFiles16(fnamer)
-            os.remove(SMP_DIR_PATH + fnamer)
+            # os.remove(SMP_DIR_PATH + fnamer)
     # mergeSampleFiles16("sample016_sonoda_desktop.pickle")
     # mergeSampleFiles16("sample016_asahi_server.pickle")
     # sampleFileTest(14)
