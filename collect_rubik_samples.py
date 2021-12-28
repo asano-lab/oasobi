@@ -111,6 +111,5 @@ def main():
     # collectSamples(1000, 7, 1, 16)
 
 if __name__ == "__main__":
-    # main()
-    print("hello")
+    main()
     pass
