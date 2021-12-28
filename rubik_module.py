@@ -159,6 +159,13 @@ def readPickleFile(fnamer: str):
     f.close()
     return obj
 
+def setVERBOSE(x):
+    """
+    VERBOSeの設定
+    """
+    global VERBOSE
+    VERBOSE = x
+
 # 資料通りのクラス
 class State():
 

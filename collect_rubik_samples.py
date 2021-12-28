@@ -5,7 +5,7 @@ import pickle
 import sys
 from rubik_module import (
     SOLVED_NEIGHBOR_DEPTH_MAX, SMP_PATH_FORMAT_ID,
-    SMP_DIR_PATH, VERBOSE, LOG_PATH, LOG_DIR_PATH,
+    SMP_DIR_PATH, VERBOSE, LOG_PATH, LOG_DIR_PATH, setVERBOSE,
     writeAndBackup, printLog,
     randomScramble, randomScrambleDependent,
     inputState, s2hms, Search
@@ -108,6 +108,6 @@ def main():
     collectSamples(1000, 7, 1, 16)
 
 if __name__ == "__main__":
-    VERBOSE = 0
+    setVERBOSE(0)
     printLog("abc")
     pass
