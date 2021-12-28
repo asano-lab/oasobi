@@ -283,7 +283,7 @@ if __name__ == "__main__":
         if m:
             # print(fnamer)
             mergeSampleFiles16(fnamer)
-            # os.remove(fnamer)
+            os.remove(SMP_DIR_PATH + fnamer)
     # mergeSampleFiles16("sample016_sonoda_desktop.pickle")
     # mergeSampleFiles16("sample016_asahi_server.pickle")
     # sampleFileTest(14)
