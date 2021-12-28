@@ -4,9 +4,9 @@ import random
 import time
 import numpy as np
 import rubik_win
-import socket
+import re
 from rubik_win import (
-    SMP_DIR_PATH, SMP_PATH_FORMAT, SOLVED_NEIGHBOR_DEPTH_MAX,
+    SMP_DIR_PATH, SOLVED_NEIGHBOR_DEPTH_MAX,
     Search, num2state, s2hms, writeAndBackup
 )
 
@@ -16,6 +16,7 @@ SUBSET_NP_PATH_FORMAT = rubik_win.NP_DIR_PATH + "subset_act{:03d}.npy"
 TT_NPZ_PATH_FORMAT = rubik_win.NP_DIR_PATH + "train_test_act{:03d}.npz"
 ONEHOT_TT_NPZ_PATH_FORMAT = rubik_win.NP_DIR_PATH + "onehot_train_test_act{:03d}.npz"
 MERGED_SMP_PATH = SMP_DIR_PATH + "merged_sample016.pickle"
+# MERGED_SMP_PATH = SMP_DIR_PATH + "merged_sample016_test.pickle"
 
 def set2nparrayBin(num_set):
     """
@@ -194,17 +195,22 @@ def mergeSampleFiles16(fnamer1: str):
         print("None")
         with open(MERGED_SMP_PATH, "wb") as f:
             pickle.dump(None, f)
-        fnamer2 = SMP_PATH_FORMAT.format(16)
-        smp_dic2 = readPickleFile(fnamer2)
+        smp_dic2 = {k: set() for k in keys}
+        print(f"サンプルを{fnamer1}で初期化")
+    else:
+        print(f"結合するファイル：\n{fnamer1}\n{fnamer2}")
     smp_dic3 = {}
-    print(f"結合するファイル：\n{fnamer1}\n{fnamer2}")
     fnamew = MERGED_SMP_PATH
     print(f"書き込み先：\n{fnamew}")
     for i in keys:
         smp1 = smp_dic1[i]
         smp2 = smp_dic2[i]
         smp3 = smp1 | smp2
-        print(i, len(smp1), len(smp2), len(smp3))
+        if type(i) is int:
+            print("%4d" % i, end=": ")
+        else:
+            print(i, end=": ")
+        print("%4d, %4d -> %4d" % (len(smp1), len(smp2), len(smp3)))
         smp_dic3[i] = smp3
     writeAndBackup(fnamew, smp_dic3)
 
@@ -270,10 +276,32 @@ def checkSampleSetSize(fnamer: str):
             print("{:s}".format(i), end=": ")
         print(len(smp_dic[i]))
 
+def mergeSampleFilesMatch16(reg_exp: str):
+    """
+    各PCで作ったサンプルファイルの統合.
+    最大16手判定を前提.
+    正規表現でマッチするファイル全て結合.
+    """
+    p = re.compile(reg_exp)
+    for fnamer in os.listdir(SMP_DIR_PATH):
+        m = p.match(fnamer)
+        if m:
+            print(fnamer)
+            # mergeSampleFiles16(fnamer)
+            # os.remove(SMP_DIR_PATH + fnamer)
+        else:
+            # print(fnamer)
+            pass
+
 if __name__ == "__main__":
+    # mergeSampleFilesMatch16(r"sample_ipmsb-gs_20211224_200000.pickle")
+    # print(os.listdir(SMP_DIR_PATH))
     # mergeSampleFiles16("sample016_sonoda_desktop.pickle")
     # mergeSampleFiles16("sample016_asahi_server.pickle")
     # sampleFileTest(14)
     # checkSampleSetSize("sample016_cf-sz6f_20211227_185753.pickle")
-    sampleFileTest("sample016_cf-sz6f_20211227_185753.pickle", 16)
+    # sampleFileTest("sample016_cf-sz6f_20211227_185753.pickle", 16)
+    # mergeSampleFiles16("sample_ipmsb-gs_20211224_200000.pickle")
+    # mergeSampleFiles16("sample_merged_20211224_200000.pickle")
+    mergeSampleFiles16("sample016_sonoda.serebi.ga.pickle")
     pass
