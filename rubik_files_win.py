@@ -4,7 +4,7 @@ import random
 import time
 import numpy as np
 import rubik_win
-import socket
+import re
 from rubik_win import (
     SMP_DIR_PATH, SMP_PATH_FORMAT, SOLVED_NEIGHBOR_DEPTH_MAX,
     Search, num2state, s2hms, writeAndBackup
@@ -271,9 +271,12 @@ def checkSampleSetSize(fnamer: str):
         print(len(smp_dic[i]))
 
 if __name__ == "__main__":
+    print(os.listdir(SMP_DIR_PATH))
+    p = re.compile(r"sample016_z370_\d_\d.pickle")
+
     # mergeSampleFiles16("sample016_sonoda_desktop.pickle")
     # mergeSampleFiles16("sample016_asahi_server.pickle")
     # sampleFileTest(14)
     # checkSampleSetSize("sample016_cf-sz6f_20211227_185753.pickle")
-    sampleFileTest("sample016_cf-sz6f_20211227_185753.pickle", 16)
+    # sampleFileTest("sample016_cf-sz6f_20211227_185753.pickle", 16)
     pass
