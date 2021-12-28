@@ -6,7 +6,8 @@ import pickle
 import sys
 from rubik_module import (
     SOLVED_NEIGHBOR_DEPTH_MAX, SMP_PATH_FORMAT_ID,
-    SMP_DIR_PATH, LOG_PATH, LOG_DIR_PATH, setLOG_PATH, setVERBOSE,
+    SMP_DIR_PATH, LOG_PATH, LOG_DIR_PATH,
+    setLOG_PATH, setVERBOSE,
     writeAndBackup, printLog,
     randomScramble, randomScrambleDependent,
     inputState, s2hms, Search
