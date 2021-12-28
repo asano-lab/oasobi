@@ -16,7 +16,7 @@ SUBSET_NP_PATH_FORMAT = rubik_win.NP_DIR_PATH + "subset_act{:03d}.npy"
 TT_NPZ_PATH_FORMAT = rubik_win.NP_DIR_PATH + "train_test_act{:03d}.npz"
 ONEHOT_TT_NPZ_PATH_FORMAT = rubik_win.NP_DIR_PATH + "onehot_train_test_act{:03d}.npz"
 MERGED_SMP_PATH = SMP_DIR_PATH + "merged_sample016.pickle"
-# MERGED_SMP_PATH = SMP_DIR_PATH + "merged_sample016_test.pickle"
+MERGED_SMP_PATH = SMP_DIR_PATH + "merged_sample016_test.pickle"
 
 def set2nparrayBin(num_set):
     """
@@ -302,5 +302,6 @@ if __name__ == "__main__":
     # checkSampleSetSize("sample016_cf-sz6f_20211227_185753.pickle")
     # sampleFileTest("sample016_cf-sz6f_20211227_185753.pickle", 16)
     # mergeSampleFiles16("sample_ipmsb-gs_20211224_200000.pickle")
-    mergeSampleFiles16("sample_merged_20211224_200000.pickle")
+    # mergeSampleFiles16("sample_merged_20211224_200000.pickle")
+    mergeSampleFiles16("sample016_sonoda.serebi.ga.pickle")
     pass
