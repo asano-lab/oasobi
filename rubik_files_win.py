@@ -271,9 +271,13 @@ def checkSampleSetSize(fnamer: str):
         print(len(smp_dic[i]))
 
 if __name__ == "__main__":
-    print(os.listdir(SMP_DIR_PATH))
-    p = re.compile(r"sample016_z370_\d_\d.pickle")
-
+    # print(os.listdir(SMP_DIR_PATH))
+    p = re.compile(r"sample016_z370_\d*_\d*.pickle")
+    for fnamer in os.listdir(SMP_DIR_PATH):
+        m = p.match(fnamer)
+        if m:
+            print(fnamer)
+    
     # mergeSampleFiles16("sample016_sonoda_desktop.pickle")
     # mergeSampleFiles16("sample016_asahi_server.pickle")
     # sampleFileTest(14)
