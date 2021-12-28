@@ -18,4 +18,6 @@ def checkSampleSetSize(fnamer: str):
         print(len(smp_dic[i]))
 
 if __name__ == "__main__":
-    checkSampleSetSize("sample_merged_20211224_200000.pickle")
+    # checkSampleSetSize("sample_merged_20211224_200000.pickle")
+    checkSampleSetSize("sample_ipmsb-gs_20211224_200000.pickle")
+    # checkSampleSetSize("sample100_z370_20211227_142520.pickle")
