@@ -8,6 +8,8 @@ import random
 import numpy as np
 import shutil
 import re
+import hashlib
+import argparse
 
 clib = CDLL("./rubik.so")
 
@@ -1196,5 +1198,37 @@ def main():
 
 if __name__ == "__main__":
     # main()
-    collectSamples(1000, 7, 0, 100)
+    # collectSamples(1000, 7, 0, 100)
+
+    parser = argparse.ArgumentParser(description="hashApp")
+    parser.add_argument("input", help="Input file path")
+    parser.add_argument("--alg", help="Input algorithm (md5, sha1, sha224, sha256, sha384, sha512)", default="sha1")
+    args = parser.parse_args()
+
+    filePath = args.input
+    alg = args.alg
+
+    if alg == "md5":
+        hash = hashlib.md5()
+    elif alg == "sha224":
+        hash = hashlib.sha224()
+    elif alg == "sha256":
+        hash = hashlib.sha256()
+    elif alg == "sha384":
+        hash = hashlib.sha384()
+    elif alg == "sha512":
+        hash = hashlib.sha512()
+    else:
+        hash = hashlib.sha1()
+    
+    with open(filePath, "rb") as f:
+        while True:
+            chunk = f.read(2048 * hash.block_size)
+            if len(chunk) == 0:
+                break
+
+            hash.update(chunk)
+    
+    digest = hash.hexdigest()
+    print("{0}({1}) : {2}".format(filePath, alg, digest))
     pass
