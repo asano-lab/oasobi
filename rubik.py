@@ -1230,6 +1230,7 @@ if __name__ == "__main__":
             hash.update(chunk)
     
     digest = hash.hexdigest()
+    print(hash.digest())
     print("%x" % int(digest, 16))
     print(type(digest))
     print("{0}({1}) : {2}".format(filePath, alg, digest))
