@@ -304,5 +304,6 @@ if __name__ == "__main__":
     # sampleFileTest("sample016_cf-sz6f_20211227_185753.pickle", 16)
     # mergeSampleFiles16("sample_ipmsb-gs_20211224_200000.pickle")
     # mergeSampleFiles16("sample_merged_20211224_200000.pickle")
-    mergeSampleFiles16("sample016_sonoda.serebi.ga.pickle")
+    # mergeSampleFiles16("sample016_sonoda.serebi.ga.pickle")
+    mergeSampleFilesMatch16(r"thread\d_sample016_ikeda.*.pickle")
     pass
