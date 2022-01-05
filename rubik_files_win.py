@@ -289,7 +289,7 @@ def mergeSampleFilesMatch16(reg_exp: str):
         if m:
             # print(fnamer)
             mergeSampleFiles16(fnamer)
-            # os.remove(SMP_DIR_PATH + fnamer)
+            os.remove(SMP_DIR_PATH + fnamer)
         else:
             # print(fnamer)
             pass
