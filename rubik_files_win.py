@@ -287,8 +287,8 @@ def mergeSampleFilesMatch16(reg_exp: str):
     for fnamer in os.listdir(SMP_DIR_PATH):
         m = p.match(fnamer)
         if m:
-            print(fnamer)
-            # mergeSampleFiles16(fnamer)
+            # print(fnamer)
+            mergeSampleFiles16(fnamer)
             # os.remove(SMP_DIR_PATH + fnamer)
         else:
             # print(fnamer)
