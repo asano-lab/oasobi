@@ -188,6 +188,7 @@ def mergeSampleFiles16(fnamer1: str):
     smp_dic1 = readPickleFile(fnamer1)
     if smp_dic1 is None:
         print(f"{fnamer1}が存在しません.")
+        checkSampleSetSize("merged_sample016.pickle")
         return
     fnamer2 = MERGED_SMP_PATH
     smp_dic2 = readPickleFile(fnamer2)
