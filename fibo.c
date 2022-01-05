@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <time.h>
 
+// フィボナッチ数列
 long fibo(int n) {
     if (n <= 0) {
         return 0;
