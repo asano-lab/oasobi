@@ -25,6 +25,7 @@ int main(void) {
             snprintf(str, BUFSIZ, "%c", c);
             writeFile(fname, str);
         }
+        putchar(10);
     }
     return 0;
 }
