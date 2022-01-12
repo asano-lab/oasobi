@@ -20,12 +20,11 @@ int main(void) {
     char c;
     printf("Hello World!!\n");
     while ((c = getchar()) != '\n') {
-        putchar(c);
-    }
-    for (int i = 0; i < 10; i++) {
-        usleep(500000);
-        snprintf(str, BUFSIZ, "%d\n", i);
-        writeFile(fname, str);
+        for (int i = 0; i < 10; i++) {
+            usleep(500000);
+            snprintf(str, BUFSIZ, "%c", c);
+            writeFile(fname, str);
+        }
     }
     return 0;
 }
