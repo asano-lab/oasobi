@@ -188,6 +188,7 @@ def mergeSampleFiles16(fnamer1: str):
     smp_dic1 = readPickleFile(fnamer1)
     if smp_dic1 is None:
         print(f"{fnamer1}が存在しません.")
+        checkSampleSetSize("merged_sample016.pickle")
         return
     fnamer2 = MERGED_SMP_PATH
     smp_dic2 = readPickleFile(fnamer2)
@@ -286,9 +287,9 @@ def mergeSampleFilesMatch16(reg_exp: str):
     for fnamer in os.listdir(SMP_DIR_PATH):
         m = p.match(fnamer)
         if m:
-            print(fnamer)
-            # mergeSampleFiles16(fnamer)
-            # os.remove(SMP_DIR_PATH + fnamer)
+            # print(fnamer)
+            mergeSampleFiles16(fnamer)
+            os.remove(SMP_DIR_PATH + fnamer)
         else:
             # print(fnamer)
             pass
@@ -303,5 +304,6 @@ if __name__ == "__main__":
     # sampleFileTest("sample016_cf-sz6f_20211227_185753.pickle", 16)
     # mergeSampleFiles16("sample_ipmsb-gs_20211224_200000.pickle")
     # mergeSampleFiles16("sample_merged_20211224_200000.pickle")
-    mergeSampleFiles16("sample016_sonoda.serebi.ga.pickle")
+    # mergeSampleFiles16("sample016_sonoda.serebi.ga.pickle")
+    mergeSampleFilesMatch16(r"thread\d_sample016_ikeda.*.pickle")
     pass
