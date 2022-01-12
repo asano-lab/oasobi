@@ -18,7 +18,7 @@ int main(void) {
     char str[BUFSIZ];
     char buf[BUFSIZ];
     char c;
-    printf("Hello World!!\n");
+    // printf("Hello World!!\n");
     while ((c = getchar()) != '\n') {
         for (int i = 0; i < 10; i++) {
             usleep(500000);
