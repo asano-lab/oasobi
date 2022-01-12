@@ -16,7 +16,12 @@ int writeFile(const char *fname, const char *str) {
 int main(void) {
     char fname[FILENAME_MAX] = "sleep.txt";
     char str[BUFSIZ];
+    char buf[BUFSIZ];
+    char c;
     printf("Hello World!!\n");
+    while ((c = getchar()) != '\n') {
+        putchar(c);
+    }
     for (int i = 0; i < 10; i++) {
         usleep(500000);
         snprintf(str, BUFSIZ, "%d\n", i);
