@@ -13,6 +13,7 @@ class MyTextBox {
         this.prev_value = textbox.value;
         this.getSelections();
         this.base = this.start;
+        this.manual_selection = false;
 
         // keydownイベントの処理
         this.textbox.addEventListener("keydown", (e) => {
@@ -51,45 +52,48 @@ class MyTextBox {
                     }
                     this.setSelections(this.start, this.start);
                 } else if (e.code == "ArrowLeft") {
-                    if (e.shiftKey) {
-                        if (this.start == this.end) {
-                            this.base = this.start;
-                            this.setSelections(this.start - 1, this.base);
-                        } else if (this.base < this.end) {
-                            this.setSelections(this.base, this.end - 1);
-                        } else if (this.start > 0) {
-                            this.setSelections(this.start - 1, this.base);
-                        }
-                    } else {
-                        if (this.start != this.end) {
-                            this.setSelections(this.start, this.start);
-                        } else if (this.start > 0) {
-                            this.setSelections(this.start - 1, this.start - 1);
-                        }
-                    }
+                    // if (e.shiftKey) {
+                    //     if (this.start == this.end) {
+                    //         this.base = this.start;
+                    //         this.setSelections(this.start - 1, this.base);
+                    //     } else if (this.base < this.end) {
+                    //         this.setSelections(this.base, this.end - 1);
+                    //     } else if (this.start > 0) {
+                    //         this.setSelections(this.start - 1, this.base);
+                    //     }
+                    // } else {
+                    //     if (this.start != this.end) {
+                    //         this.setSelections(this.start, this.start);
+                    //     } else if (this.start > 0) {
+                    //         this.setSelections(this.start - 1, this.start - 1);
+                    //     }
+                    // }
+                    this.manual_selection = true;
                 } else if (e.code == "ArrowRight") {
-                    if (e.shiftKey) {
-                        if (this.start == this.end) {
-                            this.base = this.start;
-                            this.setSelections(this.base, this.end + 1);
-                        } else if (this.start < this.base) {
-                            this.setSelections(this.start + 1, this.base);
-                        }
-                        else if (this.start < this.prev_value.length) {
-                            this.setSelections(this.base, this.end + 1);
-                        }
-                    } else {
-                        if (this.start != this.end) {
-                            this.setSelections(this.end, this.end);
-                        } else if (this.start < this.prev_value.length) {
-                            this.setSelections(this.start + 1, this.start + 1);
-                        }
-                    }
+                    // if (e.shiftKey) {
+                    //     if (this.start == this.end) {
+                    //         this.base = this.start;
+                    //         this.setSelections(this.base, this.end + 1);
+                    //     } else if (this.start < this.base) {
+                    //         this.setSelections(this.start + 1, this.base);
+                    //     }
+                    //     else if (this.start < this.prev_value.length) {
+                    //         this.setSelections(this.base, this.end + 1);
+                    //     }
+                    // } else {
+                    //     if (this.start != this.end) {
+                    //         this.setSelections(this.end, this.end);
+                    //     } else if (this.start < this.prev_value.length) {
+                    //         this.setSelections(this.start + 1, this.start + 1);
+                    //     }
+                    // }
+                    this.manual_selection = true;
                 } else if (e.code == "KeyA") {
-                    if (e.ctrlKey) {
-                        this.setSelections(0, this.prev_value.length);
-                        this.base = 0;
-                    }
+                    // if (e.ctrlKey) {
+                    //     this.setSelections(0, this.prev_value.length);
+                    //     this.base = 0;
+                    // }
+                    this.manual_selection = true;
                 }
                 this.getSelections();
                 this.prev_value = this.textbox.value;
@@ -97,7 +101,11 @@ class MyTextBox {
         });
 
         this.textbox.addEventListener("select", (e) => {
-            this.resetSelections();
+            if (!this.manual_selection) {
+                this.resetSelections();
+            } else {
+                this.manual_selection = false;
+            }
             console.log(e);
         });
 
