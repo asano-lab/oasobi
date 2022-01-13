@@ -76,7 +76,7 @@ class MyTextBox {
                         } else if (this.start < this.base) {
                             this.setSelections(this.start + 1, this.base);
                         }
-                        else if (this.start > 0) {
+                        else if (this.start < this.prev_value.length) {
                             this.setSelections(this.base, this.end + 1);
                         }
                     } else {
@@ -122,6 +122,7 @@ class MyTextBox {
         }
     }
 
+    // カーソル位置を前の状態に戻す
     resetSelections() {
         this.setSelections(this.start, this.end);
     }
@@ -158,13 +159,13 @@ function getAllEvents(element) {
     return result;
 }
 
-let all_events = getAllEvents(text);
-console.log(all_events);
+// let all_events = getAllEvents(text);
+// console.log(all_events);
 
-for (const event of all_events) {
-    console.log(event);
-    text.addEventListener(event, (e) => {
-        console.log(event);
-        console.log(e);
-    });
-}
+// for (const event of all_events) {
+//     console.log(event);
+//     text.addEventListener(event, (e) => {
+//         console.log(event);
+//         console.log(e);
+//     });
+// }
