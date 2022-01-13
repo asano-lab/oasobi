@@ -37,7 +37,7 @@ class MyTextBox {
                 } else if (e.code == "Backspace") {
                     if (this.start == this.end) {
                         this.textbox.value = mae.slice(0, -1) + ato;
-                        if (start > 0) {
+                        if (this.start > 0) {
                             this.setSelections(this.start - 1, this.start - 1);
                         }
                     } else {
@@ -97,11 +97,11 @@ class MyTextBox {
         });
 
         this.textbox.addEventListener("select", () => {
-            this.setSelections(this.start, this.end);
+            this.resetSelections();
         });
 
         this.textbox.addEventListener("input", () => {
-            this.setSelections(this.start, this.end);
+            this.resetSelections();
             this.textbox.value = this.prev_value;
         });
     }
@@ -120,6 +120,10 @@ class MyTextBox {
             this.textbox.selectionStart = s2;
             this.textbox.selectionEnd = s1;
         }
+    }
+
+    resetSelections() {
+        this.setSelections(this.start, this.end);
     }
 }
 
