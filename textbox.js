@@ -96,14 +96,20 @@ class MyTextBox {
             }
         });
 
+        // 変なタイミングでselectイベントが発生するため無効化
         this.textbox.addEventListener("select", (e) => {
             this.resetSelections();
             console.log(e);
         });
-
+        
+        // valueは元に戻す
         this.textbox.addEventListener("input", () => {
             this.resetSelections();
             this.textbox.value = this.prev_value;
+        });
+
+        this.textbox.addEventListener("mousedown", (e) => {
+            console.log(e);
         });
 
         this.textbox.addEventListener("click", (e) => {
@@ -136,25 +142,10 @@ class MyTextBox {
 }
 
 const text = document.getElementById("text1");
-// console.log(text);
 
 let password = document.getElementById("text2");
 
-let DELETE_TYPES = ["deleteContentBackward", "deleteContentForward"];
-
-let prev_value = text.value;
-
-let comp = false;
-
 mtb = new MyTextBox(document.getElementById("text1"));
-
-password.addEventListener("input", (e) => {
-    password.type = "text";
-});
-
-password.addEventListener("keydown", (e) => {
-    password.type = "password";
-});
 
 function getAllEvents(element) {
     let result = [];
@@ -166,13 +157,13 @@ function getAllEvents(element) {
     return result;
 }
 
-let all_events = getAllEvents(text);
-console.log(all_events);
+// let all_events = getAllEvents(text);
+// console.log(all_events);
 
-for (const event of all_events) {
-    console.log(event);
-    text.addEventListener(event, (e) => {
-        console.log(event);
-        console.log(e);
-    });
-}
+// for (const event of all_events) {
+//     console.log(event);
+//     text.addEventListener(event, (e) => {
+//         console.log(event);
+//         console.log(e);
+//     });
+// }
