@@ -1,3 +1,11 @@
+
+class MyTextBox {
+    constructor(textbox) {
+        console.log("Hello!!");
+        this.textbox = textbox;
+    }
+}
+
 const text = document.getElementById("text1");
 // console.log(text);
 
@@ -16,6 +24,8 @@ let prev_value = text.value;
 let comp = false;
 
 let start, end, base;
+
+mtb = new MyTextBox(document.getElementById("text1"));
 
 const resetTextSelection = () => {
     text.selectionStart = start;
