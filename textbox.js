@@ -11,8 +11,7 @@ class MyTextBox {
 
         // 変数初期化
         this.prev_value = textbox.value;
-        this.start = this.textbox.selectionStart;
-        this.end = this.textbox.selectionEnd;
+        this.getSelections();
         this.base = this.start;
 
         // keydownイベントの処理
@@ -22,7 +21,7 @@ class MyTextBox {
             console.log(e);
     
             if (VALID_CODES.includes(e.code)) {
-                [this.start, this.end] = this.getSelections();
+                this.getSelections();
                 console.log(this.start, this.end);
         
                 mae = this.prev_value.slice(0, this.start);
@@ -89,26 +88,34 @@ class MyTextBox {
                 } else if (e.code == "KeyA") {
                     if (e.ctrlKey) {
                         this.setSelections(0, this.prev_value.length);
+                        this.base = 0;
                     }
                 }
-                [this.start, this.end] = this.getSelections();
+                this.getSelections();
                 this.prev_value = this.textbox.value;
             }
         });
 
-        this.textbox.addEventListener("select", () => {
+        this.textbox.addEventListener("select", (e) => {
             this.resetSelections();
+            console.log(e);
         });
 
         this.textbox.addEventListener("input", () => {
             this.resetSelections();
             this.textbox.value = this.prev_value;
         });
+
+        this.textbox.addEventListener("click", (e) => {
+            this.getSelections();
+            console.log(e);
+        });
     }
 
     // カーソル位置の取得
     getSelections() {
-        return [this.textbox.selectionStart, this.textbox.selectionEnd]
+        this.start = this.textbox.selectionStart;
+        this.end = this.textbox.selectionEnd;
     }
     
     // カーソル位置の設定
@@ -159,13 +166,13 @@ function getAllEvents(element) {
     return result;
 }
 
-// let all_events = getAllEvents(text);
-// console.log(all_events);
+let all_events = getAllEvents(text);
+console.log(all_events);
 
-// for (const event of all_events) {
-//     console.log(event);
-//     text.addEventListener(event, (e) => {
-//         console.log(event);
-//         console.log(e);
-//     });
-// }
+for (const event of all_events) {
+    console.log(event);
+    text.addEventListener(event, (e) => {
+        console.log(event);
+        console.log(e);
+    });
+}
