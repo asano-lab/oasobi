@@ -10,3 +10,5 @@ rubik.so: rubik.c
 	gcc rubik.c -o rubik.so -Wall -shared -fPIC
 rubik_win.so: rubik_win.c
 	gcc rubik_win.c -o rubik_win.so -Wall -shared -fPIC
+sleep.exe: sleep.c
+	gcc sleep.c -o sleep.exe
