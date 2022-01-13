@@ -20,8 +20,6 @@ class MyTextBox {
             // カーソル前後の文字列
             let mae, ato;
             console.log(e);
-            console.log("yeah");
-            console.log(this);
     
             if (VALID_CODES.includes(e.code)) {
                 [this.start, this.end] = this.getSelections();
@@ -40,7 +38,7 @@ class MyTextBox {
                     if (this.start == this.end) {
                         this.textbox.value = mae.slice(0, -1) + ato;
                         if (start > 0) {
-                            this.setSelections(start - 1, start - 1);
+                            this.setSelections(this.start - 1, this.start - 1);
                         }
                     } else {
                         this.textbox.value = mae + ato;
@@ -95,12 +93,17 @@ class MyTextBox {
                 }
                 [this.start, this.end] = this.getSelections();
                 this.prev_value = this.textbox.value;
-            } else {
-                this.textbox.value = this.prev_value;
             }
-            e.preventDefault();
         });
-        console.log(this);
+
+        this.textbox.addEventListener("select", () => {
+            this.setSelections(this.start, this.end);
+        });
+
+        this.textbox.addEventListener("input", () => {
+            this.setSelections(this.start, this.end);
+            this.textbox.value = this.prev_value;
+        });
     }
 
     // カーソル位置の取得
@@ -151,13 +154,13 @@ function getAllEvents(element) {
     return result;
 }
 
-// let all_events = getAllEvents(text);
-// console.log(all_events);
+let all_events = getAllEvents(text);
+console.log(all_events);
 
-// for (const event of all_events) {
-//     console.log(event);
-//     text.addEventListener(event, (e) => {
-//         console.log(event);
-//         console.log(e);
-//     });
-// }
+for (const event of all_events) {
+    console.log(event);
+    text.addEventListener(event, (e) => {
+        console.log(event);
+        console.log(e);
+    });
+}
