@@ -15,89 +15,94 @@ class MyTextBox {
         this.end = this.textbox.selectionEnd;
         this.base = this.start;
 
-        // keydownイベントの処理を記述
-        this.textbox.addEventListener("keydown", (e) => {
-            // カーソル前後の文字列
-            let mae, ato;
-            console.log(e);
+        this.textbox.addEventListener("keydown", this.onKeydown);
+        console.log(this);
+    }
 
-            if (VALID_CODES.includes(e.code)) {
-                [this.start, this.end] = this.getSelections();
-                console.log(this.start, this.end);
-        
-                mae = this.prev_value.slice(0, this.start);
-                ato = this.prev_value.slice(this.end, this.prev_value.length);
-        
-                if (e.code == "Digit0") {
-                    this.textbox.value = mae + "0" + ato;
-                    this.setSelections(this.start + 1, this.start + 1);
-                } else if (e.code == "Digit1") {
-                    this.textbox.value = mae + "1" + ato;
-                    this.setSelections(this.start + 1, this.start + 1);
-                } else if (e.code == "Backspace") {
-                    if (this.start == this.end) {
-                        this.textbox.value = mae.slice(0, -1) + ato;
-                        if (start > 0) {
-                            this.setSelections(start - 1, start - 1);
-                        }
-                    } else {
-                        this.textbox.value = mae + ato;
-                        this.setSelections(this.start, this.start);
+    // keydownイベントの処理
+    onKeydown(e) {
+        // カーソル前後の文字列
+        let mae, ato;
+        console.log(e);
+        console.log("yeah");
+        console.log(this);
+
+        if (VALID_CODES.includes(e.code)) {
+            [this.start, this.end] = this.getSelections();
+            console.log(this.start, this.end);
+    
+            mae = this.prev_value.slice(0, this.start);
+            ato = this.prev_value.slice(this.end, this.prev_value.length);
+    
+            if (e.code == "Digit0") {
+                this.textbox.value = mae + "0" + ato;
+                this.setSelections(this.start + 1, this.start + 1);
+            } else if (e.code == "Digit1") {
+                this.textbox.value = mae + "1" + ato;
+                this.setSelections(this.start + 1, this.start + 1);
+            } else if (e.code == "Backspace") {
+                if (this.start == this.end) {
+                    this.textbox.value = mae.slice(0, -1) + ato;
+                    if (start > 0) {
+                        this.setSelections(start - 1, start - 1);
                     }
-                } else if (e.code == "Delete") {
-                    if (this.start == this.end) {
-                        this.textbox.value = mae + ato.slice(1, ato.length);
-                    } else {
-                        this.textbox.value = mae + ato;
-                    }
+                } else {
+                    this.textbox.value = mae + ato;
                     this.setSelections(this.start, this.start);
-                } else if (e.code == "ArrowLeft") {
-                    if (e.shiftKey) {
-                        if (this.start == this.end) {
-                            this.base = this.start;
-                            this.setSelections(this.start - 1, this.base);
-                        } else if (this.base < this.end) {
-                            this.setSelections(this.base, this.end - 1);
-                        } else if (this.start > 0) {
-                            this.setSelections(this.start - 1, this.base);
-                        }
-                    } else {
-                        if (this.start != this.end) {
-                            this.setSelections(this.start, this.start);
-                        } else if (this.start > 0) {
-                            this.setSelections(this.start - 1, this.start - 1);
-                        }
+                }
+            } else if (e.code == "Delete") {
+                if (this.start == this.end) {
+                    this.textbox.value = mae + ato.slice(1, ato.length);
+                } else {
+                    this.textbox.value = mae + ato;
+                }
+                this.setSelections(this.start, this.start);
+            } else if (e.code == "ArrowLeft") {
+                if (e.shiftKey) {
+                    if (this.start == this.end) {
+                        this.base = this.start;
+                        this.setSelections(this.start - 1, this.base);
+                    } else if (this.base < this.end) {
+                        this.setSelections(this.base, this.end - 1);
+                    } else if (this.start > 0) {
+                        this.setSelections(this.start - 1, this.base);
                     }
-                } else if (e.code == "ArrowRight") {
-                    if (e.shiftKey) {
-                        if (this.start == this.end) {
-                            this.base = this.start;
-                            this.setSelections(this.base, this.end + 1);
-                        } else if (this.start < this.base) {
-                            this.setSelections(this.start + 1, this.base);
-                        }
-                        else if (this.start > 0) {
-                            this.setSelections(this.base, this.end + 1);
-                        }
-                    } else {
-                        if (this.start != this.end) {
-                            this.setSelections(this.end, this.end);
-                        } else if (this.start < this.prev_value.length) {
-                            this.setSelections(this.start + 1, this.start + 1);
-                        }
-                    }
-                } else if (e.code == "KeyA") {
-                    if (e.ctrlKey) {
-                        this.setSelections(0, this.prev_value.length);
+                } else {
+                    if (this.start != this.end) {
+                        this.setSelections(this.start, this.start);
+                    } else if (this.start > 0) {
+                        this.setSelections(this.start - 1, this.start - 1);
                     }
                 }
-                [this.start, this.end] = this.getSelections();
-                this.prev_value = this.textbox.value;
-            } else {
-                this.textbox.value = this.prev_value;
+            } else if (e.code == "ArrowRight") {
+                if (e.shiftKey) {
+                    if (this.start == this.end) {
+                        this.base = this.start;
+                        this.setSelections(this.base, this.end + 1);
+                    } else if (this.start < this.base) {
+                        this.setSelections(this.start + 1, this.base);
+                    }
+                    else if (this.start > 0) {
+                        this.setSelections(this.base, this.end + 1);
+                    }
+                } else {
+                    if (this.start != this.end) {
+                        this.setSelections(this.end, this.end);
+                    } else if (this.start < this.prev_value.length) {
+                        this.setSelections(this.start + 1, this.start + 1);
+                    }
+                }
+            } else if (e.code == "KeyA") {
+                if (e.ctrlKey) {
+                    this.setSelections(0, this.prev_value.length);
+                }
             }
-            e.preventDefault();
-        });  
+            [this.start, this.end] = this.getSelections();
+            this.prev_value = this.textbox.value;
+        } else {
+            this.textbox.value = this.prev_value;
+        }
+        e.preventDefault();
     }
 
     // カーソル位置の取得
@@ -114,7 +119,7 @@ class MyTextBox {
             this.textbox.selectionStart = s2;
             this.textbox.selectionEnd = s1;
         }
-    };
+    }
 }
 
 const text = document.getElementById("text1");
