@@ -3,11 +3,12 @@ import sys
 import time
 
 try:
-    while True:
+    for i in range(1000000):
+        print(i)
         print(sys.version)
         time.sleep(1)
 
 except KeyboardInterrupt:
     pass
 
-sys.exit(-1)
+sys.exit(i & 0xff)
