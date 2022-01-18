@@ -1,7 +1,7 @@
 const VALID_VALUES = ["0", "1"];
 const VALID_CODES = [
     "Digit0", "Digit1", "Backspace", "Delete",
-    "ArrowLeft", "ArrowRight", "KeyA"
+    "ArrowLeft", "ArrowRight", "KeyA", "KeyX"
 ];
 
 class MyTextBox {
@@ -13,14 +13,12 @@ class MyTextBox {
         this.prev_value = this.textbox.value;
         this.getSelections();
         this.base = this.start;
-        this.mouse_downed = false;
         this.mdx = 0;
 
         // keydownイベントの処理
         this.textbox.addEventListener("keydown", (e) => {
             // カーソル前後の文字列
             let mae, ato;
-            // console.log(e);
     
             if (VALID_CODES.includes(e.code)) {
                 this.getSelections();
@@ -29,7 +27,19 @@ class MyTextBox {
                 mae = this.prev_value.slice(0, this.start);
                 ato = this.prev_value.slice(this.end, this.prev_value.length);
         
-                if (e.code == "Digit0") {
+                if (e.ctrlKey) {
+                    // 全選択
+                    if (e.code == "KeyA") {
+                        this.setSelections(0, this.prev_value.length);
+                        this.base = 0;
+                    }
+                    // 切り取り
+                    else if (e.code == "KeyX") {
+                        this.textbox.value = mae + ato;
+                        this.setSelections(this.start, this.start);
+                    }
+                }
+                else if (e.code == "Digit0") {
                     this.textbox.value = mae + "0" + ato;
                     this.setSelections(this.start + 1, this.start + 1);
                 } else if (e.code == "Digit1") {
@@ -87,11 +97,6 @@ class MyTextBox {
                             this.setSelections(this.start + 1, this.start + 1);
                         }
                     }
-                } else if (e.code == "KeyA") {
-                    if (e.ctrlKey) {
-                        this.setSelections(0, this.prev_value.length);
-                        this.base = 0;
-                    }
                 }
                 this.getSelections();
                 this.prev_value = this.textbox.value;
@@ -101,7 +106,7 @@ class MyTextBox {
         // 変なタイミングでselectイベントが発生するため無効化
         this.textbox.addEventListener("select", (e) => {
             this.resetSelections();
-            console.log(e);
+            // console.log(e);
             // console.log("セレクト!!");
         });
         
@@ -113,14 +118,12 @@ class MyTextBox {
         });
 
         this.textbox.addEventListener("mousedown", (e) => {
-            this.mouse_downed = true;
             this.mdx = e.offsetX;
             // console.log(e);
             // console.log(this.mdx);
         });
 
         this.textbox.addEventListener("mouseout", (e) => {
-            this.mouse_downed = false;
             this.getSelections();
             if (this.mdx < e.offsetX) {
                 this.base = this.start;
@@ -130,7 +133,6 @@ class MyTextBox {
         });
 
         this.textbox.addEventListener("click", (e) => {
-            this.mouse_downed = false;
             this.getSelections();
             if (this.mdx < e.offsetX) {
                 this.base = this.start;
