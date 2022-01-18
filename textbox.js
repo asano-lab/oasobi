@@ -10,9 +10,11 @@ class MyTextBox {
         this.textbox = textbox;
 
         // 変数初期化
-        this.prev_value = textbox.value;
+        this.prev_value = this.textbox.value;
         this.getSelections();
         this.base = this.start;
+        this.mouse_downed = false;
+        this.mdx = 0;
 
         // keydownイベントの処理
         this.textbox.addEventListener("keydown", (e) => {
@@ -99,8 +101,8 @@ class MyTextBox {
         // 変なタイミングでselectイベントが発生するため無効化
         this.textbox.addEventListener("select", (e) => {
             this.resetSelections();
-            // console.log(e);
-            console.log("セレクト!!");
+            console.log(e);
+            // console.log("セレクト!!");
         });
         
         // valueは元に戻す
@@ -111,25 +113,36 @@ class MyTextBox {
         });
 
         this.textbox.addEventListener("mousedown", (e) => {
-            console.log(e);
+            this.mouse_downed = true;
+            this.mdx = e.offsetX;
+            // console.log(e);
+            // console.log(this.mdx);
         });
 
         this.textbox.addEventListener("mouseout", (e) => {
-            console.log(e);
+            this.mouse_downed = false;
+            this.getSelections();
+            if (this.mdx < e.offsetX) {
+                this.base = this.start;
+            } else {
+                this.base = this.end;
+            }
         });
 
         this.textbox.addEventListener("click", (e) => {
+            this.mouse_downed = false;
             this.getSelections();
-            console.log("クリック");
-            console.log(e);
+            if (this.mdx < e.offsetX) {
+                this.base = this.start;
+            } else {
+                this.base = this.end;
+            }
         });
         
         this.textbox.addEventListener("dblclick", (e) => {
             this.setSelections(0, this.prev_value.length);
             this.getSelections();
             this.base = 0;
-            console.log("ダブルクリック");
-            console.log(e);
         });
     }
 
