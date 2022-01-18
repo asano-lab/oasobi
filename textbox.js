@@ -28,11 +28,36 @@ class MyTextBox {
                 this.mae = this.prev_value.slice(0, this.start);
                 this.ato = this.prev_value.slice(this.end, this.prev_value.length);
         
+                // Ctrl
                 if (e.ctrlKey) {
                     // 全選択
                     if (e.code == "KeyA") {
                         this.setSelections(0, this.prev_value.length);
                         this.base = 0;
+                    }
+                }
+                // Shift
+                else if (e.shiftKey) {
+                    if (e.code == "ArrowLeft") {
+                        if (this.start == this.end) {
+                            this.base = this.start;
+                            this.setSelections(this.start - 1, this.base);
+                        } else if (this.base < this.end) {
+                            this.setSelections(this.base, this.end - 1);
+                        } else if (this.start > 0) {
+                            this.setSelections(this.start - 1, this.base);
+                        }
+                    }
+                    else if (e.code == "ArrowRight") {
+                        if (this.start == this.end) {
+                            this.base = this.start;
+                            this.setSelections(this.base, this.end + 1);
+                        } else if (this.start < this.base) {
+                            this.setSelections(this.start + 1, this.base);
+                        }
+                        else if (this.start < this.prev_value.length) {
+                            this.setSelections(this.base, this.end + 1);
+                        }
                     }
                 }
                 else if (e.code == "Digit0") {
@@ -59,39 +84,16 @@ class MyTextBox {
                     }
                     this.setSelections(this.start, this.start);
                 } else if (e.code == "ArrowLeft") {
-                    if (e.shiftKey) {
-                        if (this.start == this.end) {
-                            this.base = this.start;
-                            this.setSelections(this.start - 1, this.base);
-                        } else if (this.base < this.end) {
-                            this.setSelections(this.base, this.end - 1);
-                        } else if (this.start > 0) {
-                            this.setSelections(this.start - 1, this.base);
-                        }
-                    } else {
-                        if (this.start != this.end) {
-                            this.setSelections(this.start, this.start);
-                        } else if (this.start > 0) {
-                            this.setSelections(this.start - 1, this.start - 1);
-                        }
+                    if (this.start != this.end) {
+                        this.setSelections(this.start, this.start);
+                    } else if (this.start > 0) {
+                        this.setSelections(this.start - 1, this.start - 1);
                     }
                 } else if (e.code == "ArrowRight") {
-                    if (e.shiftKey) {
-                        if (this.start == this.end) {
-                            this.base = this.start;
-                            this.setSelections(this.base, this.end + 1);
-                        } else if (this.start < this.base) {
-                            this.setSelections(this.start + 1, this.base);
-                        }
-                        else if (this.start < this.prev_value.length) {
-                            this.setSelections(this.base, this.end + 1);
-                        }
-                    } else {
-                        if (this.start != this.end) {
-                            this.setSelections(this.end, this.end);
-                        } else if (this.start < this.prev_value.length) {
-                            this.setSelections(this.start + 1, this.start + 1);
-                        }
+                    if (this.start != this.end) {
+                        this.setSelections(this.end, this.end);
+                    } else if (this.start < this.prev_value.length) {
+                        this.setSelections(this.start + 1, this.start + 1);
                     }
                 }
                 this.getSelections();
