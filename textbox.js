@@ -23,7 +23,7 @@ class MyTextBox {
     
             if (VALID_CODES.includes(e.code)) {
                 this.getSelections();
-                console.log(this.start, this.end);
+                // console.log(this.start, this.end);
         
                 this.mae = this.prev_value.slice(0, this.start);
                 this.ato = this.prev_value.slice(this.end, this.prev_value.length);
@@ -107,7 +107,7 @@ class MyTextBox {
         
         // valueは元に戻す
         this.textbox.addEventListener("input", (e) => {
-            console.log(e);
+            // console.log(e);
             // 貼り付け
             if (e.inputType == "insertFromPaste") {
                 if (this.textbox.value.match(/^[01]+$/)){
@@ -130,8 +130,6 @@ class MyTextBox {
 
         this.textbox.addEventListener("mousedown", (e) => {
             this.mdx = e.offsetX;
-            // console.log(e);
-            // console.log(this.mdx);
         });
 
         this.textbox.addEventListener("mouseout", (e) => {
