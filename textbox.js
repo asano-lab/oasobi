@@ -14,18 +14,19 @@ class MyTextBox {
         this.getSelections();
         this.base = this.start;
         this.mdx = 0;
+        // カーソル前後の文字列
+        this.mae = this.prev_value.slice(0, this.start);
+        this.ato = this.prev_value.slice(this.end, this.prev_value.length)
 
         // keydownイベントの処理
         this.textbox.addEventListener("keydown", (e) => {
-            // カーソル前後の文字列
-            let mae, ato;
     
             if (VALID_CODES.includes(e.code)) {
                 this.getSelections();
                 console.log(this.start, this.end);
         
-                mae = this.prev_value.slice(0, this.start);
-                ato = this.prev_value.slice(this.end, this.prev_value.length);
+                this.mae = this.prev_value.slice(0, this.start);
+                this.ato = this.prev_value.slice(this.end, this.prev_value.length);
         
                 if (e.ctrlKey) {
                     // 全選択
@@ -35,31 +36,31 @@ class MyTextBox {
                     }
                     // 切り取り
                     else if (e.code == "KeyX") {
-                        this.textbox.value = mae + ato;
+                        this.textbox.value = this.mae + this.ato;
                         this.setSelections(this.start, this.start);
                     }
                 }
                 else if (e.code == "Digit0") {
-                    this.textbox.value = mae + "0" + ato;
+                    this.textbox.value = this.mae + "0" + this.ato;
                     this.setSelections(this.start + 1, this.start + 1);
                 } else if (e.code == "Digit1") {
-                    this.textbox.value = mae + "1" + ato;
+                    this.textbox.value = this.mae + "1" + this.ato;
                     this.setSelections(this.start + 1, this.start + 1);
                 } else if (e.code == "Backspace") {
                     if (this.start == this.end) {
-                        this.textbox.value = mae.slice(0, -1) + ato;
+                        this.textbox.value = this.mae.slice(0, -1) + this.ato;
                         if (this.start > 0) {
                             this.setSelections(this.start - 1, this.start - 1);
                         }
                     } else {
-                        this.textbox.value = mae + ato;
+                        this.textbox.value = this.mae + this.ato;
                         this.setSelections(this.start, this.start);
                     }
                 } else if (e.code == "Delete") {
                     if (this.start == this.end) {
-                        this.textbox.value = mae + ato.slice(1, ato.length);
+                        this.textbox.value = this.mae + this.ato.slice(1, this.ato.length);
                     } else {
-                        this.textbox.value = mae + ato;
+                        this.textbox.value = this.mae + this.ato;
                     }
                     this.setSelections(this.start, this.start);
                 } else if (e.code == "ArrowLeft") {
@@ -112,9 +113,19 @@ class MyTextBox {
         
         // valueは元に戻す
         this.textbox.addEventListener("input", (e) => {
-            this.resetSelections();
-            this.textbox.value = this.prev_value;
-            console.log(e);
+            if (e.inputType == "insertFromPaste") {
+                this.prev_value = "";
+                for (let c of this.textbox.value) {
+                    if (VALID_VALUES.includes(c)) {
+                        this.prev_value += c;
+                    }
+                }
+                this.textbox.value = this.prev_value;
+            }
+            else {
+                this.resetSelections();
+                this.textbox.value = this.prev_value;
+            }
         });
 
         this.textbox.addEventListener("mousedown", (e) => {
