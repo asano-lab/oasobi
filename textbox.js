@@ -144,11 +144,15 @@ class MyTextBox {
         });
 
         this.textbox.addEventListener("click", (e) => {
+            console.log(e);
             this.getSelections();
-            if (this.mdx < e.offsetX) {
-                this.base = this.start;
-            } else {
-                this.base = this.end;
+            // シフトが押されていなければbaseも移動
+            if (!e.shiftKey) {
+                if (this.mdx < e.offsetX) {
+                    this.base = this.start;
+                } else {
+                    this.base = this.end;
+                }
             }
         });
         
