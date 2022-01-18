@@ -102,7 +102,7 @@ class MyTextBox {
                 this.getSelections();
                 this.prev_value = this.textbox.value;
             }
-            console.log(this.textbox.value.match(/^[01]+$/));
+            // console.log(this.textbox.value.match(/^[01]+$/));
         });
 
         // 変なタイミングでselectイベントが発生するため無効化
@@ -157,6 +157,11 @@ class MyTextBox {
             this.setSelections(0, this.prev_value.length);
             this.getSelections();
             this.base = 0;
+        });
+
+        // 右クリック
+        this.textbox.addEventListener("auxclick", (e) => {
+            this.getSelections();
         });
     }
 
