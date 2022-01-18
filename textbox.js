@@ -102,6 +102,7 @@ class MyTextBox {
                 this.getSelections();
                 this.prev_value = this.textbox.value;
             }
+            console.log(this.textbox.value.match(/^[01]+$/));
         });
 
         // 変なタイミングでselectイベントが発生するため無効化
@@ -114,13 +115,13 @@ class MyTextBox {
         // valueは元に戻す
         this.textbox.addEventListener("input", (e) => {
             if (e.inputType == "insertFromPaste") {
-                this.prev_value = "";
-                for (let c of this.textbox.value) {
-                    if (VALID_VALUES.includes(c)) {
-                        this.prev_value += c;
-                    }
+                if (this.textbox.value.match(/^[01]+$/)){
+                    this.prev_value = this.textbox.value;
                 }
-                this.textbox.value = this.prev_value;
+                else {
+                    this.textbox.value = this.prev_value;
+                    this.resetSelections();
+                }
             }
             else {
                 this.resetSelections();
