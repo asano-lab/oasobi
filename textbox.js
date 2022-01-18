@@ -37,7 +37,7 @@ class MyTextBox {
                     // 切り取り
                     else if (e.code == "KeyX") {
                         this.textbox.value = this.mae + this.ato;
-                        this.setSelections(this.start, this.start);
+                        // this.setSelections(this.start, this.start);
                     }
                 }
                 else if (e.code == "Digit0") {
@@ -108,8 +108,6 @@ class MyTextBox {
         // 変なタイミングでselectイベントが発生するため無効化
         this.textbox.addEventListener("select", (e) => {
             this.resetSelections();
-            // console.log(e);
-            // console.log("セレクト!!");
         });
         
         // valueは元に戻す
