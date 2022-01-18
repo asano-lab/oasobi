@@ -109,7 +109,7 @@ class MyTextBox {
         
         // valueは元に戻す
         this.textbox.addEventListener("input", (e) => {
-            // console.log(e);
+            console.log(e);
             // 貼り付け
             if (e.inputType == "insertFromPaste") {
                 if (this.textbox.value.match(/^[01]+$/)){
@@ -122,6 +122,10 @@ class MyTextBox {
             }
             // 切り取り
             else if (e.inputType == "deleteByCut") {
+                this.prev_value = this.textbox.value;
+            }
+            // 戻す
+            else if (e.inputType == "historyUndo") {
                 this.prev_value = this.textbox.value;
             }
             else {
@@ -144,7 +148,7 @@ class MyTextBox {
         });
 
         this.textbox.addEventListener("click", (e) => {
-            console.log(e);
+            // console.log(e);
             this.getSelections();
             // シフトが押されていなければbaseも移動
             if (!e.shiftKey) {
