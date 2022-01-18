@@ -18,7 +18,7 @@ class MyTextBox {
         this.textbox.addEventListener("keydown", (e) => {
             // カーソル前後の文字列
             let mae, ato;
-            console.log(e);
+            // console.log(e);
     
             if (VALID_CODES.includes(e.code)) {
                 this.getSelections();
@@ -99,22 +99,24 @@ class MyTextBox {
         // 変なタイミングでselectイベントが発生するため無効化
         this.textbox.addEventListener("select", (e) => {
             this.resetSelections();
-            console.log(e);
+            // console.log(e);
+            console.log("セレクト!!");
         });
         
         // valueは元に戻す
-        this.textbox.addEventListener("input", () => {
+        this.textbox.addEventListener("input", (e) => {
             this.resetSelections();
             this.textbox.value = this.prev_value;
+            console.log(e);
         });
 
         this.textbox.addEventListener("mousedown", (e) => {
-            console.log(e);
+            // console.log(e);
         });
 
         this.textbox.addEventListener("click", (e) => {
             this.getSelections();
-            console.log(e);
+            // console.log(e);
         });
     }
 
