@@ -36,7 +36,7 @@ class MyTextBox {
                     }
                     // 切り取り
                     else if (e.code == "KeyX") {
-                        this.textbox.value = this.mae + this.ato;
+                        // this.textbox.value = this.mae + this.ato;
                         // this.setSelections(this.start, this.start);
                     }
                 }
