@@ -111,12 +111,25 @@ class MyTextBox {
         });
 
         this.textbox.addEventListener("mousedown", (e) => {
-            // console.log(e);
+            console.log(e);
+        });
+
+        this.textbox.addEventListener("mouseout", (e) => {
+            console.log(e);
         });
 
         this.textbox.addEventListener("click", (e) => {
             this.getSelections();
-            // console.log(e);
+            console.log("クリック");
+            console.log(e);
+        });
+        
+        this.textbox.addEventListener("dblclick", (e) => {
+            this.setSelections(0, this.prev_value.length);
+            this.getSelections();
+            this.base = 0;
+            console.log("ダブルクリック");
+            console.log(e);
         });
     }
 
