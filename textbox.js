@@ -1,7 +1,7 @@
 const VALID_VALUES = ["0", "1"];
 const VALID_CODES = [
     "Digit0", "Digit1", "Backspace", "Delete",
-    "ArrowLeft", "ArrowRight", "KeyA", "KeyX"
+    "ArrowLeft", "ArrowRight", "KeyA"
 ];
 
 class MyTextBox {
@@ -33,11 +33,6 @@ class MyTextBox {
                     if (e.code == "KeyA") {
                         this.setSelections(0, this.prev_value.length);
                         this.base = 0;
-                    }
-                    // 切り取り
-                    else if (e.code == "KeyX") {
-                        // this.textbox.value = this.mae + this.ato;
-                        // this.setSelections(this.start, this.start);
                     }
                 }
                 else if (e.code == "Digit0") {
@@ -112,6 +107,8 @@ class MyTextBox {
         
         // valueは元に戻す
         this.textbox.addEventListener("input", (e) => {
+            console.log(e);
+            // 貼り付け
             if (e.inputType == "insertFromPaste") {
                 if (this.textbox.value.match(/^[01]+$/)){
                     this.prev_value = this.textbox.value;
@@ -120,6 +117,10 @@ class MyTextBox {
                     this.textbox.value = this.prev_value;
                     this.resetSelections();
                 }
+            }
+            // 切り取り
+            else if (e.inputType == "deleteByCut") {
+                this.prev_value = this.textbox.value;
             }
             else {
                 this.resetSelections();
