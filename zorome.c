@@ -4,10 +4,9 @@
 
 int main(void) {
     char c;
-    char month_str[3];
-    int month_int;
-    char date_str[3];
-    int date_int;
+    char month_str[3], date_str[3];
+    int month_int, date_int;
+    char month_date[5];
     
     printf("日付を入力してください (MM/DD): ");
     // 月の取得
@@ -40,6 +39,17 @@ int main(void) {
     if (date_int < 1 || 31 < date_int) {
         return -1;
     }
-    printf("%02d/%02d\n", month_int, date_int);
+    snprintf(month_date, sizeof month_date, "%d%d", month_int, date_int);
+    
+    for (int i = 0; i < 4; i++) {
+        if (month_date[i + 1] == '\0') {
+            puts("OK");
+            break;
+        }
+        if (month_date[i] != month_date[i + 1]) {
+            puts("NG");
+            break;
+        }
+    }
     return 0;
 }
