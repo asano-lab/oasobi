@@ -8,6 +8,7 @@ int main(void) {
     int date_int;
     
     printf("日付を入力してください (MM/DD): ");
+    // 月の取得
     for (int i = 0; i < 2; i++) {
         if (!isdigit(getchar())) {
             return -1;
@@ -28,6 +29,7 @@ int main(void) {
         return -1;
     }
 
-    printf("%s\n", date_str);
+    date_int = strtol(date_str, NULL, 10);
+    printf("%d\n", date_int);
     return 0;
 }
