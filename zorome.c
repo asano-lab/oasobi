@@ -30,6 +30,11 @@ int main(void) {
     }
 
     date_int = strtol(date_str, NULL, 10);
-    printf("%d\n", date_int);
+    if (date_int > 31) {
+        return -1;
+    }
+    if (date_str[0] == date_str[1]) {
+        puts("OK");
+    }
     return 0;
 }
