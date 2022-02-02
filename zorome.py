@@ -11,7 +11,8 @@ def main():
     date = int(m.groups()[1])
     if date < 1 or 31 < date:
         return
-    print(month, date)
+    month_date = f"{month}{date}"
+    print(len(set(month_date)))
 
 if __name__ == "__main__":
     main()
