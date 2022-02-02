@@ -1,6 +1,9 @@
 #include <stdio.h>
 
 int main(void) {
-    printf("Hello!!\n");
+    char c;
+    printf("日付を入力してください (MM/DD): ");
+    c = getchar();
     return 0;
+    
 }

@@ -3,7 +3,7 @@ animal_shogi.exe: animal_shogi.c animal_shogi.h
 fibo.exe: fibo.c
 	gcc fibo.c -o fibo.exe -Wall
 zorome.exe: zorome.c
-	gcc zorome.c -o zorome.exe -Wall
+	gcc zorome.c -o zorome.exe -Wall -fexec-charset=cp932
 rubik.exe: rubik.c
 	gcc rubik.c -o rubik.exe -Wall -fstack-usage
 rubik_win.exe: rubik_win.c
