@@ -12,7 +12,10 @@ def main():
     if date < 1 or 31 < date:
         return
     month_date = f"{month}{date}"
-    print(len(set(month_date)))
+    if len(set(month_date)) == 1:
+        print("OK")
+    else:
+        print("NG")
 
 if __name__ == "__main__":
     main()
