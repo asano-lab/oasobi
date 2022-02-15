@@ -10,48 +10,35 @@ class MyTextBox {
         this.textbox = textbox;
 
         // 変数初期化
-        this.prev_value = textbox.value;
+        this.prev_value = this.textbox.value;
         this.getSelections();
         this.base = this.start;
+        this.mdx = 0;
+        // カーソル前後の文字列
+        this.mae = this.prev_value.slice(0, this.start);
+        this.ato = this.prev_value.slice(this.end, this.prev_value.length)
 
         // keydownイベントの処理
         this.textbox.addEventListener("keydown", (e) => {
-            // カーソル前後の文字列
-            let mae, ato;
-            console.log(e);
     
             if (VALID_CODES.includes(e.code)) {
                 this.getSelections();
-                console.log(this.start, this.end);
+                // console.log(this.start, this.end);
         
-                mae = this.prev_value.slice(0, this.start);
-                ato = this.prev_value.slice(this.end, this.prev_value.length);
+                this.mae = this.prev_value.slice(0, this.start);
+                this.ato = this.prev_value.slice(this.end, this.prev_value.length);
         
-                if (e.code == "Digit0") {
-                    this.textbox.value = mae + "0" + ato;
-                    this.setSelections(this.start + 1, this.start + 1);
-                } else if (e.code == "Digit1") {
-                    this.textbox.value = mae + "1" + ato;
-                    this.setSelections(this.start + 1, this.start + 1);
-                } else if (e.code == "Backspace") {
-                    if (this.start == this.end) {
-                        this.textbox.value = mae.slice(0, -1) + ato;
-                        if (this.start > 0) {
-                            this.setSelections(this.start - 1, this.start - 1);
-                        }
-                    } else {
-                        this.textbox.value = mae + ato;
-                        this.setSelections(this.start, this.start);
+                // Ctrl
+                if (e.ctrlKey) {
+                    // 全選択
+                    if (e.code == "KeyA") {
+                        this.setSelections(0, this.prev_value.length);
+                        this.base = 0;
                     }
-                } else if (e.code == "Delete") {
-                    if (this.start == this.end) {
-                        this.textbox.value = mae + ato.slice(1, ato.length);
-                    } else {
-                        this.textbox.value = mae + ato;
-                    }
-                    this.setSelections(this.start, this.start);
-                } else if (e.code == "ArrowLeft") {
-                    if (e.shiftKey) {
+                }
+                // Shift
+                else if (e.shiftKey) {
+                    if (e.code == "ArrowLeft") {
                         if (this.start == this.end) {
                             this.base = this.start;
                             this.setSelections(this.start - 1, this.base);
@@ -60,15 +47,8 @@ class MyTextBox {
                         } else if (this.start > 0) {
                             this.setSelections(this.start - 1, this.base);
                         }
-                    } else {
-                        if (this.start != this.end) {
-                            this.setSelections(this.start, this.start);
-                        } else if (this.start > 0) {
-                            this.setSelections(this.start - 1, this.start - 1);
-                        }
                     }
-                } else if (e.code == "ArrowRight") {
-                    if (e.shiftKey) {
+                    else if (e.code == "ArrowRight") {
                         if (this.start == this.end) {
                             this.base = this.start;
                             this.setSelections(this.base, this.end + 1);
@@ -78,43 +58,117 @@ class MyTextBox {
                         else if (this.start < this.prev_value.length) {
                             this.setSelections(this.base, this.end + 1);
                         }
-                    } else {
-                        if (this.start != this.end) {
-                            this.setSelections(this.end, this.end);
-                        } else if (this.start < this.prev_value.length) {
-                            this.setSelections(this.start + 1, this.start + 1);
-                        }
                     }
-                } else if (e.code == "KeyA") {
-                    if (e.ctrlKey) {
-                        this.setSelections(0, this.prev_value.length);
-                        this.base = 0;
+                }
+                else if (e.code == "Digit0") {
+                    this.textbox.value = this.mae + "0" + this.ato;
+                    this.setSelections(this.start + 1, this.start + 1);
+                } else if (e.code == "Digit1") {
+                    this.textbox.value = this.mae + "1" + this.ato;
+                    this.setSelections(this.start + 1, this.start + 1);
+                } else if (e.code == "Backspace") {
+                    if (this.start == this.end) {
+                        this.textbox.value = this.mae.slice(0, -1) + this.ato;
+                        if (this.start > 0) {
+                            this.setSelections(this.start - 1, this.start - 1);
+                        }
+                    } else {
+                        this.textbox.value = this.mae + this.ato;
+                        this.setSelections(this.start, this.start);
+                    }
+                } else if (e.code == "Delete") {
+                    if (this.start == this.end) {
+                        this.textbox.value = this.mae + this.ato.slice(1, this.ato.length);
+                    } else {
+                        this.textbox.value = this.mae + this.ato;
+                    }
+                    this.setSelections(this.start, this.start);
+                } else if (e.code == "ArrowLeft") {
+                    if (this.start != this.end) {
+                        this.setSelections(this.start, this.start);
+                    } else if (this.start > 0) {
+                        this.setSelections(this.start - 1, this.start - 1);
+                    }
+                } else if (e.code == "ArrowRight") {
+                    if (this.start != this.end) {
+                        this.setSelections(this.end, this.end);
+                    } else if (this.start < this.prev_value.length) {
+                        this.setSelections(this.start + 1, this.start + 1);
                     }
                 }
                 this.getSelections();
                 this.prev_value = this.textbox.value;
             }
+            // console.log(this.textbox.value.match(/^[01]+$/));
         });
 
         // 変なタイミングでselectイベントが発生するため無効化
         this.textbox.addEventListener("select", (e) => {
             this.resetSelections();
-            console.log(e);
         });
         
         // valueは元に戻す
-        this.textbox.addEventListener("input", () => {
-            this.resetSelections();
-            this.textbox.value = this.prev_value;
+        this.textbox.addEventListener("input", (e) => {
+            console.log(e);
+            // 貼り付け
+            if (e.inputType == "insertFromPaste") {
+                if (this.textbox.value.match(/^[01]+$/)){
+                    this.prev_value = this.textbox.value;
+                }
+                else {
+                    this.textbox.value = this.prev_value;
+                    this.resetSelections();
+                }
+            }
+            // 切り取り
+            else if (e.inputType == "deleteByCut") {
+                this.prev_value = this.textbox.value;
+            }
+            // 戻す
+            else if (e.inputType == "historyUndo") {
+                this.prev_value = this.textbox.value;
+            }
+            else {
+                this.resetSelections();
+                this.textbox.value = this.prev_value;
+            }
         });
 
         this.textbox.addEventListener("mousedown", (e) => {
-            console.log(e);
+            this.mdx = e.offsetX;
+        });
+
+        this.textbox.addEventListener("mouseout", (e) => {
+            this.getSelections();
+            if (this.mdx < e.offsetX) {
+                this.base = this.start;
+            } else {
+                this.base = this.end;
+            }
         });
 
         this.textbox.addEventListener("click", (e) => {
+            // console.log(e);
             this.getSelections();
-            console.log(e);
+            // シフトが押されていなければbaseも移動
+            if (!e.shiftKey) {
+                if (this.mdx < e.offsetX) {
+                    this.base = this.start;
+                } else {
+                    this.base = this.end;
+                }
+            }
+        });
+        
+        this.textbox.addEventListener("dblclick", (e) => {
+            this.setSelections(0, this.prev_value.length);
+            this.getSelections();
+            this.base = 0;
+        });
+
+        // 右クリック
+        this.textbox.addEventListener("auxclick", (e) => {
+            this.getSelections();
         });
     }
 
