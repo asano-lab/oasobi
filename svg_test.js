@@ -7,5 +7,6 @@ const rect_fill = document.getElementsByClassName("rect_fill");
 for (const i of rect_fill) {
     console.log(i);
     console.log(i.outerHTML);
-    console.log(i.outerHTML.replace(re, "rgb(0,255,0)"));
+    i.outerHTML = i.outerHTML.replace(re, "rgb(0,255,0)");
+    console.log(i);
 }
