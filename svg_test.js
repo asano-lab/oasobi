@@ -11,6 +11,10 @@ let FONT_SIZE = 800;
 
 let current_coordinates;
 
+let height_max = 3;
+
+let maru;
+
 const re_fill = new RegExp('fill="rgb\\(\\d+,\\d+,\\d+\\)"', "i");
 const re_stroke = new RegExp('stroke="rgb\\(\\d+,\\d+,\\d+\\)"', "i");
 
@@ -39,7 +43,11 @@ function is_neighbor(coo) {
 
 function move(n) {
     let coo = num_to_coordinates(n);
-    console.log(is_neighbor(coo));
+    if (!is_neighbor(coo)) {
+        return;
+    }
+    current_coordinates = coo;
+    console.log(current_coordinates);
 }
 
 function init() {
@@ -57,18 +65,19 @@ function init() {
             ym = (y1 + y2) / 2;
             main_svg.innerHTML += `<g class="squares"><path fill="rgb(178,178,178)" stroke="rgb(52,101,164)" stroke-width="100" stroke-linejoin="round" d="M ${x1},${y1} L ${x2},${y1} ${x2},${y2} ${x1},${y2} Z"/></g>`;
             if (i == current_coordinates[0] && j == current_coordinates[1]) {
-                main_svg.innerHTML +=  `<circle cx="${(x1 + x2) / 2}" cy="${(y1 + y2) / 2}" r="500" stroke="None" fill="rgb(255,0,0)" stroke-width="5" id="maru"/>`;
+                main_svg.innerHTML +=  `<g id="maru"><circle cx="${xm}" cy="${ym}" r="500" stroke="None" fill="rgb(255,0,0)" stroke-width="5"/></g>`;
             }
             main_svg.innerHTML += `<text x="${xm}" y="${ym + FONT_SIZE / 2 - 100}" font-size="${FONT_SIZE}" stroke="black" text-anchor="middle" stroke-width="0.5" class="square_texts">1</text>`;
         }
     }
+    maru = document.getElementById("maru");
     // console.log(main_svg.innerHTML);
     for (let i = 0; i < squares.length; i++) {
         sq = squares[i];
         sqt = square_texts[i];
         // console.log(i.innerHTML.replace(re, "fill=\"rgb(0,255,0)\""));
         sq.innerHTML = sq.innerHTML.replace(re_fill, 'fill="rgb(255,255,255)"');
-        sq.innerHTML = sq.innerHTML.replace(re_stroke, 'stroke="rgb(100,100,100)"');
+        sq.innerHTML = sq.innerHTML.replace(re_stroke, 'stroke="rgb(50,50,50)"');
         sq.addEventListener("click", (e) => {
             move(i);
         });
@@ -79,6 +88,7 @@ function init() {
     console.log(main_svg);
     console.log(square_texts.length);
     console.log(squares.length);
+    console.log(maru);
 }
 
 document.addEventListener("DOMContentLoaded", init);
