@@ -1,11 +1,13 @@
-let X_NUM = 5;
-let Y_NUM = 5;
+let X_NUM = 6;
+let Y_NUM = 6;
 
 let BLOCK_OFFSET_X = 1000;
 let BLOCK_OFFSET_Y = 1000;
 
 let BLOCK_SIZE_X = 1600;
 let BLOCK_SIZE_Y = 1600;
+
+let FONT_SIZE = 800;
 
 let current_coordinates;
 
@@ -16,8 +18,10 @@ const main_svg = document.getElementById("main_svg");
 
 const squares = document.getElementsByClassName("squares");
 
+const square_texts = document.getElementsByClassName("square_texts");
+
 function init() {
-    let i, j, x1, y1, x2, y2;
+    let i, j, x1, y1, x2, y2, xm, ym;
     current_coordinates = [2, 4];
     main_svg.innerHTML = "";
     for (i = 0; i < X_NUM; i++) {
@@ -26,20 +30,31 @@ function init() {
             x2 = x1 + BLOCK_SIZE_X;
             y1 = BLOCK_OFFSET_Y + BLOCK_SIZE_Y * j;
             y2 = y1 + BLOCK_SIZE_Y;
+            xm = (x1 + x2) / 2;
+            ym = (y1 + y2) / 2;
             main_svg.innerHTML += `<g class="squares"><path fill="rgb(178,178,178)" stroke="rgb(52,101,164)" stroke-width="100" stroke-linejoin="round" d="M ${x1},${y1} L ${x2},${y1} ${x2},${y2} ${x1},${y2} Z"/></g>`;
             if (i == current_coordinates[0] && j == current_coordinates[1]) {
-                main_svg.innerHTML +=  `<circle cx="${(x1 + x2) / 2}" cy="${(y1 + y2) / 2}" r="500" stroke="blue" fill="white" stroke-width="5" id="maru"/>`
+                main_svg.innerHTML +=  `<circle cx="${(x1 + x2) / 2}" cy="${(y1 + y2) / 2}" r="500" stroke="None" fill="rgb(255,0,0)" stroke-width="5" id="maru"/>`;
             }
+            main_svg.innerHTML += `<text x="${xm}" y="${ym + FONT_SIZE / 2 - 100}" font-size="${FONT_SIZE}" stroke="black" text-anchor="middle" stroke-width="0.5" class="square_texts">1</text>`;
         }
     }
     // console.log(main_svg.innerHTML);
-    for (const i of squares) {
+    for (const sq of squares) {
         // console.log(i.innerHTML.replace(re, "fill=\"rgb(0,255,0)\""));
-        i.innerHTML = i.innerHTML.replace(re_fill, 'fill="rgb(200,200,200)"');
-        i.innerHTML = i.innerHTML.replace(re_stroke, 'stroke="rgb(100,100,100)"')
-        // console.log(i);
+        sq.innerHTML = sq.innerHTML.replace(re_fill, 'fill="rgb(200,200,200)"');
+        sq.innerHTML = sq.innerHTML.replace(re_stroke, 'stroke="rgb(100,100,100)"');
+        sq.addEventListener("click", (e) => {
+            console.log("yeah!!");
+        });
+    }
+    for (const sqt of square_texts) {
+        sqt.addEventListener("click", (e) => {
+            console.log("yeah!!!");
+        });
     }
     console.log(main_svg);
+    console.log(square_texts.length);
     console.log(squares.length);
 }
 
