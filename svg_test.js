@@ -1,3 +1,7 @@
+const X_NUM = 4;
+const Y_NUM = 3;
+
+
 e1 = document.getElementsByClassName("com.sun.star.drawing.CustomShape");
 
 let re = new RegExp("fill=\"rgb\\(\\d+,\\d+,\\d+\\)\"", "i");
