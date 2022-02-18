@@ -7,7 +7,8 @@ let BLOCK_OFFSET_Y = 1000;
 let BLOCK_SIZE_X = 1600;
 let BLOCK_SIZE_Y = 1600;
 
-let re_fill = new RegExp("fill=\"rgb\\(\\d+,\\d+,\\d+\\)\"", "i");
+const re_fill = new RegExp('fill="rgb\\(\\d+,\\d+,\\d+\\)"', "i");
+const re_stroke = new RegExp('stroke="rgb\\(\\d+,\\d+,\\d+\\)"', "i");
 
 const main_svg = document.getElementById("main_svg");
 
@@ -29,7 +30,8 @@ function init() {
     // console.log(main_svg.innerHTML);
     for (const i of squares) {
         // console.log(i.innerHTML.replace(re, "fill=\"rgb(0,255,0)\""));
-        i.innerHTML = i.innerHTML.replace(re_fill, "fill=\"rgb(255,255,0)\"");
+        i.innerHTML = i.innerHTML.replace(re_fill, 'fill="rgb(200,200,200)"');
+        i.innerHTML = i.innerHTML.replace(re_stroke, 'stroke="rgb(100,100,100)"')
         // console.log(i.innerHTML);
         console.log(i);
     }
