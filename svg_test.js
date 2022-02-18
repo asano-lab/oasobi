@@ -24,6 +24,24 @@ function num_to_coordinates(n) {
     return [Math.floor(n / Y_NUM), n % Y_NUM];
 }
 
+function is_neighbor(coo) {
+    let dx_abs = Math.abs(coo[0] - current_coordinates[0]);
+    let dy_abs = Math.abs(coo[1] - current_coordinates[1]);
+    // console.log(dx_abs, dy_abs);
+    if (dx_abs > 1 || dy_abs > 1) {
+        return false;
+    }
+    if (dx_abs == dy_abs) {
+        return false;
+    }
+    return true;
+}
+
+function move(n) {
+    let coo = num_to_coordinates(n);
+    console.log(is_neighbor(coo));
+}
+
 function init() {
     let x1, y1, x2, y2, xm, ym;
     let sq, sqt;
@@ -52,10 +70,10 @@ function init() {
         sq.innerHTML = sq.innerHTML.replace(re_fill, 'fill="rgb(255,255,255)"');
         sq.innerHTML = sq.innerHTML.replace(re_stroke, 'stroke="rgb(100,100,100)"');
         sq.addEventListener("click", (e) => {
-            console.log(num_to_coordinates(i));
+            move(i);
         });
         sqt.addEventListener("click", (e) => {
-            console.log(num_to_coordinates(i));
+            move(i);
         });
     }
     console.log(main_svg);
