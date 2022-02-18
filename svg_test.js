@@ -17,8 +17,6 @@ function init() {
     console.log(squares.length);
 }
 
-e1 = document.getElementsByClassName("com.sun.star.drawing.CustomShape");
-
 let re = new RegExp("fill=\"rgb\\(\\d+,\\d+,\\d+\\)\"", "i");
 
 const squares = document.getElementsByClassName("squares");
