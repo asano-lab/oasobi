@@ -29,8 +29,9 @@ function num_to_coordinates(n) {
 }
 
 function is_neighbor(coo) {
-    let dx_abs = Math.abs(coo[0] - current_coordinates[0]);
-    let dy_abs = Math.abs(coo[1] - current_coordinates[1]);
+    let dx_abs, dy_abs;
+    dx_abs = Math.abs(coo[0] - current_coordinates[0]);
+    dy_abs = Math.abs(coo[1] - current_coordinates[1]);
     // console.log(dx_abs, dy_abs);
     if (dx_abs > 1 || dy_abs > 1) {
         return false;
@@ -48,6 +49,7 @@ function move(n) {
     }
     current_coordinates = coo;
     console.log(current_coordinates);
+    maru.innerHTML = maru.innerHTML.replace(/cx="\d+"/, `cx="${BLOCK_OFFSET_X + BLOCK_SIZE_X * (coo[0] + 0.5)}"`);
 }
 
 function init() {
