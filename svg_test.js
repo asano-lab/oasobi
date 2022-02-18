@@ -21,11 +21,12 @@ const squares = document.getElementsByClassName("squares");
 const square_texts = document.getElementsByClassName("square_texts");
 
 function init() {
-    let i, j, x1, y1, x2, y2, xm, ym;
+    let x1, y1, x2, y2, xm, ym;
+    let sq, sqt;
     current_coordinates = [2, 4];
     main_svg.innerHTML = "";
-    for (i = 0; i < X_NUM; i++) {
-        for (j = 0; j < Y_NUM; j++) {
+    for (let i = 0; i < X_NUM; i++) {
+        for (let j = 0; j < Y_NUM; j++) {
             x1 = BLOCK_OFFSET_X + BLOCK_SIZE_X * i;
             x2 = x1 + BLOCK_SIZE_X;
             y1 = BLOCK_OFFSET_Y + BLOCK_SIZE_Y * j;
@@ -40,17 +41,17 @@ function init() {
         }
     }
     // console.log(main_svg.innerHTML);
-    for (const sq of squares) {
+    for (let i = 0; i < squares.length; i++) {
+        sq = squares[i];
+        sqt = square_texts[i];
         // console.log(i.innerHTML.replace(re, "fill=\"rgb(0,255,0)\""));
         sq.innerHTML = sq.innerHTML.replace(re_fill, 'fill="rgb(200,200,200)"');
         sq.innerHTML = sq.innerHTML.replace(re_stroke, 'stroke="rgb(100,100,100)"');
         sq.addEventListener("click", (e) => {
-            console.log("yeah!!");
+            console.log(i);
         });
-    }
-    for (const sqt of square_texts) {
         sqt.addEventListener("click", (e) => {
-            console.log("yeah!!!");
+            console.log(i);
         });
     }
     console.log(main_svg);
