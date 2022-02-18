@@ -20,6 +20,10 @@ const squares = document.getElementsByClassName("squares");
 
 const square_texts = document.getElementsByClassName("square_texts");
 
+function num_to_coordinates(n) {
+    return [Math.floor(n / Y_NUM), n % Y_NUM];
+}
+
 function init() {
     let x1, y1, x2, y2, xm, ym;
     let sq, sqt;
@@ -45,13 +49,13 @@ function init() {
         sq = squares[i];
         sqt = square_texts[i];
         // console.log(i.innerHTML.replace(re, "fill=\"rgb(0,255,0)\""));
-        sq.innerHTML = sq.innerHTML.replace(re_fill, 'fill="rgb(200,200,200)"');
+        sq.innerHTML = sq.innerHTML.replace(re_fill, 'fill="rgb(255,255,255)"');
         sq.innerHTML = sq.innerHTML.replace(re_stroke, 'stroke="rgb(100,100,100)"');
         sq.addEventListener("click", (e) => {
-            console.log(i);
+            console.log(num_to_coordinates(i));
         });
         sqt.addEventListener("click", (e) => {
-            console.log(i);
+            console.log(num_to_coordinates(i));
         });
     }
     console.log(main_svg);
