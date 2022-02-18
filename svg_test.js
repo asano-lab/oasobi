@@ -8,11 +8,12 @@ let BLOCK_SIZE_X = 2600;
 let BLOCK_SIZE_Y = 3600;
 
 function init() {
+    console.log(document.getElementById("main_svg"));
     for (const i of squares) {
         // console.log(i.innerHTML.replace(re, "fill=\"rgb(0,255,0)\""));
         i.innerHTML = i.innerHTML.replace(re, "fill=\"rgb(255,255,0)\"");
-        console.log(i.innerHTML);
-        console.log(i);
+        // console.log(i.innerHTML);
+        // console.log(i);
     }
     console.log(squares.length);
 }
