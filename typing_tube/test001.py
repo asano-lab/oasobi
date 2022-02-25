@@ -16,5 +16,10 @@ if __name__ == "__main__":
         elif prev_title_flag == 2:
             prev_title_flag = 3
             editor = j
+        elif j == "ranking":
+            prev_title_flag = 4
+        elif prev_title_flag == 4:
+            prev_title_flag = 5
+            score = float(j)
         
-    print(title, editor)
+    print(title, editor, score)
