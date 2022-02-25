@@ -33,9 +33,16 @@ if __name__ == "__main__":
             if m is None:
                 break
             accuracy = float(m.groups()[0])
+        elif prev_title_flag == 7:
+            prev_title_flag = 8
+            m = re.match(r'\d+/(\d+)combo', j)
+            if m is None:
+                break
+            combo_max = int(m.groups()[0])
         
     print(title)
     print(editor)
     print(score)
     print(miss)
     print(accuracy)
+    print(combo_max)
