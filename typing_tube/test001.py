@@ -1,4 +1,3 @@
 import pyperclip
 
-print(pyperclip.__version__)
-
+print(pyperclip.paste())
