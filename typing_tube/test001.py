@@ -2,15 +2,19 @@ import pyperclip
 import re
 
 if __name__ == "__main__":
-    prev_title_flag = False
+    prev_title_flag = 0
     moji = pyperclip.paste()
-    for i in moji.split("\r\n"):
-        m = re.match(r'\d+/\d+', i)
+    for i, j in enumerate(moji.split("\r\n")):
+        m = re.match(r'\d+/\d+', j)
         if m is not None:
             pass
-        if i == "https://policies.google.com/privacy":
-            prev_title_flag = True
-        elif prev_title_flag and i:
-            prev_title_flag = False
-            print(i)
-        # print(i)
+        if j == "https://policies.google.com/privacy":
+            prev_title_flag = 1
+        elif prev_title_flag == 1 and j:
+            prev_title_flag = 2
+            title = j
+        elif prev_title_flag == 2:
+            prev_title_flag = 3
+            editor = j
+        
+    print(title, editor)
