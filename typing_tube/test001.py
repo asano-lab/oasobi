@@ -1,8 +1,6 @@
 import pyperclip
 import re
 
-from typer import edit
-
 if __name__ == "__main__":
     prev_title_flag = 0
     moji = pyperclip.paste()
@@ -29,8 +27,15 @@ if __name__ == "__main__":
             if m is None:
                 break
             miss = int(m.groups()[0])
+        elif prev_title_flag == 6:
+            prev_title_flag = 7
+            m = re.match(r'正確率:(.*)%', j)
+            if m is None:
+                break
+            accuracy = float(m.groups()[0])
         
     print(title)
     print(editor)
     print(score)
     print(miss)
+    print(accuracy)
