@@ -58,6 +58,14 @@ if __name__ == "__main__":
             mg = m.groups()
             ranking = int(mg[0])
             kps = float(mg[1])
+        elif prev_title_flag == 10 and j != "Typing Result":
+            prev_title_flag = 11
+            m = re.match(r'(\d+) clear / (\d+) failed', j)
+            if m is None:
+                break
+            mg = m.groups()
+            clear_lines = int(mg[0])
+            failed_lines = int(mg[1])
     try:
         print(f"title = {title}")
         print(editor)
@@ -69,6 +77,8 @@ if __name__ == "__main__":
         print(escape_keys)
         print(f"ranking = {ranking}")
         print(f"kps = {kps}")
+        print(f"clear = {clear_lines}")
+        print(f"failed = {failed_lines}")
 
         dir_name_format = (title + "{:02d}").format
         for i in range(100):
