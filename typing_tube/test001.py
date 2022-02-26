@@ -32,7 +32,7 @@ if __name__ == "__main__":
             miss = int(m.groups()[0])
         elif prev_title_flag == 6:
             prev_title_flag = 7
-            m = re.match(r'正確率:(.*)%', j)
+            m = re.match(r'正確率:(.+)%', j)
             if m is None:
                 break
             accuracy = float(m.groups()[0])
@@ -47,9 +47,19 @@ if __name__ == "__main__":
             m = re.match(r'\d+/(\d+)打\[(\d+)\]esc', j)
             if m is None:
                 break
-            total_keys, escape_keys = m.groups()
+            mg = m.groups()
+            total_keys = int(mg[0])
+            escape_keys = int(mg[1])
+        elif prev_title_flag == 9:
+            prev_title_flag = 10
+            m = re.match(r'(\d+)位\[(.+)打/秒\]', j)
+            if m is None:
+                break
+            mg = m.groups()
+            ranking = int(mg[0])
+            kps = float(mg[1])
     try:
-        print(title)
+        print(f"title = {title}")
         print(editor)
         print(score)
         print(miss)
@@ -57,6 +67,8 @@ if __name__ == "__main__":
         print(combo_max)
         print(total_keys)
         print(escape_keys)
+        print(f"ranking = {ranking}")
+        print(f"kps = {kps}")
 
         dir_name_format = (title + "{:02d}").format
         for i in range(100):
