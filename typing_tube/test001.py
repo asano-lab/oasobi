@@ -6,15 +6,18 @@ if __name__ == "__main__":
     if not os.path.isdir("records"):
         os.mkdir("records")
     prev_title_flag = 0
+    lines_flag = 0
+    lines_list = []
     moji = pyperclip.paste()
     for i, j in enumerate(moji.split("\r\n")):
         if j == "":
             continue
-        m = re.match(r'\d+/\d+', j)
-        if m is not None:
-            pass
-        if j == "https://policies.google.com/privacy":
-            prev_title_flag = 1
+        if prev_title_flag == 0:
+            m = re.match(r'(\d{2}) (\d{2}) (\d{2})', j)
+            if m:
+                copied_time = [int(i) for i in m.groups()]
+            elif j == "https://policies.google.com/privacy":
+                prev_title_flag = 1
         elif prev_title_flag == 1:
             prev_title_flag = 2
             title = j
@@ -86,11 +89,16 @@ if __name__ == "__main__":
             if m is None:
                 break
             kps_exc_late = float(m.groups()[0])
+        elif prev_title_flag == 14:
+            m = re.match(r'\d+/\d+', j)
+            if m is not None:
+                print(j)
     try:
-        print(f"title = {title}")
+        print(copied_time)
+        print(title)
         # print(editor)
         print(f"スコア: {score}")
-        print(miss)
+        print(f"ミス: {miss}")
         print(accuracy)
         print(combo_max)
         print(total_keys)
