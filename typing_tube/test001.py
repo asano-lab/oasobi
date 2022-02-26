@@ -90,17 +90,30 @@ if __name__ == "__main__":
                 break
             kps_exc_late = float(m.groups()[0])
         elif prev_title_flag == 14:
-            m = re.match(r'\d+/\d+ \((\d+)打 ÷ (.+)秒 = .+打/秒\)$', j)
-            if m:
-                tmp_dic = dict()
-                lines_flag = 1
-                mg = m.groups()
-                tmp_dic["keys_count"] = int(mg[0])
-                tmp_dic["seconds"] = float(mg[1])
+            if lines_flag == 0:
+                m = re.match(r'\d+/\d+ \((\d+)打 ÷ (.+)秒 = .+打/秒\)$', j)
+                if m:
+                    tmp_dic = dict()
+                    lines_flag = 1
+                    mg = m.groups()
+                    tmp_dic["keys_count"] = int(mg[0])
+                    tmp_dic["seconds"] = float(mg[1])
             elif lines_flag == 1:
                 lines_flag = 2
                 tmp_dic["keys"] = j
-                print(tmp_dic)
+            elif lines_flag == 2:
+                lines_flag = 0
+                m = re.match(r'latency: (.+),　打/秒: (.+),　初速抜き: (.+),　miss: (\d+),　score: (.+) / (.+)', j)
+                if m is None:
+                    break
+                mg = m.groups()
+                tmp_dic["latency"] = float(mg[0])
+                tmp_dic["kps"] = float(mg[1])
+                tmp_dic["kps_exc_late"] = float(mg[2])
+                tmp_dic["miss"] = int(mg[3])
+                tmp_dic["score"] = float(mg[4])
+                tmp_dic["score_max"] = float(mg[5])
+                lines_list.append(tmp_dic)
     try:
         print(copied_time)
         print(title)
@@ -118,6 +131,8 @@ if __name__ == "__main__":
         print(f"miss_penalty = {miss_penalty}")
         print(f"escape_penalty = {escape_penalty}")
         print(f"初速抜き: {kps_exc_late}打/秒")
+        for i in lines_list:
+            print(i)
 
         dir_name_format = (title + "{:02d}").format
         for i in range(100):
