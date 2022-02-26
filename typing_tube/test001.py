@@ -37,19 +37,19 @@ if __name__ == "__main__":
             miss = int(m.groups()[0])
         elif prev_title_flag == 6:
             prev_title_flag = 7
-            m = re.match(r'正確率:(.+)%', j)
+            m = re.match(r'正確率:(.+)%$', j)
             if m is None:
                 break
             accuracy = float(m.groups()[0])
         elif prev_title_flag == 7:
             prev_title_flag = 8
-            m = re.match(r'\d+/(\d+)combo', j)
+            m = re.match(r'\d+/(\d+)combo$', j)
             if m is None:
                 break
             combo_max = int(m.groups()[0])
         elif prev_title_flag == 8:
             prev_title_flag = 9
-            m = re.match(r'\d+/(\d+)打\[(\d+)\]esc', j)
+            m = re.match(r'\d+/(\d+)打\[(\d+)\]esc$', j)
             if m is None:
                 break
             mg = m.groups()
@@ -57,7 +57,7 @@ if __name__ == "__main__":
             escape_keys = int(mg[1])
         elif prev_title_flag == 9:
             prev_title_flag = 10
-            m = re.match(r'(\d+)位\[(.+)打/秒\]', j)
+            m = re.match(r'(\d+)位\[(.+)打/秒\]$', j)
             if m is None:
                 break
             mg = m.groups()
@@ -65,7 +65,7 @@ if __name__ == "__main__":
             kps = float(mg[1])
         elif prev_title_flag == 10 and j != "Typing Result":
             prev_title_flag = 11
-            m = re.match(r'(\d+) clear / (\d+) failed', j)
+            m = re.match(r'(\d+) clear / (\d+) failed$', j)
             if m is None:
                 break
             mg = m.groups()
@@ -85,14 +85,19 @@ if __name__ == "__main__":
             escape_penalty = float(m.groups()[0])
         elif prev_title_flag == 13:
             prev_title_flag = 14
-            m = re.match(r'初速抜き: (.+)打/秒', j)
+            m = re.match(r'初速抜き: (.+)打/秒$', j)
             if m is None:
                 break
             kps_exc_late = float(m.groups()[0])
         elif prev_title_flag == 14:
-            m = re.match(r'\d+/\d+', j)
-            if m is not None:
-                print(j)
+            m = re.match(r'\d+/\d+ \((\d+)打 ÷ (.+)秒 = .+打/秒\)$', j)
+            if m:
+                tmp_dic = dict()
+                lines_flag = 1
+                mg = m.groups()
+                tmp_dic["keys"] = int(mg[0])
+                tmp_dic["seconds"] = float(mg[1])
+                print(tmp_dic)
     try:
         print(copied_time)
         print(title)
