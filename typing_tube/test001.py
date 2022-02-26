@@ -80,10 +80,16 @@ if __name__ == "__main__":
             if m is None:
                 break
             escape_penalty = float(m.groups()[0])
+        elif prev_title_flag == 13:
+            prev_title_flag = 14
+            m = re.match(r'初速抜き: (.+)打/秒', j)
+            if m is None:
+                break
+            kps_exc_late = float(m.groups()[0])
     try:
         print(f"title = {title}")
-        print(editor)
-        print(score)
+        # print(editor)
+        print(f"スコア: {score}")
         print(miss)
         print(accuracy)
         print(combo_max)
@@ -95,6 +101,7 @@ if __name__ == "__main__":
         print(f"failed = {failed_lines}")
         print(f"miss_penalty = {miss_penalty}")
         print(f"escape_penalty = {escape_penalty}")
+        print(f"初速抜き: {kps_exc_late}打/秒")
 
         dir_name_format = (title + "{:02d}").format
         for i in range(100):
