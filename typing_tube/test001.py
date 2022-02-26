@@ -42,6 +42,12 @@ if __name__ == "__main__":
             if m is None:
                 break
             combo_max = int(m.groups()[0])
+        elif prev_title_flag == 8:
+            prev_title_flag = 9
+            m = re.match(r'\d+/(\d+)打\[(\d+)\]esc', j)
+            if m is None:
+                break
+            total_keys, escape_keys = m.groups()
     try:
         print(title)
         print(editor)
@@ -49,5 +55,16 @@ if __name__ == "__main__":
         print(miss)
         print(accuracy)
         print(combo_max)
+        print(total_keys)
+        print(escape_keys)
+
+        dir_name_format = (title + "{:02d}").format
+        for i in range(100):
+            dir_name = dir_name_format(i)
+            if os.path.isdir(dir_name):
+                pass
+            else:
+                break
+
     except NameError:
         print("不適切なクリップボードです")
