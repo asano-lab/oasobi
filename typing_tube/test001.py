@@ -95,8 +95,11 @@ if __name__ == "__main__":
                 tmp_dic = dict()
                 lines_flag = 1
                 mg = m.groups()
-                tmp_dic["keys"] = int(mg[0])
+                tmp_dic["keys_count"] = int(mg[0])
                 tmp_dic["seconds"] = float(mg[1])
+            elif lines_flag == 1:
+                lines_flag = 2
+                tmp_dic["keys"] = j
                 print(tmp_dic)
     try:
         print(copied_time)
