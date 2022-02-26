@@ -8,12 +8,14 @@ if __name__ == "__main__":
     prev_title_flag = 0
     moji = pyperclip.paste()
     for i, j in enumerate(moji.split("\r\n")):
+        if j == "":
+            continue
         m = re.match(r'\d+/\d+', j)
         if m is not None:
             pass
         if j == "https://policies.google.com/privacy":
             prev_title_flag = 1
-        elif prev_title_flag == 1 and j:
+        elif prev_title_flag == 1:
             prev_title_flag = 2
             title = j
         elif prev_title_flag == 2:
