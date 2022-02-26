@@ -1,7 +1,10 @@
 import pyperclip
 import re
+import os
 
 if __name__ == "__main__":
+    if not os.path.isdir("records"):
+        os.mkdir("records")
     prev_title_flag = 0
     moji = pyperclip.paste()
     for i, j in enumerate(moji.split("\r\n")):
@@ -39,10 +42,12 @@ if __name__ == "__main__":
             if m is None:
                 break
             combo_max = int(m.groups()[0])
-        
-    print(title)
-    print(editor)
-    print(score)
-    print(miss)
-    print(accuracy)
-    print(combo_max)
+    try:
+        print(title)
+        print(editor)
+        print(score)
+        print(miss)
+        print(accuracy)
+        print(combo_max)
+    except NameError:
+        print("不適切なクリップボードです")
