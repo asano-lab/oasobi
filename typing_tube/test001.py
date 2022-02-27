@@ -16,7 +16,8 @@ def generate_hash(title: str, total_keys: int, lines_list: list):
     for i in lines_list:
         m.update(i["keys_count"].to_bytes(4, "big"))
         m.update(str(i["seconds"]).encode())
-        m.update(i["keys"].encode())
+        # m.update(i["keys"].encode())
+        # print(str(i["score_max"]).encode())
         m.update(str(i["score_max"]).encode())
 
     return m.hexdigest()
