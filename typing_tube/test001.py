@@ -1,18 +1,25 @@
+from numpy import byte
 import pyperclip
 import re
 import os
 import hashlib
 
-def generate_hash(title, total_keys, lines_list):
+def generate_hash(title: str, total_keys: int, lines_list: list):
     """
     データを識別するハッシュを生成
     """
-    print(title, total_keys)
+    m = hashlib.sha256()
+    m.update(title.encode())
+    # print(total_keys.to_bytes(4, "big"))
+    m.update(total_keys.to_bytes(4, "big"))
+
     for i in lines_list:
-        print(i["keys_count"])
-        print(i["seconds"])
-        print(i["keys"])
-        print(i["score_max"])
+        m.update(i["keys_count"].to_bytes(4, "big"))
+        m.update(str(i["seconds"]).encode())
+        m.update(i["keys"].encode())
+        m.update(str(i["score_max"]).encode())
+
+    return m.hexdigest()
 
 if __name__ == "__main__":
     if not os.path.isdir("records"):
@@ -144,7 +151,8 @@ if __name__ == "__main__":
         print(f"速さ: {kps}打/秒")
         print(f"初速抜き速さ: {kps_exc_late}打/秒")
 
-        generate_hash(title, total_keys, lines_list)
+        data_hash = generate_hash(title, total_keys, lines_list)
+        print(data_hash)
 
         dir_name_format = (title + "{:02d}").format
         for i in range(100):
