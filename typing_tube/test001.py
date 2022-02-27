@@ -1,6 +1,13 @@
 import pyperclip
 import re
 import os
+import hashlib
+
+def generate_hash(title):
+    """
+    データを識別するハッシュを生成
+    """
+    pass
 
 if __name__ == "__main__":
     if not os.path.isdir("records"):
@@ -120,19 +127,17 @@ if __name__ == "__main__":
         # print(editor)
         print(f"スコア: {score}")
         print(f"ミス: {miss}")
-        print(accuracy)
-        print(combo_max)
-        print(total_keys)
-        print(escape_keys)
-        print(f"ranking = {ranking}")
-        print(f"kps = {kps}")
-        print(f"clear = {clear_lines}")
-        print(f"failed = {failed_lines}")
-        print(f"miss_penalty = {miss_penalty}")
-        print(f"escape_penalty = {escape_penalty}")
-        print(f"初速抜き: {kps_exc_late}打/秒")
-        for i in lines_list:
-            print(i)
+        print(f"正確率: {accuracy}")
+        print(f"最大コンボ: {combo_max}")
+        print(f"キー総数: {total_keys}")
+        print(f"逃したキー数: {escape_keys}")
+        print(f"順位: {ranking}")
+        print(f"クリア行数: {clear_lines}")
+        print(f"失敗行数: {failed_lines}")
+        print(f"miss penalty: {miss_penalty}")
+        print(f"esc penalty: {escape_penalty}")
+        print(f"速さ: {kps}打/秒")
+        print(f"初速抜き速さ: {kps_exc_late}打/秒")
 
         dir_name_format = (title + "{:02d}").format
         for i in range(100):
