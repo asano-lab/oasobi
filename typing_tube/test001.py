@@ -3,11 +3,16 @@ import re
 import os
 import hashlib
 
-def generate_hash(title):
+def generate_hash(title, total_keys, lines_list):
     """
     データを識別するハッシュを生成
     """
-    pass
+    print(title, total_keys)
+    for i in lines_list:
+        print(i["keys_count"])
+        print(i["seconds"])
+        print(i["keys"])
+        print(i["score_max"])
 
 if __name__ == "__main__":
     if not os.path.isdir("records"):
@@ -138,6 +143,8 @@ if __name__ == "__main__":
         print(f"esc penalty: {escape_penalty}")
         print(f"速さ: {kps}打/秒")
         print(f"初速抜き速さ: {kps_exc_late}打/秒")
+
+        generate_hash(title, total_keys, lines_list)
 
         dir_name_format = (title + "{:02d}").format
         for i in range(100):
