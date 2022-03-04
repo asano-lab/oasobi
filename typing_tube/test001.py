@@ -1,8 +1,8 @@
-from numpy import byte
 import pyperclip
 import re
 import os
 import hashlib
+import datetime
 
 def generate_hash(title: str, total_keys: int, lines_list: list) -> str:
     """
@@ -38,13 +38,14 @@ def create_commons_dic(title: str, total_keys: int, lines_list: list):
         commons_dic["lines"].append(tmp_dic)
     return commons_dic
 
-if __name__ == "__main__":
+def main():
     if not os.path.isdir("records"):
         os.mkdir("records")
     prev_title_flag = 0
     lines_flag = 0
     lines_list = []
     moji = pyperclip.paste()
+    result_dic = {}
     for i, j in enumerate(moji.split("\r\n")):
         if j == "":
             continue
@@ -59,30 +60,30 @@ if __name__ == "__main__":
             title = j
         elif prev_title_flag == 2:
             prev_title_flag = 3
-            editor = j
+            result_dic["editor"] = j
         elif j == "ranking":
             prev_title_flag = 4
         elif prev_title_flag == 4:
             prev_title_flag = 5
-            score = float(j)
+            result_dic["score"] = float(j)
         elif prev_title_flag == 5:
             prev_title_flag = 6
             m = re.match(r'(\d+)miss$', j)
             if m is None:
                 break
-            miss = int(m.groups()[0])
+            result_dic["miss"] = int(m.groups()[0])
         elif prev_title_flag == 6:
             prev_title_flag = 7
             m = re.match(r'正確率:(.+)%$', j)
             if m is None:
                 break
-            accuracy = float(m.groups()[0])
+            result_dic["acc"] = float(m.groups()[0])
         elif prev_title_flag == 7:
             prev_title_flag = 8
             m = re.match(r'\d+/(\d+)combo$', j)
             if m is None:
                 break
-            combo_max = int(m.groups()[0])
+            result_dic["combo_max"] = int(m.groups()[0])
         elif prev_title_flag == 8:
             prev_title_flag = 9
             m = re.match(r'\d+/(\d+)打\[(\d+)\]esc$', j)
@@ -90,7 +91,7 @@ if __name__ == "__main__":
                 break
             mg = m.groups()
             total_keys = int(mg[0])
-            escape_keys = int(mg[1])
+            result_dic["escape_keys"] = int(mg[1])
         elif prev_title_flag == 9:
             prev_title_flag = 10
             m = re.match(r'(\d+)位\[(.+)打/秒\]$', j)
@@ -154,12 +155,12 @@ if __name__ == "__main__":
         print(copied_time)
         print(title)
         # print(editor)
-        print(f"スコア: {score}")
-        print(f"ミス: {miss}")
-        print(f"正確率: {accuracy}")
-        print(f"最大コンボ: {combo_max}")
+        print(f'スコア: {result_dic["score"]}')
+        print(f'ミス: {result_dic["miss"]}')
+        print(f'正確率: {result_dic["acc"]}')
+        print(f'最大コンボ: {result_dic["combo_max"]}')
         print(f"キー総数: {total_keys}")
-        print(f"逃したキー数: {escape_keys}")
+        print(f'逃したキー数: {result_dic["escape_keys"]}')
         print(f"順位: {ranking}")
         print(f"クリア行数: {clear_lines}")
         print(f"失敗行数: {failed_lines}")
@@ -169,7 +170,7 @@ if __name__ == "__main__":
         print(f"初速抜き速さ: {kps_exc_late}打/秒")
 
         commons_dic = create_commons_dic(title, total_keys, lines_list)
-        print(commons_dic)
+        # print(commons_dic)
 
         dir_name_format = (title + "{:02d}").format
         for i in range(100):
@@ -183,3 +184,6 @@ if __name__ == "__main__":
 
     except NameError:
         print("不適切なクリップボードです")
+
+if __name__ == "__main__":
+    main()
