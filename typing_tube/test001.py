@@ -136,7 +136,7 @@ def main():
                     tmp_dic1 = {"keys_count": int(mg[0]), "seconds": float(mg[1])}
             elif lines_flag == 1:
                 lines_flag = 2
-                tmp_dic2 = {"keys": j, "clear": False}
+                tmp_dic2 = {"keys": j}
             elif lines_flag == 2:
                 lines_flag = 0
                 m = re.match(r'latency: (.+),　打/秒: (.+),　初速抜き: (.+),　miss: (\d+),　score: (.+) / (.+)', j)
@@ -149,8 +149,8 @@ def main():
                 tmp_dic2["miss"] = int(mg[3])
                 tmp_dic2["score"] = float(mg[4])
                 tmp_dic1["score_max"] = float(mg[5])
-                if tmp_dic2["score"] == tmp_dic1["score_max"] and tmp_dic2["miss"] == 0:
-                    tmp_dic2["clear"] = True
+                tmp_dic2["clear"] = tmp_dic2["score"] == tmp_dic1["score_max"]
+                tmp_dic2["comp"] = tmp_dic2["clear"] and tmp_dic2["miss"] == 0
                 lines_list_commons.append(tmp_dic1)
                 result_dic["lines"].append(tmp_dic2)
     try:
