@@ -3,6 +3,7 @@ import re
 import os
 import hashlib
 import datetime
+import json
 
 def generate_hash(title: str, total_keys: int, lines_list: list) -> str:
     """
@@ -43,9 +44,9 @@ def main():
         os.mkdir("records")
     prev_title_flag = 0
     lines_flag = 0
-    lines_list = []
+    lines_list_commons = []
     moji = pyperclip.paste()
-    result_dic = {}
+    result_dic = {"lines": []}
     for i, j in enumerate(moji.split("\r\n")):
         if j == "":
             continue
@@ -130,27 +131,28 @@ def main():
             if lines_flag == 0:
                 m = re.match(r'\d+/\d+ \((\d+)打 ÷ (.+)秒 = .+打/秒\)$', j)
                 if m:
-                    tmp_dic = dict()
                     lines_flag = 1
                     mg = m.groups()
-                    tmp_dic["keys_count"] = int(mg[0])
-                    tmp_dic["seconds"] = float(mg[1])
+                    tmp_dic1 = {"keys_count": int(mg[0]), "seconds": float(mg[1])}
             elif lines_flag == 1:
                 lines_flag = 2
-                tmp_dic["keys"] = j
+                tmp_dic2 = {"keys": j, "clear": False}
             elif lines_flag == 2:
                 lines_flag = 0
                 m = re.match(r'latency: (.+),　打/秒: (.+),　初速抜き: (.+),　miss: (\d+),　score: (.+) / (.+)', j)
                 if m is None:
                     break
                 mg = m.groups()
-                tmp_dic["latency"] = float(mg[0])
-                tmp_dic["kps"] = float(mg[1])
-                tmp_dic["kps_exc_late"] = float(mg[2])
-                tmp_dic["miss"] = int(mg[3])
-                tmp_dic["score"] = float(mg[4])
-                tmp_dic["score_max"] = float(mg[5])
-                lines_list.append(tmp_dic)
+                tmp_dic2["latency"] = float(mg[0])
+                tmp_dic2["kps"] = float(mg[1])
+                tmp_dic2["kps_exc_late"] = float(mg[2])
+                tmp_dic2["miss"] = int(mg[3])
+                tmp_dic2["score"] = float(mg[4])
+                tmp_dic1["score_max"] = float(mg[5])
+                if tmp_dic2["score"] == tmp_dic1["score_max"] and tmp_dic2["miss"] == 0:
+                    tmp_dic2["clear"] = True
+                lines_list_commons.append(tmp_dic1)
+                result_dic["lines"].append(tmp_dic2)
     try:
         print(copied_time)
         print(title)
@@ -169,10 +171,12 @@ def main():
         print(f'速さ: {result_dic["kps"]}打/秒')
         print(f'初速抜き速さ: {result_dic["kps_exc_late"]}打/秒')
 
-        commons_dic = create_commons_dic(title, total_keys, lines_list)
+        commons_dic = create_commons_dic(title, total_keys, lines_list_commons)
         # print(commons_dic)
 
-        print(result_dic)
+        # print(result_dic)
+        with open("test.json", "w") as f:
+            json.dump(result_dic, f, indent=4)
 
         dir_name_format = (title + "{:02d}").format
         for i in range(100):
