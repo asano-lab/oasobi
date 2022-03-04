@@ -4,9 +4,10 @@ import re
 import os
 import hashlib
 
-def generate_hash(title: str, total_keys: int, lines_list: list):
+def generate_hash(title: str, total_keys: int, lines_list: list) -> str:
     """
     データを識別するハッシュを生成
+    キーはプレイごと異なる場合があるので使わない
     """
     m = hashlib.sha256()
     m.update(title.encode())
@@ -16,12 +17,26 @@ def generate_hash(title: str, total_keys: int, lines_list: list):
     for i in lines_list:
         m.update(i["keys_count"].to_bytes(4, "big"))
         m.update(str(i["seconds"]).encode())
-        # print(i["keys"])
-        # m.update(i["keys"].encode())
-        # print(str(i["score_max"]).encode())
         m.update(str(i["score_max"]).encode())
 
     return m.hexdigest()
+
+def create_commons_dic(title: str, total_keys: int, lines_list: list):
+    """
+    プレイごとに変化しない情報
+    """
+    commons_dic = {}
+    commons_dic["hash"] = generate_hash(title, total_keys, lines_list)
+    commons_dic["title"] = title
+    commons_dic["total_keys"] = total_keys
+    commons_dic["lines"] = []
+    for i in lines_list:
+        tmp_dic = {}
+        tmp_dic["keys_count"] = i["keys_count"]
+        tmp_dic["seconds"] = i["seconds"]
+        tmp_dic["score_max"] = i["score_max"]
+        commons_dic["lines"].append(tmp_dic)
+    return commons_dic
 
 if __name__ == "__main__":
     if not os.path.isdir("records"):
@@ -153,15 +168,17 @@ if __name__ == "__main__":
         print(f"速さ: {kps}打/秒")
         print(f"初速抜き速さ: {kps_exc_late}打/秒")
 
-        data_hash = generate_hash(title, total_keys, lines_list)
-        print(data_hash)
+        commons_dic = create_commons_dic(title, total_keys, lines_list)
+        print(commons_dic)
 
         dir_name_format = (title + "{:02d}").format
         for i in range(100):
             dir_name = dir_name_format(i)
+            print(dir_name)
             if os.path.isdir(dir_name):
                 pass
             else:
+                # os.mkdir(dir_name)
                 break
 
     except NameError:
