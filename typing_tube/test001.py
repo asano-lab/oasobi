@@ -60,7 +60,7 @@ def main():
             title = j
         elif prev_title_flag == 2:
             prev_title_flag = 3
-            result_dic["editor"] = j
+            editor = j
         elif j == "ranking":
             prev_title_flag = 4
         elif prev_title_flag == 4:
@@ -98,34 +98,34 @@ def main():
             if m is None:
                 break
             mg = m.groups()
-            ranking = int(mg[0])
-            kps = float(mg[1])
+            result_dic["ranking"] = int(mg[0])
+            result_dic["kps"] = float(mg[1])
         elif prev_title_flag == 10 and j != "Typing Result":
             prev_title_flag = 11
             m = re.match(r'(\d+) clear / (\d+) failed$', j)
             if m is None:
                 break
             mg = m.groups()
-            clear_lines = int(mg[0])
-            failed_lines = int(mg[1])
+            result_dic["clear_lines"] = int(mg[0])
+            result_dic["failed_lines"] = int(mg[1])
         elif prev_title_flag == 11 and j != "Score Penalty":
             prev_title_flag = 12
             m = re.match(r'Miss: (.+)', j)
             if m is None:
                 break
-            miss_penalty = float(m.groups()[0])
+            result_dic["miss_penalty"] = float(m.groups()[0])
         elif prev_title_flag == 12:
             prev_title_flag = 13
             m = re.match(r'Esc: (.+)', j)
             if m is None:
                 break
-            escape_penalty = float(m.groups()[0])
+            result_dic["esc_penalty"] = float(m.groups()[0])
         elif prev_title_flag == 13:
             prev_title_flag = 14
             m = re.match(r'初速抜き: (.+)打/秒$', j)
             if m is None:
                 break
-            kps_exc_late = float(m.groups()[0])
+            result_dic["kps_exc_late"] = float(m.groups()[0])
         elif prev_title_flag == 14:
             if lines_flag == 0:
                 m = re.match(r'\d+/\d+ \((\d+)打 ÷ (.+)秒 = .+打/秒\)$', j)
@@ -154,23 +154,25 @@ def main():
     try:
         print(copied_time)
         print(title)
-        # print(editor)
+        print(editor)
         print(f'スコア: {result_dic["score"]}')
         print(f'ミス: {result_dic["miss"]}')
         print(f'正確率: {result_dic["acc"]}')
         print(f'最大コンボ: {result_dic["combo_max"]}')
-        print(f"キー総数: {total_keys}")
+        print(f'キー総数: {total_keys}')
         print(f'逃したキー数: {result_dic["escape_keys"]}')
-        print(f"順位: {ranking}")
-        print(f"クリア行数: {clear_lines}")
-        print(f"失敗行数: {failed_lines}")
-        print(f"miss penalty: {miss_penalty}")
-        print(f"esc penalty: {escape_penalty}")
-        print(f"速さ: {kps}打/秒")
-        print(f"初速抜き速さ: {kps_exc_late}打/秒")
+        print(f'順位: {result_dic["ranking"]}')
+        print(f'クリア行数: {result_dic["clear_lines"]}')
+        print(f'失敗行数: {result_dic["failed_lines"]}')
+        print(f'miss penalty: {result_dic["miss_penalty"]}')
+        print(f'esc penalty: {result_dic["esc_penalty"]}')
+        print(f'速さ: {result_dic["kps"]}打/秒')
+        print(f'初速抜き速さ: {result_dic["kps_exc_late"]}打/秒')
 
         commons_dic = create_commons_dic(title, total_keys, lines_list)
         # print(commons_dic)
+
+        print(result_dic)
 
         dir_name_format = (title + "{:02d}").format
         for i in range(100):
