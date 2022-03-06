@@ -203,15 +203,23 @@ def main():
     with open("test.json", "w") as f:
         json.dump(result_dic, f, indent=2)
 
-    dir_name_format = (commons_dic["title"] + "{:02d}").format
+    dir_name_format = ("records/" + commons_dic["title"] + "{:02d}").format
     for i in range(100):
         dir_name = dir_name_format(i)
+        commons_path = dir_name + "/commons.json"
         print(dir_name)
         if os.path.isdir(dir_name):
-            if dir_name + "/commons.json":
-                pass
+            with open(commons_path, "r") as f:
+                past_commons_dic = json.load(f)
+            if past_commons_dic["hash"] == commons_dic["hash"]:
+                print("同じデータが既にある")
+                break
+            else:
+                print("データが異なる")
         else:
-            # os.mkdir(dir_name)
+            os.mkdir(dir_name)
+            with open(commons_path, "w") as f:
+                json.dump(commons_dic, f, indent=2)
             break
 
 if __name__ == "__main__":
