@@ -5,6 +5,10 @@ import os
 import hashlib
 import datetime
 import json
+import datetime
+
+# JSTとUTCの差分
+DIFF_JST_FROM_UTC = 9
 
 def generate_commons_hash(commons_dic: dict) -> str:
     """
@@ -197,7 +201,7 @@ def main():
 
     commons_dic["hash"] = generate_commons_hash(commons_dic)
     result_dic["hash"] = generate_result_hash(result_dic)
-    print(commons_dic)
+    # print(commons_dic)
 
     # print(result_dic)
     with open("test.json", "w") as f:
@@ -212,15 +216,33 @@ def main():
             with open(commons_path, "r") as f:
                 past_commons_dic = json.load(f)
             if past_commons_dic["hash"] == commons_dic["hash"]:
-                print("同じデータが既にある")
+                print("同じデータ")
                 break
             else:
-                print("データが異なる")
+                print("同一タイトルだがデータが異なる")
         else:
             os.mkdir(dir_name)
             with open(commons_path, "w") as f:
                 json.dump(commons_dic, f, indent=2)
+            print("データ追加")
             break
+    
+    result_fnames = [i for i in os.listdir(dir_name) if re.match(r'result\d{14}.json$', i)]
+    result_fnames = sorted(result_fnames)
+    print(result_fnames)
+
+    if len(result_fnames) > 0:
+        with open(dir_name + "/" + result_fnames[-1], "r") as f:
+            past_result_dic = json.load(f)
+        if past_result_dic["hash"] == result_dic["hash"]:
+            if input("直前の結果とハッシュが同じです. データを追加しますか? (y\\n):") != "y":
+                return
+    
+    now = datetime.datetime.utcnow() + datetime.timedelta(hours=DIFF_JST_FROM_UTC)
+    new_result_path = now.strftime(dir_name + "/result%Y%m%d%H%M%S.json")
+    with open(new_result_path, "w") as f:
+        json.dump(result_dic, f, indent=2)
 
 if __name__ == "__main__":
     main()
+    pass
