@@ -153,10 +153,10 @@ def main():
                 lines_flag = 2
                 tmp_dic2 = {"keys": j}
             elif lines_flag == 2:
-                lines_flag = 0
                 m = re.match(r'latency: (.+),　打/秒: (.+),　初速抜き: (.+),　miss: (\d+),　score: (.+) / (.+)', j)
                 if m is None:
                     break
+                lines_flag = 0
                 mg = m.groups()
                 tmp_dic2["latency"] = float(mg[0])
                 tmp_dic2["kps"] = float(mg[1])
@@ -177,6 +177,7 @@ def main():
         return
     if result_dic["clear_lines"] + result_dic["failed_lines"] != len(result_dic["lines"]):
         print("行数が一致しません")
+        return
     print(result_dic["copied_time"])
     print(commons_dic["title"])
     print(editor)
@@ -207,7 +208,8 @@ def main():
         dir_name = dir_name_format(i)
         print(dir_name)
         if os.path.isdir(dir_name):
-            pass
+            if dir_name + "/commons.json":
+                pass
         else:
             # os.mkdir(dir_name)
             break
