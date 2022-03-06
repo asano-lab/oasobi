@@ -8,7 +8,6 @@ import json
 def generate_commons_hash(commons_dic: dict) -> str:
     """
     データを識別するハッシュを生成
-    キーはプレイごと異なる場合があるので使わない
     """
     m = hashlib.sha256()
     m.update(commons_dic["title"].encode())
@@ -19,6 +18,37 @@ def generate_commons_hash(commons_dic: dict) -> str:
         m.update(i["keys_count"].to_bytes(4, "big"))
         m.update(str(i["seconds"]).encode())
         m.update(str(i["score_max"]).encode())
+
+    return m.hexdigest()
+
+def generate_result_hash(result_dic: dict) -> str:
+    """
+    結果を識別するハッシュを生成
+    """
+    m = hashlib.sha256()
+    # m.update(result_dic["coppied_time"].encode())
+    m.update(str(result_dic["score"]).encode())
+    m.update(result_dic["miss"].to_bytes(4, "big"))
+    m.update(str(result_dic["acc"]).encode())
+    m.update(result_dic["combo_max"].to_bytes(4, "big"))
+    m.update(result_dic["esc_keys"].to_bytes(4, "big"))
+    m.update(result_dic["ranking"].to_bytes(4, "big"))
+    m.update(str(result_dic["kps"]).encode())
+    m.update(result_dic["clear_lines"].to_bytes(4, "big"))
+    m.update(result_dic["failed_lines"].to_bytes(4, "big"))
+    m.update(str(result_dic["miss_penalty"]).encode())
+    m.update(str(result_dic["esc_penalty"]).encode())
+    m.update(str(result_dic["kps_exc_late"]).encode())
+
+    for i in result_dic["lines"]:
+        m.update(i["keys"].encode())
+        m.update(str(i["latency"]).encode())
+        m.update(str(i["kps"]).encode())
+        m.update(str(i["kps_exc_late"]).encode())
+        m.update(i["miss"].to_bytes(4, "big"))
+        m.update(str(i["score"]).encode())
+        m.update(str(i["clear"]).encode())
+        m.update(str(i["comp"]).encode())
 
     return m.hexdigest()
 
@@ -77,7 +107,7 @@ def main():
             mg = m.groups()
             commons_dic["total_keys"] = int(mg[0])
             one_miss_penalty = 25 / commons_dic["total_keys"]
-            result_dic["escape_keys"] = int(mg[1])
+            result_dic["esc_keys"] = int(mg[1])
         elif prev_title_flag == 9:
             prev_title_flag = 10
             m = re.match(r'(\d+)位\[(.+)打/秒\]$', j)
@@ -148,7 +178,7 @@ def main():
         print(f'正確率: {result_dic["acc"]}')
         print(f'最大コンボ: {result_dic["combo_max"]}')
         print(f'キー総数: {commons_dic["total_keys"]}')
-        print(f'逃したキー数: {result_dic["escape_keys"]}')
+        print(f'逃したキー数: {result_dic["esc_keys"]}')
         print(f'順位: {result_dic["ranking"]}')
         print(f'クリア行数: {result_dic["clear_lines"]}')
         print(f'失敗行数: {result_dic["failed_lines"]}')
@@ -158,6 +188,7 @@ def main():
         print(f'初速抜き速さ: {result_dic["kps_exc_late"]}打/秒')
 
         commons_dic["hash"] = generate_commons_hash(commons_dic)
+        result_dic["hash"] = generate_result_hash(result_dic)
         print(commons_dic)
 
         # print(result_dic)
