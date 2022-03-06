@@ -5,17 +5,17 @@ import hashlib
 import datetime
 import json
 
-def generate_hash(title: str, total_keys: int, lines_list: list) -> str:
+def generate_hash(commons_dic: dict) -> str:
     """
     データを識別するハッシュを生成
     キーはプレイごと異なる場合があるので使わない
     """
     m = hashlib.sha256()
-    m.update(title.encode())
+    m.update(commons_dic["title"].encode())
     # print(total_keys.to_bytes(4, "big"))
-    m.update(total_keys.to_bytes(4, "big"))
+    m.update(commons_dic["total_keys"].to_bytes(4, "big"))
 
-    for i in lines_list:
+    for i in commons_dic["lines"]:
         m.update(i["keys_count"].to_bytes(4, "big"))
         m.update(str(i["seconds"]).encode())
         m.update(str(i["score_max"]).encode())
@@ -47,6 +47,7 @@ def main():
     lines_list_commons = []
     moji = pyperclip.paste()
     result_dic = {"lines": []}
+    commons_dic = {"lines": []}
     for i, j in enumerate(moji.split("\r\n")):
         if j == "":
             continue
@@ -58,7 +59,7 @@ def main():
                 prev_title_flag = 1
         elif prev_title_flag == 1:
             prev_title_flag = 2
-            title = j
+            commons_dic["title"] = j
         elif prev_title_flag == 2:
             prev_title_flag = 3
             editor = j
@@ -91,8 +92,8 @@ def main():
             if m is None:
                 break
             mg = m.groups()
-            total_keys = int(mg[0])
-            one_miss_penalty = 25 /total_keys
+            commons_dic["total_keys"] = int(mg[0])
+            one_miss_penalty = 25 / commons_dic["total_keys"]
             result_dic["escape_keys"] = int(mg[1])
         elif prev_title_flag == 9:
             prev_title_flag = 10
@@ -153,17 +154,17 @@ def main():
                 miss_only_score = round(tmp_dic1["score_max"] - tmp_dic2["miss"] * one_miss_penalty, 2)
                 tmp_dic2["clear"] = miss_only_score == tmp_dic2["score"]
                 tmp_dic2["comp"] = tmp_dic2["clear"] and tmp_dic2["miss"] == 0
-                lines_list_commons.append(tmp_dic1)
+                commons_dic["lines"].append(tmp_dic1)
                 result_dic["lines"].append(tmp_dic2)
     try:
         print(copied_time)
-        print(title)
+        print(commons_dic["title"])
         print(editor)
         print(f'スコア: {result_dic["score"]}')
         print(f'ミス: {result_dic["miss"]}')
         print(f'正確率: {result_dic["acc"]}')
         print(f'最大コンボ: {result_dic["combo_max"]}')
-        print(f'キー総数: {total_keys}')
+        print(f'キー総数: {commons_dic["total_keys"]}')
         print(f'逃したキー数: {result_dic["escape_keys"]}')
         print(f'順位: {result_dic["ranking"]}')
         print(f'クリア行数: {result_dic["clear_lines"]}')
@@ -173,14 +174,14 @@ def main():
         print(f'速さ: {result_dic["kps"]}打/秒')
         print(f'初速抜き速さ: {result_dic["kps_exc_late"]}打/秒')
 
-        commons_dic = create_commons_dic(title, total_keys, lines_list_commons)
-        # print(commons_dic)
+        commons_dic["hash"] = generate_hash(commons_dic)
+        print(commons_dic)
 
         # print(result_dic)
         with open("test.json", "w") as f:
             json.dump(result_dic, f, indent=2)
 
-        dir_name_format = (title + "{:02d}").format
+        dir_name_format = (commons_dic["title"] + "{:02d}").format
         for i in range(100):
             dir_name = dir_name_format(i)
             print(dir_name)
