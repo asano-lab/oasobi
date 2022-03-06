@@ -5,7 +5,7 @@ import hashlib
 import datetime
 import json
 
-def generate_hash(commons_dic: dict) -> str:
+def generate_commons_hash(commons_dic: dict) -> str:
     """
     データを識別するハッシュを生成
     キーはプレイごと異なる場合があるので使わない
@@ -21,23 +21,6 @@ def generate_hash(commons_dic: dict) -> str:
         m.update(str(i["score_max"]).encode())
 
     return m.hexdigest()
-
-def create_commons_dic(title: str, total_keys: int, lines_list: list):
-    """
-    プレイごとに変化しない情報
-    """
-    commons_dic = {}
-    commons_dic["hash"] = generate_hash(title, total_keys, lines_list)
-    commons_dic["title"] = title
-    commons_dic["total_keys"] = total_keys
-    commons_dic["lines"] = []
-    for i in lines_list:
-        tmp_dic = {}
-        tmp_dic["keys_count"] = i["keys_count"]
-        tmp_dic["seconds"] = i["seconds"]
-        tmp_dic["score_max"] = i["score_max"]
-        commons_dic["lines"].append(tmp_dic)
-    return commons_dic
 
 def main():
     if not os.path.isdir("records"):
@@ -174,7 +157,7 @@ def main():
         print(f'速さ: {result_dic["kps"]}打/秒')
         print(f'初速抜き速さ: {result_dic["kps_exc_late"]}打/秒')
 
-        commons_dic["hash"] = generate_hash(commons_dic)
+        commons_dic["hash"] = generate_commons_hash(commons_dic)
         print(commons_dic)
 
         # print(result_dic)
