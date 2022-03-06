@@ -201,13 +201,13 @@ def main():
 
     commons_dic["hash"] = generate_commons_hash(commons_dic)
     result_dic["hash"] = generate_result_hash(result_dic)
-    # print(commons_dic)
 
-    # print(result_dic)
-    with open("test.json", "w") as f:
-        json.dump(result_dic, f, indent=2)
+    records_dir = "records/"
+    if not os.path.isdir(records_dir):
+        os.mkdir(records_dir)
 
-    dir_name_format = ("records/" + commons_dic["title"] + "{:02d}").format
+    dir_name_format = (records_dir + commons_dic["title"] + "_{:02d}").format
+
     for i in range(100):
         dir_name = dir_name_format(i)
         commons_path = dir_name + "/commons.json"
