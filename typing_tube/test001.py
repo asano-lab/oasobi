@@ -54,7 +54,7 @@ def main():
         if prev_title_flag == 0:
             m = re.match(r'(\d{2}) (\d{2}) (\d{2})', j)
             if m:
-                copied_time = [int(i) for i in m.groups()]
+                result_dic["copied_time"] = "%s%s%s" % m.groups()
             elif j == "https://policies.google.com/privacy":
                 prev_title_flag = 1
         elif prev_title_flag == 1:
@@ -157,7 +157,7 @@ def main():
                 commons_dic["lines"].append(tmp_dic1)
                 result_dic["lines"].append(tmp_dic2)
     try:
-        print(copied_time)
+        print(result_dic["copied_time"])
         print(commons_dic["title"])
         print(editor)
         print(f'スコア: {result_dic["score"]}')
