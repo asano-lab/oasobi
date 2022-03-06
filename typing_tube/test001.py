@@ -92,6 +92,7 @@ def main():
                 break
             mg = m.groups()
             total_keys = int(mg[0])
+            one_miss_penalty = 25 /total_keys
             result_dic["escape_keys"] = int(mg[1])
         elif prev_title_flag == 9:
             prev_title_flag = 10
@@ -149,7 +150,8 @@ def main():
                 tmp_dic2["miss"] = int(mg[3])
                 tmp_dic2["score"] = float(mg[4])
                 tmp_dic1["score_max"] = float(mg[5])
-                tmp_dic2["clear"] = tmp_dic2["score"] == tmp_dic1["score_max"]
+                miss_only_score = round(tmp_dic1["score_max"] - tmp_dic2["miss"] * one_miss_penalty, 2)
+                tmp_dic2["clear"] = miss_only_score == tmp_dic2["score"]
                 tmp_dic2["comp"] = tmp_dic2["clear"] and tmp_dic2["miss"] == 0
                 lines_list_commons.append(tmp_dic1)
                 result_dic["lines"].append(tmp_dic2)
@@ -176,7 +178,7 @@ def main():
 
         # print(result_dic)
         with open("test.json", "w") as f:
-            json.dump(result_dic, f, indent=4)
+            json.dump(result_dic, f, indent=2)
 
         dir_name_format = (title + "{:02d}").format
         for i in range(100):
