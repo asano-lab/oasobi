@@ -58,8 +58,14 @@ def generate_result_hash(result_dic: dict) -> str:
     return m.hexdigest()
 
 def main():
-    if not os.path.isdir("records"):
-        os.mkdir("records")
+    records_dir = "records/"
+
+    if not os.path.isdir(records_dir):
+        os.mkdir(records_dir)
+        print(f"{records_dir}を作成")
+        with open(records_dir + ".gitignore", "w") as f:
+            f.write("*\n")
+    
     prev_title_flag = 0
     lines_flag = 0
     moji = pyperclip.paste()
@@ -201,17 +207,6 @@ def main():
 
     commons_dic["hash"] = generate_commons_hash(commons_dic)
     result_dic["hash"] = generate_result_hash(result_dic)
-
-    records_dir = "records"
-
-    if not os.path.isdir(records_dir):
-        os.mkdir(records_dir)
-        print(f"{records_dir}を作成")
-        print(records_dir + ".gitignore")
-        with open(records_dir + ".gitignore", "w") as f:
-            print("*", file=f)
-    else:
-        print("え?")
 
     dir_name_format = (records_dir + commons_dic["title"] + "_{:02d}/").format
 
