@@ -1,3 +1,4 @@
+from unittest import result
 import pyperclip
 import re
 import os
@@ -57,7 +58,6 @@ def main():
         os.mkdir("records")
     prev_title_flag = 0
     lines_flag = 0
-    lines_list_commons = []
     moji = pyperclip.paste()
     result_dic = {"lines": []}
     commons_dic = {"lines": []}
@@ -169,44 +169,48 @@ def main():
                 tmp_dic2["comp"] = tmp_dic2["clear"] and tmp_dic2["miss"] == 0
                 commons_dic["lines"].append(tmp_dic1)
                 result_dic["lines"].append(tmp_dic2)
-    try:
-        print(result_dic["copied_time"])
-        print(commons_dic["title"])
-        print(editor)
-        print(f'スコア: {result_dic["score"]}')
-        print(f'ミス: {result_dic["miss"]}')
-        print(f'正確率: {result_dic["acc"]}')
-        print(f'最大コンボ: {result_dic["combo_max"]}')
-        print(f'キー総数: {commons_dic["total_keys"]}')
-        print(f'逃したキー数: {result_dic["esc_keys"]}')
-        print(f'順位: {result_dic["ranking"]}')
-        print(f'クリア行数: {result_dic["clear_lines"]}')
-        print(f'失敗行数: {result_dic["failed_lines"]}')
-        print(f'miss penalty: {result_dic["miss_penalty"]}')
-        print(f'esc penalty: {result_dic["esc_penalty"]}')
-        print(f'速さ: {result_dic["kps"]}打/秒')
-        print(f'初速抜き速さ: {result_dic["kps_exc_late"]}打/秒')
-
-        commons_dic["hash"] = generate_commons_hash(commons_dic)
-        result_dic["hash"] = generate_result_hash(result_dic)
-        print(commons_dic)
-
-        # print(result_dic)
-        with open("test.json", "w") as f:
-            json.dump(result_dic, f, indent=2)
-
-        dir_name_format = (commons_dic["title"] + "{:02d}").format
-        for i in range(100):
-            dir_name = dir_name_format(i)
-            print(dir_name)
-            if os.path.isdir(dir_name):
-                pass
-            else:
-                # os.mkdir(dir_name)
-                break
-
-    except NameError:
+    if prev_title_flag != 14:
         print("不適切なクリップボードです")
+        return
+    if lines_flag != 0:
+        print("不適切なクリップボードです")
+        return
+    if result_dic["clear_lines"] + result_dic["failed_lines"] != len(result_dic["lines"]):
+        print("行数が一致しません")
+    print(result_dic["copied_time"])
+    print(commons_dic["title"])
+    print(editor)
+    print(f'スコア: {result_dic["score"]}')
+    print(f'ミス: {result_dic["miss"]}')
+    print(f'正確率: {result_dic["acc"]}')
+    print(f'最大コンボ: {result_dic["combo_max"]}')
+    print(f'キー総数: {commons_dic["total_keys"]}')
+    print(f'逃したキー数: {result_dic["esc_keys"]}')
+    print(f'順位: {result_dic["ranking"]}')
+    print(f'クリア行数: {result_dic["clear_lines"]}')
+    print(f'失敗行数: {result_dic["failed_lines"]}')
+    print(f'miss penalty: {result_dic["miss_penalty"]}')
+    print(f'esc penalty: {result_dic["esc_penalty"]}')
+    print(f'速さ: {result_dic["kps"]}打/秒')
+    print(f'初速抜き速さ: {result_dic["kps_exc_late"]}打/秒')
+
+    commons_dic["hash"] = generate_commons_hash(commons_dic)
+    result_dic["hash"] = generate_result_hash(result_dic)
+    print(commons_dic)
+
+    # print(result_dic)
+    with open("test.json", "w") as f:
+        json.dump(result_dic, f, indent=2)
+
+    dir_name_format = (commons_dic["title"] + "{:02d}").format
+    for i in range(100):
+        dir_name = dir_name_format(i)
+        print(dir_name)
+        if os.path.isdir(dir_name):
+            pass
+        else:
+            # os.mkdir(dir_name)
+            break
 
 if __name__ == "__main__":
     main()
