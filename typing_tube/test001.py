@@ -202,15 +202,22 @@ def main():
     commons_dic["hash"] = generate_commons_hash(commons_dic)
     result_dic["hash"] = generate_result_hash(result_dic)
 
-    records_dir = "records/"
+    records_dir = "records"
+
     if not os.path.isdir(records_dir):
         os.mkdir(records_dir)
+        print(f"{records_dir}を作成")
+        print(records_dir + ".gitignore")
+        with open(records_dir + ".gitignore", "w") as f:
+            print("*", file=f)
+    else:
+        print("え?")
 
-    dir_name_format = (records_dir + commons_dic["title"] + "_{:02d}").format
+    dir_name_format = (records_dir + commons_dic["title"] + "_{:02d}/").format
 
     for i in range(100):
         dir_name = dir_name_format(i)
-        commons_path = dir_name + "/commons.json"
+        commons_path = dir_name + "commons.json"
         print(dir_name)
         if os.path.isdir(dir_name):
             with open(commons_path, "r") as f:
@@ -232,14 +239,14 @@ def main():
     print(result_fnames)
 
     if len(result_fnames) > 0:
-        with open(dir_name + "/" + result_fnames[-1], "r") as f:
+        with open(dir_name + result_fnames[-1], "r") as f:
             past_result_dic = json.load(f)
         if past_result_dic["hash"] == result_dic["hash"]:
             if input("直前の結果とハッシュが同じです. データを追加しますか? (y\\n):") != "y":
                 return
     
     now = datetime.datetime.utcnow() + datetime.timedelta(hours=DIFF_JST_FROM_UTC)
-    new_result_path = now.strftime(dir_name + "/result%Y%m%d%H%M%S.json")
+    new_result_path = now.strftime(dir_name + "result%Y%m%d%H%M%S.json")
     with open(new_result_path, "w") as f:
         json.dump(result_dic, f, indent=2)
 
