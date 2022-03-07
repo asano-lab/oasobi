@@ -1,4 +1,4 @@
-from unittest import result
+import matplotlib.pyplot as plt
 import pyperclip
 import re
 import os
@@ -229,8 +229,7 @@ def main():
             print("データ追加")
             break
     
-    result_fnames = [i for i in os.listdir(dir_name) if re.match(r'result\d{14}.json$', i)]
-    result_fnames = sorted(result_fnames)
+    result_fnames = sorted([i for i in os.listdir(dir_name) if re.match(r'result\d{14}.json$', i)])
     print(result_fnames)
 
     if len(result_fnames) > 0:
@@ -244,6 +243,17 @@ def main():
     new_result_path = now.strftime(dir_name + "result%Y%m%d%H%M%S.json")
     with open(new_result_path, "w") as f:
         json.dump(result_dic, f, indent=2)
+    
+    result_fnames = sorted([i for i in os.listdir(dir_name) if re.match(r'result\d{14}.json$', i)])
+    x = [i for i in range(len(result_fnames))]
+    y = []
+    for fnamer in result_fnames:
+        with open(dir_name + fnamer, "r") as f:
+            past_result_dic = json.load(f)
+        y.append(past_result_dic["score"])
+    
+    plt.plot(x, y)
+    plt.show()
 
 if __name__ == "__main__":
     main()
