@@ -179,9 +179,11 @@ def main():
                 tmp_dic2["score"] = float(mg[4])
                 tmp_dic1["score_max"] = float(mg[5])
                 miss_only_score = tmp_dic1["score_max"] - tmp_dic2["miss"] * one_miss_penalty
-                score_diff = abs(tmp_dic1["score_max"] - miss_only_score)
+                score_diff = abs(tmp_dic2["score"] - miss_only_score)
                 if score_diff < one_esc_penalty / 2:
                     tmp_dic2["clear"] = True
+                    # print(tmp_dic2["keys"])
+                    # print(miss_only_score)
                     clear_count += 1
                 else:
                     tmp_dic2["clear"] = False
