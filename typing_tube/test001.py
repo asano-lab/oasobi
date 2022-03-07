@@ -71,6 +71,7 @@ def main():
     moji = pyperclip.paste()
     result_dic = {"lines": []}
     commons_dic = {"lines": []}
+    clear_count = 0
     for i, j in enumerate(moji.split("\r\n")):
         if j == "":
             continue
@@ -175,10 +176,14 @@ def main():
                 tmp_dic2["score"] = float(mg[4])
                 tmp_dic1["score_max"] = float(mg[5])
                 miss_only_score = round(tmp_dic1["score_max"] - tmp_dic2["miss"] * one_miss_penalty, 2)
+                print(tmp_dic2["keys"])
+                print(miss_only_score)
                 tmp_dic2["clear"] = miss_only_score == tmp_dic2["score"]
                 tmp_dic2["comp"] = tmp_dic2["clear"] and tmp_dic2["miss"] == 0
                 commons_dic["lines"].append(tmp_dic1)
                 result_dic["lines"].append(tmp_dic2)
+                if tmp_dic2["clear"]:
+                    clear_count += 1
     if prev_title_flag != 14:
         print("不適切なクリップボードです")
         return
@@ -187,6 +192,10 @@ def main():
         return
     if result_dic["clear_lines"] + result_dic["failed_lines"] != len(result_dic["lines"]):
         print("行数が一致しません")
+        return
+    if result_dic["clear_lines"] != clear_count:
+        print(result_dic["clear_lines"], clear_count)
+        print("クリア数が一致しません")
         return
     print(result_dic["copied_time"])
     print(commons_dic["title"])
