@@ -7,6 +7,8 @@ import datetime
 import json
 import datetime
 
+from sqlalchemy import true
+
 # JSTとUTCの差分
 DIFF_JST_FROM_UTC = 9
 
@@ -117,7 +119,8 @@ def main():
                 break
             mg = m.groups()
             commons_dic["total_keys"] = int(mg[0])
-            one_miss_penalty = 25 / commons_dic["total_keys"]
+            one_esc_penalty = 100 / commons_dic["total_keys"]
+            one_miss_penalty = one_esc_penalty / 4
             result_dic["esc_keys"] = int(mg[1])
         elif prev_title_flag == 9:
             prev_title_flag = 10
@@ -175,15 +178,17 @@ def main():
                 tmp_dic2["miss"] = int(mg[3])
                 tmp_dic2["score"] = float(mg[4])
                 tmp_dic1["score_max"] = float(mg[5])
-                miss_only_score = round(tmp_dic1["score_max"] - tmp_dic2["miss"] * one_miss_penalty, 2)
-                print(tmp_dic2["keys"])
-                print(miss_only_score)
+                miss_only_score = tmp_dic1["score_max"] - tmp_dic2["miss"] * one_miss_penalty
+                score_diff = abs(tmp_dic1["score_max"] - miss_only_score)
+                if score_diff < one_esc_penalty / 2:
+                    tmp_dic2["clear"] = True
+                    clear_count += 1
+                else:
+                    tmp_dic2["clear"] = False
                 tmp_dic2["clear"] = miss_only_score == tmp_dic2["score"]
                 tmp_dic2["comp"] = tmp_dic2["clear"] and tmp_dic2["miss"] == 0
                 commons_dic["lines"].append(tmp_dic1)
                 result_dic["lines"].append(tmp_dic2)
-                if tmp_dic2["clear"]:
-                    clear_count += 1
     if prev_title_flag != 14:
         print("不適切なクリップボードです")
         return
