@@ -85,7 +85,7 @@ def main():
                 prev_title_flag = 1
         elif prev_title_flag == 1:
             prev_title_flag = 2
-            commons_dic["title"] = j
+            commons_dic["title"] = j.replace("/", "_")
         elif prev_title_flag == 2:
             prev_title_flag = 3
             editor = j
