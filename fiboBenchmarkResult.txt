@@ -62,3 +62,11 @@ Intel(R) Core(TM) i7-7500U CPU @ 2.70GHz
 [PyPy 7.3.1 with GCC 9.3.0]
 fibo(45) = 1134903170
 19.0369868279 秒
+
+CF-SZ6
+ubuntu20.04 usbブート
+Intel(R) Core(TM) i7-7500U CPU @ 2.70GHz
+3.8.10 (default, Nov 26 2021, 20:14:08) 
+[GCC 9.3.0]
+fibo(38) = 39088169
+12.299185276031494 秒
