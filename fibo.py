@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import time
 
 # フィボナッチ数列
@@ -8,6 +9,7 @@ def fibo(n):
         return 1
     return fibo(n - 1) + fibo(n - 2)
 
+n = 37
 t0 = time.time()
-print(fibo(37))
+print("fibo(%d) = %d" % (n, fibo(n)))
 print(time.time() - t0)
