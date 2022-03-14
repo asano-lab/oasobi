@@ -10,5 +10,8 @@ const fibo = (n) => {
 }
 
 const t0 = new Date().getTime();
-console.log(fibo(45));
-console.log((new Date().getTime() - t0) / 1000);
+const n = 40;
+
+console.log(`nodejs v${process.versions.node}`);
+console.log(`fibo(${n}) = ${fibo(n)}`);
+console.log((new Date().getTime() - t0) / 1000, "秒");
