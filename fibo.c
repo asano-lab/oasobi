@@ -13,9 +13,10 @@ long fibo(int n) {
 }
 
 int main(void) {
+    int n = 47;
     time_t t0, t1;
     time(&t0);
-    printf("%ld\n", fibo(47));
+    printf("fibo(%d) = %ld\n", n, fibo(n));
     time(&t1);
     printf("%ld 秒\n", t1 - t0);
     return 0;

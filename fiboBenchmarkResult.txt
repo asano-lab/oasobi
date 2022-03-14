@@ -47,3 +47,10 @@ Intel(R) Core(TM) i7-7500U CPU @ 2.70GHz
 nodejs v16.14.0
 fibo(45) = 1134903170
 14.66 秒
+
+CF-SZ6
+ubuntu20.04 usbブート
+Intel(R) Core(TM) i7-7500U CPU @ 2.70GHz
+fibo.c
+fibo(47) = 2971215073
+23 秒
