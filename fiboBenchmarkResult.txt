@@ -43,6 +43,7 @@ fibo.js(45): windows
 
 CF-SZ6
 ubuntu20.04 usbブート
-16.14.0
+Intel(R) Core(TM) i7-7500U CPU @ 2.70GHz
+nodejs v16.14.0
 fibo(45) = 1134903170
-14.376 秒
+14.66 秒
