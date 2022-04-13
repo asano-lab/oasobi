@@ -3,11 +3,8 @@ import pyperclip
 import re
 import os
 import hashlib
-import datetime
 import json
 import datetime
-
-from sqlalchemy import true
 
 # JSTとUTCの差分
 DIFF_JST_FROM_UTC = 9
@@ -49,7 +46,7 @@ def generate_result_hash(result_dic: dict) -> str:
 
     for i in result_dic["lines"]:
         m.update(i["keys"].encode())
-        m.update(str(i["latency"]).encode())
+        # m.update(str(i["latency"]).encode())
         m.update(str(i["kps"]).encode())
         m.update(str(i["kps_exc_late"]).encode())
         m.update(i["miss"].to_bytes(4, "big"))
@@ -68,7 +65,7 @@ def main():
         with open(records_dir + ".gitignore", "w") as f:
             f.write("*\n")
     
-    prev_title_flag = 0
+    status_line = 0
     lines_flag = 0
     moji = pyperclip.paste()
     result_dic = {"lines": []}
@@ -77,86 +74,94 @@ def main():
     for i, j in enumerate(moji.split("\r\n")):
         if j == "":
             continue
-        if prev_title_flag == 0:
+        if status_line == 0:
             m = re.match(r'(\d{2}) (\d{2}) (\d{2})', j)
             if m:
                 result_dic["copied_time"] = "%s%s%s" % m.groups()
             elif j == "https://policies.google.com/privacy":
-                prev_title_flag = 1
-        elif prev_title_flag == 1:
-            prev_title_flag = 2
+                status_line = 1
+        elif status_line == 1:
+            status_line = 2
             commons_dic["title"] = j
-        elif prev_title_flag == 2:
-            prev_title_flag = 3
+        elif status_line == 2:
+            status_line = 3
             editor = j
         elif j == "ranking":
-            prev_title_flag = 4
-        elif prev_title_flag == 4:
-            prev_title_flag = 5
+            status_line = 4
+        elif status_line == 4:
+            status_line = 5
             result_dic["score"] = float(j)
-        elif prev_title_flag == 5:
-            prev_title_flag = 6
+        elif status_line == 5:
+            status_line = 15
+            m = re.match(r'(\d+)位$', j)
+            if m is None:
+                break
+            result_dic["ranking"] = int(m.groups()[0])
+        elif status_line == 15:
+            status_line = 6
             m = re.match(r'(\d+)miss$', j)
             if m is None:
                 break
             result_dic["miss"] = int(m.groups()[0])
-        elif prev_title_flag == 6:
-            prev_title_flag = 7
+        elif status_line == 6:
+            status_line = 7
             m = re.match(r'正確率:(.+)%$', j)
             if m is None:
                 break
             result_dic["acc"] = float(m.groups()[0])
-        elif prev_title_flag == 7:
-            prev_title_flag = 8
-            m = re.match(r'\d+/(\d+)combo$', j)
+        elif status_line == 7:
+            status_line = 8
+            m = re.match(r'(\d+)combo$', j)
             if m is None:
                 break
             result_dic["combo_max"] = int(m.groups()[0])
-        elif prev_title_flag == 8:
-            prev_title_flag = 9
-            m = re.match(r'\d+/(\d+)打\[(\d+)\]esc$', j)
+        elif status_line == 8:
+            status_line = 9
+            m = re.match(r'(\d+)打 / (\d+)逃し$', j)
             if m is None:
                 break
             mg = m.groups()
             commons_dic["total_keys"] = int(mg[0])
             one_esc_penalty = 100 / commons_dic["total_keys"]
             one_miss_penalty = one_esc_penalty / 4
+            print(one_esc_penalty, one_miss_penalty)
             result_dic["esc_keys"] = int(mg[1])
-        elif prev_title_flag == 9:
-            prev_title_flag = 10
-            m = re.match(r'(\d+)位\[(.+)打/秒\]$', j)
+        elif status_line == 9:
+            status_line = 10
+            print(j)
+            m = re.match(r'(.+)打/秒$', j)
             if m is None:
                 break
             mg = m.groups()
-            result_dic["ranking"] = int(mg[0])
-            result_dic["kps"] = float(mg[1])
-        elif prev_title_flag == 10 and j != "Typing Result":
-            prev_title_flag = 11
+            result_dic["kps"] = float(mg[0])
+        elif status_line == 10 and j != "Typing Result":
+            status_line = 11
             m = re.match(r'(\d+) clear / (\d+) failed$', j)
             if m is None:
                 break
             mg = m.groups()
             result_dic["clear_lines"] = int(mg[0])
             result_dic["failed_lines"] = int(mg[1])
-        elif prev_title_flag == 11 and j != "Score Penalty":
-            prev_title_flag = 12
+        elif status_line == 11 and j != "Score Penalty":
+            status_line = 12
             m = re.match(r'Miss: (.+)', j)
             if m is None:
                 break
             result_dic["miss_penalty"] = float(m.groups()[0])
-        elif prev_title_flag == 12:
-            prev_title_flag = 13
+        elif status_line == 12:
+            status_line = 13
             m = re.match(r'Esc: (.+)', j)
             if m is None:
                 break
             result_dic["esc_penalty"] = float(m.groups()[0])
-        elif prev_title_flag == 13:
-            prev_title_flag = 14
+        elif status_line == 13:
+            status_line = 14
+            print(j)
             m = re.match(r'初速抜き: (.+)打/秒$', j)
             if m is None:
                 break
             result_dic["kps_exc_late"] = float(m.groups()[0])
-        elif prev_title_flag == 14:
+        elif status_line == 14:
             if lines_flag == 0:
                 m = re.match(r'\d+/\d+ \((\d+)打 ÷ (.+)秒 = .+打/秒\)$', j)
                 if m:
@@ -167,23 +172,22 @@ def main():
                 lines_flag = 2
                 tmp_dic2 = {"keys": j}
             elif lines_flag == 2:
-                m = re.match(r'latency: (.+),　打/秒: (.+),　初速抜き: (.+),　miss: (\d+),　score: (.+) / (.+)', j)
+                m = re.match(r'打/秒: (.+),　初速抜き: (.+),　miss: (\d+),　score: (.+) / (.+)', j)
                 if m is None:
                     break
                 lines_flag = 0
                 mg = m.groups()
-                tmp_dic2["latency"] = float(mg[0])
-                tmp_dic2["kps"] = float(mg[1])
-                tmp_dic2["kps_exc_late"] = float(mg[2])
-                tmp_dic2["miss"] = int(mg[3])
-                tmp_dic2["score"] = float(mg[4])
-                tmp_dic1["score_max"] = float(mg[5])
+                tmp_dic2["kps"] = float(mg[0])
+                tmp_dic2["kps_exc_late"] = float(mg[1])
+                tmp_dic2["miss"] = int(mg[2])
+                tmp_dic2["score"] = float(mg[3])
+                tmp_dic1["score_max"] = float(mg[4])
                 miss_only_score = tmp_dic1["score_max"] - tmp_dic2["miss"] * one_miss_penalty
                 score_diff = abs(tmp_dic2["score"] - miss_only_score)
-                if score_diff < one_esc_penalty / 2:
+                if score_diff < one_esc_penalty * 0.48:
                     tmp_dic2["clear"] = True
-                    # print(tmp_dic2["keys"])
-                    # print(miss_only_score)
+                    print(tmp_dic2["keys"])
+                    print("score: %.5f, %.5f" % (tmp_dic2["score"], miss_only_score))
                     clear_count += 1
                 else:
                     tmp_dic2["clear"] = False
@@ -191,7 +195,8 @@ def main():
                 tmp_dic2["comp"] = tmp_dic2["clear"] and tmp_dic2["miss"] == 0
                 commons_dic["lines"].append(tmp_dic1)
                 result_dic["lines"].append(tmp_dic2)
-    if prev_title_flag != 14:
+    print(status_line)
+    if status_line != 14:
         print("不適切なクリップボードです")
         return
     if lines_flag != 0:
