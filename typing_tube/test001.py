@@ -9,6 +9,8 @@ import datetime
 # JSTとUTCの差分
 DIFF_JST_FROM_UTC = 9
 
+KPS_MAX = 0x7fffffff
+
 def generate_commons_hash(commons_dic: dict) -> str:
     """
     データを識別するハッシュを生成
@@ -121,14 +123,13 @@ def main():
             if m is None:
                 break
             mg = m.groups()
-            commons_dic["total_keys"] = int(mg[0])
+            commons_dic["total_keys"] = int(mg[0]) + int(mg[1])
             one_esc_penalty = 100 / commons_dic["total_keys"]
             one_miss_penalty = one_esc_penalty / 4
-            print(one_esc_penalty, one_miss_penalty)
+            # print(one_esc_penalty, one_miss_penalty)
             result_dic["esc_keys"] = int(mg[1])
         elif status_line == 9:
             status_line = 10
-            print(j)
             m = re.match(r'(.+)打/秒$', j)
             if m is None:
                 break
@@ -156,7 +157,7 @@ def main():
             result_dic["esc_penalty"] = float(m.groups()[0])
         elif status_line == 13:
             status_line = 14
-            print(j)
+            # print(j)
             m = re.match(r'初速抜き: (.+)打/秒$', j)
             if m is None:
                 break
@@ -178,7 +179,10 @@ def main():
                 lines_flag = 0
                 mg = m.groups()
                 tmp_dic2["kps"] = float(mg[0])
-                tmp_dic2["kps_exc_late"] = float(mg[1])
+                if mg[1] == "Infinity":
+                    tmp_dic2["kps_exc_late"] = KPS_MAX
+                else:
+                    tmp_dic2["kps_exc_late"] = float(mg[1])
                 tmp_dic2["miss"] = int(mg[2])
                 tmp_dic2["score"] = float(mg[3])
                 tmp_dic1["score_max"] = float(mg[4])
@@ -186,8 +190,8 @@ def main():
                 score_diff = abs(tmp_dic2["score"] - miss_only_score)
                 if score_diff < one_esc_penalty * 0.48:
                     tmp_dic2["clear"] = True
-                    print(tmp_dic2["keys"])
-                    print("score: %.5f, %.5f" % (tmp_dic2["score"], miss_only_score))
+                    # print(tmp_dic2["keys"])
+                    # print("score: %.5f, %.5f" % (tmp_dic2["score"], miss_only_score))
                     clear_count += 1
                 else:
                     tmp_dic2["clear"] = False
@@ -195,7 +199,7 @@ def main():
                 tmp_dic2["comp"] = tmp_dic2["clear"] and tmp_dic2["miss"] == 0
                 commons_dic["lines"].append(tmp_dic1)
                 result_dic["lines"].append(tmp_dic2)
-    print(status_line)
+    # print(status_line)
     if status_line != 14:
         print("不適切なクリップボードです")
         return
