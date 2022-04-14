@@ -15,6 +15,7 @@ int main(int argc, char **argv) {
     }
 
     c = getc(fpr);
+    printf("<html><table border=1><tr>");
     while (c != EOF) {
         // putchar(c);
         switch (status) {
@@ -24,11 +25,14 @@ int main(int argc, char **argv) {
                     break;
                 }
                 if (c == ',') {
+                    printf("</td><td>");
                     break;
                 }
                 if (c == '\n') {
+                    printf("</tr><tr>");
                     break;
                 }
+                putchar(c);
                 status = 3;
                 break;
             case 1:
@@ -45,10 +49,12 @@ int main(int argc, char **argv) {
                     break;
                 }
                 if (c == ',') {
+                    printf("</td><td>");
                     status = 0;
                     break;
                 }
                 if (c == '\n') {
+                    printf("</tr><tr>");
                     status = 0;
                     break;
                 }
@@ -59,10 +65,12 @@ int main(int argc, char **argv) {
                     break;
                 }
                 if (c == ',') {
+                    printf("</td><td>");
                     status = 0;
                     break;
                 }
                 if (c == '\n') {
+                    printf("</tr><tr>");
                     status = 0;
                     break;
                 }
@@ -76,6 +84,7 @@ int main(int argc, char **argv) {
         // putchar(c);
         c = getc(fpr);
     }
+    printf("</tr></table></html>");
 
     fclose(fpr);
     return 0;
