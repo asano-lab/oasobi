@@ -52,6 +52,7 @@ class RandomMT {
         // 初期化
         for (let j = 1; j < this.N; j++) {
             a = this.x[j - 1] ^ (this.x[j - 1] >>> 30);
+            // オーバーフロー対策
             b = (1406077 * a & this.WHOLE_MASK) * 1289 & this.WHOLE_MASK;
             c = (b + j) & this.WHOLE_MASK;
             if (c < 0) {

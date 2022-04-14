@@ -1,3 +1,5 @@
+フィボナッチ数列の計算時間
+
 fibo.py(34): wsl
 5702887
 1.8957860469818115
@@ -38,3 +40,33 @@ nodejs v16.13.1
 fibo.js(45): windows
 1134903170
 16.691
+
+CF-SZ6
+ubuntu20.04 usbブート
+Intel(R) Core(TM) i7-7500U CPU @ 2.70GHz
+nodejs v16.14.0
+fibo(45) = 1134903170
+14.66 秒
+
+CF-SZ6
+ubuntu20.04 usbブート
+Intel(R) Core(TM) i7-7500U CPU @ 2.70GHz
+fibo.c
+fibo(47) = 2971215073
+23 秒
+
+CF-SZ6
+ubuntu20.04 usbブート
+Intel(R) Core(TM) i7-7500U CPU @ 2.70GHz
+2.7.13 (7.3.1+dfsg-2, Apr 21 2020, 05:05:41)
+[PyPy 7.3.1 with GCC 9.3.0]
+fibo(45) = 1134903170
+19.0369868279 秒
+
+CF-SZ6
+ubuntu20.04 usbブート
+Intel(R) Core(TM) i7-7500U CPU @ 2.70GHz
+3.8.10 (default, Nov 26 2021, 20:14:08) 
+[GCC 9.3.0]
+fibo(38) = 39088169
+12.299185276031494 秒
