@@ -21,23 +21,58 @@ int main(int argc, char **argv) {
             case 0:
                 if (c == '"') {
                     status = 1;
-                } else {
-                    status = 2;
+                    break;
                 }
+                if (c == ',') {
+                    break;
+                }
+                if (c == '\n') {
+                    break;
+                }
+                status = 3;
                 break;
             case 1:
                 if (c == '"') {
-                    status = 0;
+                    status = 2;
+                    break;
                 }
+                putchar(c);
                 break;
             case 2:
-
+                if (c == '"') {
+                    status = 1;
+                    putchar(c);
+                    break;
+                }
+                if (c == ',') {
+                    status = 0;
+                    break;
+                }
+                if (c == '\n') {
+                    status = 0;
+                    break;
+                }
+                break;
+            case 3:
+                if (c == '"') {
+                    status = -1;
+                    break;
+                }
+                if (c == ',') {
+                    status = 0;
+                    break;
+                }
+                if (c == '\n') {
+                    status = 0;
+                    break;
+                }
+                putchar(c);
                 break;
             default:
                 ;
         }
         // printf("%d", status);
-        printf("%x ", c);
+        // printf("%x ", c);
         // putchar(c);
         c = getc(fpr);
     }
