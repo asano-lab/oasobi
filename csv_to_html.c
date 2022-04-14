@@ -15,7 +15,7 @@ int main(int argc, char **argv) {
     }
 
     c = getc(fpr);
-    printf("<html><table border=1><tr>");
+    printf("<html><table border=1><tr><td>");
     while (c != EOF) {
         // putchar(c);
         switch (status) {
@@ -84,7 +84,7 @@ int main(int argc, char **argv) {
         // putchar(c);
         c = getc(fpr);
     }
-    printf("</tr></table></html>");
+    printf("</td></tr></table></html>");
 
     fclose(fpr);
     return 0;
