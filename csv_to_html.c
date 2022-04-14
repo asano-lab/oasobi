@@ -29,7 +29,7 @@ int main(int argc, char **argv) {
                     break;
                 }
                 if (c == '\n') {
-                    printf("</tr><tr>");
+                    printf("</td></tr><tr><td>");
                     break;
                 }
                 putchar(c);
@@ -54,7 +54,7 @@ int main(int argc, char **argv) {
                     break;
                 }
                 if (c == '\n') {
-                    printf("</tr><tr>");
+                    printf("</td></tr><tr><td>");
                     status = 0;
                     break;
                 }
@@ -70,7 +70,7 @@ int main(int argc, char **argv) {
                     break;
                 }
                 if (c == '\n') {
-                    printf("</tr><tr>");
+                    printf("</td></tr><tr><td>");
                     status = 0;
                     break;
                 }
