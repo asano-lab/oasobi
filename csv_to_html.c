@@ -3,7 +3,7 @@
 #include <sys/stat.h>
 
 int main(int argc, char **argv) {
-    FILE *fpr;
+    FILE *fpr, *fpw;
     struct stat st;
     char c;
 
@@ -20,11 +20,10 @@ int main(int argc, char **argv) {
     }
 
     if ((fpr = fopen(argv[1], "r")) == NULL) {
-        printf("\a\"%s\" file open failed.\n", argv[1]);
+        printf("\a\"%s\" file open failed to read.\n", argv[1]);
         return -1;
     }
     
-    // printf("%ld\n", strlen(argv[1]));
     for (i = 0; (c = argv[1][i]) != '\0' && i < FILENAME_MAX - 1; i++) {
         fnamew[i] = c;
         if (c == '/') {
@@ -57,15 +56,19 @@ int main(int argc, char **argv) {
         printf("\"%s\" file exists!\n", dir_path);
         return -1;
     }
+
+    argv[1][last_dot] = '\0';
+    snprintf(fnamew, FILENAME_MAX, "%s%s.html", dir_path, argv[1] + last_slash);
+
+    if ((fpw = fopen(fnamew, "w")) == NULL) {
+        printf("\a\"%s\" file open failed to write.\n", fnamew);
+        return -1;
+    }
     
-    snprintf(fnamew, FILENAME_MAX, "%s%s", dir_path, argv[1] + last_slash);
     puts(fnamew);
 
-    putchar(10);
-    printf("%d, %d\n", last_slash, last_dot);
-
     c = getc(fpr);
-    printf("<html><table border=1><tr><td>");
+    fprintf(fpw, "<html><table border=1><tr><td>");
     while (c != EOF) {
         // putchar(c);
         switch (status) {
@@ -75,14 +78,14 @@ int main(int argc, char **argv) {
                     break;
                 }
                 if (c == ',') {
-                    printf("</td><td>");
+                    fprintf(fpw, "</td><td>");
                     break;
                 }
                 if (c == '\n') {
-                    printf("</td></tr><tr><td>");
+                    fprintf(fpw, "</td></tr><tr><td>");
                     break;
                 }
-                putchar(c);
+                putc(c, fpw);
                 status = 3;
                 break;
             case 1:
@@ -90,21 +93,21 @@ int main(int argc, char **argv) {
                     status = 2;
                     break;
                 }
-                putchar(c);
+                putc(c, fpw);
                 break;
             case 2:
                 if (c == '"') {
                     status = 1;
-                    putchar(c);
+                    putc(c, fpw);
                     break;
                 }
                 if (c == ',') {
-                    printf("</td><td>");
+                    fprintf(fpw, "</td><td>");
                     status = 0;
                     break;
                 }
                 if (c == '\n') {
-                    printf("</td></tr><tr><td>");
+                    fprintf(fpw, "</td></tr><tr><td>");
                     status = 0;
                     break;
                 }
@@ -115,24 +118,25 @@ int main(int argc, char **argv) {
                     break;
                 }
                 if (c == ',') {
-                    printf("</td><td>");
+                    fprintf(fpw, "</td><td>");
                     status = 0;
                     break;
                 }
                 if (c == '\n') {
-                    printf("</td></tr><tr><td>");
+                    fprintf(fpw, "</td></tr><tr><td>");
                     status = 0;
                     break;
                 }
-                putchar(c);
+                putc(c, fpw);
                 break;
             default:
                 ;
         }
         c = getc(fpr);
     }
-    printf("</td></tr></table></html>");
+    fprintf(fpw, "</td></tr></table></html>");
 
     fclose(fpr);
+    fclose(fpw);
     return 0;
 }
