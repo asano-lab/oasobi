@@ -72,7 +72,7 @@ int main(int argc, char **argv) {
     while (c != EOF) {
         // putchar(c);
         switch (status) {
-            case 0:
+            case 0: // データ開始
                 if (c == '"') {
                     status = 1;
                     break;
