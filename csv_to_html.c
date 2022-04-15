@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <string.h>
+#include <sys/stat.h>
 
 int main(int argc, char **argv) {
     FILE *fpr;
+    struct stat st;
     char c;
 
     int i;
@@ -11,6 +13,7 @@ int main(int argc, char **argv) {
     int last_dot = -1;
 
     char dir_path[FILENAME_MAX];
+    char fnamew[FILENAME_MAX];
 
     if (argc != 2) {
         return -1;
@@ -23,15 +26,14 @@ int main(int argc, char **argv) {
     
     // printf("%ld\n", strlen(argv[1]));
     for (i = 0; (c = argv[1][i]) != '\0' && i < FILENAME_MAX - 1; i++) {
-        dir_path[i] = c;
+        fnamew[i] = c;
         if (c == '/') {
             last_slash = i;
         } else if (c == '.') {
             last_dot = i;
         }
     }
-    dir_path[last_slash] = '\0';
-    puts(dir_path);
+    fnamew[last_slash] = '\0';
 
     for (i = 0; i < 4; i++) {
         if (argv[1][last_dot + 1 + i] != "csv"[i]) {
@@ -39,7 +41,18 @@ int main(int argc, char **argv) {
             return -1;
         }
     }
+    snprintf(dir_path, FILENAME_MAX, "%s/html", fnamew);
+    puts(dir_path);
 
+    if (stat(dir_path, &st) != 0) {
+        if (mkdir(dir_path, 0775) == 0) {
+            printf("\"%s\" directory was created.\n", dir_path);
+        } else {
+            printf("\"%s\" directory create failed\n", dir_path);
+        }
+    }
+    
+    // printf("%d\n", mkdir(dir_path, 0775));
 
     putchar(10);
     printf("%d, %d\n", last_slash, last_dot);
