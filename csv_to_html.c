@@ -9,7 +9,7 @@ int main(int argc, char **argv) {
 
     int i;
     int status = 0;
-    int last_slash = 0;
+    int last_slash = -1;
     int last_dot = -1;
 
     char dir_path[FILENAME_MAX];
@@ -32,7 +32,6 @@ int main(int argc, char **argv) {
             last_dot = i;
         }
     }
-    fnamew[last_slash] = '\0';
 
     // 拡張子チェック
     for (i = 0; i < 4; i++) {
@@ -41,7 +40,13 @@ int main(int argc, char **argv) {
             return -1;
         }
     }
-    snprintf(dir_path, FILENAME_MAX, "%s/html", fnamew);
+    // 相対パス直下
+    if (last_slash < 0) {
+        snprintf(dir_path, FILENAME_MAX, "html");
+    } else {
+        fnamew[last_slash] = '\0';
+        snprintf(dir_path, FILENAME_MAX, "%s/html", fnamew);
+    }
 
     // htmlディレクトリが存在しなければ作成
     if (stat(dir_path, &st) != 0) {
@@ -59,7 +64,7 @@ int main(int argc, char **argv) {
     }
 
     argv[1][last_dot] = '\0';
-    snprintf(fnamew, FILENAME_MAX, "%s%s.html", dir_path, argv[1] + last_slash);
+    snprintf(fnamew, FILENAME_MAX, "%s/%s.html", dir_path, argv[1] + last_slash + 1);
 
     if ((fpw = fopen(fnamew, "w")) == NULL) {
         printf("\a\"%s\" file open failed to write.\n", fnamew);
