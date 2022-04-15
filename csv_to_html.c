@@ -7,7 +7,7 @@ int main(int argc, char **argv) {
 
     int i;
     int status = 0;
-    int last_slash = -1;
+    int last_slash = 0;
     int last_dot = -1;
 
     char dir_path[FILENAME_MAX];
@@ -22,13 +22,16 @@ int main(int argc, char **argv) {
     }
     
     // printf("%ld\n", strlen(argv[1]));
-    for (i = 0; (c = argv[1][i]) != '\0'; i++) {
+    for (i = 0; (c = argv[1][i]) != '\0' && i < FILENAME_MAX - 1; i++) {
+        dir_path[i] = c;
         if (c == '/') {
             last_slash = i;
         } else if (c == '.') {
             last_dot = i;
         }
     }
+    dir_path[last_slash] = '\0';
+    puts(dir_path);
 
     for (i = 0; i < 4; i++) {
         if (argv[1][last_dot + 1 + i] != "csv"[i]) {
@@ -36,6 +39,8 @@ int main(int argc, char **argv) {
             return -1;
         }
     }
+
+
     putchar(10);
     printf("%d, %d\n", last_slash, last_dot);
 
