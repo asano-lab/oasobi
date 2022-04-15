@@ -1,18 +1,43 @@
 #include <stdio.h>
+#include <string.h>
 
 int main(int argc, char **argv) {
     FILE *fpr;
     char c;
+
+    int i;
     int status = 0;
+    int last_slash = -1;
+    int last_dot = -1;
+
+    char dir_path[FILENAME_MAX];
 
     if (argc != 2) {
         return -1;
     }
 
     if ((fpr = fopen(argv[1], "r")) == NULL) {
-        printf("\a%s file open failed\n", argv[1]);
+        printf("\a\"%s\" file open failed.\n", argv[1]);
         return -1;
     }
+    
+    // printf("%ld\n", strlen(argv[1]));
+    for (i = 0; (c = argv[1][i]) != '\0'; i++) {
+        if (c == '/') {
+            last_slash = i;
+        } else if (c == '.') {
+            last_dot = i;
+        }
+    }
+
+    for (i = 0; i < 4; i++) {
+        if (argv[1][last_dot + 1 + i] != "csv"[i]) {
+            printf("\a\"%s\" is not csv file.\n", argv[1]);
+            return -1;
+        }
+    }
+    putchar(10);
+    printf("%d, %d\n", last_slash, last_dot);
 
     c = getc(fpr);
     printf("<html><table border=1><tr><td>");
@@ -79,9 +104,6 @@ int main(int argc, char **argv) {
             default:
                 ;
         }
-        // printf("%d", status);
-        // printf("%x ", c);
-        // putchar(c);
         c = getc(fpr);
     }
     printf("</td></tr></table></html>");
