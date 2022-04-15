@@ -34,6 +34,7 @@ int main(int argc, char **argv) {
     }
     fnamew[last_slash] = '\0';
 
+    // 拡張子チェック
     for (i = 0; i < 4; i++) {
         if (argv[1][last_dot + 1 + i] != "csv"[i]) {
             printf("\a\"%s\" is not csv file.\n", argv[1]);
