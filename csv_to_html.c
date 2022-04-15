@@ -137,6 +137,8 @@ int main(int argc, char **argv) {
                 }
                 putc(c, fpw);
                 break;
+            case 4: // 改行直後
+                ;
             default:
                 ;
         }
