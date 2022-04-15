@@ -43,6 +43,7 @@ int main(int argc, char **argv) {
     }
     snprintf(dir_path, FILENAME_MAX, "%s/html", fnamew);
 
+    // htmlディレクトリが存在しなければ作成
     if (stat(dir_path, &st) != 0) {
         if (mkdir(dir_path, 0775) == 0) {
             printf("\"%s\" directory was created.\n", dir_path);
@@ -51,12 +52,14 @@ int main(int argc, char **argv) {
             return -1;
         }
     }
+    // 同名のファイルがあった場合
     else if ((st.st_mode & S_IFMT) != S_IFDIR) {
         printf("\"%s\" file exists!\n", dir_path);
         return -1;
     }
     
-    // printf("%d\n", mkdir(dir_path, 0775));
+    snprintf(fnamew, FILENAME_MAX, "%s%s", dir_path, argv[1] + last_slash);
+    puts(fnamew);
 
     putchar(10);
     printf("%d, %d\n", last_slash, last_dot);
