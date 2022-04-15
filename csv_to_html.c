@@ -42,14 +42,18 @@ int main(int argc, char **argv) {
         }
     }
     snprintf(dir_path, FILENAME_MAX, "%s/html", fnamew);
-    puts(dir_path);
 
     if (stat(dir_path, &st) != 0) {
         if (mkdir(dir_path, 0775) == 0) {
             printf("\"%s\" directory was created.\n", dir_path);
         } else {
-            printf("\"%s\" directory create failed\n", dir_path);
+            printf("\"%s\" directory create failed.\n", dir_path);
+            return -1;
         }
+    }
+    else if ((st.st_mode & S_IFMT) != S_IFDIR) {
+        printf("\"%s\" file exists!\n", dir_path);
+        return -1;
     }
     
     // printf("%d\n", mkdir(dir_path, 0775));
