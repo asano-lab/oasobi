@@ -76,7 +76,6 @@ int main(int argc, char **argv) {
     c = getc(fpr);
     fprintf(fpw, "<html><table border=1><tr><td>");
     while (c != EOF) {
-        // putchar(c);
         switch (status) {
             case 0: // データ開始
                 if (c == '"') {
@@ -94,17 +93,20 @@ int main(int argc, char **argv) {
                 putc(c, fpw);
                 status = 3;
                 break;
-            case 1:
+            case 1: // ダブルクォート内
                 if (c == '"') {
                     status = 2;
                     break;
+                } if (c == '\n') {
+                    fprintf(fpw, "<br>");
+                } else {
+                    putc(c, fpw);
                 }
-                putc(c, fpw);
                 break;
-            case 2:
+            case 2: // ダブルクォート外
                 if (c == '"') {
                     status = 1;
-                    putc(c, fpw);
+                    putc(c, fpw); // エスケープ
                     break;
                 }
                 if (c == ',') {
@@ -118,7 +120,7 @@ int main(int argc, char **argv) {
                     break;
                 }
                 break;
-            case 3:
+            case 3: // ダブルクォートなし
                 if (c == '"') {
                     status = -1;
                     break;
