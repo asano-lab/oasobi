@@ -74,9 +74,8 @@ def main():
     commons_dic = {"lines": []}
     clear_count = 0
 
-    total_keys2 = 0
-
     for i, j in enumerate(moji.split("\r\n")):
+        # print(j)
         if j == "":
             continue
         if status_line == 0:
@@ -91,8 +90,16 @@ def main():
         elif status_line == 2:
             status_line = 3
             editor = j
-        elif j == "ranking":
-            status_line = 4
+        elif status_line == 3:
+            # print(j)
+            m = re.match(r' (\d+)打 (\d)+ライン\d+:\d+ 中央値.*打/秒 \| 最高.*打/秒', j)
+            if m is not None:
+                print(j)
+                status_line = 16
+                commons_dic["total_keys"] = int(m.groups()[0])
+        elif status_line == 16:
+            if j == "ranking":
+                status_line = 4
         elif status_line == 4:
             status_line = 5
             result_dic["score"] = float(j)
@@ -126,7 +133,8 @@ def main():
             if m is None:
                 break
             mg = m.groups()
-            commons_dic["total_keys"] = int(mg[0]) + int(mg[1])
+            # どうやら想定している意味と異なるので省略
+            # commons_dic["total_keys"] = int(mg[0]) + int(mg[1])
             one_esc_penalty = 100 / commons_dic["total_keys"]
             one_miss_penalty = one_esc_penalty / 4
             # print(one_esc_penalty, one_miss_penalty)
@@ -172,7 +180,6 @@ def main():
                     lines_flag = 1
                     mg = m.groups()
                     tmp_dic1 = {"keys_count": int(mg[0]), "seconds": float(mg[1])}
-                    total_keys2 += tmp_dic1["keys_count"]
             elif lines_flag == 1:
                 lines_flag = 2
                 tmp_dic2 = {"keys": j}
@@ -225,7 +232,6 @@ def main():
     print(f'正確率: {result_dic["acc"]}')
     print(f'最大コンボ: {result_dic["combo_max"]}')
     print(f'キー総数: {commons_dic["total_keys"]}')
-    print(f'キー総数: {total_keys2}')
     print(f'逃したキー数: {result_dic["esc_keys"]}')
     print(f'順位: {result_dic["ranking"]}')
     print(f'クリア行数: {result_dic["clear_lines"]}')
