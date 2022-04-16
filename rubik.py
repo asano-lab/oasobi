@@ -1258,8 +1258,7 @@ def main():
             except FileNotFoundError:
                 print(f"「{LOG_PATH}」の作成失敗.")
                 return
-    shuffle_times = int(
-        input("シャッフル回数(shuffle_times)を入力"))
+    shuffle_times = int(input("シャッフル回数(shuffle_times)を入力"))
     collectSamples(1000, 7, 1, shuffle_times)
 
 
