@@ -79,12 +79,21 @@ def main():
             if m:
                 result_dic["copied_time"] = "%s%s%s" % m.groups()
             elif j == "https://policies.google.com/privacy":
+<<<<<<< HEAD
                 status_line = 1
         elif status_line == 1:
             status_line = 2
             commons_dic["title"] = j
         elif status_line == 2:
             status_line = 3
+=======
+                prev_title_flag = 1
+        elif prev_title_flag == 1:
+            prev_title_flag = 2
+            commons_dic["title"] = j.replace("/", "_")
+        elif prev_title_flag == 2:
+            prev_title_flag = 3
+>>>>>>> sub1
             editor = j
         elif j == "ranking":
             status_line = 4
