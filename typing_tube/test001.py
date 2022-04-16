@@ -91,7 +91,6 @@ def main():
             prev_title_flag = 3
             editor = j
         elif status_line == 3:
-            # print(j)
             m = re.match(r' (\d+)打 (\d)+ライン\d+:\d+ 中央値.*打/秒 \| 最高.*打/秒', j)
             if m is not None:
                 print(j)
