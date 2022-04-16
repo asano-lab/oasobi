@@ -73,6 +73,9 @@ def main():
     result_dic = {"lines": []}
     commons_dic = {"lines": []}
     clear_count = 0
+
+    total_keys2 = 0
+
     for i, j in enumerate(moji.split("\r\n")):
         if j == "":
             continue
@@ -169,6 +172,7 @@ def main():
                     lines_flag = 1
                     mg = m.groups()
                     tmp_dic1 = {"keys_count": int(mg[0]), "seconds": float(mg[1])}
+                    total_keys2 += tmp_dic1["keys_count"]
             elif lines_flag == 1:
                 lines_flag = 2
                 tmp_dic2 = {"keys": j}
@@ -221,6 +225,7 @@ def main():
     print(f'正確率: {result_dic["acc"]}')
     print(f'最大コンボ: {result_dic["combo_max"]}')
     print(f'キー総数: {commons_dic["total_keys"]}')
+    print(f'キー総数: {total_keys2}')
     print(f'逃したキー数: {result_dic["esc_keys"]}')
     print(f'順位: {result_dic["ranking"]}')
     print(f'クリア行数: {result_dic["clear_lines"]}')
