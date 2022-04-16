@@ -76,6 +76,7 @@ def main():
 
     for i, j in enumerate(moji.split("\r\n")):
         # print(j)
+        # 空文字は読み飛ばし
         if j == "":
             continue
         if status_line == 0:
@@ -83,17 +84,18 @@ def main():
             if m:
                 result_dic["copied_time"] = "%s%s%s" % m.groups()
             elif j == "https://policies.google.com/privacy":
-                prev_title_flag = 1
-        elif prev_title_flag == 1:
-            prev_title_flag = 2
+                status_line = 1
+        elif status_line == 1:
+            status_line = 2
             commons_dic["title"] = j.replace("/", "_")
-        elif prev_title_flag == 2:
-            prev_title_flag = 3
+        elif status_line == 2:
+            status_line = 3
             editor = j
         elif status_line == 3:
+            # print(j)
             m = re.match(r' (\d+)打 (\d)+ライン\d+:\d+ 中央値.*打/秒 \| 最高.*打/秒', j)
             if m is not None:
-                print(j)
+                # print(j)
                 status_line = 16
                 commons_dic["total_keys"] = int(m.groups()[0])
         elif status_line == 16:
@@ -211,7 +213,7 @@ def main():
                 result_dic["lines"].append(tmp_dic2)
     # print(status_line)
     if status_line != 14:
-        print("不適切なクリップボードです")
+        print("不適切なクリップボードです (終了時状態: {:d})".format(status_line))
         return
     if lines_flag != 0:
         print("不適切なクリップボードです")
