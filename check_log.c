@@ -9,6 +9,8 @@ typedef struct list {
     struct list *next;
 } List;
 
+List *START;
+
 int main(int argc, char **argv) {
     FILE *fpr;
     char c;
@@ -16,6 +18,7 @@ int main(int argc, char **argv) {
 
     int i;
     int status = 0;
+    double f;
 
     if (argc != 2) {
         return -1;
@@ -51,8 +54,9 @@ int main(int argc, char **argv) {
             }
         } else if (status == 3) {
             if (c == ',') {
-                buffer[i] = 0;
-                puts(buffer);
+                buffer[i] = '\0';
+                f = strtod(buffer, NULL);
+                printf("%.6f\n", f);
                 status = 0;
             } else {
                 buffer[i++] = c;
