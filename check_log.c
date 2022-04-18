@@ -2,6 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+#define EARTH_RADIUS 6371
+
 typedef struct list {
     double lat;
     double lon;
@@ -88,8 +90,8 @@ int main(int argc, char **argv) {
                 buffer[i++] = c;
             }
         } else if (status == 5) {
-            if (c == 'N') {
-                ;
+            if (c == 'S') {
+                crnt->lat = -crnt->lat;
             } else if (c == ',') {
                 status = 6;
             }
@@ -107,13 +109,19 @@ int main(int argc, char **argv) {
                 buffer[i] = '\0';
                 tmp2 = strtol(buffer, NULL, 10);
                 crnt->lon = (double)(tmp1 / 100) + ((double)(tmp1 % 100) + (double)tmp2 / 10000) / 60;
+                i = 0;
+                status = 8;
+            } else {
+                buffer[i++] = c;
+            }
+        } else if (status == 8) {
+            if (c == 'W') {
+                crnt->lon = -crnt->lon;
+            } else if (c == ',') {
                 dst = (List*)malloc(sizeof(List));
                 crnt->next = dst;
                 crnt = dst;
-                i = 0;
                 status = 0;
-            } else {
-                buffer[i++] = c;
             }
         }
         c = getc(fpr);
