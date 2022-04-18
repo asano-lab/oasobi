@@ -56,7 +56,7 @@ int main(int argc, char **argv) {
             if (c == '.') {
                 buffer[i] = '\0';
                 tmp1 = strtol(buffer, NULL, 10);
-                printf("%d.", tmp1);
+                // printf("%s.", buffer);
                 i = 0;
                 status = 4;
             } else {
@@ -66,7 +66,9 @@ int main(int argc, char **argv) {
             if (c == ',') {
                 buffer[i] = '\0';
                 tmp2 = strtol(buffer, NULL, 10);
-                printf("%d\n", tmp2);
+                // printf("%s\n", buffer);
+                f = (double)(tmp1 / 100) + ((double)(tmp1 % 100) + (double)tmp2 / 10000) / 60;
+                printf("%f\n", f);
                 i = 0;
                 status = 0;
             } else {
