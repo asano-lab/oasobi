@@ -25,7 +25,9 @@ int main(int argc, char **argv) {
     }
 
     c = getc(fpr);
+    
     while (c != EOF) {
+        putchar(c);
         switch (status) {
             case 0: // データ開始
                 if (c == '"') {
@@ -83,6 +85,7 @@ int main(int argc, char **argv) {
             default:
                 ;
         }
+        c = getc(fpr);
     }
 
     fclose(fpr);
