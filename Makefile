@@ -3,7 +3,7 @@ animal_shogi.exe: animal_shogi.c animal_shogi.h
 csv_to_html.exe: csv_to_html.c
 	gcc csv_to_html.c -o csv_to_html.exe -Wall
 check_log.exe: check_log.c
-	gcc check_log.c -o check_log.exe -Wall
+	gcc check_log.c -o check_log.exe -Wall -lm
 fibo.exe: fibo.c
 	gcc fibo.c -o fibo.exe -Wall
 zorome.exe: zorome.c

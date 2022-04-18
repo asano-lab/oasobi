@@ -5,6 +5,10 @@
 
 #define EARTH_RADIUS 6371
 
+#define PI 3.1415926535897932
+
+#define deg_to_rad(x) ((x) / 180.0 * PI)
+
 typedef struct list {
     double lat;
     double lon;
@@ -29,16 +33,20 @@ void del_list() {
 double calc_dist() {
     List *l1 = START;
     List *l2 = l1->next;
+    double b, c, alpha;
     double dist = 0.0;
 
     while (l2->next != NULL) {
-        printf("%f, %f, %lx, ", l1->lat, l1->lon, (u_long)l1->next);
-        printf("%f, %f, %lx\n", l2->lat, l2->lon, (u_long)l2->next);
-        // dist += EARTH_RADIUS * acos(sin(crnt->lat) * sin(crnt->next->lat));
+        // printf("%f, %f, %lx, ", l1->lat, l1->lon, (u_long)l1->next);
+        // printf("%f, %f, %lx\n", l2->lat, l2->lon, (u_long)l2->next);
+        b = deg_to_rad(l1->lat);
+        c = deg_to_rad(l2->lat);
+        alpha = deg_to_rad(l2->lon - l1->lon);
+        dist += EARTH_RADIUS * acos(sin(b) * sin(c) + cos(b) * cos(c) * cos(alpha));
         l1 = l2;
         l2 = l1->next;
     }
-    return 1.0;
+    return dist;
 }
 
 int main(int argc, char **argv) {
@@ -143,7 +151,9 @@ int main(int argc, char **argv) {
         }
         c = getc(fpr);
     }
-    calc_dist();
+    f = calc_dist();
+    printf("%f\n", f);
+
     // printf("################################################\n");
     del_list();
 
