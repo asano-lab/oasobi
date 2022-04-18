@@ -12,6 +12,7 @@ typedef struct list {
 int main(int argc, char **argv) {
     FILE *fpr;
     char c;
+    char buffer[256];
 
     int i;
     int status = 0;
@@ -36,17 +37,26 @@ int main(int argc, char **argv) {
             }
         }
         else if (status == 1) {
-            if (c == "GPGGA"[i++]) {
-                putchar(c);
-                if (i == 5) {
+            if (c == "GPGGA,"[i++]) {
+                if (i == 6) {
                     status = 2;
-                    putchar(10);
                 }
             } else {
                 status = 0;
             }
         } else if (status == 2) {
-            status = 0;
+            if (c == ',') {
+                status = 3;
+                i = 0;
+            }
+        } else if (status == 3) {
+            if (c == ',') {
+                buffer[i] = 0;
+                puts(buffer);
+                status = 0;
+            } else {
+                buffer[i++] = c;
+            }
         }
         c = getc(fpr);
     }
