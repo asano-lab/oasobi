@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <sys/stat.h>
 
 typedef struct list {
     double lat;
@@ -71,8 +70,7 @@ int main(int argc, char **argv) {
                 buffer[i] = '\0';
                 tmp2 = strtol(buffer, NULL, 10);
                 // printf("%s\n", buffer);
-                f = (double)(tmp1 / 100) + ((double)(tmp1 % 100) + (double)tmp2 / 10000) / 60;
-                // printf("%f\n", f);
+                crnt->lat = (double)(tmp1 / 100) + ((double)(tmp1 % 100) + (double)tmp2 / 10000) / 60;
                 i = 0;
                 status = 5;
             } else {
@@ -88,7 +86,6 @@ int main(int argc, char **argv) {
             if (c == '.') {
                 buffer[i] = '\0';
                 tmp1 = strtol(buffer, NULL, 10);
-                printf("%s.", buffer);
                 i = 0;
                 status = 7;
             } else {
@@ -98,9 +95,8 @@ int main(int argc, char **argv) {
             if (c == ',') {
                 buffer[i] = '\0';
                 tmp2 = strtol(buffer, NULL, 10);
-                printf("%s\n", buffer);
-                f = (double)(tmp1 / 100) + ((double)(tmp1 % 100) + (double)tmp2 / 10000) / 60;
-                printf("%f\n", f);
+                crnt->lon = (double)(tmp1 / 100) + ((double)(tmp1 % 100) + (double)tmp2 / 10000) / 60;
+                printf("%f, %f\n", crnt->lat, crnt->lon);
                 i = 0;
                 status = 0;
             } else {
