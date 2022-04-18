@@ -13,6 +13,7 @@ int main(int argc, char **argv) {
     FILE *fpr;
     char c;
 
+    int i;
     int status = 0;
 
     if (argc != 2) {
@@ -25,65 +26,27 @@ int main(int argc, char **argv) {
     }
 
     c = getc(fpr);
-    
+
     while (c != EOF) {
-        putchar(c);
-        switch (status) {
-            case 0: // データ開始
-                if (c == '"') {
-                    status = 1;
-                    break;
-                }
-                if (c == ',') {
-                    break;
-                }
-                if (c == '\n') {
-                    break;
-                }
-                status = 3;
-                break;
-            case 1: // ダブルクォート内
-                if (c == '"') {
+        // putchar(c);
+        if (status == 0) {
+            if (c == '$') {
+                i = 0;
+                status = 1;
+            }
+        }
+        else if (status == 1) {
+            if (c == "GPGGA"[i++]) {
+                putchar(c);
+                if (i == 5) {
                     status = 2;
-                    break;
-                } if (c == '\n') {
-                    ;
-                } else {
-                    ;
+                    putchar(10);
                 }
-                break;
-            case 2: // ダブルクォート外
-                if (c == '"') {
-                    status = 1;
-                    break;
-                }
-                if (c == ',') {
-                    status = 0;
-                    break;
-                }
-                if (c == '\n') {
-                    status = 0;
-                    break;
-                }
-                break;
-            case 3: // ダブルクォートなし
-                if (c == '"') {
-                    status = -1;
-                    break;
-                }
-                if (c == ',') {
-                    status = 0;
-                    break;
-                }
-                if (c == '\n') {
-                    status = 0;
-                    break;
-                }
-                break;
-            case 4: // 改行直後
-                ;
-            default:
-                ;
+            } else {
+                status = 0;
+            }
+        } else if (status == 2) {
+            status = 0;
         }
         c = getc(fpr);
     }
