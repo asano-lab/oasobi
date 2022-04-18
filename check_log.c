@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
 #define EARTH_RADIUS 6371
 
@@ -17,11 +18,21 @@ void del_list() {
     List *crnt = START;
     List *dst;
     while (crnt != NULL) {
-        printf("%f, %f, %lx\n", crnt->lat, crnt->lon, (u_long)crnt->next);
+        // printf("%f, %f, %lx\n", crnt->lat, crnt->lon, (u_long)crnt->next);
         dst = crnt->next;
         free(crnt);
         crnt = dst;
     }
+}
+
+// 距離計算
+double calc_dist() {
+    List *crnt = START;
+    while (crnt->next != NULL) {
+        printf("%f, %f, %lx\n", crnt->lat, crnt->lon, (u_long)crnt->next);
+        crnt = crnt->next;
+    }
+    return 1.0;
 }
 
 int main(int argc, char **argv) {
@@ -83,7 +94,7 @@ int main(int argc, char **argv) {
             if (c == ',') {
                 buffer[i] = '\0';
                 tmp2 = strtol(buffer, NULL, 10);
-                crnt->lat = (double)(tmp1 / 100) + ((double)(tmp1 % 100) + (double)tmp2 / 10000) / 60;
+                crnt->lat = (double)(tmp1 / 100) + ((double)(tmp1 % 100) + (double)tmp2 / 10000.0) / 60.0;
                 i = 0;
                 status = 5;
             } else {
@@ -108,7 +119,7 @@ int main(int argc, char **argv) {
             if (c == ',') {
                 buffer[i] = '\0';
                 tmp2 = strtol(buffer, NULL, 10);
-                crnt->lon = (double)(tmp1 / 100) + ((double)(tmp1 % 100) + (double)tmp2 / 10000) / 60;
+                crnt->lon = (double)(tmp1 / 100) + ((double)(tmp1 % 100) + (double)tmp2 / 10000.0) / 60.0;
                 i = 0;
                 status = 8;
             } else {
@@ -126,6 +137,7 @@ int main(int argc, char **argv) {
         }
         c = getc(fpr);
     }
+    calc_dist();
     // printf("################################################\n");
     del_list();
 
