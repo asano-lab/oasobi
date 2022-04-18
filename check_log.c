@@ -20,6 +20,10 @@ int main(int argc, char **argv) {
     int status = 0;
     double f;
 
+    START = (List*)malloc(sizeof(List));
+    START->next = NULL;
+    List *crnt = START;
+
     if (argc != 2) {
         return -1;
     }
@@ -67,6 +71,34 @@ int main(int argc, char **argv) {
                 buffer[i] = '\0';
                 tmp2 = strtol(buffer, NULL, 10);
                 // printf("%s\n", buffer);
+                f = (double)(tmp1 / 100) + ((double)(tmp1 % 100) + (double)tmp2 / 10000) / 60;
+                // printf("%f\n", f);
+                i = 0;
+                status = 5;
+            } else {
+                buffer[i++] = c;
+            }
+        } else if (status == 5) {
+            if (c == 'N') {
+                ;
+            } else if (c == ',') {
+                status = 6;
+            }
+        } else if (status == 6) {
+            if (c == '.') {
+                buffer[i] = '\0';
+                tmp1 = strtol(buffer, NULL, 10);
+                printf("%s.", buffer);
+                i = 0;
+                status = 7;
+            } else {
+                buffer[i++] = c;
+            }
+        } else if (status == 7) {
+            if (c == ',') {
+                buffer[i] = '\0';
+                tmp2 = strtol(buffer, NULL, 10);
+                printf("%s\n", buffer);
                 f = (double)(tmp1 / 100) + ((double)(tmp1 % 100) + (double)tmp2 / 10000) / 60;
                 printf("%f\n", f);
                 i = 0;
