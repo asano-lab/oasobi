@@ -10,6 +10,18 @@ typedef struct list {
 
 List *START;
 
+// リスト全開放
+void del_list() {
+    List *crnt = START;
+    List *dst;
+    while (crnt != NULL) {
+        printf("%f, %f, %lx\n", crnt->lat, crnt->lon, (u_long)crnt->next);
+        dst = crnt->next;
+        free(crnt);
+        crnt = dst;
+    }
+}
+
 int main(int argc, char **argv) {
     FILE *fpr;
     char c;
@@ -22,6 +34,7 @@ int main(int argc, char **argv) {
     START = (List*)malloc(sizeof(List));
     START->next = NULL;
     List *crnt = START;
+    List *dst;
 
     if (argc != 2) {
         return -1;
@@ -97,6 +110,9 @@ int main(int argc, char **argv) {
                 tmp2 = strtol(buffer, NULL, 10);
                 crnt->lon = (double)(tmp1 / 100) + ((double)(tmp1 % 100) + (double)tmp2 / 10000) / 60;
                 printf("%f, %f\n", crnt->lat, crnt->lon);
+                dst = (List*)malloc(sizeof(List));
+                crnt->next = dst;
+                crnt = dst;
                 i = 0;
                 status = 0;
             } else {
@@ -105,6 +121,8 @@ int main(int argc, char **argv) {
         }
         c = getc(fpr);
     }
+    printf("################################################\n");
+    del_list();
 
     fclose(fpr);
     return 0;
