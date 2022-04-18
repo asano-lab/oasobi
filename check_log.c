@@ -16,7 +16,7 @@ int main(int argc, char **argv) {
     char c;
     char buffer[256];
 
-    int i;
+    int i, tmp1, tmp2;
     int status = 0;
     double f;
 
@@ -53,10 +53,21 @@ int main(int argc, char **argv) {
                 i = 0;
             }
         } else if (status == 3) {
+            if (c == '.') {
+                buffer[i] = '\0';
+                tmp1 = strtol(buffer, NULL, 10);
+                printf("%d.", tmp1);
+                i = 0;
+                status = 4;
+            } else {
+                buffer[i++] = c;
+            }
+        } else if (status == 4) {
             if (c == ',') {
                 buffer[i] = '\0';
-                f = strtod(buffer, NULL);
-                printf("%.6f\n", f);
+                tmp2 = strtol(buffer, NULL, 10);
+                printf("%d\n", tmp2);
+                i = 0;
                 status = 0;
             } else {
                 buffer[i++] = c;
