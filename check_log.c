@@ -27,10 +27,16 @@ void del_list() {
 
 // 距離計算
 double calc_dist() {
-    List *crnt = START;
-    while (crnt->next != NULL) {
-        printf("%f, %f, %lx\n", crnt->lat, crnt->lon, (u_long)crnt->next);
-        crnt = crnt->next;
+    List *l1 = START;
+    List *l2 = l1->next;
+    double dist = 0.0;
+
+    while (l2->next != NULL) {
+        printf("%f, %f, %lx, ", l1->lat, l1->lon, (u_long)l1->next);
+        printf("%f, %f, %lx\n", l2->lat, l2->lon, (u_long)l2->next);
+        // dist += EARTH_RADIUS * acos(sin(crnt->lat) * sin(crnt->next->lat));
+        l1 = l2;
+        l2 = l1->next;
     }
     return 1.0;
 }
