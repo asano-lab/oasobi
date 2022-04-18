@@ -72,7 +72,6 @@ int main(int argc, char **argv) {
             if (c == '.') {
                 buffer[i] = '\0';
                 tmp1 = strtol(buffer, NULL, 10);
-                // printf("%s.", buffer);
                 i = 0;
                 status = 4;
             } else {
@@ -82,7 +81,6 @@ int main(int argc, char **argv) {
             if (c == ',') {
                 buffer[i] = '\0';
                 tmp2 = strtol(buffer, NULL, 10);
-                // printf("%s\n", buffer);
                 crnt->lat = (double)(tmp1 / 100) + ((double)(tmp1 % 100) + (double)tmp2 / 10000) / 60;
                 i = 0;
                 status = 5;
@@ -109,7 +107,6 @@ int main(int argc, char **argv) {
                 buffer[i] = '\0';
                 tmp2 = strtol(buffer, NULL, 10);
                 crnt->lon = (double)(tmp1 / 100) + ((double)(tmp1 % 100) + (double)tmp2 / 10000) / 60;
-                printf("%f, %f\n", crnt->lat, crnt->lon);
                 dst = (List*)malloc(sizeof(List));
                 crnt->next = dst;
                 crnt = dst;
@@ -121,7 +118,7 @@ int main(int argc, char **argv) {
         }
         c = getc(fpr);
     }
-    printf("################################################\n");
+    // printf("################################################\n");
     del_list();
 
     fclose(fpr);
