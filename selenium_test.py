@@ -7,6 +7,16 @@ from math import log2
 
 SLEEP_TIME = 0.3
 
+def solve_q1_1_1(m):
+    print("固定値: 2")
+    return "2"
+
+QUESTIONS = [
+    [
+        {"pattern": re.compile(r'アナログ信号をディジタル化'), "solver": solve_q1_1_1}
+    ]
+]
+
 def solve_questions(driver):
     e1 = driver.find_element_by_xpath("/html/body/dir[1]/table/tbody/tr/td/blockquote")
     answer_input = driver.find_element_by_xpath("/html/body/dir[2]/form/input")
@@ -15,11 +25,17 @@ def solve_questions(driver):
 
     print(inner_html)
 
-    m = re.search(r'アナログ信号をディジタル化', inner_html)
-    if m:
-        answer_input.send_keys("2")
-        answer_button.click()
-        return True
+    for q in QUESTIONS[0]:
+        m = re.search(q["pattern"], inner_html)
+        if m:
+            answer_input.send_keys(q["solver"](m))
+            answer_button.click()
+            return True
+    # m = re.search(r'アナログ信号をディジタル化', inner_html)
+    # if m:
+    #     answer_input.send_keys("2")
+    #     answer_button.click()
+    #     return True
     m = re.search(r'次の情報のうち「ディジタル」', inner_html)
     if m:
         answer_input.send_keys("2 3")
