@@ -92,9 +92,9 @@ def main():
     time.sleep(SLEEP_TIME)
 
     for chapter in QUESTIONS.keys():
-        # if chapter == "3-2":
-        complete_questions(driver, chapter)
-        time.sleep(SLEEP_TIME)
+        if chapter == "4-1":
+            complete_questions(driver, chapter)
+            time.sleep(SLEEP_TIME)
 
     input("press enter to end: ")
     # time.sleep(3)

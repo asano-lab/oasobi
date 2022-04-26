@@ -1,4 +1,6 @@
+import code
 import re
+import numpy as np
 from math import log2, ceil
 
 def fixed_value(v: str) -> str:
@@ -26,6 +28,77 @@ def del_zero(ans):
     if ans[-1] == "0":
         ans = ans[:-1]
     return ans
+
+# ハフマン符号関連
+def get_min_syms(d_inv, n):
+    """
+    下からn番目までの記号を取り出す?
+    """
+    min_prob = min(d_inv)
+    min_prob_syms = d_inv.pop(min_prob)
+    
+    rem_len = n - len(min_prob_syms)
+    # オーバー
+    if rem_len < 0:
+        min_prob_syms.sort(reverse=True)
+        return min_prob_syms[:n]
+    elif rem_len == 0:
+        return min_prob_syms
+    else:
+        # 足りない場合は再帰
+        return min_prob_syms + get_min_syms(d_inv, rem_len)
+
+def create_connection_dict(prob_d):
+    prob_d_cp = prob_d.copy()
+    cnct_d = {}
+    next_key = max(prob_d_cp) + 1
+
+    while len(prob_d_cp) > 1:
+        prob_d_inv = {}
+        # 逆引き辞書作成
+        for k, v in prob_d_cp.items():
+            if v in prob_d_inv:
+                prob_d_inv[v].append(k)
+            else:
+                prob_d_inv[v] = [k]
+
+        print(prob_d_inv)
+
+        min_syms = get_min_syms(prob_d_inv, 2)
+
+        prob_d_cp[next_key] = sum(v for k, v in prob_d_cp.items() if k in min_syms)
+        cnct_d[next_key] = sorted(min_syms)
+        
+        for i in min_syms:
+            prob_d_cp.pop(i)
+    
+        print(prob_d_cp)
+        print(cnct_d)
+        next_key += 1
+
+    return cnct_d
+
+def generate_code(cnct_d, code_d):
+    """
+    枝の繋がりから符号を作成
+    """
+    max_key = max(cnct_d)
+    children = cnct_d.pop(max_key)
+    
+    print(cnct_d)
+    
+    for i, j in enumerate(children):
+        if max_key in code_d:
+            code_d[j] = code_d[max_key] + str(i)
+        else:
+            code_d[j] = str(i)
+    
+    if max_key in code_d:
+        code_d.pop(max_key)
+    print(code_d)
+    
+    if any(cnct_d):
+        generate_code(cnct_d, code_d)
 
 # 1
 def solve_q1_1_1(m):
@@ -149,6 +222,28 @@ def solve_q3_2_4(m):
     print("最低 %s ビット必要" % ans)
     return ans
 
+# 4-1
+def solve_q4_1_1(m):
+    p_arr = [float(i) for i in m.groups()[0].split(" ")]
+    print(p_arr)
+    print(sum(p_arr))
+    prob_dict = {k: v for k, v in enumerate(p_arr)}
+
+    connect_dict = create_connection_dict(prob_dict)
+
+    print("#" * 100)
+
+    code_dict = {}
+    generate_code(connect_dict, code_dict)
+
+    sorted_keys = sorted(code_dict.keys())
+    ans = ""
+    for i in sorted_keys:
+        ans += code_dict[i] + " "
+    ans = ans[:-1]
+    print(ans)
+    return ans
+
 QUESTIONS = {
     "1": {
         "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[2]/td[3]/a",
@@ -197,6 +292,24 @@ QUESTIONS = {
             {"pattern": re.compile(r'５元情報源の記号発生確率が｛([0-9\. ]+)｝'), "solver": solve_q3_2_2},
             {"pattern": re.compile(r'下記符号の平均符号長'), "solver": solve_q3_2_3},
             {"pattern": re.compile(r'３元情報源の記号発生確率が｛ ([0-9\. ]+) ｝'), "solver": solve_q3_2_4}
+        ]
+    },
+    "4-1": {
+        "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[5]/td[3]/a[1]",
+        "questions": [
+            {"pattern": re.compile(r'確率はそれぞれ \{([0-9\. ]+)\}'), "solver": solve_q4_1_1},
+        ]
+    },
+    "4-2": {
+        "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[5]/td[3]/a[2]",
+        "questions": [
+
+        ]
+    },
+    "4-2": {
+        "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[5]/td[3]/a[3]",
+        "questions": [
+
         ]
     }
 }
