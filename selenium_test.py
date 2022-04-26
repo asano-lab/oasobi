@@ -11,9 +11,25 @@ def solve_q1_1_1(m):
     print("固定値: 2")
     return "2"
 
+def solve_q1_1_2(m):
+    print("固定値: 2 3")
+    return "2 3"
+
+def solve_q1_1_3(m):
+    print("固定値: 1 4")
+    return "1 4"
+
+def solve_q1_1_4(m):
+    ans = str(int(m.groups()[0]) * 2)
+    print("最高周波数の倍 %s サンプル必要" % ans)
+    return ans
+
 QUESTIONS = [
     [
-        {"pattern": re.compile(r'アナログ信号をディジタル化'), "solver": solve_q1_1_1}
+        {"pattern": re.compile(r'アナログ信号をディジタル化'), "solver": solve_q1_1_1},
+        {"pattern": re.compile(r'次の情報のうち「ディジタル」'), "solver": solve_q1_1_2},
+        {"pattern": re.compile(r'次の情報のうちディジタルがアナログより'), "solver": solve_q1_1_3},
+        {"pattern": re.compile(r'最高周波数が (\d+) Hz'), "solver": solve_q1_1_4}
     ]
 ]
 
@@ -31,28 +47,13 @@ def solve_questions(driver):
             answer_input.send_keys(q["solver"](m))
             answer_button.click()
             return True
-    # m = re.search(r'アナログ信号をディジタル化', inner_html)
+    # m = re.search(r'最高周波数が (\d+) Hz', inner_html)
     # if m:
-    #     answer_input.send_keys("2")
+    #     ans = str(int(m.groups()[0]) * 2)
+    #     print(ans)
+    #     answer_input.send_keys(ans)
     #     answer_button.click()
     #     return True
-    m = re.search(r'次の情報のうち「ディジタル」', inner_html)
-    if m:
-        answer_input.send_keys("2 3")
-        answer_button.click()
-        return True
-    m = re.search(r'次の情報のうちディジタルがアナログより', inner_html)
-    if m:
-        answer_input.send_keys("1 4")
-        answer_button.click()
-        return True
-    m = re.search(r'最高周波数が (\d+) Hz', inner_html)
-    if m:
-        ans = str(int(m.groups()[0]) * 2)
-        print(ans)
-        answer_input.send_keys(ans)
-        answer_button.click()
-        return True
     m = re.search(r'(\d+) Mb/s である。アナログ信号を表すために <br>\n(\d+)レベル', inner_html)
     if m:
         mg = m.groups()
