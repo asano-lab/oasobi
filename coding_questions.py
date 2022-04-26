@@ -314,7 +314,7 @@ def solve_q4_2_1(m):
     print(ans)
     return ans
 
-def solve_q4_2_2(m):
+def solve_q4_2_3(m):
     """
     ランレングス・ハフマン符号
     """
@@ -360,7 +360,7 @@ def solve_q4_3_1(m):
                 pattern = symbol_series[j:j+l]
                 if pattern not in known_patterns:
                     known_patterns[pattern] = (j, l)
-    #                 print(i, j, l, pattern)
+                    # print(i, j, l, pattern)
         for j in range(i, 0, -1):
             pattern = symbol_series[i:i + j]
             print(i, j, pattern)
@@ -448,7 +448,7 @@ QUESTIONS = {
         "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[5]/td[3]/a[2]",
         "questions": [
             {"pattern": re.compile(r'発生された記号は \{([WB]+)\}.*\n.*Ｎ＝([０-９])を使用'), "solver": solve_q4_2_1},
-            {"pattern": re.compile(r'Ｐ（Ｂ）＝ ([0-9\.]+)'), "solver": solve_q4_2_2}
+            {"pattern": re.compile(r'Ｐ（Ｂ）＝ ([0-9\.]+)'), "solver": solve_q4_2_3}
         ]
     },
     "4-3": {

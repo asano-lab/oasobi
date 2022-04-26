@@ -5,7 +5,7 @@ import time
 import re
 from coding_questions import QUESTIONS
 
-SLEEP_TIME = 0.2
+SLEEP_TIME = 0.1
 
 RETRY_MAX = 0
 
@@ -64,10 +64,11 @@ def complete_questions(driver, chapter):
                     print("#%s クリア!!" % chapter)
                     break
                 except NoSuchElementException:
+                    print("不正解!")
+                    input()
                     if retry_count < RETRY_MAX:
                         retry_button = driver.find_element_by_xpath("/html/body/center/table[2]/tbody/tr/td[1]/form/input[8]")
                         retry_button.click()
-                        print("不正解!")
                         retry_count += 1
                     else:
                         back_button = driver.find_element_by_xpath("/html/body/center/table[2]/tbody/tr/td[2]/a")
