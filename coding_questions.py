@@ -252,10 +252,23 @@ def solve_q4_1_3(m):
     """
     mg = m.groups()
     patterns = mg[:-1]
-    print(patterns)
-    code = mg[-1]
-    print(code)
-    return ""
+    # print(patterns)
+    rem = mg[-1]
+    ans = []
+    while rem:
+        for i, p in enumerate(patterns):
+            m2 = re.match(p, rem)
+            if m2:
+                # print(p, rem)
+                ans.append("a%d" % i)
+                rem = rem[len(p):]
+                break
+        # 必ず何かしらの記号にマッチするはず
+        else:
+            break
+    ans = " ".join(ans)
+    print(ans)
+    return ans
 
 QUESTIONS = {
     "1": {
