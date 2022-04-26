@@ -73,6 +73,20 @@ def solve_q2_1_10(m):
     print("固定値: 0.794")
     return "0.794"
 
+def solve_q3_1_1(m):
+    part = m.groups()[0]
+    ans = str(len(part.split(" ")))
+    print("%s の記号の数 %s" % (part, ans))
+    return ans
+
+def solve_q3_1_2(m):
+    print("固定値: 3 4 7 8")
+    return "3 4 7 8"
+
+def solve_q3_1_3(m):
+    print("固定値: 0.0504 0.0380")
+    return "0.0504 0.0380"
+
 QUESTIONS = {
     "1": {
         "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[2]/td[3]/a",
@@ -99,6 +113,14 @@ QUESTIONS = {
             {"pattern": re.compile(r'2 元対称通信路を用いて P\(X=0\|Y=1\)'), "solver": solve_q2_1_8},
             {"pattern": re.compile(r'2 元対称通信路を用いて P\(X=1\|Y=0\)'), "solver": solve_q2_1_9},
             {"pattern": re.compile(r'2 元対称通信路を用いて P\(X=1\|Y=1\)'), "solver": solve_q2_1_10}
+        ]
+    },
+    "3-1": {
+        "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[4]/td[3]/a[1]",
+        "questions": [
+            {"pattern": re.compile(r'記号が｛([A-Z ]+)｝の場合'), "solver": solve_q3_1_1},
+            {"pattern": re.compile(r'５元情報源において、有効'), "solver": solve_q3_1_2},
+            {"pattern": re.compile(r'ある定常２元情報源から出る'), "solver": solve_q3_1_3}
         ]
     }
 }

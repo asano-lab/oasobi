@@ -90,8 +90,9 @@ def main():
     time.sleep(SLEEP_TIME)
 
     for chapter in QUESTIONS.keys():
-        complete_questions(driver, chapter)
-        time.sleep(SLEEP_TIME)
+        if chapter == "3-1":
+            complete_questions(driver, chapter)
+            time.sleep(SLEEP_TIME)
 
     time.sleep(3)
 
