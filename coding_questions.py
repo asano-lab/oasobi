@@ -1,5 +1,5 @@
 import re
-from math import log2
+from math import log2, ceil
 
 def fixed_value(v: str) -> str:
     """
@@ -7,6 +7,25 @@ def fixed_value(v: str) -> str:
     """
     print("固定値: %s" % v)
     return v
+
+def calc_entropy(p_arr):
+    """
+    エントロピーを計算
+    """
+    if abs(sum(p_arr) - 1) > 1e-10:
+        print(sum(p_arr))
+        return
+    e = 0
+    for i in p_arr:
+        if i < 1e-10:
+            continue
+        e -= i * log2(i)
+    return e
+
+def del_zero(ans):
+    if ans[-1] == "0":
+        ans = ans[:-1]
+    return ans
 
 # 1
 def solve_q1_1_1(m):
@@ -76,16 +95,13 @@ def solve_q3_1_1(m):
     return ans
 
 def solve_q3_1_2(m):
-    print("固定値: 3 4 7 8")
-    return "3 4 7 8"
+    return fixed_value("3 4 7 8")
 
 def solve_q3_1_3(m):
-    print("固定値: 0.0504 0.0380")
-    return "0.0504 0.0380"
+    return fixed_value("0.0504 0.0380")
 
 def solve_q3_1_4(m):
-    print("固定値: 0.128")
-    return "0.128"
+    return fixed_value("0.128")
 
 def solve_q3_1_5(m):
     prob_str = m.groups()[0]
@@ -100,16 +116,38 @@ def solve_q3_1_5(m):
     return ans
 
 def solve_q3_1_6(m):
-    print("固定値:")
-    return "a"
+    return fixed_value("")
 
 def solve_q3_1_7(m):
-    print("固定値: 1 2")
-    return "1 2"
+    return fixed_value("1 2")
 
 def solve_q3_1_8(m):
-    print("固定値: 1")
-    return "1"
+    return fixed_value("1")
+
+# 3-2
+def solve_q3_2_1(m):
+    p_arr = [float(i) for i in m.groups()[0].split(" ")]
+    print(p_arr)
+    ans = "{:.2f}".format(calc_entropy(p_arr))
+    ans = del_zero(ans)
+    print("エントロピー %s" % ans)
+    return ans
+
+def solve_q3_2_2(m):
+    """
+    3-2-1と同様だが形だけ定義
+    """
+    return solve_q3_2_1(m)
+
+def solve_q3_2_3(m):
+    return fixed_value("2.75")
+
+def solve_q3_2_4(m):
+    p_arr = [float(i) for i in m.groups()[0].split(" ")]
+    print(p_arr)
+    ans = ceil(10000 * calc_entropy(p_arr))
+    print("最低 %s ビット必要" % ans)
+    return ans
 
 QUESTIONS = {
     "1": {
@@ -150,6 +188,15 @@ QUESTIONS = {
             {"pattern": re.compile(r'</th></tr> <tr> <td>A</td><td>0.05</td><td>00 <br>'), "solver": solve_q3_1_6},
             {"pattern": re.compile(r'</th></tr> <tr> <td>A</td><td>0.1 </td><td>000 <br>'), "solver": solve_q3_1_7},
             {"pattern": re.compile(r'</th></tr> <tr> <td>A</td><td>0.5 </td><td>1 <br>'), "solver": solve_q3_1_8}
+        ]
+    },
+    "3-2": {
+        "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[4]/td[3]/a[2]",
+        "questions": [
+            {"pattern": re.compile(r'４元情報源の記号発生確率が｛ ([0-9\. ]+) ｝'), "solver": solve_q3_2_1},
+            {"pattern": re.compile(r'５元情報源の記号発生確率が｛([0-9\. ]+)｝'), "solver": solve_q3_2_2},
+            {"pattern": re.compile(r'下記符号の平均符号長'), "solver": solve_q3_2_3},
+            {"pattern": re.compile(r'３元情報源の記号発生確率が｛ ([0-9\. ]+) ｝'), "solver": solve_q3_2_4}
         ]
     }
 }

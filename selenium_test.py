@@ -67,6 +67,7 @@ def complete_questions(driver, chapter):
                     if retry_count < RETRY_MAX:
                         retry_button = driver.find_element_by_xpath("/html/body/center/table[2]/tbody/tr/td[1]/form/input[8]")
                         retry_button.click()
+                        print("不正解!")
                         retry_count += 1
                     else:
                         back_button = driver.find_element_by_xpath("/html/body/center/table[2]/tbody/tr/td[2]/a")
@@ -91,7 +92,7 @@ def main():
     time.sleep(SLEEP_TIME)
 
     for chapter in QUESTIONS.keys():
-        if chapter == "2":
+        if chapter == "3-2":
             complete_questions(driver, chapter)
             time.sleep(SLEEP_TIME)
 
