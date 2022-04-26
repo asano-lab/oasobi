@@ -1,6 +1,7 @@
 import code
 import re
 import numpy as np
+import unicodedata
 from math import log2, ceil
 
 def fixed_value(v: str) -> str:
@@ -101,8 +102,20 @@ def generate_code(cnct_d, code_d):
     if any(cnct_d):
         generate_code(cnct_d, code_d)
 
+def run_length_each_prob(Pb, N):
+    """
+    各長さの確率
+    """
+    return np.array([(1 - Pb) ** i * Pb for i in range(N)] + [(1 - Pb) ** N])
+
+def calc_source_len_mean(Pb, N):
+    """
+    情報源の長さの平均値
+    """
+    return (1 - (1 - Pb) ** N) / Pb
+
 # 1
-# 多分ここだけ順番がランダムで出題される
+# 順不同出題
 def solve_q1_1_1(m):
     return fixed_value("2")
 
@@ -275,14 +288,104 @@ def solve_q4_1_3(m):
 
 # 4-2
 def solve_q4_2_1(m):
-    symbol_series = m.groups()[0]
+    """
+    ランレングス符号化 (ただ区切るだけ)
+    """
+    mg = m.groups()
+    symbol_series = mg[0]
+    r_max = int(mg[1])
+    print(r_max)
     print(symbol_series)
-    return ""
+    r = 1
+    r_list = []
+    for s in symbol_series:
+        if s == "B":
+            r_list.append(r - 1)
+            r = 1
+        elif r < r_max:
+            r += 1
+        else:
+            r_list.append(r)
+            r = 1
+    if r > 1:
+        r_list.append(r)
+
+    ans = " ".join([str(i) for i in r_list])
+    print(ans)
+    return ans
 
 def solve_q4_2_2(m):
+    """
+    ランレングス・ハフマン符号
+    """
+    Pb = float(m.groups()[0])
+    N = 4
+
+    prob_arr = run_length_each_prob(Pb, N)
+    print(prob_arr, prob_arr.sum())
+
+    prob_dict = {k: v for k, v in enumerate(prob_arr)}
+
+    connect_dict = create_connection_dict(prob_dict)
+
+    print("#" * 100)
+
+    code_dict = {}
+    generate_code(connect_dict, code_dict)
+
+    len_arr = np.array([len(code_dict[k]) for k in sorted(code_dict.keys())])
+
+    codeword_len_mean = np.dot(prob_arr, len_arr)
+    print("L = %f" % codeword_len_mean)
+    source_len_mean = calc_source_len_mean(Pb, N)
+    print("n_N = %f" % source_len_mean)
+
+    ans = "{:.3f}".format(codeword_len_mean / source_len_mean)
+    print("l_N = %s" % ans)
+    return ans
+
+# 4-3
+def solve_q4_3_1(m):
+    """
+    ZL符号
+    """
     symbol_series = m.groups()[0]
-    print(symbol_series)
-    return ""
+    codes = []
+    known_patterns = {}
+
+    i = 0
+    while i < len(symbol_series):
+        for j in range(i):
+            for l in range(1, i - j + 1):
+                pattern = symbol_series[j:j+l]
+                if pattern not in known_patterns:
+                    known_patterns[pattern] = (j, l)
+    #                 print(i, j, l, pattern)
+        for j in range(i, 0, -1):
+            pattern = symbol_series[i:i + j]
+            print(i, j, pattern)
+            if pattern in known_patterns:
+                if i + j >= len(symbol_series):
+                    print("末尾余り")
+                    i = float("inf")
+                else:
+                    codes.append(known_patterns[pattern] + (symbol_series[i+j],))
+                    i += j + 1
+                break
+        else:
+            codes.append((0, 0, symbol_series[i]))
+            i += 1
+        print("#" * 100)
+        
+    # print(known_patterns)
+    print(codes)
+
+    ans = ""
+    for i in codes:
+        ans += "%d" % (i[i] + 1)
+    ans = ans[:-1]
+    print(ans)
+    return ans
 
 QUESTIONS = {
     "1": {
@@ -344,14 +447,14 @@ QUESTIONS = {
     "4-2": {
         "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[5]/td[3]/a[2]",
         "questions": [
-            {"pattern": re.compile(r'記号系列は \{([AB]+)\}'), "solver": solve_q4_2_1},
-            {"pattern": re.compile(r'発生された記号は \{([WB]+)\}'), "solver": solve_q4_2_2}
+            {"pattern": re.compile(r'発生された記号は \{([WB]+)\}.*\n.*Ｎ＝([０-９])を使用'), "solver": solve_q4_2_1},
+            {"pattern": re.compile(r'Ｐ（Ｂ）＝ ([0-9\.]+)'), "solver": solve_q4_2_2}
         ]
     },
     "4-3": {
         "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[5]/td[3]/a[3]",
         "questions": [
-
+            {"pattern": re.compile(r'記号系列は \{([AB]+)\}'), "solver": solve_q4_3_1}
         ]
     }
 }
