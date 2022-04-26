@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
 import time
 
 def main():
@@ -29,6 +30,14 @@ def main():
 
     start_button = driver.find_element_by_xpath("/html/body/dl/dd[2]/form/input[5]")
     start_button.click()
+
+    time.sleep(1)
+
+    start_button = driver.find_element_by_xpath("/html/body/center/form[1]/input[8]")
+    start_button.click()
+
+    e1 = driver.find_element_by_xpath("/html/body/dir[1]/table/tbody/tr/td/blockquote")
+    print(e1.get_attribute("innerHTML"))
 
     # driver.switch_to.alert.authenticate("cheese", "secretGouda")
     # Alert(driver).accept()
