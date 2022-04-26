@@ -35,6 +35,10 @@ def solve_q1_1_6(m):
     print("レベルは2のビット数乗 %s" % ans)
     return ans
 
+def solve_q1_1_7(m):
+    print("固定値: 3")
+    return "3"
+
 QUESTIONS = [
     [
         {"pattern": re.compile(r'アナログ信号をディジタル化'), "solver": solve_q1_1_1},
@@ -42,7 +46,8 @@ QUESTIONS = [
         {"pattern": re.compile(r'次の情報のうちディジタルがアナログより'), "solver": solve_q1_1_3},
         {"pattern": re.compile(r'最高周波数が (\d+) Hz'), "solver": solve_q1_1_4},
         {"pattern": re.compile(r'(\d+) Mb/s である。アナログ信号を表すために <br>\n(\d+)レベル'), "solver": solve_q1_1_5},
-        {"pattern": re.compile(r'ディジタル化するとき, (\d+) ビット/サンプル'), "solver": solve_q1_1_6}
+        {"pattern": re.compile(r'ディジタル化するとき, (\d+) ビット/サンプル'), "solver": solve_q1_1_6},
+        {"pattern": re.compile(r'次の文章.*用語はなにか'), "solver": solve_q1_1_7}
     ]
 ]
 
@@ -50,28 +55,17 @@ def solve_questions(driver):
     e1 = driver.find_element_by_xpath("/html/body/dir[1]/table/tbody/tr/td/blockquote")
     answer_input = driver.find_element_by_xpath("/html/body/dir[2]/form/input")
     answer_button = driver.find_element_by_xpath("/html/body/input[5]")
+
     inner_html = e1.get_attribute("innerHTML")
 
     print(inner_html)
-
     for q in QUESTIONS[0]:
         m = re.search(q["pattern"], inner_html)
         if m:
             answer_input.send_keys(q["solver"](m))
             answer_button.click()
             return True
-    # m = re.search(r'ディジタル化するとき, (\d+) ビット/サンプル', inner_html)
-    # if m:
-    #     ans = str(1 << int(m.groups()[0]))
-    #     print(ans)
-    #     answer_input.send_keys(ans)
-    #     answer_button.click()
-    #     return True
-    m = re.search(r'次の文章', inner_html)
-    if m:
-        answer_input.send_keys(3)
-        answer_button.click()
-        return True
+    
     return False
 
 def main():
