@@ -392,7 +392,54 @@ def solve_q4_3_1(m):
     return ans
 
 def solve_q4_3_2(m):
-    return ""
+    """
+    実用的なZL符号化
+    """
+    symbol_series = m.groups()[0]
+
+    offset_bit = 3
+    length_bit = 2
+
+    offset = 1 << offset_bit
+    length = 1 << length_bit
+
+    buffer = "A" * offset + symbol_series[:length]
+
+    symbol_remain = symbol_series[length:]
+
+    codes = []
+    while len(buffer) > offset:
+        print(buffer[:offset] + "|" + buffer[offset:])
+        print(symbol_remain)
+        
+        known_patterns = {}
+        for i in range(offset):
+            for j in range(i + 1, offset + 1):
+                pattern = buffer[i:j]
+                if pattern not in known_patterns:
+                    known_patterns[pattern] = (i, j - i)
+    #     print(known_patterns)
+        for l in range(len(buffer) - offset - 1, 0, -1):
+            pattern = buffer[offset:offset+l]
+            print(i, j, pattern)
+            if pattern in known_patterns:
+                codes.append(known_patterns[pattern] + (buffer[offset + l],))
+                buffer = buffer[l+1:] + symbol_remain[:l+1]
+                symbol_remain = symbol_remain[l+1:]
+                break
+        else:
+            codes.append((0, 0, buffer[offset]))
+            buffer = buffer[1:] + symbol_remain[:1]
+            symbol_remain = symbol_remain[1:]
+        print("#" * 50)
+    print(codes)
+
+    ans = ""
+    for i in codes:
+        ans += format(i[0], "0%db" % offset_bit) + format(i[1], "0%db" % length_bit) + str((i[2] == "B") * 1) + " "
+    ans = ans[:-1]
+    print(ans)
+    return ans
 
 QUESTIONS = {
     "1": {
