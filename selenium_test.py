@@ -24,12 +24,25 @@ def solve_q1_1_4(m):
     print("最高周波数の倍 %s サンプル必要" % ans)
     return ans
 
+def solve_q1_1_5(m):
+    mg = m.groups()
+    ans = str(int(mg[0]) // int(log2(int(mg[1]))))
+    print("通信速度をレベルのビット数で割った %s MHz" % ans)
+    return ans
+
+def solve_q1_1_6(m):
+    ans = str(1 << int(m.groups()[0]))
+    print("レベルは2のビット数乗 %s" % ans)
+    return ans
+
 QUESTIONS = [
     [
         {"pattern": re.compile(r'アナログ信号をディジタル化'), "solver": solve_q1_1_1},
         {"pattern": re.compile(r'次の情報のうち「ディジタル」'), "solver": solve_q1_1_2},
         {"pattern": re.compile(r'次の情報のうちディジタルがアナログより'), "solver": solve_q1_1_3},
-        {"pattern": re.compile(r'最高周波数が (\d+) Hz'), "solver": solve_q1_1_4}
+        {"pattern": re.compile(r'最高周波数が (\d+) Hz'), "solver": solve_q1_1_4},
+        {"pattern": re.compile(r'(\d+) Mb/s である。アナログ信号を表すために <br>\n(\d+)レベル'), "solver": solve_q1_1_5},
+        {"pattern": re.compile(r'ディジタル化するとき, (\d+) ビット/サンプル'), "solver": solve_q1_1_6}
     ]
 ]
 
@@ -47,28 +60,13 @@ def solve_questions(driver):
             answer_input.send_keys(q["solver"](m))
             answer_button.click()
             return True
-    # m = re.search(r'最高周波数が (\d+) Hz', inner_html)
+    # m = re.search(r'ディジタル化するとき, (\d+) ビット/サンプル', inner_html)
     # if m:
-    #     ans = str(int(m.groups()[0]) * 2)
+    #     ans = str(1 << int(m.groups()[0]))
     #     print(ans)
     #     answer_input.send_keys(ans)
     #     answer_button.click()
     #     return True
-    m = re.search(r'(\d+) Mb/s である。アナログ信号を表すために <br>\n(\d+)レベル', inner_html)
-    if m:
-        mg = m.groups()
-        ans = str(int(mg[0]) // int(log2(int(mg[1]))))
-        print(ans)
-        answer_input.send_keys(ans)
-        answer_button.click()
-        return True
-    m = re.search(r'ディジタル化するとき, (\d+) ビット/サンプル', inner_html)
-    if m:
-        ans = str(1 << int(m.groups()[0]))
-        print(ans)
-        answer_input.send_keys(ans)
-        answer_button.click()
-        return True
     m = re.search(r'次の文章', inner_html)
     if m:
         answer_input.send_keys(3)
