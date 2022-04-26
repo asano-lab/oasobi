@@ -1,0 +1,7 @@
+<a href="/cgi-bin/cai/sys/top.cgi?exe_dir=inftheory/chapter01/">#1</a>
+<a href="/cgi-bin/cai/sys/top.cgi?exe_dir=inftheory/chapter02/">#2</a>
+
+<p>
+通信路で送信できるのは、16 Mb/s である。アナログ信号を表すために <br>
+16レベルを使うなら、サンプリング周波数は最高何 MHz 未満が可能か？ <br>
+</p>
