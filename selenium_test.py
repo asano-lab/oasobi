@@ -65,7 +65,7 @@ def complete_questions(driver, chapter):
                     break
                 except NoSuchElementException:
                     print("不正解!")
-                    input()
+                    input("press enter to end: ")
                     if retry_count < RETRY_MAX:
                         retry_button = driver.find_element_by_xpath("/html/body/center/table[2]/tbody/tr/td[1]/form/input[8]")
                         retry_button.click()
@@ -93,11 +93,11 @@ def main():
     time.sleep(SLEEP_TIME)
 
     for chapter in QUESTIONS.keys():
-        if chapter == "4-2":
+        if chapter == "4-3":
             complete_questions(driver, chapter)
             time.sleep(SLEEP_TIME)
 
-    input("press enter to end: ")
+    # input("press enter to end: ")
     # time.sleep(3)
 
 if __name__ == "__main__":

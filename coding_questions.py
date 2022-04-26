@@ -354,38 +354,45 @@ def solve_q4_3_1(m):
     known_patterns = {}
 
     i = 0
+    rem = ""
     while i < len(symbol_series):
         for j in range(i):
             for l in range(1, i - j + 1):
                 pattern = symbol_series[j:j+l]
                 if pattern not in known_patterns:
                     known_patterns[pattern] = (j, l)
-                    # print(i, j, l, pattern)
         for j in range(i, 0, -1):
             pattern = symbol_series[i:i + j]
-            print(i, j, pattern)
+            # print(i, j, pattern)
             if pattern in known_patterns:
                 if i + j >= len(symbol_series):
-                    print("末尾余り")
+                    print(i, j, pattern)
+                    rem = pattern
+                    print("末尾余り: %s" % rem)
                     i = float("inf")
                 else:
+                    print(i, j, pattern)
                     codes.append(known_patterns[pattern] + (symbol_series[i+j],))
                     i += j + 1
                 break
         else:
+            print(0, 0, symbol_series[i])
             codes.append((0, 0, symbol_series[i]))
             i += 1
-        print("#" * 100)
+        print("#" * 50)
         
     # print(known_patterns)
     print(codes)
 
     ans = ""
     for i in codes:
-        ans += "%d" % (i[i] + 1)
-    ans = ans[:-1]
+        ans += "%d " % (i[1] + 1)
+    ans += "%d" % len(rem)
     print(ans)
     return ans
+
+def solve_q4_3_2(m):
+    return ""
 
 QUESTIONS = {
     "1": {
@@ -454,7 +461,8 @@ QUESTIONS = {
     "4-3": {
         "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[5]/td[3]/a[3]",
         "questions": [
-            {"pattern": re.compile(r'記号系列は \{([AB]+)\}'), "solver": solve_q4_3_1}
+            {"pattern": re.compile(r'記号系列は \{([AB]+)\}.*\n.*区切りなさい'), "solver": solve_q4_3_1},
+            {"pattern": re.compile(r'記号系列は \{([AB]+)\}.*\n.*実用的'), "solver": solve_q4_3_2}
         ]
     }
 }
