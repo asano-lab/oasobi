@@ -5,7 +5,7 @@ import time
 import re
 from math import log2
 
-SLEEP_TIME = 0.3
+SLEEP_TIME = 0.2
 
 def solve_q1_1_1(m):
     print("固定値: 2")
@@ -39,6 +39,21 @@ def solve_q1_1_7(m):
     print("固定値: 3")
     return "3"
 
+def solve_q2_1_1(m):
+    print("固定値: 25/36")
+    return "25/36"
+    
+def solve_q2_1_2(m):
+    print("固定値: 25/36")
+    return "25/36"
+
+def solve_q2_1_3(m):
+    print("固定値: 5/324")
+    return "5/324"
+
+def solve_q2_1_4(m):
+    return ""
+
 QUESTIONS = {
     "1": {
         "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[2]/td[3]/a",
@@ -50,6 +65,15 @@ QUESTIONS = {
             {"pattern": re.compile(r'(\d+) Mb/s である。アナログ信号を表すために <br>\n(\d+)レベル'), "solver": solve_q1_1_5},
             {"pattern": re.compile(r'ディジタル化するとき, (\d+) ビット/サンプル'), "solver": solve_q1_1_6},
             {"pattern": re.compile(r'次の文章.*用語はなにか'), "solver": solve_q1_1_7}
+        ]
+    },
+    "2": {
+        "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[3]/td[3]/a",
+        "questions": [
+            {"pattern": re.compile(r'さいころを 2 回振る。このとき \d の目が 1 回も出ない'), "solver": solve_q2_1_1},
+            {"pattern": re.compile(r'2 個のさいころを同時に振る。このとき \d の目が出ない'), "solver": solve_q2_1_2},
+            {"pattern": re.compile(r'\d の目がちょうど 3 回'), "solver": solve_q2_1_3},
+            {"pattern": re.compile(r'このとき 1 の目か 2 の目または 1 と 2 の両方'), "solver": solve_q2_1_4}
         ]
     }
 }
@@ -72,7 +96,7 @@ def solve_questions(driver, chapter):
     return False
 
 def complete_questions(driver, chapter):
-    quiz_link = driver.find_element_by_xpath("/html/body/div[2]/ol/li[1]/p/table/tbody/tr[2]/td[3]/a")
+    quiz_link = driver.find_element_by_xpath(QUESTIONS[chapter]["xpath"])
     quiz_link.click()
 
     time.sleep(SLEEP_TIME)
@@ -90,7 +114,6 @@ def complete_questions(driver, chapter):
 
     start_button = driver.find_element_by_xpath("/html/body/center/form[1]/input[8]")
     start_button.click()
-    
 
     cleared = True
     while cleared:
@@ -101,15 +124,20 @@ def complete_questions(driver, chapter):
                 next_button = driver.find_element_by_xpath("/html/body/blockquote/dir/form/input[5]")
                 next_button.click()
             except NoSuchElementException:
-                back_button = driver.find_element_by_xpath("/html/body/blockquote/p/a")
-                back_button.click()
-                break
+                try:
+                    back_button = driver.find_element_by_xpath("/html/body/blockquote/p/a")
+                    back_button.click()
+                    break
+                except NoSuchElementException:
+                    retry_button = driver.find_element_by_xpath("/html/body/center/table[2]/tbody/tr/td[1]/form/input[8]")
+                    retry_button.click()
 
 def main():
     # print(webdriver)
 
     driver = webdriver.Chrome("C:\FreeSoft\chromedriver_win32\chrome100\chromedriver.exe")
 
+    print(type(driver))
     print(driver)
     # driver.get("https://www.google.co.jp")
 
@@ -121,7 +149,7 @@ def main():
 
     time.sleep(SLEEP_TIME)
 
-    complete_questions(driver, "1")
+    complete_questions(driver, "2")
     
 
     time.sleep(3)
