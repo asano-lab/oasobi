@@ -7,7 +7,7 @@ from coding_questions import QUESTIONS
 
 SLEEP_TIME = 0.2
 
-RETRY_MAX = 0
+RETRY_MAX = 20
 
 def solve_questions(driver, chapter):
     e1 = driver.find_element_by_xpath("/html/body/dir[1]/table/tbody/tr/td/blockquote")
@@ -16,7 +16,7 @@ def solve_questions(driver, chapter):
 
     inner_html = e1.get_attribute("innerHTML")
 
-    print(inner_html)
+    # print(inner_html)
     for q in QUESTIONS[chapter]["questions"]:
         # print(q["pattern"])
         m = re.search(q["pattern"], inner_html)
@@ -61,6 +61,7 @@ def complete_questions(driver, chapter):
                 try:
                     back_button = driver.find_element_by_xpath("/html/body/blockquote/p/a")
                     back_button.click()
+                    print("#%s クリア!!" % chapter)
                     break
                 except NoSuchElementException:
                     if retry_count < RETRY_MAX:
@@ -94,7 +95,8 @@ def main():
             complete_questions(driver, chapter)
             time.sleep(SLEEP_TIME)
 
-    time.sleep(3)
+    input("press enter to end: ")
+    # time.sleep(3)
 
 if __name__ == "__main__":
     main()

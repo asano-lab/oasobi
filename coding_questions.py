@@ -94,8 +94,22 @@ def solve_q3_1_4(m):
 def solve_q3_1_5(m):
     prob = float(m.groups()[0])
     ans = "{:.3f}".format(-log2(prob))
+    if ans[-1] == "0":
+        ans = ans[:-1]
     print("情報量は -log2(%s) = %s ビット" % (prob, ans))
     return ans
+
+def solve_q3_1_6(m):
+    print("固定値:")
+    return "a"
+
+def solve_q3_1_7(m):
+    print("固定値: 1 2")
+    return "1 2"
+
+def solve_q3_1_8(m):
+    print("固定値: 1")
+    return "1"
 
 QUESTIONS = {
     "1": {
@@ -132,7 +146,10 @@ QUESTIONS = {
             {"pattern": re.compile(r'５元情報源において、有効'), "solver": solve_q3_1_2},
             {"pattern": re.compile(r'ある定常２元情報源から出る'), "solver": solve_q3_1_3},
             {"pattern": re.compile(r'前の問題の情報源は記憶あり'), "solver": solve_q3_1_4},
-            {"pattern": re.compile(r'ある記号の発生確率が｛([0-9\.]+)｝の場合'), "solver": solve_q3_1_5}
+            {"pattern": re.compile(r'ある記号の発生確率が｛([0-9\.]+)｝の場合'), "solver": solve_q3_1_5},
+            {"pattern": re.compile(r'</th></tr> <tr> <td>A</td><td>0.05</td><td>00 <br>'), "solver": solve_q3_1_6},
+            {"pattern": re.compile(r'</th></tr> <tr> <td>A</td><td>0.1 </td><td>000 <br>'), "solver": solve_q3_1_7},
+            {"pattern": re.compile(r'</th></tr> <tr> <td>A</td><td>0.5 </td><td>1 <br>'), "solver": solve_q3_1_8}
         ]
     }
 }
