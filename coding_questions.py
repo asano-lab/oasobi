@@ -2,9 +2,13 @@ import re
 from math import log2
 
 def fixed_value(v: str) -> str:
+    """
+    固定値を返す際にただ出力するだけ
+    """
     print("固定値: %s" % v)
     return v
 
+# 1
 def solve_q1_1_1(m):
     return fixed_value("2")
 
@@ -33,45 +37,38 @@ def solve_q1_1_6(m):
 def solve_q1_1_7(m):
     return fixed_value("3")
 
+# 2
 def solve_q2_1_1(m):
     return fixed_value("25/36")
     
 def solve_q2_1_2(m):
-    print("固定値: 25/36")
-    return "25/36"
+    return fixed_value("25/36")
 
 def solve_q2_1_3(m):
-    print("固定値: 5/324")
-    return "5/324"
+    return fixed_value("5/324")
 
 def solve_q2_1_4(m):
-    print("固定値: 5/9")
-    return "5/9"
+    return fixed_value("5/9")
 
 def solve_q2_1_5(m):
-    print("固定値: 1/6")
-    return "1/6"
+    return fixed_value("1/6")
 
 def solve_q2_1_6(m):
-    print("固定値: 1/3")
-    return "1/3"
+    return fixed_value("1/3")
 
 def solve_q2_1_7(m):
-    print("固定値: 35/18")
-    return "35/18"
+    return fixed_value("35/18")
 
 def solve_q2_1_8(m):
-    print("固定値: 0.206")
-    return "0.206"
+    return fixed_value("0.206")
 
 def solve_q2_1_9(m):
-    print("固定値: 0.045")
-    return "0.045"
+    return fixed_value("0.045")
 
 def solve_q2_1_10(m):
-    print("固定値: 0.794")
-    return "0.794"
+    return fixed_value("0.794")
 
+# 3-1
 def solve_q3_1_1(m):
     part = m.groups()[0]
     ans = str(len(part.split(" ")))
