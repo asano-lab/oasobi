@@ -89,7 +89,9 @@ def main():
 
     time.sleep(SLEEP_TIME)
 
-    complete_questions(driver, "2")
+    for chapter in QUESTIONS.keys():
+        complete_questions(driver, chapter)
+        time.sleep(SLEEP_TIME)
 
     time.sleep(3)
 
