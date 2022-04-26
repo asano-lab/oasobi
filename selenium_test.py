@@ -7,6 +7,8 @@ from math import log2
 
 SLEEP_TIME = 0.2
 
+RETRY_MAX = 1
+
 def solve_q1_1_1(m):
     print("固定値: 2")
     return "2"
@@ -116,6 +118,8 @@ def complete_questions(driver, chapter):
     start_button.click()
 
     cleared = True
+    retry_count = 0
+
     while cleared:
         cleared = solve_questions(driver, chapter)
         if cleared:
@@ -129,8 +133,14 @@ def complete_questions(driver, chapter):
                     back_button.click()
                     break
                 except NoSuchElementException:
-                    retry_button = driver.find_element_by_xpath("/html/body/center/table[2]/tbody/tr/td[1]/form/input[8]")
-                    retry_button.click()
+                    if retry_count < RETRY_MAX:
+                        retry_button = driver.find_element_by_xpath("/html/body/center/table[2]/tbody/tr/td[1]/form/input[8]")
+                        retry_button.click()
+                        retry_count += 1
+                    else:
+                        back_button = driver.find_element_by_xpath("/html/body/center/table[2]/tbody/tr/td[2]/a")
+                        back_button.click()
+                        break
 
 def main():
     # print(webdriver)
