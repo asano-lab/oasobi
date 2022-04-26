@@ -18,7 +18,7 @@ def solve_questions(driver, chapter):
 
     print(inner_html)
     for q in QUESTIONS[chapter]["questions"]:
-        print(q["pattern"])
+        # print(q["pattern"])
         m = re.search(q["pattern"], inner_html)
         if m:
             answer_input.send_keys(q["solver"](m))
@@ -93,9 +93,9 @@ def main():
     time.sleep(SLEEP_TIME)
 
     for chapter in QUESTIONS.keys():
-        if chapter == "4-3":
-            complete_questions(driver, chapter)
-            time.sleep(SLEEP_TIME)
+        # if chapter == "4-3":
+        complete_questions(driver, chapter)
+        time.sleep(SLEEP_TIME)
 
     # input("press enter to end: ")
     # time.sleep(3)

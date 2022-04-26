@@ -441,6 +441,34 @@ def solve_q4_3_2(m):
     print(ans)
     return ans
 
+def solve_q4_3_3(m):
+    """
+    実用的なZL符号の復号
+    """
+    offset_bit = 4
+    length_bit = 3
+
+    codes = m.groups()[0].split(" ")
+    codes = [(int(i[:offset_bit], 2), int(i[offset_bit:offset_bit+length_bit], 2), chr(ord("A") + int(i[-1]))) for i in codes]
+    print(codes)
+
+    offset = 1 << offset_bit
+
+    buffer = "A" * offset
+    ans = ""
+
+    print(buffer[:offset] + "|" + buffer[offset:])
+    for i in codes:
+        print(i)
+        pattern = buffer[i[0]:i[0]+i[1]] + i[2]
+        ans += pattern
+        buffer = (buffer + pattern)[i[1]+1:]
+        print(buffer[:offset] + "|" + buffer[offset:])
+
+    # print(buffer[:offset] + "|" + buffer[offset:] + "\n")
+    print(ans)
+    return ans
+
 QUESTIONS = {
     "1": {
         "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[2]/td[3]/a",
@@ -509,7 +537,8 @@ QUESTIONS = {
         "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[5]/td[3]/a[3]",
         "questions": [
             {"pattern": re.compile(r'記号系列は \{([AB]+)\}.*\n.*区切りなさい'), "solver": solve_q4_3_1},
-            {"pattern": re.compile(r'記号系列は \{([AB]+)\}.*\n.*実用的'), "solver": solve_q4_3_2}
+            {"pattern": re.compile(r'記号系列は \{([AB]+)\}.*\n.*実用的'), "solver": solve_q4_3_2},
+            {"pattern": re.compile(r'([01 ]+) <br>\n復号しなさい'), "solver": solve_q4_3_3}
         ]
     }
 }
