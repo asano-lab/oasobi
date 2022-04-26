@@ -40,7 +40,8 @@ def get_min_syms(d_inv, n):
     rem_len = n - len(min_prob_syms)
     # オーバー
     if rem_len < 0:
-        min_prob_syms.sort(reverse=True)
+        # 接点番号が小さいもの優先
+        min_prob_syms.sort(reverse=False)
         return min_prob_syms[:n]
     elif rem_len == 0:
         return min_prob_syms
@@ -66,7 +67,7 @@ def create_connection_dict(prob_d):
 
         min_syms = get_min_syms(prob_d_inv, 2)
 
-        prob_d_cp[next_key] = sum(v for k, v in prob_d_cp.items() if k in min_syms)
+        prob_d_cp[next_key] = round(sum(v for k, v in prob_d_cp.items() if k in min_syms), 2)
         cnct_d[next_key] = sorted(min_syms)
         
         for i in min_syms:
@@ -101,6 +102,7 @@ def generate_code(cnct_d, code_d):
         generate_code(cnct_d, code_d)
 
 # 1
+# 多分ここだけ順番がランダムで出題される
 def solve_q1_1_1(m):
     return fixed_value("2")
 
@@ -244,6 +246,17 @@ def solve_q4_1_1(m):
     print(ans)
     return ans
 
+def solve_q4_1_3(m):
+    """
+    正規表現でハフマン符号を復号
+    """
+    mg = m.groups()
+    patterns = mg[:-1]
+    print(patterns)
+    code = mg[-1]
+    print(code)
+    return ""
+
 QUESTIONS = {
     "1": {
         "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[2]/td[3]/a",
@@ -298,6 +311,7 @@ QUESTIONS = {
         "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[5]/td[3]/a[1]",
         "questions": [
             {"pattern": re.compile(r'確率はそれぞれ \{([0-9\. ]+)\}'), "solver": solve_q4_1_1},
+            {"pattern": re.compile(r'\{a0-&gt;([01]+),a1-&gt;([01]+),a2-&gt;([01]+),a3-&gt;([01]+),a4-&gt;([01]+)\} .*\n.*\{([01]+)\}'), "solver": solve_q4_1_3},
         ]
     },
     "4-2": {
