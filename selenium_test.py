@@ -7,7 +7,7 @@ from math import log2
 
 SLEEP_TIME = 0.2
 
-RETRY_MAX = 1
+RETRY_MAX = 0
 
 def solve_q1_1_1(m):
     print("固定値: 2")
@@ -54,7 +54,32 @@ def solve_q2_1_3(m):
     return "5/324"
 
 def solve_q2_1_4(m):
-    return ""
+    print("固定値: 5/9")
+    return "5/9"
+
+def solve_q2_1_5(m):
+    print("固定値: 1/6")
+    return "1/6"
+
+def solve_q2_1_6(m):
+    print("固定値: 1/3")
+    return "1/3"
+
+def solve_q2_1_7(m):
+    print("固定値: 35/18")
+    return "35/18"
+
+def solve_q2_1_8(m):
+    print("固定値: 0.206")
+    return "0.206"
+
+def solve_q2_1_9(m):
+    print("固定値: 0.045")
+    return "0.045"
+
+def solve_q2_1_10(m):
+    print("固定値: 0.794")
+    return "0.794"
 
 QUESTIONS = {
     "1": {
@@ -75,7 +100,13 @@ QUESTIONS = {
             {"pattern": re.compile(r'さいころを 2 回振る。このとき \d の目が 1 回も出ない'), "solver": solve_q2_1_1},
             {"pattern": re.compile(r'2 個のさいころを同時に振る。このとき \d の目が出ない'), "solver": solve_q2_1_2},
             {"pattern": re.compile(r'\d の目がちょうど 3 回'), "solver": solve_q2_1_3},
-            {"pattern": re.compile(r'このとき 1 の目か 2 の目または 1 と 2 の両方'), "solver": solve_q2_1_4}
+            {"pattern": re.compile(r'このとき 1 の目か 2 の目または 1 と 2 の両方'), "solver": solve_q2_1_4},
+            {"pattern": re.compile(r'\d の目が出た、このとき 2 回目に \d の目'), "solver": solve_q2_1_5},
+            {"pattern": re.compile(r'奇数であるとき 1 の目が 1 回'), "solver": solve_q2_1_6},
+            {"pattern": re.compile(r'大きい方から小さい方を引く'), "solver": solve_q2_1_7},
+            {"pattern": re.compile(r'2 元対称通信路を用いて P\(X=0\|Y=1\)'), "solver": solve_q2_1_8},
+            {"pattern": re.compile(r'2 元対称通信路を用いて P\(X=1\|Y=0\)'), "solver": solve_q2_1_9},
+            {"pattern": re.compile(r'2 元対称通信路を用いて P\(X=1\|Y=1\)'), "solver": solve_q2_1_10}
         ]
     }
 }
@@ -89,6 +120,7 @@ def solve_questions(driver, chapter):
 
     print(inner_html)
     for q in QUESTIONS[chapter]["questions"]:
+        # print(q["pattern"])
         m = re.search(q["pattern"], inner_html)
         if m:
             answer_input.send_keys(q["solver"](m))
@@ -160,7 +192,6 @@ def main():
     time.sleep(SLEEP_TIME)
 
     complete_questions(driver, "2")
-    
 
     time.sleep(3)
 
