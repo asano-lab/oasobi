@@ -226,6 +226,9 @@ def solve_q3_2_4(m):
 
 # 4-1
 def solve_q4_1_1(m):
+    """
+    2問目も兼ねている
+    """
     p_arr = [float(i) for i in m.groups()[0].split(" ")]
     print(p_arr)
     print(sum(p_arr))
@@ -269,6 +272,17 @@ def solve_q4_1_3(m):
     ans = " ".join(ans)
     print(ans)
     return ans
+
+# 4-2
+def solve_q4_2_1(m):
+    symbol_series = m.groups()[0]
+    print(symbol_series)
+    return ""
+
+def solve_q4_2_2(m):
+    symbol_series = m.groups()[0]
+    print(symbol_series)
+    return ""
 
 QUESTIONS = {
     "1": {
@@ -330,10 +344,11 @@ QUESTIONS = {
     "4-2": {
         "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[5]/td[3]/a[2]",
         "questions": [
-
+            {"pattern": re.compile(r'記号系列は \{([AB]+)\}'), "solver": solve_q4_2_1},
+            {"pattern": re.compile(r'発生された記号は \{([WB]+)\}'), "solver": solve_q4_2_2}
         ]
     },
-    "4-2": {
+    "4-3": {
         "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[5]/td[3]/a[3]",
         "questions": [
 
