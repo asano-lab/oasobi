@@ -1,17 +1,18 @@
 import re
 from math import log2
 
+def fixed_value(v: str) -> str:
+    print("固定値: %s" % v)
+    return v
+
 def solve_q1_1_1(m):
-    print("固定値: 2")
-    return "2"
+    return fixed_value("2")
 
 def solve_q1_1_2(m):
-    print("固定値: 2 3")
-    return "2 3"
+    return fixed_value("2 3")
 
 def solve_q1_1_3(m):
-    print("固定値: 1 4")
-    return "1 4"
+    return fixed_value("1 4")
 
 def solve_q1_1_4(m):
     ans = str(int(m.groups()[0]) * 2)
@@ -30,12 +31,10 @@ def solve_q1_1_6(m):
     return ans
 
 def solve_q1_1_7(m):
-    print("固定値: 3")
-    return "3"
+    return fixed_value("3")
 
 def solve_q2_1_1(m):
-    print("固定値: 25/36")
-    return "25/36"
+    return fixed_value("25/36")
     
 def solve_q2_1_2(m):
     print("固定値: 25/36")
@@ -92,7 +91,11 @@ def solve_q3_1_4(m):
     return "0.128"
 
 def solve_q3_1_5(m):
-    prob = float(m.groups()[0])
+    prob_str = m.groups()[0]
+    if prob_str == "0":
+        print("log2(0)は定義できません")
+        return "0"
+    prob = float(prob_str)
     ans = "{:.3f}".format(-log2(prob))
     if ans[-1] == "0":
         ans = ans[:-1]

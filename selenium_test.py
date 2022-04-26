@@ -7,7 +7,7 @@ from coding_questions import QUESTIONS
 
 SLEEP_TIME = 0.2
 
-RETRY_MAX = 20
+RETRY_MAX = 0
 
 def solve_questions(driver, chapter):
     e1 = driver.find_element_by_xpath("/html/body/dir[1]/table/tbody/tr/td/blockquote")
@@ -91,7 +91,7 @@ def main():
     time.sleep(SLEEP_TIME)
 
     for chapter in QUESTIONS.keys():
-        if chapter == "3-1":
+        if chapter == "1":
             complete_questions(driver, chapter)
             time.sleep(SLEEP_TIME)
 
