@@ -87,6 +87,16 @@ def solve_q3_1_3(m):
     print("固定値: 0.0504 0.0380")
     return "0.0504 0.0380"
 
+def solve_q3_1_4(m):
+    print("固定値: 0.128")
+    return "0.128"
+
+def solve_q3_1_5(m):
+    prob = float(m.groups()[0])
+    ans = "{:.3f}".format(-log2(prob))
+    print("情報量は -log2(%s) = %s ビット" % (prob, ans))
+    return ans
+
 QUESTIONS = {
     "1": {
         "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[2]/td[3]/a",
@@ -120,7 +130,9 @@ QUESTIONS = {
         "questions": [
             {"pattern": re.compile(r'記号が｛([A-Z ]+)｝の場合'), "solver": solve_q3_1_1},
             {"pattern": re.compile(r'５元情報源において、有効'), "solver": solve_q3_1_2},
-            {"pattern": re.compile(r'ある定常２元情報源から出る'), "solver": solve_q3_1_3}
+            {"pattern": re.compile(r'ある定常２元情報源から出る'), "solver": solve_q3_1_3},
+            {"pattern": re.compile(r'前の問題の情報源は記憶あり'), "solver": solve_q3_1_4},
+            {"pattern": re.compile(r'ある記号の発生確率が｛([0-9\.]+)｝の場合'), "solver": solve_q3_1_5}
         ]
     }
 }
