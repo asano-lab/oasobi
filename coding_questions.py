@@ -620,6 +620,11 @@ def solve_q7_1_4(m):
 def solve_q7_1_5(m):
     return fixed_value("1 2")
 
+# 7-2
+def solve_q7_2_1(m):
+    print(m.groups())
+    return ""
+
 QUESTIONS = {
     "1": {
         "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[2]/td[3]/a",
@@ -724,7 +729,7 @@ QUESTIONS = {
     "7-2": {
         "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[8]/td[3]/a[2]",
         "questions": [
-
+            {"pattern": re.compile(r'\|([01　]+)\|.*\n.*\|([01　]+)\|.*\n.*\|([01　]+)\|'), "solver": solve_q7_2_1},
         ]
     },
     "7-3": {
