@@ -659,6 +659,9 @@ def solve_q7_2_2(m):
     return ans
 
 def solve_q7_2_4(m):
+    """
+    (7, 4)ハミング符号の復号
+    """
     r = np.matrix([int(i) for i in m.groups()[0].split(" ")])
 
     print("r =", r)
@@ -681,6 +684,25 @@ def solve_q7_2_4(m):
 
     ans = "".join([str(y[0, i]) for i in range(4)])
     print("復号した受信語: %s" % ans)
+    return ans
+
+# 7-3
+def solve_q7_3_1(m):
+    return fixed_value("2")
+
+def solve_q7_3_2(m):
+    g = 0b00010111
+
+    codes = []
+    for i in m.groups():
+        c = 0
+        for bit in i:
+            c <<= 1
+            if bit == "1":
+                c ^= g
+        codes.append(c)
+    ans = " ".join([format(i, "07b") for i in codes])
+    print("符号: %s" % ans)
     return ans
 
 QUESTIONS = {
@@ -795,7 +817,8 @@ QUESTIONS = {
     "7-3": {
         "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[8]/td[3]/a[3]",
         "questions": [
-
+            {"pattern": re.compile(r'一つは 010101 である'), "solver": solve_q7_3_1},
+            {"pattern": re.compile(r'符号化しなさい.*\n.*\{([01]+) ([01]+) ([01]+)\} <br>'), "solver": solve_q7_3_2},
         ]
     }
 }
