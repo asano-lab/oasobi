@@ -556,7 +556,8 @@ def solve_q5_1_5(m):
 # 6
 def solve_q6_1_1(m):
     """
-    2元対称通信路における最大通信路容量
+    2元対称通信路における通信路容量
+    相互情報量の最大値
     """
     pe = float(m.groups()[0])
 
@@ -567,6 +568,27 @@ def solve_q6_1_1(m):
     
     ans = del_zero("{:.3f}".format(C))
     print("通信路容量: %s" % ans)
+    return ans
+
+def solve_q6_1_2(m):
+    pa, pb, pc = [float(i) for i in m.groups()]
+    ans = del_zero("{:.3f}".format(1.0 * pb * pc))
+    print("確率: %s" % ans)
+    return ans
+
+def solve_q6_1_3(m):
+    pa, pb, pc = [float(i) for i in m.groups()]
+    p0e = 0
+    p1e = 3 * pb * (1 - pb) ** 2 + (1 - pb) ** 3
+    p2e = 3 * pc * (1 - pc) ** 2 + (1 - pc) ** 3
+    ans = del_zero("{:.3f}".format((p0e + p1e + p2e) / 3))
+    print("平均誤り率: %s" % ans)
+    return ans
+
+def solve_q6_1_4(m):
+    pe = float(m.groups()[0])
+    ans = del_zero("{:.2f}".format(1 - pe))
+    print("情報速度 %s 未満なら可能" % ans)
     return ans
 
 QUESTIONS = {
@@ -654,7 +676,10 @@ QUESTIONS = {
     "6": {
         "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[7]/td[3]/a",
         "questions": [
-            {"pattern": re.compile(r'pが ([0-9\.]+) の場合、通信路容量'), "solver": solve_q6_1_1}
+            {"pattern": re.compile(r'pが ([0-9\.]+) の場合、通信路容量'), "solver": solve_q6_1_1},
+            {"pattern": re.compile(r'それぞれ \{([0-9\.]+) ([0-9\.]+) ([0-9\.]+)\} の場合'), "solver": solve_q6_1_2},
+            {"pattern": re.compile(r'それぞれ \{([0-9\.]+) ([0-9\.]+) ([0-9\.]+)\} である'), "solver": solve_q6_1_3},
+            {"pattern": re.compile(r'誤る確率pが ([0-9\.]+) の場合'), "solver": solve_q6_1_4}
         ]
     },
     "7-1": {
