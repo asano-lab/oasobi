@@ -1,9 +1,8 @@
 import os
 
-# print(os.environ)
+ENV_VAR = os.getenv("PATH").split(";")
+# print(ENV_VAR)
 
-for k, v in os.environ.items():
-    if os.path.isdir(v):
-        print("name:", k)
-        print(v)
-
+for i in ENV_VAR:
+    if os.path.isdir(i):
+        print(i)

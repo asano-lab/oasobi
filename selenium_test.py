@@ -3,6 +3,7 @@ from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 import time
 import re
+import os
 from coding_questions import QUESTIONS
 
 SLEEP_TIME = 0.1
@@ -78,7 +79,15 @@ def complete_questions(driver, chapter):
 def main():
     # print(webdriver)
 
-    driver = webdriver.Chrome("C:\FreeSoft\chromedriver_win32\chrome100\chromedriver.exe")
+    env_var = [i for i in os.getenv("PATH").split(";") if os.path.isdir(i)]
+    for dir_name in env_var:
+        driver_path = dir_name + "\chromedriver.exe"
+        if os.path.isfile(driver_path):
+            driver = webdriver.Chrome(driver_path)
+            break
+    else:
+        print("ドライバが見つかりません")
+        return -1
 
     print(type(driver))
     print(driver)
