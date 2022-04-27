@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import argparse
 
 if __name__ == "__main__":
@@ -9,8 +10,12 @@ if __name__ == "__main__":
 
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.common.by import By
 import time
 import re
+import os
+import platform
 from coding_questions import QUESTIONS
 
 SLEEP_TIME = 1
@@ -18,9 +23,9 @@ SLEEP_TIME = 1
 RETRY_MAX = 0
 
 def solve_questions(driver, chapter):
-    e1 = driver.find_element_by_xpath("/html/body/dir[1]/table/tbody/tr/td/blockquote")
-    answer_input = driver.find_element_by_xpath("/html/body/dir[2]/form/input")
-    answer_button = driver.find_element_by_xpath("/html/body/input[5]")
+    e1 = driver.find_element(by=By.XPATH, value="/html/body/dir[1]/table/tbody/tr/td/blockquote")
+    answer_input = driver.find_element(by=By.XPATH, value="/html/body/dir[2]/form/input")
+    answer_button = driver.find_element(by=By.XPATH, value="/html/body/input[5]")
 
     inner_html = e1.get_attribute("innerHTML")
 
@@ -33,26 +38,27 @@ def solve_questions(driver, chapter):
             answer_button.click()
             return True
     
+    print("合致する問題がありません")
     return False
 
 def complete_questions(driver, chapter, username, studentnumber):
-    quiz_link = driver.find_element_by_xpath(QUESTIONS[chapter]["xpath"])
+    quiz_link = driver.find_element(by=By.XPATH, value=QUESTIONS[chapter]["xpath"])
     quiz_link.click()
 
     time.sleep(SLEEP_TIME)
 
-    name_input = driver.find_element_by_xpath("/html/body/dl/dd[2]/form/table/tbody/tr[1]/td[2]/input")
-    name_input.send_keys(username)
+    username_input = driver.find_element(by=By.XPATH, value="/html/body/dl/dd[2]/form/table/tbody/tr[1]/td[2]/input")
+    username_input.send_keys(username)
 
-    student_numter_input = driver.find_element_by_xpath("/html/body/dl/dd[2]/form/table/tbody/tr[2]/td[2]/input")
-    student_numter_input.send_keys(studentnumber)
+    studentnumter_input = driver.find_element(by=By.XPATH, value="/html/body/dl/dd[2]/form/table/tbody/tr[2]/td[2]/input")
+    studentnumter_input.send_keys(studentnumber)
 
-    start_button = driver.find_element_by_xpath("/html/body/dl/dd[2]/form/input[5]")
+    start_button = driver.find_element(by=By.XPATH, value="/html/body/dl/dd[2]/form/input[5]")
     start_button.click()
 
     time.sleep(SLEEP_TIME)
 
-    start_button = driver.find_element_by_xpath("/html/body/center/form[1]/input[8]")
+    start_button = driver.find_element(by=By.XPATH, value="/html/body/center/form[1]/input[8]")
     start_button.click()
 
     cleared = True
@@ -63,11 +69,11 @@ def complete_questions(driver, chapter, username, studentnumber):
         if cleared:
             time.sleep(SLEEP_TIME)
             try:
-                next_button = driver.find_element_by_xpath("/html/body/blockquote/dir/form/input[5]")
+                next_button = driver.find_element(by=By.XPATH, value="/html/body/blockquote/dir/form/input[5]")
                 next_button.click()
             except NoSuchElementException:
                 try:
-                    back_button = driver.find_element_by_xpath("/html/body/blockquote/p/a")
+                    back_button = driver.find_element(by=By.XPATH, value="/html/body/blockquote/p/a")
                     back_button.click()
                     print("#%s クリア!!" % chapter)
                     break
@@ -75,18 +81,34 @@ def complete_questions(driver, chapter, username, studentnumber):
                     print("不正解!")
                     input("press enter to end: ")
                     if retry_count < RETRY_MAX:
-                        retry_button = driver.find_element_by_xpath("/html/body/center/table[2]/tbody/tr/td[1]/form/input[8]")
+                        retry_button = driver.find_element(by=By.XPATH, value="/html/body/center/table[2]/tbody/tr/td[1]/form/input[8]")
                         retry_button.click()
                         retry_count += 1
                     else:
-                        back_button = driver.find_element_by_xpath("/html/body/center/table[2]/tbody/tr/td[2]/a")
+                        back_button = driver.find_element(by=By.XPATH, value="/html/body/center/table[2]/tbody/tr/td[2]/a")
                         back_button.click()
                         break
 
 def main(username, studentnumber):
-    # print(webdriver)
+    pf = platform.system()
 
-    driver = webdriver.Chrome("C:\FreeSoft\chromedriver_win32\chrome100\chromedriver.exe")
+    if pf == "Linux":
+        options = Options()
+        options.binary_location = "/usr/bin/firefox"
+        # options.add_argument("-headless")
+        driver = webdriver.Firefox(options=options)
+    else:
+        env_var = [i for i in os.getenv("PATH").split(";") if os.path.isdir(i)]
+        for dir_name in env_var:
+            print(dir_name)
+            driver_path = dir_name + "\chromedriver.exe"
+            if os.path.isfile(driver_path):
+                print(driver_path)
+                driver = webdriver.Chrome(driver_path)
+                break
+        else:
+            print("ドライバが見つかりません")
+            return -1
 
     print(type(driver))
     print(driver)
