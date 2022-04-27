@@ -27,17 +27,34 @@ union position {
 u_char Buffer_T_Terminal[Num_Terminal][Buffer_Max];
 u_char Buffer_R_Terminal[Num_Terminal][Buffer_Max];
 
-void slip_enc(u_char *buf, int buf_len) {
+int slip_enc(u_char *buf, int buf_len) {
     u_char tmp[Buffer_Max];
     int i, j;
     coppy_array(buf, tmp, buf_len);
+
+    j = 0;
     for (i = 0; i < buf_len; i++) {
-        ;
+        if (tmp[i] == END) {
+            buf[j++] = ESC;
+            buf[j++] = ESC_END;
+        }
+        else if (tmp[i] == ESC) {
+            buf[j++] = ESC;
+            buf[j++] = ESC_ESC;
+        }
+        else {
+            buf[j++] = tmp[i];
+        }
+        if (j >= Buffer_Max - 1) {
+            return -1;
+        }
     }
-    print_byte_array(tmp, buf_len);
+    buf[j++] = END;
+    return j;
 }
 
 int main(void) {
+    int n;
     // printf("%d %d\n", Num_Terminal, Num_Transpoder);
     printf("%ld\n", sizeof Buffer_T_Terminal);
 
@@ -58,7 +75,8 @@ int main(void) {
     print_byte_array(p.bin, 12);
     // print_size(p.z);
 
-    slip_enc(Buffer_T_Terminal[0], 5);
+    n = slip_enc(Buffer_T_Terminal[0], 5);
+    print_byte_array(Buffer_T_Terminal[0], n);
 
     return 0;
 }
