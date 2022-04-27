@@ -26,7 +26,12 @@ def calc_entropy(p_arr):
     return e
 
 def del_zero(ans):
-    if ans[-1] == "0":
+    """
+    無駄な0を削除
+    小数部がなくなったら.も削除
+    0.00の場合は0で留める?
+    """
+    while ans[-1] in "0." and len(ans) > 1:
         ans = ans[:-1]
     return ans
 
@@ -387,7 +392,10 @@ def solve_q4_3_1(m):
     ans = ""
     for i in codes:
         ans += "%d " % (i[1] + 1)
-    ans += "%d" % len(rem)
+    if len(rem) > 0:
+        ans += "%d" % len(rem)
+    else:
+        ans = ans[:-1]
     print(ans)
     return ans
 
