@@ -1,21 +1,9 @@
-#!/usr/bin/python3
-import sys
-import time
-import random as rd
+import os
 
-r = 0
+# print(os.environ)
 
-try:
-    for i in range(1000000):
-        time.sleep(1)
-        print(i)
-        print(sys.version)
-        r = rd.randint(0, 19)
-        print(r)
-        if r == 0:
-            break
+for k, v in os.environ.items():
+    if os.path.isdir(v):
+        print("name:", k)
+        print(v)
 
-except KeyboardInterrupt:
-    pass
-
-sys.exit(i & 0xff)
