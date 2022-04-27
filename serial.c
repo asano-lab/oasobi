@@ -27,13 +27,13 @@ union position {
 u_char Buffer_T_Terminal[Num_Terminal][Buffer_Max];
 u_char Buffer_R_Terminal[Num_Terminal][Buffer_Max];
 
-int slip_enc(u_char *buf, int buf_len) {
+int slip_enc(u_char *buf, int p_len) {
     u_char tmp[Buffer_Max];
     int i, j;
-    coppy_array(buf, tmp, buf_len);
+    coppy_array(buf, tmp, p_len);
 
     j = 0;
-    for (i = 0; i < buf_len; i++) {
+    for (i = 0; i < p_len; i++) {
         if (tmp[i] == END) {
             buf[j++] = ESC;
             buf[j++] = ESC_END;
@@ -51,6 +51,35 @@ int slip_enc(u_char *buf, int buf_len) {
     }
     buf[j++] = END;
     return j;
+}
+
+int slip_dec(u_char *buf) {
+    int i, j, status;
+    j = 0;
+    status = 0;
+    for (i = 0; buf[i] != END; i++) {
+        if (status == 0) {
+            if (buf[i] == ESC) {
+                status = 1;
+            }
+            else {
+                buf[j++] = buf[i];
+            }
+        }
+        else {
+            if (buf[i] == ESC_END) {
+                buf[j++] = END;
+            }
+            else if (buf[i] == ESC_ESC) {
+                buf[j++] = ESC;
+            }
+            else {
+                return -1;
+            }
+            status = 0;
+        }
+    }
+    return j - 1;
 }
 
 int main(void) {
@@ -77,6 +106,13 @@ int main(void) {
 
     n = slip_enc(Buffer_T_Terminal[0], 5);
     print_byte_array(Buffer_T_Terminal[0], n);
+
+    coppy_array(Buffer_T_Terminal[0], Buffer_R_Terminal[1], Buffer_Max);
+
+    print_byte_array(Buffer_R_Terminal[1], Buffer_Max);
+    
+    n = slip_dec(Buffer_R_Terminal[1]);
+    print_byte_array(Buffer_R_Terminal[1], n);
 
     return 0;
 }
