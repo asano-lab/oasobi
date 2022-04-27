@@ -79,7 +79,7 @@ int slip_dec(u_char *buf) {
             status = 0;
         }
     }
-    return j - 1;
+    return j;
 }
 
 int main(void) {
@@ -93,16 +93,7 @@ int main(void) {
     Buffer_T_Terminal[0][3] = 0xDB;
     Buffer_T_Terminal[0][4] = 0x9A;
 
-    print_byte_array(Buffer_T_Terminal[0], 4);
-
-    union position p;
-    p.x = 1.1f;
-    p.y = 2.2f;
-    p.z = 0.0f;
-    // printf("%f %f %f\n", p.x, p.y, p.z);
-
-    print_byte_array(p.bin, 12);
-    // print_size(p.z);
+    print_byte_array(Buffer_T_Terminal[0], 5);
 
     n = slip_enc(Buffer_T_Terminal[0], 5);
     print_byte_array(Buffer_T_Terminal[0], n);
@@ -110,7 +101,7 @@ int main(void) {
     coppy_array(Buffer_T_Terminal[0], Buffer_R_Terminal[1], Buffer_Max);
 
     print_byte_array(Buffer_R_Terminal[1], Buffer_Max);
-    
+
     n = slip_dec(Buffer_R_Terminal[1]);
     print_byte_array(Buffer_R_Terminal[1], n);
 
