@@ -651,9 +651,23 @@ def solve_q7_2_2(m):
         if m2:
             G.append([int(i) for i in m2.groups()[0].split(" ")])
     
-    d_min = min([sum(i) for i in G])
     G = np.matrix(G)
     k, n = G.shape
+
+    # 全ての入力
+    all_info_series = np.matrix([[int(b) for b in format(i, "0%db" % k)] for i in range(1 << k)])
+    all_codewords = np.matmul(all_info_series, G) % 2
+
+    hamming_weights = [sum(i) for i in all_codewords.tolist()]
+
+    # 0を除いた符号語の最小ハミング重み
+    # 線形符号なので全ての組み合わせは不要
+    d_min = min([i for i in hamming_weights if i != 0])
+    
+    print(all_info_series)
+    print(all_codewords)
+    print(hamming_weights)
+
     ans = "%d %d %d" % (n, k, d_min)
     print("(n k dmin) = (%s)" % ans)
     return ans
@@ -679,7 +693,7 @@ def solve_q7_2_4(m):
     print("H.T=\n", H.T)
     print("s =", s)
     print("e =", e)
-    y = r + e
+    y = (r + e) % 2
     print("y =", y)
 
     ans = "".join([str(y[0, i]) for i in range(4)])
