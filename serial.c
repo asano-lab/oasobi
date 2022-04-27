@@ -13,7 +13,7 @@ union position {
         float y;
         float z;
     };
-    u_char bin[sizeof(float) * 3];
+    u_char bin[sizeof(float)];
 };
 
 u_char Buffer_T_Terminal[Num_Terminal][64];
@@ -30,14 +30,13 @@ int main(void) {
     print_byte_array(Buffer_T_Terminal[0], 4);
 
     union position p;
-    p.x = 2.3f;
-    // p.x = 1.1f;
-    // p.y = 100000.0f;
-    // p.z = 1.1f;
+    p.x = 1.1f;
+    p.y = 2.2f;
+    p.z = 0.0f;
     printf("%f %f %f\n", p.x, p.y, p.z);
 
-    print_byte_array(p.bin, 3);
-    print_size(p.z);
+    print_byte_array(p.bin, 12);
+    // print_size(p.z);
 
     return 0;
 }
