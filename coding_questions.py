@@ -516,6 +516,11 @@ def solve_q5_1_2(m):
 def solve_q5_1_3(m):
     return fixed_value("3 6 8")
 
+def solve_q5_1_4(m):
+    pe, px0 = tuple(float(i) for i in m.groups())
+    print(pe, px0)
+    return 0
+
 QUESTIONS = {
     "1": {
         "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[2]/td[3]/a",
@@ -593,7 +598,8 @@ QUESTIONS = {
         "questions": [
             {"pattern": re.compile(r'白、赤、青のボールがそれぞれ \{(\d) (\d) (\d)\}.*\n.*\n.*\n.*結合'), "solver": solve_q5_1_1},
             {"pattern": re.compile(r'白、赤、青のボールがそれぞれ \{(\d) (\d) (\d)\}.*\n.*\n.*\n.*条件'), "solver": solve_q5_1_2},
-            {"pattern": re.compile(r'ＸとＹに対する各種情報量'), "solver": solve_q5_1_3}
+            {"pattern": re.compile(r'ＸとＹに対する各種情報量'), "solver": solve_q5_1_3},
+            {"pattern": re.compile(r'誤る確率と入力Ｘ＝０を使う確率はそれぞれ \{([0-9\.]+) ([0-9\.]+)\}'), "solver": solve_q5_1_4}
         ]
     },
     "6": {
