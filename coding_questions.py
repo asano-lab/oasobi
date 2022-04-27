@@ -517,9 +517,41 @@ def solve_q5_1_3(m):
     return fixed_value("3 6 8")
 
 def solve_q5_1_4(m):
+    """
+    2元対称通信路の相互情報量
+    """
     pe, px0 = tuple(float(i) for i in m.groups())
-    print(pe, px0)
-    return 0
+
+    pxl = [px0, 1 - px0]
+
+    py0 = px0 * (1 - pe) + (1 - px0) * pe
+    pyl = [py0, 1 - py0]
+
+    # 例外処理
+    # Xの値が固定ならもともと情報を持たない
+    if px0 < 1e-10 or (1 - px0) < 1e-10:
+        Iyx = 0.0
+
+    # 誤り率が0ならどちらかを知れば全てわかる
+    elif pe < 1e-10 or (1 - pe) < 1e-10:
+        Iyx = calc_entropy(pxl)
+
+    else:
+        Iyx = calc_entropy(pyl)
+        
+        for i, pxi in enumerate(pxl):
+            for j in range(len(pyl)):
+                if i == j:
+                    Iyx += pxi * (1 - pe) * log2(1 - pe)
+                else:
+                    Iyx += pxi * pe * log2(pe)
+
+    ans = del_zero("{:.2f}".format(Iyx))
+    print("相互情報量: %s" % ans)
+    return ans
+
+def solve_q5_1_5(m):
+    return fixed_value("0")
 
 QUESTIONS = {
     "1": {
@@ -599,7 +631,8 @@ QUESTIONS = {
             {"pattern": re.compile(r'白、赤、青のボールがそれぞれ \{(\d) (\d) (\d)\}.*\n.*\n.*\n.*結合'), "solver": solve_q5_1_1},
             {"pattern": re.compile(r'白、赤、青のボールがそれぞれ \{(\d) (\d) (\d)\}.*\n.*\n.*\n.*条件'), "solver": solve_q5_1_2},
             {"pattern": re.compile(r'ＸとＹに対する各種情報量'), "solver": solve_q5_1_3},
-            {"pattern": re.compile(r'誤る確率と入力Ｘ＝０を使う確率はそれぞれ \{([0-9\.]+) ([0-9\.]+)\}'), "solver": solve_q5_1_4}
+            {"pattern": re.compile(r'誤る確率と入力Ｘ＝０を使う確率はそれぞれ \{([0-9\.]+) ([0-9\.]+)\}'), "solver": solve_q5_1_4},
+            {"pattern": re.compile(r'普通のさいころを２回振る'), "solver": solve_q5_1_5}
         ]
     },
     "6": {
