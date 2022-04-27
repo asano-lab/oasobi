@@ -30,9 +30,10 @@ int main(void) {
     print_byte_array(Buffer_T_Terminal[0], 4);
 
     union position p;
-    p.x = 1.1f;
-    p.y = 100000.0f;
-    p.z = 1.1f;
+    p.x = 2.3f;
+    // p.x = 1.1f;
+    // p.y = 100000.0f;
+    // p.z = 1.1f;
     printf("%f %f %f\n", p.x, p.y, p.z);
 
     print_byte_array(p.bin, 3);
