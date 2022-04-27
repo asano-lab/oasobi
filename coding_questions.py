@@ -638,6 +638,10 @@ def solve_q7_2_1(m):
     return ans
 
 def solve_q7_2_2(m):
+    """
+    符号の次数など計算
+    3問目も同様
+    """
     G_str = m.groups()[0].split("\n")
 
     G = []
@@ -652,6 +656,31 @@ def solve_q7_2_2(m):
     k, n = G.shape
     ans = "%d %d %d" % (n, k, d_min)
     print("(n k dmin) = (%s)" % ans)
+    return ans
+
+def solve_q7_2_4(m):
+    r = np.matrix([int(i) for i in m.groups()[0].split(" ")])
+
+    print("r =", r)
+
+    H = np.matrix([
+        [1, 0, 1, 1, 1, 0, 0],
+        [1, 1, 0, 1, 0, 1, 0],
+        [1, 1, 1, 0, 0, 0, 1]
+    ])
+
+    s = np.matmul(r, H.T) % 2
+
+    e = np.matrix([int(np.array_equal(i, s)) for i in H.T])
+
+    print("H.T=\n", H.T)
+    print("s =", s)
+    print("e =", e)
+    y = r + e
+    print("y =", y)
+
+    ans = "".join([str(y[0, i]) for i in range(4)])
+    print("復号した受信語: %s" % ans)
     return ans
 
 QUESTIONS = {
@@ -760,6 +789,7 @@ QUESTIONS = {
         "questions": [
             {"pattern": re.compile(r'\|([01　]+)\|.*\n.*\|([01　]+)\|.*\n.*\|([01　]+)\|.*\n.*\n.*\n\{([01 ]+)\}'), "solver": solve_q7_2_1},
             {"pattern": re.compile(r'示す。((.*\n)+).*n,k,dmin'), "solver": solve_q7_2_2},
+            {"pattern": re.compile(r'受信した符号語は \{([01 ]+)\}'), "solver": solve_q7_2_4},
         ]
     },
     "7-3": {
