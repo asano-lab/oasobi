@@ -111,7 +111,7 @@ def main(username, studentnumber, chapter_list, browser):
             driver_type = webdriver.Chrome
         for dir_name in env_var:
             driver_path = dir_name + "\\" + driver_name
-            print(driver_path)
+            # print(driver_path)
             if os.path.isfile(driver_path):
                 print(driver_path)
                 driver = driver_type(driver_path)
