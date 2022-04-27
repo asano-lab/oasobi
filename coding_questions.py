@@ -553,6 +553,22 @@ def solve_q5_1_4(m):
 def solve_q5_1_5(m):
     return fixed_value("0")
 
+# 6
+def solve_q6_1_1(m):
+    """
+    2元対称通信路における最大通信路容量
+    """
+    pe = float(m.groups()[0])
+
+    if pe < 1e-10 or (1 - pe) < 1e-10:
+        C = 1
+    else:
+        C = 1 + pe * log2(pe) + (1 - pe) * log2(1 - pe)
+    
+    ans = del_zero("{:.3f}".format(C))
+    print("通信路容量: %s" % ans)
+    return ans
+
 QUESTIONS = {
     "1": {
         "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[2]/td[3]/a",
@@ -638,7 +654,7 @@ QUESTIONS = {
     "6": {
         "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[7]/td[3]/a",
         "questions": [
-
+            {"pattern": re.compile(r'pが ([0-9\.]+) の場合、通信路容量'), "solver": solve_q6_1_1}
         ]
     },
     "7-1": {
