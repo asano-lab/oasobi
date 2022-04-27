@@ -622,7 +622,11 @@ def solve_q7_1_5(m):
 
 # 7-2
 def solve_q7_2_1(m):
-    print(m.groups())
+    mg = m.groups()
+    G = np.matrix([[int(j) for j in i.split("　")] for i in mg[:3]])
+    info_series = np.matrix([[int(j) for j in i] for i in mg[3].split(" ")])
+    print(info_series)
+    print(G)
     return ""
 
 QUESTIONS = {
@@ -729,7 +733,7 @@ QUESTIONS = {
     "7-2": {
         "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[8]/td[3]/a[2]",
         "questions": [
-            {"pattern": re.compile(r'\|([01　]+)\|.*\n.*\|([01　]+)\|.*\n.*\|([01　]+)\|'), "solver": solve_q7_2_1},
+            {"pattern": re.compile(r'\|([01　]+)\|.*\n.*\|([01　]+)\|.*\n.*\|([01　]+)\|.*\n.*\n.*\n\{([01 ]+)\}'), "solver": solve_q7_2_1},
         ]
     },
     "7-3": {
