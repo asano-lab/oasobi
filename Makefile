@@ -19,4 +19,4 @@ rubik_win.so: rubik_win.c
 sleep.exe: sleep.c
 	gcc sleep.c -o sleep.exe
 serial.exe: serial.c
-	gcc serial.c -o serial.exe
+	gcc serial.c -o serial.exe -Wall
