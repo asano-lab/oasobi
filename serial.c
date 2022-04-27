@@ -19,7 +19,7 @@ union position {
 u_char Buffer_T_Terminal[Num_Terminal][64];
 
 int main(void) {
-    printf("%d %d\n", Num_Terminal, Num_Transpoder);
+    // printf("%d %d\n", Num_Terminal, Num_Transpoder);
     printf("%ld\n", sizeof Buffer_T_Terminal);
 
     Buffer_T_Terminal[0][0] = 0xff;
@@ -30,7 +30,13 @@ int main(void) {
     print_byte_array(Buffer_T_Terminal[0], 4);
 
     union position p;
-    print_size(p);
+    p.x = 1.1f;
+    p.y = 100000.0f;
+    p.z = 1.1f;
+    printf("%f %f %f\n", p.x, p.y, p.z);
+
+    print_byte_array(p.bin, 3);
+    print_size(p.z);
 
     return 0;
 }
