@@ -705,6 +705,27 @@ def solve_q7_3_2(m):
     print("符号: %s" % ans)
     return ans
 
+def solve_q7_3_3(m):
+    g = 0b00010111
+
+    g_max_bit = int(log2(g))
+    div_min = 1 << g_max_bit
+
+    err_list = []
+    for i in m.groups():
+        rem = int(i, 2)
+        while rem >= div_min:
+            rem_max_bit = int(log2(rem))
+            rem ^= g << (rem_max_bit - g_max_bit)
+        print("余り: %s" % format(rem, "04b"))
+        if rem == 0:
+            err_list.append("o")
+        else:
+            err_list.append("x")
+    ans = " ".join(err_list)
+    print("誤りの有無: %s" % ans)
+    return ans
+
 QUESTIONS = {
     "1": {
         "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[2]/td[3]/a",
@@ -819,6 +840,7 @@ QUESTIONS = {
         "questions": [
             {"pattern": re.compile(r'一つは 010101 である'), "solver": solve_q7_3_1},
             {"pattern": re.compile(r'符号化しなさい.*\n.*\{([01]+) ([01]+) ([01]+)\} <br>'), "solver": solve_q7_3_2},
+            {"pattern": re.compile(r'誤りがあるか.*\n.*\{([01]+) ([01]+) ([01]+)\} <br>'), "solver": solve_q7_3_3}
         ]
     }
 }
