@@ -598,6 +598,28 @@ def solve_q7_1_1(m):
     print("ハミング重み: %s" % ans)
     return ans
 
+def solve_q7_1_2(m):
+    codewords = [int(i.replace(" ", ""), 2) for i in m.groups()]
+    hamming_distances = []
+    for i in range(0, len(codewords), 2):
+        hamming_distances.append(sum(j == "1" for j in format(codewords[i] ^ codewords[i + 1], "b")))
+    ans = " ".join([str(i) for i in hamming_distances])
+    print("ハミング距離: %s" % ans)
+    return ans
+
+def solve_q7_1_3(m):
+    ans = " ".join([str(int(i) - 1) for i in m.groups()])
+    print("検出可能ビット数: %s" % ans)
+    return ans
+
+def solve_q7_1_4(m):
+    ans = " ".join([str((int(i) - 1) // 2) for i in m.groups()])
+    print("訂正可能ビット数: %s" % ans)
+    return ans
+
+def solve_q7_1_5(m):
+    return fixed_value("1 2")
+
 QUESTIONS = {
     "1": {
         "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[2]/td[3]/a",
@@ -692,7 +714,11 @@ QUESTIONS = {
     "7-1": {
         "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[8]/td[3]/a[1]",
         "questions": [
-            {"pattern": re.compile(r'.*<li> ([01 ]+) <br>\n.*<li> ([01 ]+) <br>\n.*<li> ([01 ]+) <br>'), "solver": solve_q7_1_1},
+            {"pattern": re.compile(r'<li> ([01 ]+) <br>\n.*<li> ([01 ]+) <br>\n.*<li> ([01 ]+) <br>'), "solver": solve_q7_1_1},
+            {"pattern": re.compile(r'<li> ([01 ]+), ([01 ]+) <br>\n.*<li> ([01 ]+), ([01 ]+) <br>\n.*<li> ([01 ]+), ([01 ]+) <br>'), "solver": solve_q7_1_2},
+            {"pattern": re.compile(r'検出.*\n.*<li> (\d+) <br>\n.*<li> (\d+) <br>\n.*<li> (\d+) <br>'), "solver": solve_q7_1_3},
+            {"pattern": re.compile(r'訂正.*\n.*<li> (\d+) <br>\n.*<li> (\d+) <br>\n.*<li> (\d+) <br>'), "solver": solve_q7_1_4},
+            {"pattern": re.compile(r'どの符号が線形符号？'), "solver": solve_q7_1_5}
         ]
     },
     "7-2": {
