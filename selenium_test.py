@@ -111,10 +111,13 @@ def main():
 
     time.sleep(SLEEP_TIME)
 
-    for chapter in QUESTIONS.keys():
-        if chapter == "5":
-            complete_questions(driver, chapter)
-            time.sleep(SLEEP_TIME)
+    # for chapter in QUESTIONS.keys():
+    #     if chapter == "5":
+    #         complete_questions(driver, chapter)
+    #         time.sleep(SLEEP_TIME)
+    for i in range(100):
+        complete_questions(driver, "5")
+        time.sleep(SLEEP_TIME)
 
     # input("press enter to end: ")
     # time.sleep(3)
