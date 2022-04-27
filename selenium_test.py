@@ -7,6 +7,8 @@ if __name__ == "__main__":
     parser.add_argument("studentnumber", help="学籍番号")
     parser.add_argument("-c", "--chapter", help="章 (1, 2, 3-1, 3-2,...)", nargs="+")
 
+    parser.add_argument("-b", "--browser", help="ブラウザ (Chrome, Edge, Firefox)")
+
     args = parser.parse_args()
 
 from selenium import webdriver
@@ -91,7 +93,7 @@ def complete_questions(driver, chapter, username, studentnumber):
                         back_button.click()
                         break
 
-def main(username, studentnumber, chapter_list):
+def main(username, studentnumber, chapter_list, browser):
     pf = platform.system()
 
     if pf == "Linux":
@@ -101,11 +103,18 @@ def main(username, studentnumber, chapter_list):
         driver = webdriver.Firefox(options=options)
     else:
         env_var = [i for i in os.getenv("PATH").split(";") if os.path.isdir(i)]
+        if browser == "Edge":
+            driver_name = "msedgedriver.exe"
+            driver_type = webdriver.Edge
+        else:
+            driver_name = "chromedriver.exe"
+            driver_type = webdriver.Chrome
         for dir_name in env_var:
-            driver_path = dir_name + "\chromedriver.exe"
+            driver_path = dir_name + "\\" + driver_name
+            print(driver_path)
             if os.path.isfile(driver_path):
                 print(driver_path)
-                driver = webdriver.Chrome(driver_path)
+                driver = driver_type(driver_path)
                 break
         else:
             print("ドライバが見つかりません")
@@ -133,4 +142,4 @@ def main(username, studentnumber, chapter_list):
     # time.sleep(3)
 
 if __name__ == "__main__":
-    main(args.username, args.studentnumber, args.chapter)
+    main(args.username, args.studentnumber, args.chapter, args.browser)
