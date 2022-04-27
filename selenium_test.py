@@ -1,9 +1,11 @@
-
+#!/usr/bin/python3
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.firefox.options import Options
 import time
 import re
 import os
+import platform
 from coding_questions import QUESTIONS
 
 SLEEP_TIME = 0.1
@@ -77,18 +79,24 @@ def complete_questions(driver, chapter):
                         break
 
 def main():
-    # print(webdriver)
+    pf = platform.system()
 
-    env_var = [i for i in os.getenv("PATH").split(";") if os.path.isdir(i)]
-    for dir_name in env_var:
-        driver_path = dir_name + "\chromedriver.exe"
-        if os.path.isfile(driver_path):
-            print(driver_path)
-            driver = webdriver.Chrome(driver_path)
-            break
+    if pf == "Linux":
+        options = Options()
+        options.binary_location = "/usr/bin/firefox"
+        # options.add_argument("-headless")
+        driver = webdriver.Firefox(options=options)
     else:
-        print("ドライバが見つかりません")
-        return -1
+        env_var = [i for i in os.getenv("PATH").split(";") if os.path.isdir(i)]
+        for dir_name in env_var:
+            driver_path = dir_name + "\chromedriver.exe"
+            if os.path.isfile(driver_path):
+                print(driver_path)
+                driver = webdriver.Chrome(driver_path)
+                break
+        else:
+            print("ドライバが見つかりません")
+            return -1
 
     print(type(driver))
     print(driver)

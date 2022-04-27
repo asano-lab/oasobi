@@ -203,8 +203,7 @@ def solve_q3_1_5(m):
         return "0"
     prob = float(prob_str)
     ans = "{:.3f}".format(-log2(prob))
-    if ans[-1] == "0":
-        ans = ans[:-1]
+    ans = del_zero(ans)
     print("情報量は -log2(%s) = %s ビット" % (prob, ans))
     return ans
 
