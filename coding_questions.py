@@ -25,11 +25,11 @@ def calc_entropy(p_arr):
         e -= i * log2(i)
     return e
 
-def del_zero(ans):
+def del_zero(ans: str) -> str:
     """
     無駄な0を削除
     小数部がなくなったら.も削除
-    0.00の場合は0で留める?
+    整数部は0でも残す
     """
     while ans[-1] in "0." and len(ans) > 1:
         ans = ans[:-1]
@@ -476,6 +476,270 @@ def solve_q4_3_3(m):
     print(ans)
     return ans
 
+# 5
+def solve_q5_1_1(m):
+    ball_count = [int(i) for i in m.groups()]
+    joint_prob_arr = []
+
+    for color, count1 in enumerate(ball_count):
+        px_color = count1 / sum(ball_count)
+        ball_count_second = ball_count.copy()
+        ball_count_second[color] -= 1
+        for count2 in ball_count_second:
+            py_color = count2 / sum(ball_count_second)
+            joint_prob_arr.append(px_color * py_color)
+    
+    print("同時確率分布", joint_prob_arr)
+    ans = "{:.2f}".format(calc_entropy(joint_prob_arr))
+    ans = del_zero(ans)
+    print("結合エントロピー: %s" % ans)
+    return ans
+
+def solve_q5_1_2(m):
+    ball_count = [int(i) for i in m.groups()]
+    e = 0
+
+    for color, count1 in enumerate(ball_count):
+        px_color = count1 / sum(ball_count)
+        ball_count_second = ball_count.copy()
+        ball_count_second[color] -= 1
+        for count2 in ball_count_second:
+            if count2 == 0:
+                continue
+            py_color = count2 / sum(ball_count_second)
+            e -= px_color * py_color * log2(py_color)
+    
+    ans = del_zero("{:.2f}".format(e))
+    print("条件付きエントロピー H(Y|X) = %s" % ans)
+    return ans
+
+def solve_q5_1_3(m):
+    return fixed_value("3 6 8")
+
+def solve_q5_1_4(m):
+    """
+    2元対称通信路の相互情報量
+    """
+    pe, px0 = tuple(float(i) for i in m.groups())
+
+    pxl = [px0, 1 - px0]
+
+    py0 = px0 * (1 - pe) + (1 - px0) * pe
+    pyl = [py0, 1 - py0]
+
+    # 例外処理
+    # Xの値が固定ならもともと情報を持たない
+    if px0 < 1e-10 or (1 - px0) < 1e-10:
+        Iyx = 0.0
+
+    # 誤り率が0ならどちらかを知れば全てわかる
+    elif pe < 1e-10 or (1 - pe) < 1e-10:
+        Iyx = calc_entropy(pxl)
+
+    else:
+        Iyx = calc_entropy(pyl)
+        
+        for i, pxi in enumerate(pxl):
+            for j in range(len(pyl)):
+                if i == j:
+                    Iyx += pxi * (1 - pe) * log2(1 - pe)
+                else:
+                    Iyx += pxi * pe * log2(pe)
+
+    ans = del_zero("{:.2f}".format(Iyx))
+    print("相互情報量: %s" % ans)
+    return ans
+
+def solve_q5_1_5(m):
+    return fixed_value("0")
+
+# 6
+def solve_q6_1_1(m):
+    """
+    2元対称通信路における通信路容量
+    相互情報量の最大値
+    """
+    pe = float(m.groups()[0])
+
+    if pe < 1e-10 or (1 - pe) < 1e-10:
+        C = 1
+    else:
+        C = 1 + pe * log2(pe) + (1 - pe) * log2(1 - pe)
+    
+    ans = del_zero("{:.3f}".format(C))
+    print("通信路容量: %s" % ans)
+    return ans
+
+def solve_q6_1_2(m):
+    pa, pb, pc = [float(i) for i in m.groups()]
+    ans = del_zero("{:.3f}".format(1.0 * pb * pc))
+    print("確率: %s" % ans)
+    return ans
+
+def solve_q6_1_3(m):
+    pa, pb, pc = [float(i) for i in m.groups()]
+    p0e = 0
+    p1e = 3 * pb * (1 - pb) ** 2 + (1 - pb) ** 3
+    p2e = 3 * pc * (1 - pc) ** 2 + (1 - pc) ** 3
+    ans = del_zero("{:.3f}".format((p0e + p1e + p2e) / 3))
+    print("平均誤り率: %s" % ans)
+    return ans
+
+def solve_q6_1_4(m):
+    pe = float(m.groups()[0])
+    ans = del_zero("{:.2f}".format(1 - pe))
+    print("情報速度 %s 未満なら可能" % ans)
+    return ans
+
+# 7-1
+def solve_q7_1_1(m):
+    hamming_weights = [sum(j == "1" for j in i) for i in m.groups()]
+    ans = " ".join([str(i) for i in hamming_weights])
+    print("ハミング重み: %s" % ans)
+    return ans
+
+def solve_q7_1_2(m):
+    codewords = [int(i.replace(" ", ""), 2) for i in m.groups()]
+    hamming_distances = []
+    for i in range(0, len(codewords), 2):
+        hamming_distances.append(sum(j == "1" for j in format(codewords[i] ^ codewords[i + 1], "b")))
+    ans = " ".join([str(i) for i in hamming_distances])
+    print("ハミング距離: %s" % ans)
+    return ans
+
+def solve_q7_1_3(m):
+    ans = " ".join([str(int(i) - 1) for i in m.groups()])
+    print("検出可能ビット数: %s" % ans)
+    return ans
+
+def solve_q7_1_4(m):
+    ans = " ".join([str((int(i) - 1) // 2) for i in m.groups()])
+    print("訂正可能ビット数: %s" % ans)
+    return ans
+
+def solve_q7_1_5(m):
+    return fixed_value("1 2")
+
+# 7-2
+def solve_q7_2_1(m):
+    mg = m.groups()
+    G = np.matrix([[int(j) for j in i.split("　")] for i in mg[:3]])
+    info_series = np.matrix([[int(j) for j in i] for i in mg[3].split(" ")])
+    print(info_series)
+    print(G)
+
+    c = np.matmul(info_series, G) % 2
+
+    ans = ""
+    for i in c.tolist():
+        ans += "".join([str(j) for j in i]) + " "
+    ans = ans[:-1]
+    print("符号: %s" % ans)
+    return ans
+
+def solve_q7_2_2(m):
+    """
+    符号の次数など計算
+    3問目も同様
+    """
+    G_str = m.groups()[0].split("\n")
+
+    G = []
+    d_min = float("inf")
+    for row in G_str:
+        m2 = re.search(r'\|([01 ]+)\|', row)
+        if m2:
+            G.append([int(i) for i in m2.groups()[0].split(" ")])
+    
+    G = np.matrix(G)
+    k, n = G.shape
+
+    # 全ての入力
+    all_info_series = np.matrix([[int(b) for b in format(i, "0%db" % k)] for i in range(1 << k)])
+    all_codewords = np.matmul(all_info_series, G) % 2
+
+    hamming_weights = [sum(i) for i in all_codewords.tolist()]
+
+    # 0を除いた符号語の最小ハミング重み
+    # 線形符号なので全ての組み合わせは不要
+    d_min = min([i for i in hamming_weights if i != 0])
+    
+    print(all_info_series)
+    print(all_codewords)
+    print(hamming_weights)
+
+    ans = "%d %d %d" % (n, k, d_min)
+    print("(n k dmin) = (%s)" % ans)
+    return ans
+
+def solve_q7_2_4(m):
+    """
+    (7, 4)ハミング符号の復号
+    """
+    r = np.matrix([int(i) for i in m.groups()[0].split(" ")])
+
+    print("r =", r)
+
+    H = np.matrix([
+        [1, 0, 1, 1, 1, 0, 0],
+        [1, 1, 0, 1, 0, 1, 0],
+        [1, 1, 1, 0, 0, 0, 1]
+    ])
+
+    s = np.matmul(r, H.T) % 2
+
+    e = np.matrix([int(np.array_equal(i, s)) for i in H.T])
+
+    print("H.T=\n", H.T)
+    print("s =", s)
+    print("e =", e)
+    y = (r + e) % 2
+    print("y =", y)
+
+    ans = "".join([str(y[0, i]) for i in range(4)])
+    print("復号した受信語: %s" % ans)
+    return ans
+
+# 7-3
+def solve_q7_3_1(m):
+    return fixed_value("2")
+
+def solve_q7_3_2(m):
+    g = 0b00010111
+
+    codes = []
+    for i in m.groups():
+        c = 0
+        for bit in i:
+            c <<= 1
+            if bit == "1":
+                c ^= g
+        codes.append(c)
+    ans = " ".join([format(i, "07b") for i in codes])
+    print("符号: %s" % ans)
+    return ans
+
+def solve_q7_3_3(m):
+    g = 0b00010111
+
+    g_max_bit = int(log2(g))
+    div_min = 1 << g_max_bit
+
+    err_list = []
+    for i in m.groups():
+        rem = int(i, 2)
+        while rem >= div_min:
+            rem_max_bit = int(log2(rem))
+            rem ^= g << (rem_max_bit - g_max_bit)
+        print("余り: %s" % format(rem, "04b"))
+        if rem == 0:
+            err_list.append("o")
+        else:
+            err_list.append("x")
+    ans = " ".join(err_list)
+    print("誤りの有無: %s" % ans)
+    return ans
+
 QUESTIONS = {
     "1": {
         "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[2]/td[3]/a",
@@ -484,7 +748,7 @@ QUESTIONS = {
             {"pattern": re.compile(r'次の情報のうち「ディジタル」'), "solver": solve_q1_1_2},
             {"pattern": re.compile(r'次の情報のうちディジタルがアナログより'), "solver": solve_q1_1_3},
             {"pattern": re.compile(r'最高周波数が (\d+) Hz'), "solver": solve_q1_1_4},
-            {"pattern": re.compile(r'(\d+) Mb/s である。アナログ信号を表すために <br>\n(\d+)レベル'), "solver": solve_q1_1_5},
+            {"pattern": re.compile(r'送信できるのは、(\d+) Mb/s である.*\n(\d+)レベル'), "solver": solve_q1_1_5},
             {"pattern": re.compile(r'ディジタル化するとき, (\d+) ビット/サンプル'), "solver": solve_q1_1_6},
             {"pattern": re.compile(r'次の文章.*用語はなにか'), "solver": solve_q1_1_7}
         ]
@@ -546,6 +810,51 @@ QUESTIONS = {
             {"pattern": re.compile(r'記号系列は \{([AB]+)\}.*\n.*区切りなさい'), "solver": solve_q4_3_1},
             {"pattern": re.compile(r'記号系列は \{([AB]+)\}.*\n.*実用的'), "solver": solve_q4_3_2},
             {"pattern": re.compile(r'([01 ]+) <br>\n復号しなさい'), "solver": solve_q4_3_3}
+        ]
+    },
+    "5": {
+        "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[6]/td[3]/a",
+        "questions": [
+            {"pattern": re.compile(r'白、赤、青のボールがそれぞれ \{(\d) (\d) (\d)\}.*\n.*\n.*\n.*結合'), "solver": solve_q5_1_1},
+            {"pattern": re.compile(r'白、赤、青のボールがそれぞれ \{(\d) (\d) (\d)\}.*\n.*\n.*\n.*条件'), "solver": solve_q5_1_2},
+            {"pattern": re.compile(r'ＸとＹに対する各種情報量'), "solver": solve_q5_1_3},
+            {"pattern": re.compile(r'誤る確率と入力Ｘ＝０を使う確率はそれぞれ \{([0-9\.]+) ([0-9\.]+)\}'), "solver": solve_q5_1_4},
+            {"pattern": re.compile(r'普通のさいころを２回振る'), "solver": solve_q5_1_5}
+        ]
+    },
+    "6": {
+        "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[7]/td[3]/a",
+        "questions": [
+            {"pattern": re.compile(r'pが ([0-9\.]+) の場合、通信路容量'), "solver": solve_q6_1_1},
+            {"pattern": re.compile(r'それぞれ \{([0-9\.]+) ([0-9\.]+) ([0-9\.]+)\} の場合'), "solver": solve_q6_1_2},
+            {"pattern": re.compile(r'それぞれ \{([0-9\.]+) ([0-9\.]+) ([0-9\.]+)\} である'), "solver": solve_q6_1_3},
+            {"pattern": re.compile(r'誤る確率pが ([0-9\.]+) の場合'), "solver": solve_q6_1_4}
+        ]
+    },
+    "7-1": {
+        "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[8]/td[3]/a[1]",
+        "questions": [
+            {"pattern": re.compile(r'<li> ([01 ]+) <br>\n.*<li> ([01 ]+) <br>\n.*<li> ([01 ]+) <br>'), "solver": solve_q7_1_1},
+            {"pattern": re.compile(r'<li> ([01 ]+), ([01 ]+) <br>\n.*<li> ([01 ]+), ([01 ]+) <br>\n.*<li> ([01 ]+), ([01 ]+) <br>'), "solver": solve_q7_1_2},
+            {"pattern": re.compile(r'検出.*\n.*<li> (\d+) <br>\n.*<li> (\d+) <br>\n.*<li> (\d+) <br>'), "solver": solve_q7_1_3},
+            {"pattern": re.compile(r'訂正.*\n.*<li> (\d+) <br>\n.*<li> (\d+) <br>\n.*<li> (\d+) <br>'), "solver": solve_q7_1_4},
+            {"pattern": re.compile(r'どの符号が線形符号？'), "solver": solve_q7_1_5}
+        ]
+    },
+    "7-2": {
+        "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[8]/td[3]/a[2]",
+        "questions": [
+            {"pattern": re.compile(r'\|([01　]+)\|.*\n.*\|([01　]+)\|.*\n.*\|([01　]+)\|.*\n.*\n.*\n\{([01 ]+)\}'), "solver": solve_q7_2_1},
+            {"pattern": re.compile(r'示す。((.*\n)+).*n,k,dmin'), "solver": solve_q7_2_2},
+            {"pattern": re.compile(r'受信した符号語は \{([01 ]+)\}'), "solver": solve_q7_2_4},
+        ]
+    },
+    "7-3": {
+        "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[8]/td[3]/a[3]",
+        "questions": [
+            {"pattern": re.compile(r'一つは 010101 である'), "solver": solve_q7_3_1},
+            {"pattern": re.compile(r'符号化しなさい.*\n.*\{([01]+) ([01]+) ([01]+)\} <br>'), "solver": solve_q7_3_2},
+            {"pattern": re.compile(r'誤りがあるか.*\n.*\{([01]+) ([01]+) ([01]+)\} <br>'), "solver": solve_q7_3_3}
         ]
     }
 }
