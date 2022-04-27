@@ -627,7 +627,32 @@ def solve_q7_2_1(m):
     info_series = np.matrix([[int(j) for j in i] for i in mg[3].split(" ")])
     print(info_series)
     print(G)
-    return ""
+
+    c = np.matmul(info_series, G) % 2
+
+    ans = ""
+    for i in c.tolist():
+        ans += "".join([str(j) for j in i]) + " "
+    ans = ans[:-1]
+    print("符号: %s" % ans)
+    return ans
+
+def solve_q7_2_2(m):
+    G_str = m.groups()[0].split("\n")
+
+    G = []
+    d_min = float("inf")
+    for row in G_str:
+        m2 = re.search(r'\|([01 ]+)\|', row)
+        if m2:
+            G.append([int(i) for i in m2.groups()[0].split(" ")])
+    
+    d_min = min([sum(i) for i in G])
+    G = np.matrix(G)
+    k, n = G.shape
+    ans = "%d %d %d" % (n, k, d_min)
+    print("(n k dmin) = (%s)" % ans)
+    return ans
 
 QUESTIONS = {
     "1": {
@@ -734,6 +759,7 @@ QUESTIONS = {
         "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[8]/td[3]/a[2]",
         "questions": [
             {"pattern": re.compile(r'\|([01　]+)\|.*\n.*\|([01　]+)\|.*\n.*\|([01　]+)\|.*\n.*\n.*\n\{([01 ]+)\}'), "solver": solve_q7_2_1},
+            {"pattern": re.compile(r'示す。((.*\n)+).*n,k,dmin'), "solver": solve_q7_2_2},
         ]
     },
     "7-3": {
