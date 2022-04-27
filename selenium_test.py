@@ -1,3 +1,11 @@
+import argparse
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="符号化技術特論基礎編の課題を解くプログラム")
+    parser.add_argument("username", help="ユーザー名")
+    parser.add_argument("studentnumber", help="学籍番号")
+
+    args = parser.parse_args()
 
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
@@ -5,7 +13,7 @@ import time
 import re
 from coding_questions import QUESTIONS
 
-SLEEP_TIME = 0.1
+SLEEP_TIME = 1
 
 RETRY_MAX = 0
 
@@ -27,17 +35,17 @@ def solve_questions(driver, chapter):
     
     return False
 
-def complete_questions(driver, chapter):
+def complete_questions(driver, chapter, username, studentnumber):
     quiz_link = driver.find_element_by_xpath(QUESTIONS[chapter]["xpath"])
     quiz_link.click()
 
     time.sleep(SLEEP_TIME)
 
     name_input = driver.find_element_by_xpath("/html/body/dl/dd[2]/form/table/tbody/tr[1]/td[2]/input")
-    name_input.send_keys("username")
+    name_input.send_keys(username)
 
     student_numter_input = driver.find_element_by_xpath("/html/body/dl/dd[2]/form/table/tbody/tr[2]/td[2]/input")
-    student_numter_input.send_keys("20W2000A")
+    student_numter_input.send_keys(studentnumber)
 
     start_button = driver.find_element_by_xpath("/html/body/dl/dd[2]/form/input[5]")
     start_button.click()
@@ -75,7 +83,7 @@ def complete_questions(driver, chapter):
                         back_button.click()
                         break
 
-def main():
+def main(username, studentnumber):
     # print(webdriver)
 
     driver = webdriver.Chrome("C:\FreeSoft\chromedriver_win32\chrome100\chromedriver.exe")
@@ -93,13 +101,12 @@ def main():
     time.sleep(SLEEP_TIME)
 
     for chapter in QUESTIONS.keys():
-        # if chapter == "4-3":
-        complete_questions(driver, chapter)
-        time.sleep(SLEEP_TIME)
+        if chapter == "4-3":
+            complete_questions(driver, chapter, username, studentnumber)
+            time.sleep(SLEEP_TIME)
 
     # input("press enter to end: ")
     # time.sleep(3)
 
 if __name__ == "__main__":
-    main()
-
+    main(args.username, args.studentnumber)
