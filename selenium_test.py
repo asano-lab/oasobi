@@ -83,6 +83,7 @@ def main():
     for dir_name in env_var:
         driver_path = dir_name + "\chromedriver.exe"
         if os.path.isfile(driver_path):
+            print(driver_path)
             driver = webdriver.Chrome(driver_path)
             break
     else:
