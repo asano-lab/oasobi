@@ -28,6 +28,7 @@ def solve_questions(driver, chapter):
             answer_button.click()
             return True
     
+    print("合致する問題がありません")
     return False
 
 def complete_questions(driver, chapter):
@@ -111,9 +112,9 @@ def main():
     time.sleep(SLEEP_TIME)
 
     for chapter in QUESTIONS.keys():
-        # if chapter == "4-3":
-        complete_questions(driver, chapter)
-        time.sleep(SLEEP_TIME)
+        if chapter == "5":
+            complete_questions(driver, chapter)
+            time.sleep(SLEEP_TIME)
 
     # input("press enter to end: ")
     # time.sleep(3)

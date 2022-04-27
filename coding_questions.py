@@ -25,11 +25,11 @@ def calc_entropy(p_arr):
         e -= i * log2(i)
     return e
 
-def del_zero(ans):
+def del_zero(ans: str) -> str:
     """
     無駄な0を削除
     小数部がなくなったら.も削除
-    0.00の場合は0で留める?
+    整数部は0でも残す
     """
     while ans[-1] in "0." and len(ans) > 1:
         ans = ans[:-1]
@@ -476,6 +476,46 @@ def solve_q4_3_3(m):
     print(ans)
     return ans
 
+# 5
+def solve_q5_1_1(m):
+    ball_count = [int(i) for i in m.groups()]
+    joint_prob_arr = []
+
+    for color, count1 in enumerate(ball_count):
+        px_color = count1 / sum(ball_count)
+        ball_count_second = ball_count.copy()
+        ball_count_second[color] -= 1
+        for count2 in ball_count_second:
+            py_color = count2 / sum(ball_count_second)
+            joint_prob_arr.append(px_color * py_color)
+    
+    print("同時確率分布", joint_prob_arr)
+    ans = "{:.2f}".format(calc_entropy(joint_prob_arr))
+    ans = del_zero(ans)
+    print("結合エントロピー: %s" % ans)
+    return ans
+
+def solve_q5_1_2(m):
+    ball_count = [int(i) for i in m.groups()]
+    e = 0
+
+    for color, count1 in enumerate(ball_count):
+        px_color = count1 / sum(ball_count)
+        ball_count_second = ball_count.copy()
+        ball_count_second[color] -= 1
+        for count2 in ball_count_second:
+            if count2 == 0:
+                continue
+            py_color = count2 / sum(ball_count_second)
+            e -= px_color * py_color * log2(py_color)
+    
+    ans = del_zero("{:.2f}".format(e))
+    print("条件付きエントロピー H(Y|X) = %s" % ans)
+    return ans
+
+def solve_q5_1_3(m):
+    return fixed_value("3 6 8")
+
 QUESTIONS = {
     "1": {
         "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[2]/td[3]/a",
@@ -546,6 +586,38 @@ QUESTIONS = {
             {"pattern": re.compile(r'記号系列は \{([AB]+)\}.*\n.*区切りなさい'), "solver": solve_q4_3_1},
             {"pattern": re.compile(r'記号系列は \{([AB]+)\}.*\n.*実用的'), "solver": solve_q4_3_2},
             {"pattern": re.compile(r'([01 ]+) <br>\n復号しなさい'), "solver": solve_q4_3_3}
+        ]
+    },
+    "5": {
+        "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[6]/td[3]/a",
+        "questions": [
+            {"pattern": re.compile(r'白、赤、青のボールがそれぞれ \{(\d) (\d) (\d)\}.*\n.*\n.*\n.*結合'), "solver": solve_q5_1_1},
+            {"pattern": re.compile(r'白、赤、青のボールがそれぞれ \{(\d) (\d) (\d)\}.*\n.*\n.*\n.*条件'), "solver": solve_q5_1_2},
+            {"pattern": re.compile(r'ＸとＹに対する各種情報量'), "solver": solve_q5_1_3}
+        ]
+    },
+    "6": {
+        "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[7]/td[3]/a",
+        "questions": [
+
+        ]
+    },
+    "7-1": {
+        "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[8]/td[3]/a[1]",
+        "questions": [
+
+        ]
+    },
+    "7-2": {
+        "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[8]/td[3]/a[2]",
+        "questions": [
+
+        ]
+    },
+    "7-3": {
+        "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[8]/td[3]/a[3]",
+        "questions": [
+
         ]
     }
 }
