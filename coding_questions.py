@@ -834,7 +834,7 @@ QUESTIONS = {
     "7-1": {
         "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[8]/td[3]/a[1]",
         "questions": [
-            {"pattern": re.compile(r'<li> ([01 ]+) <br>\n.*<li> ([01 ]+) <br>\n.*<li> ([01 ]+) <br>'), "solver": solve_q7_1_1},
+            {"pattern": re.compile(r'重み.*\n.*<li> ([01 ]+) <br>\n.*<li> ([01 ]+) <br>\n.*<li> ([01 ]+) <br>'), "solver": solve_q7_1_1},
             {"pattern": re.compile(r'<li> ([01 ]+), ([01 ]+) <br>\n.*<li> ([01 ]+), ([01 ]+) <br>\n.*<li> ([01 ]+), ([01 ]+) <br>'), "solver": solve_q7_1_2},
             {"pattern": re.compile(r'検出.*\n.*<li> (\d+) <br>\n.*<li> (\d+) <br>\n.*<li> (\d+) <br>'), "solver": solve_q7_1_3},
             {"pattern": re.compile(r'訂正.*\n.*<li> (\d+) <br>\n.*<li> (\d+) <br>\n.*<li> (\d+) <br>'), "solver": solve_q7_1_4},

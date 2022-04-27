@@ -5,6 +5,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="符号化技術特論基礎編の課題を解くプログラム")
     parser.add_argument("username", help="ユーザー名")
     parser.add_argument("studentnumber", help="学籍番号")
+    parser.add_argument("-c", "--chapter", help="章 (1, 2, 3-1, 3-2,...)", nargs="+")
 
     args = parser.parse_args()
 
@@ -18,7 +19,7 @@ import os
 import platform
 from coding_questions import QUESTIONS
 
-SLEEP_TIME = 1
+SLEEP_TIME = 0.1
 
 RETRY_MAX = 0
 
@@ -65,6 +66,7 @@ def complete_questions(driver, chapter, username, studentnumber):
     retry_count = 0
 
     while cleared:
+        time.sleep(SLEEP_TIME)
         cleared = solve_questions(driver, chapter)
         if cleared:
             time.sleep(SLEEP_TIME)
@@ -89,7 +91,7 @@ def complete_questions(driver, chapter, username, studentnumber):
                         back_button.click()
                         break
 
-def main(username, studentnumber):
+def main(username, studentnumber, chapter_list):
     pf = platform.system()
 
     if pf == "Linux":
@@ -100,7 +102,6 @@ def main(username, studentnumber):
     else:
         env_var = [i for i in os.getenv("PATH").split(";") if os.path.isdir(i)]
         for dir_name in env_var:
-            print(dir_name)
             driver_path = dir_name + "\chromedriver.exe"
             if os.path.isfile(driver_path):
                 print(driver_path)
@@ -110,11 +111,6 @@ def main(username, studentnumber):
             print("ドライバが見つかりません")
             return -1
 
-    print(type(driver))
-    print(driver)
-    # driver.get("https://www.google.co.jp")
-
-    # Percent-encoding
     with open("private/coding_url.txt") as f:
         url = f.read()
         print(url)
@@ -122,13 +118,19 @@ def main(username, studentnumber):
 
     time.sleep(SLEEP_TIME)
 
-    for chapter in QUESTIONS.keys():
-        if chapter == "4-3":
+    # 章を指定しなければ全て解く
+    if chapter_list is None:
+        for chapter in QUESTIONS.keys():
             complete_questions(driver, chapter, username, studentnumber)
             time.sleep(SLEEP_TIME)
+    else:
+        for chapter in chapter_list:
+            if chapter in QUESTIONS.keys():
+                complete_questions(driver, chapter, username, studentnumber)
+                time.sleep(SLEEP_TIME)
 
     # input("press enter to end: ")
     # time.sleep(3)
 
 if __name__ == "__main__":
-    main(args.username, args.studentnumber)
+    main(args.username, args.studentnumber, args.chapter)
