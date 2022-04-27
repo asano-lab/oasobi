@@ -113,7 +113,7 @@ def main():
     time.sleep(SLEEP_TIME)
 
     for chapter in QUESTIONS.keys():
-        if chapter == "6":
+        if chapter == "1":
             complete_questions(driver, chapter)
             time.sleep(SLEEP_TIME)
     # for i in range(100):

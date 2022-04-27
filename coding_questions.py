@@ -591,6 +591,13 @@ def solve_q6_1_4(m):
     print("情報速度 %s 未満なら可能" % ans)
     return ans
 
+# 7-1
+def solve_q7_1_1(m):
+    hamming_weights = [sum(j == "1" for j in i) for i in m.groups()]
+    ans = " ".join([str(i) for i in hamming_weights])
+    print("ハミング重み: %s" % ans)
+    return ans
+
 QUESTIONS = {
     "1": {
         "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[2]/td[3]/a",
@@ -599,7 +606,7 @@ QUESTIONS = {
             {"pattern": re.compile(r'次の情報のうち「ディジタル」'), "solver": solve_q1_1_2},
             {"pattern": re.compile(r'次の情報のうちディジタルがアナログより'), "solver": solve_q1_1_3},
             {"pattern": re.compile(r'最高周波数が (\d+) Hz'), "solver": solve_q1_1_4},
-            {"pattern": re.compile(r'(\d+) Mb/s である。アナログ信号を表すために <br>\n(\d+)レベル'), "solver": solve_q1_1_5},
+            {"pattern": re.compile(r'送信できるのは、(\d+) Mb/s である.*\n(\d+)レベル'), "solver": solve_q1_1_5},
             {"pattern": re.compile(r'ディジタル化するとき, (\d+) ビット/サンプル'), "solver": solve_q1_1_6},
             {"pattern": re.compile(r'次の文章.*用語はなにか'), "solver": solve_q1_1_7}
         ]
@@ -685,7 +692,7 @@ QUESTIONS = {
     "7-1": {
         "xpath": "/html/body/div[2]/ol/li[1]/p/table/tbody/tr[8]/td[3]/a[1]",
         "questions": [
-
+            {"pattern": re.compile(r'.*<li> ([01 ]+) <br>\n.*<li> ([01 ]+) <br>\n.*<li> ([01 ]+) <br>'), "solver": solve_q7_1_1},
         ]
     },
     "7-2": {
