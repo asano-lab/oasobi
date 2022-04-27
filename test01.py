@@ -1,21 +1,8 @@
-#!/usr/bin/python3
-import sys
-import time
-import random as rd
+import os
 
-r = 0
+ENV_VAR = os.getenv("PATH").split(";")
+# print(ENV_VAR)
 
-try:
-    for i in range(1000000):
-        time.sleep(1)
+for i in ENV_VAR:
+    if os.path.isdir(i):
         print(i)
-        print(sys.version)
-        r = rd.randint(0, 19)
-        print(r)
-        if r == 0:
-            break
-
-except KeyboardInterrupt:
-    pass
-
-sys.exit(i & 0xff)
