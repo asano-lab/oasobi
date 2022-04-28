@@ -21,7 +21,7 @@ import os
 import platform
 from coding_questions import QUESTIONS
 
-SLEEP_TIME = 0.1
+SLEEP_TIME = 1
 
 RETRY_MAX = 0
 
