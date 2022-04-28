@@ -10,8 +10,11 @@ print(b_unquote)
 
 m = re.search(r'1_(.*)$', b_unquote)
 if m:
-    print(m.groups())
+    b64_block = m.groups()[0]
+    print(b64_block)
+    b64_decoded = base64.b64decode(b64_block)
 
-# b64_decoded = base64.b64decode(b_unquote.decode())
-
-# print(b64_decoded)
+    print(b64_decoded)
+    print(type(b64_decoded))
+    for i in b64_decoded:
+        print(format(i, "08b"), format(i, "02x"))
