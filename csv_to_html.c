@@ -89,7 +89,7 @@ int main(int argc, char **argv) {
                     break;
                 }
                 if (c == '\n') {
-                    fprintf(fpw, "</td></tr><tr><td>");
+                    status = 4;
                     break;
                 }
                 putc(c, fpw);
@@ -99,9 +99,13 @@ int main(int argc, char **argv) {
                 if (c == '"') {
                     status = 2;
                     break;
-                } if (c == '\n') {
+                }
+                if (c == '\n') {
                     fprintf(fpw, "<br>");
-                } else {
+                    status = 4;
+                    break;
+                }
+                else {
                     putc(c, fpw);
                 }
                 break;
@@ -117,8 +121,7 @@ int main(int argc, char **argv) {
                     break;
                 }
                 if (c == '\n') {
-                    fprintf(fpw, "</td></tr><tr><td>");
-                    status = 0;
+                    status = 4;
                     break;
                 }
                 break;
@@ -133,14 +136,28 @@ int main(int argc, char **argv) {
                     break;
                 }
                 if (c == '\n') {
-                    fprintf(fpw, "</td></tr><tr><td>");
-                    status = 0;
+                    status = 4;
                     break;
                 }
                 putc(c, fpw);
                 break;
             case 4: // 改行直後
-                ;
+                // 改行が連続した場合は何もしない
+                if (c == '\n') {
+                    break;
+                }
+                fprintf(fpw, "</td></tr><tr><td>");
+                if (c == '"') {
+                    status = 1;
+                    break;
+                }
+                if (c == ',') {
+                    fprintf(fpw, "</td><td>");
+                    break;
+                }
+                putc(c, fpw);
+                status = 3;
+                break;
             default:
                 ;
         }
