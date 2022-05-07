@@ -102,7 +102,7 @@ int main(int argc, char **argv) {
                 }
                 if (c == '\n') {
                     fprintf(fpw, "<br>");
-                    status = 4;
+                    status = 1;
                     break;
                 }
                 else {
@@ -111,8 +111,8 @@ int main(int argc, char **argv) {
                 break;
             case 2: // ダブルクォート外
                 if (c == '"') {
-                    status = 1;
                     putc(c, fpw); // エスケープ
+                    status = 1;
                     break;
                 }
                 if (c == ',') {
@@ -124,12 +124,13 @@ int main(int argc, char **argv) {
                     status = 4;
                     break;
                 }
+                status = -1;
                 break;
             case 3: // ダブルクォートなし
-                // if (c == '"') {
-                //     status = -1;
-                //     break;
-                // }
+                if (c == '"') {
+                    status = -1;
+                    break;
+                }
                 if (c == ',') {
                     fprintf(fpw, "</td><td>");
                     status = 0;
@@ -153,6 +154,7 @@ int main(int argc, char **argv) {
                 }
                 if (c == ',') {
                     fprintf(fpw, "</td><td>");
+                    status = 0;
                     break;
                 }
                 putc(c, fpw);
@@ -168,6 +170,7 @@ int main(int argc, char **argv) {
                 }
                 if (c == ',') {
                     fprintf(fpw, "</td><td>");
+                    status = 0;
                     break;
                 }
                 putc(c, fpw);
