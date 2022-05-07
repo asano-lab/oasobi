@@ -2,6 +2,8 @@
 #include <string.h>
 #include <sys/stat.h>
 
+#define BUFFER_SIZE 18
+
 int main(int argc, char **argv) {
     FILE *fpr, *fpw;
     struct stat st;
@@ -12,8 +14,8 @@ int main(int argc, char **argv) {
     int last_slash = -1;
     int last_dot = -1;
 
-    char dir_path[FILENAME_MAX];
-    char fnamew[FILENAME_MAX];
+    char dir_path[BUFFER_SIZE];
+    char fnamew[BUFFER_SIZE];
 
     // 引数が無い場合
     if (argc == 1) {
@@ -27,7 +29,7 @@ int main(int argc, char **argv) {
         return -1;
     }
     
-    for (i = 0; (c = argv[1][i]) != '\0' && i < FILENAME_MAX - 1; i++) {
+    for (i = 0; (c = argv[1][i]) != '\0' && i < BUFFER_SIZE - 1; i++) {
         fnamew[i] = c;
         if (c == '/') {
             last_slash = i;
@@ -35,6 +37,8 @@ int main(int argc, char **argv) {
             last_dot = i;
         }
     }
+    fnamew[i] = '\0';
+    puts(fnamew);
 
     // 拡張子チェック
     for (i = 0; i < 4; i++) {
@@ -45,18 +49,21 @@ int main(int argc, char **argv) {
     }
     // 相対パス直下の場合はカレントディレクトリにhtmlディレクトリ作成
     if (last_slash < 0) {
-        snprintf(dir_path, FILENAME_MAX, "html");
+        snprintf(dir_path, BUFFER_SIZE, "html");
     } else {
         fnamew[last_slash] = '\0';
-        snprintf(dir_path, FILENAME_MAX, "%s/html", fnamew);
+        puts(fnamew + last_slash + 1);
+        snprintf(dir_path, BUFFER_SIZE, "%s", fnamew);
+        strncat(dir_path, "/html", strlen(dir_path) - 6);
     }
+    puts(dir_path);
 
     // htmlディレクトリが存在しなければ作成
     if (stat(dir_path, &st) != 0) {
         if (mkdir(dir_path, 0775) == 0) {
-            printf("\"%s\" directory was created\n", dir_path);
+            printf("directory '%s' was created\n", dir_path);
         } else {
-            printf("\"%s\" directory creation failed\n", dir_path);
+            printf("\amkdir: cannot create directory '%s'\n", dir_path);
             return -1;
         }
     }
@@ -67,7 +74,7 @@ int main(int argc, char **argv) {
     }
 
     argv[1][last_dot] = '\0';
-    snprintf(fnamew, FILENAME_MAX, "%s/%s.html", dir_path, argv[1] + last_slash + 1);
+    snprintf(fnamew, BUFFER_SIZE, "%s/%s.html", dir_path, argv[1] + last_slash + 1);
 
     if ((fpw = fopen(fnamew, "w")) == NULL) {
         printf("\a%s: cannot open '%s' for writing\n", argv[0], fnamew);
