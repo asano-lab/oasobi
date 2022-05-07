@@ -43,7 +43,7 @@ int main(int argc, char **argv) {
             return -1;
         }
     }
-    // 相対パス直下
+    // 相対パス直下の場合はカレントディレクトリにhtmlディレクトリ作成
     if (last_slash < 0) {
         snprintf(dir_path, FILENAME_MAX, "html");
     } else {
@@ -54,15 +54,15 @@ int main(int argc, char **argv) {
     // htmlディレクトリが存在しなければ作成
     if (stat(dir_path, &st) != 0) {
         if (mkdir(dir_path, 0775) == 0) {
-            printf("\"%s\" directory was created.\n", dir_path);
+            printf("\"%s\" directory was created\n", dir_path);
         } else {
-            printf("\"%s\" directory create failed.\n", dir_path);
+            printf("\"%s\" directory creation failed\n", dir_path);
             return -1;
         }
     }
     // 同名のファイルがあった場合
     else if ((st.st_mode & S_IFMT) != S_IFDIR) {
-        printf("\"%s\" file exists!\n", dir_path);
+        printf("\amkdir: cannot create directory '%s': File exists\n", dir_path);
         return -1;
     }
 
@@ -70,7 +70,7 @@ int main(int argc, char **argv) {
     snprintf(fnamew, FILENAME_MAX, "%s/%s.html", dir_path, argv[1] + last_slash + 1);
 
     if ((fpw = fopen(fnamew, "w")) == NULL) {
-        printf("\a\"%s\" file open failed to write.\n", fnamew);
+        printf("\a%s: cannot open '%s' for writing\n", argv[0], fnamew);
         return -1;
     }
     
