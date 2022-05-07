@@ -36,14 +36,6 @@ int main(int argc, char **argv) {
         }
     }
 
-    // 拡張子チェック
-    // for (i = 0; i < 4; i++) {
-    //     if (argv[1][last_dot + 1 + i] != "csv"[i]) {
-    //         printf("\a\"%s\" is not csv file.\n", argv[1]);
-    //         return -1;
-    //     }
-    // }
-
     // 相対パス直下の場合はカレントディレクトリにhtmlディレクトリ作成
     if (last_slash < 0) {
         snprintf(fnamew, BUFFER_SIZE, "html");
