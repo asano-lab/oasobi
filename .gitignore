@@ -6,6 +6,8 @@
 /*.exe
 /*.so
 /dat2
+/dat2_cp
+/javascript
 /np_dat
 /__pycache__
 /.vscode
