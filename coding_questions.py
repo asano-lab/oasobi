@@ -344,7 +344,7 @@ def solve_q4_2_3(m):
     source_len_mean = calc_source_len_mean(Pb, N)
     print("n_N = %f" % source_len_mean)
 
-    ans = "{:.3f}".format(codeword_len_mean / source_len_mean)
+    ans = del_zero("{:.3f}".format(codeword_len_mean / source_len_mean))
     print("l_N = %s" % ans)
     return ans
 
