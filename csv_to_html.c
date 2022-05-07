@@ -2,7 +2,7 @@
 #include <string.h>
 #include <sys/stat.h>
 
-#define BUFFER_SIZE 18
+#define BUFFER_SIZE 256
 
 int main(int argc, char **argv) {
     FILE *fpr, *fpw;
@@ -52,13 +52,9 @@ int main(int argc, char **argv) {
         snprintf(dir_path, BUFFER_SIZE, "html");
     } else {
         fnamew[last_slash] = '\0';
-        puts(fnamew + last_slash + 1);
         snprintf(dir_path, BUFFER_SIZE, "%s", fnamew);
-        printf("%ld\n", BUFFER_SIZE - strlen(dir_path) - 1);
-        strncat(dir_path, "/htmlllllllllllllll", BUFFER_SIZE - strlen(dir_path) - 1);
+        strncat(dir_path, "/html", BUFFER_SIZE - strlen(dir_path) - 1);
     }
-    puts(dir_path);
-    printf("%ld\n", strlen(dir_path));
 
     // htmlディレクトリまたはファイルが存在しない
     if (stat(dir_path, &st) != 0) {
@@ -76,7 +72,11 @@ int main(int argc, char **argv) {
     }
 
     argv[1][last_dot] = '\0';
-    snprintf(fnamew, BUFFER_SIZE, "%s/%s.html", dir_path, argv[1] + last_slash + 1);
+    strncat(dir_path, "/", BUFFER_SIZE - strlen(dir_path) - 1);
+    strncat(dir_path, argv[1] + last_slash + 1, BUFFER_SIZE - strlen(dir_path) - 1);
+    strncat(dir_path, ".html", BUFFER_SIZE - strlen(dir_path) - 1);
+
+    snprintf(fnamew, BUFFER_SIZE, "%s", dir_path);
     puts(fnamew);
 
     if ((fpw = fopen(fnamew, "w")) == NULL) {
