@@ -15,13 +15,15 @@ int main(int argc, char **argv) {
     char dir_path[FILENAME_MAX];
     char fnamew[FILENAME_MAX];
 
+    // 引数が無い場合
     if (argc == 1) {
         printf("%s: missing file operand\n", argv[0]);
         return -1;
     }
 
+    // ファイルが読み込めない
     if ((fpr = fopen(argv[1], "r")) == NULL) {
-        printf("\a\"%s\" file open failed to read.\n", argv[1]);
+        printf("\a%s: cannot open '%s' for reading\n", argv[0], argv[1]);
         return -1;
     }
     
