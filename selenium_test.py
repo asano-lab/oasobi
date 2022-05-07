@@ -8,6 +8,7 @@ if __name__ == "__main__":
     parser.add_argument("-c", "--chapter", help="章 (1, 2, 3-1, 3-2,...)", nargs="+")
 
     parser.add_argument("-b", "--browser", help="ブラウザ (Chrome, Edge, Firefox)")
+    parser.add_argument("--repeat", help="繰り返して解く回数", type=int, default=1)
 
     args = parser.parse_args()
 
@@ -21,7 +22,7 @@ import os
 import platform
 from coding_questions import QUESTIONS
 
-SLEEP_TIME = 1
+SLEEP_TIME = 0
 
 RETRY_MAX = 0
 
@@ -93,7 +94,7 @@ def complete_questions(driver, chapter, username, studentnumber):
                         back_button.click()
                         break
 
-def main(username, studentnumber, chapter_list, browser):
+def main(username, studentnumber, chapter_list, browser, repeat):
     pf = platform.system()
 
     if pf == "Linux":
@@ -128,18 +129,20 @@ def main(username, studentnumber, chapter_list, browser):
     time.sleep(SLEEP_TIME)
 
     # 章を指定しなければ全て解く
-    if chapter_list is None:
-        for chapter in QUESTIONS.keys():
-            complete_questions(driver, chapter, username, studentnumber)
-            time.sleep(SLEEP_TIME)
-    else:
-        for chapter in chapter_list:
-            if chapter in QUESTIONS.keys():
+    for i in range(repeat):
+        print("%d回目" % (i + 1))
+        if chapter_list is None:
+            for chapter in QUESTIONS.keys():
                 complete_questions(driver, chapter, username, studentnumber)
                 time.sleep(SLEEP_TIME)
+        else:
+            for chapter in chapter_list:
+                if chapter in QUESTIONS.keys():
+                    complete_questions(driver, chapter, username, studentnumber)
+                    time.sleep(SLEEP_TIME)
 
     # input("press enter to end: ")
     # time.sleep(3)
 
 if __name__ == "__main__":
-    main(args.username, args.studentnumber, args.chapter, args.browser)
+    main(args.username, args.studentnumber, args.chapter, args.browser, args.repeat)
