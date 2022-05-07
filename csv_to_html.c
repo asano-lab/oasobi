@@ -10,7 +10,7 @@ int main(int argc, char **argv) {
     char c;
 
     int i;
-    int status = 0;
+    int status = 5;
     int last_slash = -1;
     int last_dot = -1;
 
@@ -147,6 +147,21 @@ int main(int argc, char **argv) {
                     break;
                 }
                 fprintf(fpw, "</td></tr><tr><td>");
+                if (c == '"') {
+                    status = 1;
+                    break;
+                }
+                if (c == ',') {
+                    fprintf(fpw, "</td><td>");
+                    break;
+                }
+                putc(c, fpw);
+                status = 3;
+                break;
+            case 5: // 初期状態
+                if (c == '\n') {
+                    break;
+                }
                 if (c == '"') {
                     status = 1;
                     break;
