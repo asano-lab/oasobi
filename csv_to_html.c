@@ -15,7 +15,8 @@ int main(int argc, char **argv) {
     char dir_path[FILENAME_MAX];
     char fnamew[FILENAME_MAX];
 
-    if (argc != 2) {
+    if (argc == 1) {
+        printf("%s: missing file operand\n", argv[0]);
         return -1;
     }
 
