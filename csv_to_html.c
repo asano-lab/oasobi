@@ -78,6 +78,10 @@ int main(int argc, char **argv) {
     c = getc(fpr);
     fprintf(fpw, "<html><table border=1><tr><td>");
     while (c != EOF) {
+        if (c == '\r') {
+            c = getc(fpr);
+            continue;
+        }
         switch (status) {
             case 0: // データ開始
                 if (c == '"') {
