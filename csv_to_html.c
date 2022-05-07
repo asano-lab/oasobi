@@ -61,7 +61,6 @@ int main(int argc, char **argv) {
     }
 
     // htmlディレクトリ内にhtmlファイル作成
-    printf("%d, %d\n", last_dot, last_slash);
     if (last_dot > last_slash) {
         argv[1][last_dot] = '\0';
     }
