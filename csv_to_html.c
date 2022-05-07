@@ -126,10 +126,10 @@ int main(int argc, char **argv) {
                 }
                 break;
             case 3: // ダブルクォートなし
-                if (c == '"') {
-                    status = -1;
-                    break;
-                }
+                // if (c == '"') {
+                //     status = -1;
+                //     break;
+                // }
                 if (c == ',') {
                     fprintf(fpw, "</td><td>");
                     status = 0;
