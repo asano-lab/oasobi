@@ -37,12 +37,13 @@ int main(int argc, char **argv) {
     }
 
     // 拡張子チェック
-    for (i = 0; i < 4; i++) {
-        if (argv[1][last_dot + 1 + i] != "csv"[i]) {
-            printf("\a\"%s\" is not csv file.\n", argv[1]);
-            return -1;
-        }
-    }
+    // for (i = 0; i < 4; i++) {
+    //     if (argv[1][last_dot + 1 + i] != "csv"[i]) {
+    //         printf("\a\"%s\" is not csv file.\n", argv[1]);
+    //         return -1;
+    //     }
+    // }
+
     // 相対パス直下の場合はカレントディレクトリにhtmlディレクトリ作成
     if (last_slash < 0) {
         snprintf(fnamew, BUFFER_SIZE, "html");
@@ -67,7 +68,11 @@ int main(int argc, char **argv) {
         return -1;
     }
 
-    argv[1][last_dot] = '\0';
+    // htmlディレクトリ内にhtmlファイル作成
+    printf("%d, %d\n", last_dot, last_slash);
+    if (last_dot > last_slash) {
+        argv[1][last_dot] = '\0';
+    }
     strncat(fnamew, "/", BUFFER_SIZE - strlen(fnamew) - 1);
     strncat(fnamew, argv[1] + last_slash + 1, BUFFER_SIZE - strlen(fnamew) - 1);
     strncat(fnamew, ".html", BUFFER_SIZE - strlen(fnamew) - 1);
