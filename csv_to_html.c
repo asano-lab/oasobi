@@ -54,11 +54,12 @@ int main(int argc, char **argv) {
         fnamew[last_slash] = '\0';
         puts(fnamew + last_slash + 1);
         snprintf(dir_path, BUFFER_SIZE, "%s", fnamew);
-        strncat(dir_path, "/html", strlen(dir_path) - 6);
+        printf("%ld\n", BUFFER_SIZE - strlen(dir_path));
+        strncat(dir_path, "/html", BUFFER_SIZE - strlen(dir_path));
     }
     puts(dir_path);
 
-    // htmlディレクトリが存在しなければ作成
+    // htmlディレクトリまたはファイルが存在しない
     if (stat(dir_path, &st) != 0) {
         if (mkdir(dir_path, 0775) == 0) {
             printf("directory '%s' was created\n", dir_path);
@@ -69,12 +70,19 @@ int main(int argc, char **argv) {
     }
     // 同名のファイルがあった場合
     else if ((st.st_mode & S_IFMT) != S_IFDIR) {
-        printf("\amkdir: cannot create directory '%s': File exists\n", dir_path);
-        return -1;
+        // printf("\amkdir: cannot create directory '%s': File exists\n", dir_path);
+        // return -1;
+        if (mkdir(dir_path, 0775) == 0) {
+            printf("directory '%s' was created\n", dir_path);
+        } else {
+            printf("\amkdir: cannot create directory '%s'\n", dir_path);
+            return -1;
+        }
     }
 
     argv[1][last_dot] = '\0';
     snprintf(fnamew, BUFFER_SIZE, "%s/%s.html", dir_path, argv[1] + last_slash + 1);
+    puts(fnamew);
 
     if ((fpw = fopen(fnamew, "w")) == NULL) {
         printf("\a%s: cannot open '%s' for writing\n", argv[0], fnamew);
