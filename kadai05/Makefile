@@ -8,9 +8,10 @@ PROGRAM = hello
 .SUFFIXES: .o .c
 
 .PHONY: all
-all: $(PROGRAM) som main convertcsv_v2 subsystem
+all: $(PROGRAM) som main convertcsv_v2 lib
 
-subsystem:
+.PHONY: lib
+lib:
 	$(MAKE) -C lib
 
 # プライマリターゲット
