@@ -1,4 +1,6 @@
-# Makefile2
+# Makefile
+.PHONY: all
+
 hello: hello.o print.o
 	gcc -Wall -O2 -o hello hello.o print.o
 som: som.o
@@ -17,4 +19,4 @@ mylib.o: lib/mylib.c lib/mylib.h
 	gcc lib/mylib.c -c
 .PHONY: clean
 clean:
-	rm -f hello hello.o print.o
+	rm -f hello hello.o print.o som som.o
