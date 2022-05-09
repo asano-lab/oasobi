@@ -1,32 +1,33 @@
 # Makefile
 
-objs = hello.o print.o
+OBJS = hello.o print.o
+CC = gcc
 
 .PHONY: all
 all: hello som main
 
 main: main.o
-	gcc -o main main.o
+	$(CC) -o main main.o
 main.o: main.c
-	gcc -c main.c
+	$(CC) -c main.c
 main.o: str.h
 
-hello: $(objs)
-	gcc -Wall -O2 -o hello $(objs)
+hello: $(OBJS)
+	$(CC) -Wall -O2 -o hello $(OBJS)
 som: som.o
-	gcc -Wall -O2 -o som som.o
+	$(CC) -Wall -O2 -o som som.o
 som.o: som.c
-	gcc -c som.c
+	$(CC) -c som.c
 hello.o: hello.c
-	gcc -c hello.c
+	$(CC) -c hello.c
 print.o: print.c
-	gcc -c print.c
+	$(CC) -c print.c
 convertcsv: convertcsv.c
-	gcc convertcsv.c -o convertcsv -Wall
+	$(CC) convertcsv.c -o convertcsv -Wall
 convertcsv_v2: convertcsv_v2.c mylib.o
-	gcc convertcsv_v2.c mylib.o -o convertcsv_v2 -Wall
+	$(CC) convertcsv_v2.c mylib.o -o convertcsv_v2 -Wall
 mylib.o: lib/mylib.c lib/mylib.h
-	gcc lib/mylib.c -c
+	$(CC) lib/mylib.c -c
 .PHONY: clean
 clean:
-	rm -f hello $(objs) som som.o main main.o
+	$(RM) hello $(OBJS) som som.o main main.o
