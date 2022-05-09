@@ -2,6 +2,7 @@
 
 OBJS = hello.o print.o
 CC = gcc
+GCCOPTIONS = -Wall -Wextra -g
 
 .PHONY: all
 all: hello som main
@@ -13,7 +14,7 @@ main.o: main.c
 main.o: str.h
 
 hello: $(OBJS)
-	$(CC) -Wall -O2 -o hello $(OBJS)
+	$(CC)  -o $@ $(OBJS) $(GCCOPTIONS)
 som: som.o
 	$(CC) -Wall -O2 -o som som.o
 som.o: som.c
