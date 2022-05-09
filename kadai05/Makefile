@@ -1,10 +1,13 @@
 # Makefile
 .PHONY: all
 all: hello som main
+
 main: main.o
 	gcc -o main main.o
 main.o: main.c
 	gcc -c main.c
+main.o: str.h
+
 hello: hello.o print.o
 	gcc -Wall -O2 -o hello hello.o print.o
 som: som.o

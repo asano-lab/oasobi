@@ -1,2 +1,2 @@
 /* str.h */
-char str[] = "This is a test";
+char str[] = "This is another test";
