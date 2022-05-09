@@ -18,7 +18,7 @@ main: main.o
 som: som.o
 	$(CC) -o $@ $< $(GCCOPTIONS)
 convertcsv_v2: convertcsv_v2.c mylib.o
-	$(CC) -o $@ $^ $(GCCOPTIONS)
+	$(CC) -o $@ $< mylib.o $(GCCOPTIONS)
 
 .c.o:
 	$(CC) -c $< $(GCCOPTIONS)
