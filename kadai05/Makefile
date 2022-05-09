@@ -7,24 +7,26 @@ PROGRAM = hello
 
 .SUFFIXES: .o .c
 
+.PHONY: all
+all: $(PROGRAM) som main convertcsv_v2
+
 # プライマリターゲット
 $(PROGRAM): $(OBJS)
-	$(CC)  -o $@ $^ $(GCCOPTIONS)
+	$(CC) -o $@ $^ $(GCCOPTIONS)
+main: main.o
+	$(CC) -o $@ $< $(GCCOPTIONS)
+som: som.o
+	$(CC) -o $@ $< $(GCCOPTIONS)
+convertcsv_v2: convertcsv_v2.c mylib.o
+	$(CC) -o $@ $^ $(GCCOPTIONS)
 
 .c.o:
-	$(CC) $(CFLAGS) -c $<
+	$(CC) -c $< $(GCCOPTIONS)
 
-# .PHONY: all
-# all: $(PROGRAM) som main
-
-# main: main.o
-# 	$(CC) -o $@ main.o
 # main.o: main.c
 # 	$(CC) -c $<
 # main.o: str.h
 
-# som: som.o
-# 	$(CC)  -o $@ $< $(GCCOPTIONS)
 # som.o: som.c
 # 	$(CC) -c $<
 # hello.o: hello.c
@@ -33,10 +35,8 @@ $(PROGRAM): $(OBJS)
 # 	$(CC) -c $<
 # convertcsv: convertcsv.c
 # 	$(CC) convertcsv.c -o convertcsv -Wall
-# convertcsv_v2: convertcsv_v2.c mylib.o
-# 	$(CC) convertcsv_v2.c mylib.o -o convertcsv_v2 -Wall
 # mylib.o: lib/mylib.c lib/mylib.h
 # 	$(CC) lib/mylib.c -c
 .PHONY: clean
 clean:
-	$(RM) $(PROGRAM) $(OBJS) som som.o main main.o
+	$(RM) $(PROGRAM) $(OBJS) som som.o main main.o convertcsv_v2 mylib.o
