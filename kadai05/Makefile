@@ -1,5 +1,6 @@
 # Makefile
 .PHONY: all
+all: hello som
 
 hello: hello.o print.o
 	gcc -Wall -O2 -o hello hello.o print.o
