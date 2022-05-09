@@ -1,6 +1,6 @@
 # Makefile for hello.c
-hello: hello.c
-	gcc -Wall -O2 -o hello hello.c
+hello: hello.c print.c
+	gcc -Wall -O2 -o hello hello.c print.c
 convertcsv: convertcsv.c
 	gcc convertcsv.c -o convertcsv -Wall
 convertcsv_v2: convertcsv_v2.c mylib.o
