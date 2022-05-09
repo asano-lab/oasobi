@@ -1,4 +1,7 @@
 # Makefile
+
+objs = hello.o print.o
+
 .PHONY: all
 all: hello som main
 
@@ -8,8 +11,8 @@ main.o: main.c
 	gcc -c main.c
 main.o: str.h
 
-hello: hello.o print.o
-	gcc -Wall -O2 -o hello hello.o print.o
+hello: $(objs)
+	gcc -Wall -O2 -o hello $(objs)
 som: som.o
 	gcc -Wall -O2 -o som som.o
 som.o: som.c
@@ -26,4 +29,4 @@ mylib.o: lib/mylib.c lib/mylib.h
 	gcc lib/mylib.c -c
 .PHONY: clean
 clean:
-	rm -f hello hello.o print.o som som.o main main.o
+	rm -f hello $(objs) som som.o main main.o
