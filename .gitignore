@@ -1,3 +1,6 @@
+*
+!*/
+!*.*
 /.ipynb_checkpoints
 /cgi-bin/*.exe
 /rubik_dat
