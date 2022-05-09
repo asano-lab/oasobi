@@ -1,6 +1,10 @@
 # Makefile2
 hello: hello.o print.o
 	gcc -Wall -O2 -o hello hello.o print.o
+som: som.o
+	gcc -Wall -O2 -o som som.o
+som.o: som.c
+	gcc -c som.c
 hello.o: hello.c
 	gcc -c hello.c
 print.o: print.c
