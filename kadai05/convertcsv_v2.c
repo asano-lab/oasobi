@@ -54,6 +54,7 @@ int main(int argc, char *argv[])
         puts("</tr>");
     }
     puts("</table>");
+    
     fclose(fp); //#fclose()のエラー処理を追加したい。
     return 0;
 }
