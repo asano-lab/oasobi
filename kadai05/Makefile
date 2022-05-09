@@ -8,21 +8,21 @@ GCCOPTIONS = -Wall -Wextra -g
 all: hello som main
 
 main: main.o
-	$(CC) -o main main.o
+	$(CC) -o $@ main.o
 main.o: main.c
-	$(CC) -c main.c
+	$(CC) -c $<
 main.o: str.h
 
 hello: $(OBJS)
 	$(CC)  -o $@ $(OBJS) $(GCCOPTIONS)
 som: som.o
-	$(CC) -Wall -O2 -o som som.o
+	$(CC) -Wall -O2 -o $@ som.o
 som.o: som.c
-	$(CC) -c som.c
+	$(CC) -c $<
 hello.o: hello.c
-	$(CC) -c hello.c
+	$(CC) -c $<
 print.o: print.c
-	$(CC) -c print.c
+	$(CC) -c $<
 convertcsv: convertcsv.c
 	$(CC) convertcsv.c -o convertcsv -Wall
 convertcsv_v2: convertcsv_v2.c mylib.o
