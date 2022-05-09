@@ -2,10 +2,11 @@
 
 OBJS = hello.o print.o
 CC = gcc
-GCCOPTIONS = -Wall -Wextra -g
+GCCOPTIONS = -Wall -Wextra -g -O2
+PROGRAM = hello
 
 .PHONY: all
-all: hello som main
+all: $(PROGRAM) som main
 
 main: main.o
 	$(CC) -o $@ main.o
@@ -13,10 +14,10 @@ main.o: main.c
 	$(CC) -c $<
 main.o: str.h
 
-hello: $(OBJS)
+$(PROGRAM): $(OBJS)
 	$(CC)  -o $@ $(OBJS) $(GCCOPTIONS)
 som: som.o
-	$(CC) -Wall -O2 -o $@ som.o
+	$(CC)  -o $@ $< $(GCCOPTIONS)
 som.o: som.c
 	$(CC) -c $<
 hello.o: hello.c
@@ -31,4 +32,4 @@ mylib.o: lib/mylib.c lib/mylib.h
 	$(CC) lib/mylib.c -c
 .PHONY: clean
 clean:
-	$(RM) hello $(OBJS) som som.o main main.o
+	$(RM) $(PROGRAM) $(OBJS) som som.o main main.o
