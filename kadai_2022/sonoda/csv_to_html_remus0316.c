@@ -1,8 +1,15 @@
 #include <stdio.h>
 
-int main() {
-    FILE* f = fopen("csv.csv", "r");
-    FILE* a = fopen("csv.html", "w");
+int main(int argc, char *argv[]) {
+	char fname_html[FILENAME_MAX];
+	snprintf(fname_html, FILENAME_MAX, "html/%s_sample001.html", argv[0]);
+	// warning回避のための無駄な処理
+	if (argc > 1) {
+		puts("?");
+	}
+
+    FILE* f = fopen("csv/sample001.csv", "r");
+    FILE* a = fopen(fname_html, "w");
     
     char line[500]={};
     int i=0;
@@ -33,7 +40,7 @@ int main() {
     fclose(f);
     fclose(a);
 
-	FILE* b = fopen("csv.html", "r");
+	FILE* b = fopen(fname_html, "r");
 	char c[500];
 	char d[500];
 	char e[500];
@@ -222,11 +229,11 @@ int main() {
 			}
 		}
 	}
-	FILE* z = fopen("csv.html", "w");{
-	fputs(c,z);
-	fputs(d,z);
-	fputs(e,z);
-	fputs(g,z);
+	FILE* z = fopen(fname_html, "w");{
+		fputs(c,z);
+		fputs(d,z);
+		fputs(e,z);
+		fputs(g,z);
 	}
 	fclose(z);
 	
