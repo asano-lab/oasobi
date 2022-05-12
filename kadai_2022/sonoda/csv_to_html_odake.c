@@ -8,8 +8,8 @@ int main(int argc, char *argv[])
 {
     FILE *csv_file;
     FILE *html_file;
-    char *csv_file_name = "sample.csv";
-    char *html_file_name = "sample.html";
+    char *csv_file_name = "csv/sample001.csv";
+    char *html_file_name = "html/sample001.html";
     char char_data;
     char write_text_first[] = "<!DOCTYPE html>\n<html>\n\t<table border=\"1\">\n";
     char write_text_end[] = "\t</table>\n</html>";
