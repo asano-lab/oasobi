@@ -1,8 +1,11 @@
-import platform
-import os
+a = " "
 
-pf = platform.system()
+if a:
+    print("a is not empty")
+else:
+    print("a is empty or None")
 
-print(pf)
-
-print(os.getenv("PATH"))
+if a is None:
+    print("a is None")
+else:
+    print("a is string")

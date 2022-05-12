@@ -3,15 +3,27 @@
 
 int main(void){
 	char *string;
+	printf("%lx\n", string);
 	char cell[256];
+	printf("%lx\n", cell);
 	int cnt;
 	int c = 1;
 	int i;
 	int j;
 
-	FILE *fin = fopen("test.csv","rt");
+	char *test1 = "this is test1";
+	char test2[] = "this is test2";
+
+	puts(test1);
+	puts(test2);
+
+	printf("size of test1 is %lu\n", sizeof(test1));
+	printf("size of test2 is %lu\n", sizeof(test2));
+
+	FILE *fin = fopen("csv/sample001.csv","rt");
 	if (!fin){
 		perror("fopen");
+		printf("a\n");
 		return 1;
 	}
 	FILE *fin_html = fopen("test.html","at+");
