@@ -6,6 +6,11 @@ ODAKEDIR = odake/csvToHTML
 
 SUBDIRS = $(ODAKEDIR)
 
+
+
+.PHONY: all
+all: csv_to_html csv2html_urano csv_to_html_remus0316
+
 .c.o:
 	$(CC) -c $< $(CFLAGS)
 
@@ -29,5 +34,5 @@ clean:
 	@rm -rf *.o
 	@for i in $(SUBDIRS);\
 	do\
-		rm -rf $$i/*.o;\
+		$(MAKE) -C $$i clean;\
 	done\
