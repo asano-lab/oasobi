@@ -12,6 +12,5 @@ csv_to_html: csv_to_html.o
 csv_to_html.o:
 	@for i in $(SUBDIRS);\
 	do\
-		echo "current directory: $$i";\
 		$(MAKE) -C $$i;\
 	done\
