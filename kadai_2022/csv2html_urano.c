@@ -39,7 +39,7 @@ int main(void){
 			if (string[i]==','){
 				if (c){
 					fprintf(fin_html,"<td>\n",256);
-					if (i!=0 | cnt>0){
+					if (i!=0 || cnt>0){
 					    for (j=0;j+cnt<i;j++){
 					    	if(string[j+cnt]=='\"'){
 					    		if(string[j+cnt+1]=='\"'){
