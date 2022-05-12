@@ -24,3 +24,7 @@ csv2html_urano: csv2html_urano.o
 .PHONY: clean
 clean:
 	@rm -rf *.o
+	@for i in $(SUBDIRS);\
+	do\
+		rm -rf $$i/*.o;\
+	done\
