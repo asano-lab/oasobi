@@ -5,9 +5,11 @@ import pandas as pd
 
 url_df = pd.read_csv("qr_url.csv")
 
-print(url_df)
+# print(url_df)
+hex_list = []
 
-for s_quote in url_df["url"]:
+for idx, row in url_df.iterrows():
+    s_quote = row["url"]
     b_unquote = urllib.parse.unquote_to_bytes(s_quote).decode()
 
     print(b_unquote)
@@ -20,5 +22,15 @@ for s_quote in url_df["url"]:
 
         print(b64_decoded)
         print(type(b64_decoded))
+        
+        bits = ""
+        hexadecimal = ""
         for i in b64_decoded:
-            print(format(i, "08b"), format(i, "02x"))
+            bits += format(i, "08b")
+            hexadecimal += format(i, "02x")
+        
+        print(bits)
+        hex_list.append(hexadecimal)
+
+url_df["hex"] = hex_list
+print(url_df)
