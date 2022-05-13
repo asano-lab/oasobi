@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 	snprintf(fname_html, FILENAME_MAX, "html/%s_sample001.html", argv[0]);
-	FILE *fin_html = fopen(fname_html, "at+");
+	FILE *fin_html = fopen(fname_html, "wt");
 	if (!fin_html) {
 		perror("fopen");
 		return 1;
@@ -43,13 +43,13 @@ int main(int argc, char *argv[]) {
 					i++;
 				}
 			}
-			if (string[i] == ','){
+			else if (string[i] == ',') {
 				if (c) {
 					fprintf(fin_html, "<td>\n");
 					if (i != 0 || cnt > 0) {
 					    for (j = 0; j + cnt < i; j++) {
-					    	if (string[j + cnt]=='\"') {
-					    		if(string[j + cnt + 1]=='\"') {
+					    	if (string[j + cnt] == '\"') {
+					    		if (string[j + cnt + 1] == '\"') {
 					    			cell[j] = string[j + cnt];
 								    cnt++;
 								}
@@ -57,7 +57,8 @@ int main(int argc, char *argv[]) {
 								cell[j] = string[j + cnt];
 							}
 		                }
-						if (cnt != i){
+						if (cnt != i) {
+							puts(cell);
 							fprintf(fin_html, "%s", cell);
 						}
 					    cnt = i + 1;
@@ -90,8 +91,8 @@ int main(int argc, char *argv[]) {
 		fprintf(fin_html, "</td>\n");
 		fprintf(fin_html, "</tr>\n");
 	}
-
 	fprintf(fin_html,"</table>");
+
 	fclose(fin);
 	fclose(fin_html);
 	return 0;
