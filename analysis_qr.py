@@ -34,3 +34,12 @@ for idx, row in url_df.iterrows():
 
 url_df["hex"] = hex_list
 print(url_df)
+
+xor_df = pd.DataFrame(columns=hex_list, index=hex_list)
+for col in xor_df.columns:
+    for idx in xor_df.index:
+        xor_num = int(col, 16) ^ int(idx, 16)
+        print(bin(xor_num))
+        xor_df[col][idx] = format(xor_num, "x")
+
+print(xor_df)
