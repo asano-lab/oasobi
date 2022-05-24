@@ -9,7 +9,7 @@
 void main(){
 
     FILE *csv,*html;
-    char *fname_csv = "test1.csv";
+    char *fname_csv = "test.csv";
     char *fname_html = "csv_to_html.html";
     char buf[100];
     char first[100] = "<html><body><table border=1>";
