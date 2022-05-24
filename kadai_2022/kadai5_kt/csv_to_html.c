@@ -1,6 +1,6 @@
 /*
-19T2805H ��������
-�ۑ�5�FCSV��HTML�ɕϊ�����C����v���O����
+19T2805H 小柳太一
+課題5：CSVをHTMLに変換するC言語プログラム
 */
 
 
@@ -29,25 +29,25 @@ void main(){
 
         while(buf[i] != NULL){
 
-            // �Z���擪�Ɂu�h�v�����邩���`�F�b�N
+            // セル先頭に「”」があるかをチェック
             if((flag_td == 0) && (flag_wq == 0) && (buf[i] == '"')) flag_wq = 1;
-            // �Z�������Ɂu�h�v�����邩���`�F�b�N
+            // セル末尾に「”」があるかをチェック
             if((flag_wq == 1) && (buf[i] == '"') && ((buf[i+1] == ',')||(buf[i+1] == NULL))) flag_wq = 0;
 
 
-            // �u,�v��2���񂾎��̏���
+            // 「,」が2つ並んだ時の処理
             if((flag_td == 0) && (buf[i] == ',')){
                 fprintf(html,"<td></td>");
             }
-            // �u�h�v�ɋ��܂ꂽ���͒��́u,�v��HTML�ɏo��
+            // 「”」に挟まれた文章中の「,」はHTMLに出力
             else if((flag_wq == 1 ) && (buf[i] == ',')){
                 fprintf(html,"%c",buf[i]);
             }
-            // �Z���擪�ł���΁u<td>�v��}��
+            // セル先頭であれば「<td>」を挿入
             else if(flag_td == 0){
                 flag_td = 1;
                 fprintf(html,"<td>");
-                // �擪�́u"�v������
+                // 先頭の「"」を消去
                 if((buf[i] == '"')){
                     printf("\n");
                 }
@@ -55,25 +55,25 @@ void main(){
                     fprintf(html,"%c",buf[i]);
                 }
             }
-            // �Z�������Ȃ�u</td>�v��}��
+            // セル末尾なら「</td>」を挿入
             else if((flag_td == 1 ) && (buf[i] == ',')){
                 fprintf(html,"</td>");
                 flag_td = 0;
             }
-            // �u�h�v��2���񂾂Ƃ���1�ɂ܂Ƃ߂�
+            // 「”」が2つ並んだときは1つにまとめる
             else if((flag_wq == 1) && (buf[i] == '"') && (buf[i+1] == '"')){
                 fprintf(html,"%c",buf[i]);
                 i++;
             }
-            // �����́u"�v������
+            // 末尾の「"」を消去
             else if((flag_td == 1 ) && (flag_wq == 0 ) && (buf[i] == '"')){
                 printf("\n");
             }
-            // ��L�����ȊO�̕������HTML�ɏo��
+            // 上記条件以外の文字列をHTMLに出力
             else{
                 fprintf(html,"%c",buf[i]);
             }
-            // ���̕����ֈړ�
+            // 次の文字へ移動
             i++;
         }
         fprintf(html,"</tr>");
