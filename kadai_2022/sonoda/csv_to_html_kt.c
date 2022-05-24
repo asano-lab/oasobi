@@ -3,14 +3,20 @@
 課題5：CSVをHTMLに変換するC言語プログラム
 */
 
+#include <stdio.h>
 
-#include<stdio.h>
-
-void main(){
+int main(int argc, char **argv) {
+	char fname_html[FILENAME_MAX];
+    // 実行ファイル名を出力ファイル名の一部とする
+	snprintf(fname_html, FILENAME_MAX, "html/%s_sample001.html", argv[0]);
+	// warning回避のための無駄な処理
+	if (argc > 1) {
+		puts("?");
+	}
 
     FILE *csv,*html;
-    char *fname_csv = "test.csv";
-    char *fname_html = "csv_to_html.html";
+    char *fname_csv = "csv/sample001.csv";
+    // char *fname_html = "csv_to_html.html";
     char buf[100];
     char first[100] = "<html><body><table border=1>";
     char end[100] = "</table></body></html>";
@@ -21,18 +27,18 @@ void main(){
 
     fprintf(html, "%s",first);
 
-    while( fgets( buf, 100, csv ) != NULL ){
+    while(fgets( buf, 100, csv ) != NULL){
 
         i = 0,flag_td = 0,flag_wq = 0;
         printf("%s", buf);
         fprintf(html,"<tr>");
 
-        while(buf[i] != NULL){
+        while (buf[i] != '\0'){
 
             // セル先頭に「”」があるかをチェック
             if((flag_td == 0) && (flag_wq == 0) && (buf[i] == '"')) flag_wq = 1;
             // セル末尾に「”」があるかをチェック
-            if((flag_wq == 1) && (buf[i] == '"') && ((buf[i+1] == ',')||(buf[i+1] == NULL))) flag_wq = 0;
+            if((flag_wq == 1) && (buf[i] == '"') && ((buf[i+1] == ',') || (buf[i+1] == '\0'))) flag_wq = 0;
 
 
             // 「,」が2つ並んだ時の処理
