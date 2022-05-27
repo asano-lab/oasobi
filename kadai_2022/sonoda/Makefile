@@ -2,7 +2,7 @@ CC = gcc
 
 CFLAGS = -Wall -Wextra -O0 -g
 
-EXES = csv_to_html_odake csv_to_html_urano csv_to_html_remus0316
+EXES = csv_to_html_odake csv_to_html_urano csv_to_html_remus0316 csv_to_html_kt
 
 RM = rm -rf
 
@@ -19,6 +19,9 @@ csv_to_html_urano: csv_to_html_urano.o
 	$(CC) -o $@ $^ $(CFLAGS)
 
 csv_to_html_remus0316: csv_to_html_remus0316.o
+	$(CC) -o $@ $^ $(CFLAGS)
+
+csv_to_html_kt: csv_to_html_kt.o
 	$(CC) -o $@ $^ $(CFLAGS)
 
 .PHONY: clean
