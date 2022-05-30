@@ -56,7 +56,13 @@ def main():
         [np.cos(example_lat), 0, np.sin(example_lat)]
     ])
 
-    rot_matrix = rot_matrix2 * rot_matrix1
+    rot_matrix3 = np.matrix([
+        [0, 1, 0],
+        [-1, 0, 0],
+        [0, 0, 1]
+    ])
+
+    rot_matrix = rot_matrix3 * rot_matrix2 * rot_matrix1
     print("回転行列")
     print(rot_matrix)
 
