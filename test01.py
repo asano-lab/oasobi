@@ -1,11 +1,8 @@
 import matplotlib.pyplot as plt
-import folium
 import datetime
 import numpy as np
 import pandas as pd
-import re
 from pytz import timezone
-import pytz
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -15,8 +12,8 @@ def decode_lat_lon(sr: pd.Series) -> pd.Series:
     """
     tmp = sr.astype(float)
     return (tmp / 100).astype(int) + (tmp % 100) / 60
-LOG = "log/matsumoto-nagano-100318.log"
-# LOG = "log/nagano-matsumoto-100318.log"
+# LOG = "log/matsumoto-nagano-100318.log"
+LOG = "log/nagano-matsumoto-100318.log"
 
 gps_table = []
 gpgga_list = [None] * 13
@@ -57,7 +54,7 @@ gps_df["direction"] = gps_df["direction"].astype(float)
 gps_df["harr"] = gps_df["harr"].astype(float)
 gps_df["elevation"] = gps_df["elevation"].astype(float)
 gps_df["geoid"] = gps_df["geoid"].astype(float)
-gps_df["date"] = (gps_df["date"] + gps_df["time"]).apply(lambda x: pytz.timezone("UTC").localize(
+gps_df["date"] = (gps_df["date"] + gps_df["time"]).apply(lambda x: timezone("UTC").localize(
     datetime.datetime.strptime(x, "%d%m%y%H%M%S")).astimezone(timezone("Asia/Tokyo")))
 
 gps_df = gps_df.drop(["em", "gm", "time"], axis=1)
@@ -65,9 +62,9 @@ gps_df = gps_df.drop(["em", "gm", "time"], axis=1)
 # print(gps_df)
 
 # 地球の長半径 (km)
-# R = 6378.137
+R = 6378.137
 # 地球の極半径
-R = 6356.752
+# R = 6356.752
 
 # 簡単化のため欠損値除去
 df2 = gps_df.dropna()
@@ -96,6 +93,7 @@ df_3d_mem["dist_3d"] = np.sqrt(
 )
 
 print(df_3d_mem)
+print(f'総移動距離: {df_3d_mem["dist_3d"].sum()}')
 
 # Figureを追加
 fig = plt.figure(figsize = (8, 8))
@@ -104,7 +102,7 @@ fig = plt.figure(figsize = (8, 8))
 ax = fig.add_subplot(111, projection='3d')
 
 # Axesのタイトルを設定
-ax.set_title("Helix", size = 20)
+ax.set_title(LOG, size = 20)
 
 # 軸ラベルを設定
 ax.set_xlabel("x", size = 14)
@@ -112,22 +110,8 @@ ax.set_ylabel("y", size = 14)
 ax.set_zlabel("z", size = 14)
 
 # 軸目盛を設定
-ax.set_xticks([-1.0, -0.5, 0.0, 0.5, 1.0])
-ax.set_yticks([-1.0, -0.5, 0.0, 0.5, 1.0])
-
-# 円周率の定義
-pi = np.pi
-
-# パラメータ分割数
-n = 256
-
-# パラメータtを作成
-t = np.linspace(-6*pi, 6*pi, n)
-
-# らせんの方程式
-# x = np.cos(t)
-# y = np.sin(t)
-# z = t
+# ax.set_xticks([-1.0, -0.5, 0.0, 0.5, 1.0])
+# ax.set_yticks([-1.0, -0.5, 0.0, 0.5, 1.0])
 
 # 曲線を描画
 ax.plot(x, y, z, color = "red")
