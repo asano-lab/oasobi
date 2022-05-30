@@ -94,6 +94,37 @@ df_3d_mem["dist_3d"] = np.sqrt(
 
 print(df_3d_mem)
 print(f'総移動距離: {df_3d_mem["dist_3d"].sum()}')
+example_lat = gps_df["lat"].mean()
+example_lon = gps_df["lon"].mean()
+
+# 本初子午線あたりに移動
+rot_matrix1 = np.matrix([
+    [np.cos(example_lon), np.sin(example_lon), 0],
+    [-np.sin(example_lon), np.cos(example_lon), 0],
+    [0, 0, 1]
+])
+
+# 北極あたりに移動
+rot_matrix2 = np.matrix([
+    [np.sin(example_lat), 0, -np.cos(example_lat)],
+    [0, 1, 0],
+    [np.cos(example_lat), 0, np.sin(example_lat)]
+])
+
+rot_matrix = rot_matrix2 * rot_matrix1
+print("回転行列")
+print(rot_matrix)
+
+xyz_matrix = np.matrix(df_3d).T
+xyz_matrix_rotated = rot_matrix * xyz_matrix
+df_3d_rotated = pd.DataFrame(xyz_matrix_rotated.T, columns=["x", "y", "z"])
+
+# 高さを最小値基準とする
+df_3d_rotated_mapped = df_3d_rotated.copy()
+df_3d_rotated_mapped["z"] -= df_3d_rotated["z"].min()
+df_3d_rotated_mapped
+
+print(df_3d_rotated_mapped)
 
 # Figureを追加
 fig = plt.figure(figsize = (8, 8))
@@ -114,6 +145,6 @@ ax.set_zlabel("z", size = 14)
 # ax.set_yticks([-1.0, -0.5, 0.0, 0.5, 1.0])
 
 # 曲線を描画
-ax.plot(x, y, z, color = "red")
+ax.plot(*df_3d_rotated_mapped.values.T.tolist(), color = "red")
 
 plt.show()
