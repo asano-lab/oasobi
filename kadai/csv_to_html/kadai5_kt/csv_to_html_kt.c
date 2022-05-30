@@ -1,6 +1,6 @@
 /*
-19T2805H ¬–ö‘¾ˆê
-‰Û‘è5FCSV‚ğHTML‚É•ÏŠ·‚·‚éCŒ¾ŒêƒvƒƒOƒ‰ƒ€
+19T2805H å°æŸ³å¤ªä¸€
+èª²é¡Œ5ï¼šCSVã‚’HTMLã«å¤‰æ›ã™ã‚‹Cè¨€èªãƒ—ãƒ­ã‚°ãƒ©ãƒ 
 */
 
 
@@ -9,7 +9,7 @@
 void main(){
 
     FILE *csv,*html;
-    char *fname_csv = "test1.csv";
+    char *fname_csv = "test.csv";
     char *fname_html = "csv_to_html.html";
     char buf[100];
     char first[100] = "<html><body><table border=1>";
@@ -29,25 +29,25 @@ void main(){
 
         while(buf[i] != NULL){
 
-            // ƒZƒ‹æ“ª‚Éuhv‚ª‚ ‚é‚©‚ğƒ`ƒFƒbƒN
+            // ã‚»ãƒ«å…ˆé ­ã«ã€Œâ€ã€ãŒã‚ã‚‹ã‹ã‚’ãƒã‚§ãƒƒã‚¯
             if((flag_td == 0) && (flag_wq == 0) && (buf[i] == '"')) flag_wq = 1;
-            // ƒZƒ‹––”ö‚Éuhv‚ª‚ ‚é‚©‚ğƒ`ƒFƒbƒN
+            // ã‚»ãƒ«æœ«å°¾ã«ã€Œâ€ã€ãŒã‚ã‚‹ã‹ã‚’ãƒã‚§ãƒƒã‚¯
             if((flag_wq == 1) && (buf[i] == '"') && ((buf[i+1] == ',')||(buf[i+1] == NULL))) flag_wq = 0;
 
 
-            // u,v‚ª2‚Â•À‚ñ‚¾‚Ìˆ—
+            // ã€Œ,ã€ãŒ2ã¤ä¸¦ã‚“ã æ™‚ã®å‡¦ç†
             if((flag_td == 0) && (buf[i] == ',')){
                 fprintf(html,"<td></td>");
             }
-            // uhv‚É‹²‚Ü‚ê‚½•¶Í’†‚Ìu,v‚ÍHTML‚Éo—Í
+            // ã€Œâ€ã€ã«æŒŸã¾ã‚ŒãŸæ–‡ç« ä¸­ã®ã€Œ,ã€ã¯HTMLã«å‡ºåŠ›
             else if((flag_wq == 1 ) && (buf[i] == ',')){
                 fprintf(html,"%c",buf[i]);
             }
-            // ƒZƒ‹æ“ª‚Å‚ ‚ê‚Îu<td>v‚ğ‘}“ü
+            // ã‚»ãƒ«å…ˆé ­ã§ã‚ã‚Œã°ã€Œ<td>ã€ã‚’æŒ¿å…¥
             else if(flag_td == 0){
                 flag_td = 1;
                 fprintf(html,"<td>");
-                // æ“ª‚Ìu"v‚ğÁ‹
+                // å…ˆé ­ã®ã€Œ"ã€ã‚’æ¶ˆå»
                 if((buf[i] == '"')){
                     printf("\n");
                 }
@@ -55,25 +55,25 @@ void main(){
                     fprintf(html,"%c",buf[i]);
                 }
             }
-            // ƒZƒ‹––”ö‚È‚çu</td>v‚ğ‘}“ü
+            // ã‚»ãƒ«æœ«å°¾ãªã‚‰ã€Œ</td>ã€ã‚’æŒ¿å…¥
             else if((flag_td == 1 ) && (buf[i] == ',')){
                 fprintf(html,"</td>");
                 flag_td = 0;
             }
-            // uhv‚ª2‚Â•À‚ñ‚¾‚Æ‚«‚Í1‚Â‚É‚Ü‚Æ‚ß‚é
+            // ã€Œâ€ã€ãŒ2ã¤ä¸¦ã‚“ã ã¨ãã¯1ã¤ã«ã¾ã¨ã‚ã‚‹
             else if((flag_wq == 1) && (buf[i] == '"') && (buf[i+1] == '"')){
                 fprintf(html,"%c",buf[i]);
                 i++;
             }
-            // ––”ö‚Ìu"v‚ğÁ‹
+            // æœ«å°¾ã®ã€Œ"ã€ã‚’æ¶ˆå»
             else if((flag_td == 1 ) && (flag_wq == 0 ) && (buf[i] == '"')){
                 printf("\n");
             }
-            // ã‹LğŒˆÈŠO‚Ì•¶š—ñ‚ğHTML‚Éo—Í
+            // ä¸Šè¨˜æ¡ä»¶ä»¥å¤–ã®æ–‡å­—åˆ—ã‚’HTMLã«å‡ºåŠ›
             else{
                 fprintf(html,"%c",buf[i]);
             }
-            // Ÿ‚Ì•¶š‚ÖˆÚ“®
+            // æ¬¡ã®æ–‡å­—ã¸ç§»å‹•
             i++;
         }
         fprintf(html,"</tr>");
