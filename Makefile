@@ -1,3 +1,9 @@
+CC = gcc
+CFLAGS = -Wall -Wextra -O0 -g
+
+fibo: fibo.c
+	$(CC) -o $@ $^ $(CFLAGS)
+
 animal_shogi.exe: animal_shogi.c animal_shogi.h
 	gcc animal_shogi.c -o animal_shogi.exe -Wall
 csv_to_html.exe: csv_to_html.c

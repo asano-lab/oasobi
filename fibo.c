@@ -2,18 +2,22 @@
 #include <time.h>
 
 // フィボナッチ数列
-long fibo(int n) {
-    if (n <= 0) {
+long fibo(int n)
+{
+    if (n <= 0)
+    {
         return 0;
     }
-    if (n == 1) {
+    if (n == 1)
+    {
         return 1;
     }
     return fibo(n - 1) + fibo(n - 2);
 }
 
-int main(void) {
-    int n = 47;
+int main(void)
+{
+    int n = 39;
     time_t t0, t1;
     time(&t0);
     printf("fibo(%d) = %ld\n", n, fibo(n));
