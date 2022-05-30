@@ -130,9 +130,9 @@ def main():
         df2 = gps_df.dropna()
 
         # 各点の半径 (楕円体高)
-        # local_R = (df2["elevation"] + df2["geoid"]) / 1000 + R
+        local_R = (df2["elevation"] + df2["geoid"]) / 1000 + R
         # 各点の半径 (標高のみ)
-        local_R = df2["elevation"] / 1000 + R
+        # local_R = df2["elevation"] / 1000 + R
 
         x = np.cos(df2["lat"]) * np.cos(df2["lon"]) * local_R
         y = np.cos(df2["lat"]) * np.sin(df2["lon"]) * local_R
