@@ -13,10 +13,32 @@ def decode_lat_lon(sr: pd.Series) -> pd.Series:
     tmp = sr.astype(float)
     return (tmp / 100).astype(int) + (tmp % 100) / 60
 
+# 地球の長半径 (km)
+R = 6378.137
+# 地球の極半径
+# R = 6356.752
+
 LOG_LIST = [
     "log/nagano-matsumoto-100318.log",
     "log/matsumoto-nagano-100318.log"
 ]
+
+def calc_dist_ellipse_height(df_3d):
+    use_columns = list(df_3d.columns)
+
+    df_3d_mem = df_3d[use_columns][1:].copy() # 先頭削除
+    df_3d_prev = df_3d[use_columns][:-1].copy() # 末尾削除
+
+    for uc in use_columns:
+        df_3d_mem[uc + "_prev"] = list(df_3d_prev[uc])
+
+    df_3d_mem["dist_3d"] = np.sqrt(
+        (df_3d_mem["x"] - df_3d_mem["x_prev"]) ** 2 + 
+        (df_3d_mem["y"] - df_3d_mem["y_prev"]) ** 2 + 
+        (df_3d_mem["z"] - df_3d_mem["z_prev"]) ** 2
+    )
+    # print(df_3d_mem)
+    return df_3d_mem["dist_3d"].sum()
 
 def main():
     example_lat, example_lon = 0.636, 2.408
@@ -104,16 +126,13 @@ def main():
 
         # print(gps_df)
 
-        # 地球の長半径 (km)
-        R = 6378.137
-        # 地球の極半径
-        # R = 6356.752
-
         # 簡単化のため欠損値除去
         df2 = gps_df.dropna()
 
-        # 各点の半径
-        local_R = (df2["elevation"] + df2["geoid"]) / 1000 + R
+        # 各点の半径 (楕円体高)
+        # local_R = (df2["elevation"] + df2["geoid"]) / 1000 + R
+        # 各点の半径 (標高のみ)
+        local_R = df2["elevation"] / 1000 + R
 
         x = np.cos(df2["lat"]) * np.cos(df2["lon"]) * local_R
         y = np.cos(df2["lat"]) * np.sin(df2["lon"]) * local_R
@@ -136,7 +155,7 @@ def main():
         )
 
         # print(df_3d_mem)
-        print(f'総移動距離: {df_3d_mem["dist_3d"].sum()}')
+        print(f'総移動距離: {df_3d_mem["dist_3d"].sum():.5f}')
 
         xyz_matrix = np.matrix(df_3d).T
         xyz_matrix_rotated = rot_matrix * xyz_matrix
@@ -148,6 +167,7 @@ def main():
         df_3d_rotated_mapped
 
         # print(df_3d_rotated_mapped)
+        print(f"回転行列をかけた後の総移動距離: {calc_dist_ellipse_height(df_3d_rotated_mapped):.5f}")
 
         # 曲線を描画
         ax.plot(*df_3d_rotated_mapped.values.T.tolist(), label=LOG)
