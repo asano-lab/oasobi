@@ -52,6 +52,7 @@ def main():
     ax.set_ylabel("y", size = 14)
     ax.set_zlabel("z", size = 14)
 
+
     # 軸目盛を設定
     # ax.set_xticks([-1.0, -0.5, 0.0, 0.5, 1.0])
     # ax.set_yticks([-1.0, -0.5, 0.0, 0.5, 1.0])
@@ -134,23 +135,24 @@ def main():
             (df_3d_mem["z"] - df_3d_mem["z_prev"]) ** 2
         )
 
-        print(df_3d_mem)
+        # print(df_3d_mem)
         print(f'総移動距離: {df_3d_mem["dist_3d"].sum()}')
-        
+
         xyz_matrix = np.matrix(df_3d).T
         xyz_matrix_rotated = rot_matrix * xyz_matrix
         df_3d_rotated = pd.DataFrame(xyz_matrix_rotated.T, columns=["x", "y", "z"])
 
         # 高さを最小値基準とする
         df_3d_rotated_mapped = df_3d_rotated.copy()
-        df_3d_rotated_mapped["z"] -= df_3d_rotated["z"].min()
+        df_3d_rotated_mapped["z"] -= 6378.442
         df_3d_rotated_mapped
 
-        print(df_3d_rotated_mapped)
+        # print(df_3d_rotated_mapped)
 
         # 曲線を描画
-        ax.plot(*df_3d_rotated_mapped.values.T.tolist())
-
+        ax.plot(*df_3d_rotated_mapped.values.T.tolist(), label=LOG)
+        
+    ax.legend()
     plt.show()
 
 if __name__ == "__main__":
