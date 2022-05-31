@@ -8,13 +8,17 @@ parser.add_argument("integers", metavar='N', type=int, help="フィボナッチ�
 
 args = parser.parse_args()
 
-# フィボナッチ数列
+
 def fibo(n):
+    """
+    フィボナッチ数列
+    """
     if n <= 0:
         return 0
     if n == 1:
         return 1
     return fibo(n - 1) + fibo(n - 2)
+
 
 n = args.integers
 print(sys.version)
