@@ -3,7 +3,7 @@
 !*.*
 
 !*Makefile
-*geckodriver.log
+geckodriver.log
 /.ipynb_checkpoints
 /cgi-bin/*.exe
 /rubik_dat
@@ -15,7 +15,7 @@
 /dat2_cp
 /javascript
 /np_dat
-/__pycache__
+__pycache__
 /.vscode
-/private
+private
 *.o
