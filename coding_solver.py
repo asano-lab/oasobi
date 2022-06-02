@@ -104,18 +104,27 @@ def main(username, studentnumber, chapter_list, browser, repeat):
         driver = webdriver.Firefox(options=options)
     else:
         env_var = [i for i in os.getenv("PATH").split(";") if os.path.isdir(i)]
-        if browser == "Edge":
-            driver_name = "msedgedriver.exe"
-            driver_type = webdriver.Edge
-        else:
+        if browser == "Chrome":
             driver_name = "chromedriver.exe"
             driver_type = webdriver.Chrome
+        elif browser == "Firefox":
+            options = Options()
+            options.binary_location = "C:\\Program Files\\Mozilla Firefox\\firefox.exe"
+            driver_name = "Firefox"
+            driver_name = "geckodriver.exe"
+            driver_type = webdriver.Firefox
+        else:
+            driver_name = "msedgedriver.exe"
+            driver_type = webdriver.Edge
         for dir_name in env_var:
             driver_path = dir_name + "\\" + driver_name
             # print(driver_path)
             if os.path.isfile(driver_path):
                 print(driver_path)
-                driver = driver_type(driver_path)
+                if browser == "Firefox":
+                    driver = driver_type(options=options)
+                else:
+                    driver = driver_type(driver_path)
                 break
         else:
             print("ドライバが見つかりません")
