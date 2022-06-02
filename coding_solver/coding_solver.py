@@ -7,7 +7,7 @@ if __name__ == "__main__":
     parser.add_argument("studentnumber", help="学籍番号")
     parser.add_argument("-c", "--chapter", help="章 (1, 2, 3-1, 3-2,...)", nargs="+")
 
-    parser.add_argument("-b", "--browser", help="ブラウザ (Chrome, Edge, Firefox)")
+    parser.add_argument("-b", "--browser", help="ブラウザ (Chrome, Edge, Firefox)", type=str, default="Edge")
     parser.add_argument("--repeat", help="繰り返して解く回数", type=int, default=1)
 
     args = parser.parse_args()
@@ -110,7 +110,6 @@ def main(username, studentnumber, chapter_list, browser, repeat):
         elif browser == "Firefox":
             options = Options()
             options.binary_location = "C:\\Program Files\\Mozilla Firefox\\firefox.exe"
-            driver_name = "Firefox"
             driver_name = "geckodriver.exe"
             driver_type = webdriver.Firefox
         else:
@@ -127,7 +126,7 @@ def main(username, studentnumber, chapter_list, browser, repeat):
                     driver = driver_type(driver_path)
                 break
         else:
-            print("ドライバが見つかりません")
+            print(f"{browser} ドライバが見つかりません")
             return -1
 
     with open("private/coding_url.txt") as f:
