@@ -66,6 +66,7 @@ def create_connection_dict(prob_d):
         for k, v in prob_d_cp.items():
             if v in prob_d_inv:
                 prob_d_inv[v].append(k)
+                print("確率重複あり!!")
             else:
                 prob_d_inv[v] = [k]
 
@@ -73,6 +74,7 @@ def create_connection_dict(prob_d):
 
         min_syms = get_min_syms(prob_d_inv, 2)
 
+        # 小数第2位まで有効
         prob_d_cp[next_key] = round(sum(v for k, v in prob_d_cp.items() if k in min_syms), 2)
         cnct_d[next_key] = sorted(min_syms)
         
