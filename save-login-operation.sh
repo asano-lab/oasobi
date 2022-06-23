@@ -10,6 +10,6 @@ read line
 
 lynx $url -cmd_log $line
 
-echo "ログの保存が完了しました."
+echo "操作の保存が完了しました."
 echo "以下を実行すれば自動でログインできます."
 echo "lynx \"$url\" -cmd_script $line"
