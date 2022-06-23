@@ -4,7 +4,7 @@
 
 url="https://login.shinshu-u.ac.jp"
 
-echo "$url で自動ログインするための操作を記録するスクリプト"
+echo "lynxで$urlに自動ログインするための操作を記録するスクリプト"
 echo "操作を保存するパスを入力"
 read line
 
