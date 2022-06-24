@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
 
+import random as rd
+
+# 移動の成功率
+# 失敗した場合その場にとどまる
+SUCCESS_RATE = 0.99
+
+
 class Action():
     """
     動作
@@ -30,16 +37,26 @@ class Status():
         """
         動作適用
         """
-        if a.direction == "u":
-            self.y += 1
-        elif a.direction == "d":
-            self.y -= 1
-        elif a.direction == "r":
-            self.x += 1
-        else:
-            self.x -= 1
-        self.x = max(0, min(2, self.x))
-        self.y = max(0, min(2, self.y))
+        if rd.random() < SUCCESS_RATE:
+            if a.direction == "u":
+                self.y += 1
+            elif a.direction == "d":
+                self.y -= 1
+            elif a.direction == "r":
+                self.x += 1
+            else:
+                self.x -= 1
+            self.x = max(0, min(2, self.x))
+            self.y = max(0, min(2, self.y))
+
+    def copy(self):
+        return Status(self.x, self.y)
+
+    def __eq__(self, s):
+        """
+        等号演算子の処理
+        """
+        return self.x == s.x and self.y == s.y
 
     def __str__(self):
         return f"({self.x},{self.y})"
@@ -56,13 +73,12 @@ def reward(s_t: Status, a_t: Action, s_tp1: Status) -> float:
 
 
 if __name__ == "__main__":
-    s0 = Status(0, 1)
     a0 = Action("r")
-    s0.apply_action(a0)
-    s0.apply_action(Action("u"))
-    s0.apply_action(Action("d"))
-    s0.apply_action(Action("d"))
-    s1 = Status(2, 1)
-    print(s0, a0, s1)
-    r = reward(s0, a0, s1)
-    print(r)
+    c = 0
+    for i in range(10000):
+        s0 = Status(2, 0)
+        s1 = s0.copy()
+        s1.apply_action(a0)
+        if s0 == s1:
+            c += 1
+    print(c)
