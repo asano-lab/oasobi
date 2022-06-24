@@ -147,7 +147,14 @@ class QLearning():
             print(self.q_table)
             st_now = st_next
 
+    def mainloop(self, loop_num):
+        """
+        ゲームを繰り返してQテーブル更新
+        """
+        for i in range(loop_num):
+            self.one_game()
+
 
 if __name__ == "__main__":
     ql = QLearning()
-    ql.one_game()
+    ql.mainloop(10)
