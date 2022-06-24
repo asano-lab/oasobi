@@ -8,6 +8,12 @@ import pandas as pd
 # 失敗した場合その場にとどまる
 SUCCESS_RATE = 0.99
 
+# 時間割引率
+TIME_DISCOUNT_RATE = 0.9
+
+# 学習率
+LEARNING_RATE = 0.3
+
 X_MIN = 0
 X_MAX = 2
 Y_MIN = 0
@@ -58,6 +64,12 @@ class Status():
             self.x = max(X_MIN, min(X_MAX, self.x))
             self.y = max(Y_MIN, min(Y_MAX, self.y))
 
+    def is_goal(self):
+        """
+        ゴールかどうか
+        """
+        return self.x == X_MAX and self.y == Y_MAX
+
     def copy(self):
         return Status(self.x, self.y)
 
@@ -76,12 +88,16 @@ def reward(s_t: Status, a_t: Action, s_tp1: Status) -> float:
     報酬
     """
     r = 1.0
-    if (s_tp1.x == 2 and s_tp1.y == 2):
+    if s_tp1.is_goal():
         r = 100.0
     return r
 
 
 class QLearning():
+    """
+    Q学習
+    """
+
     def __init__(self):
         all_status = [str(Status(i, j)) for i in range(X_MIN, X_MAX + 1)
                       for j in range(Y_MIN, Y_MAX + 1)]
@@ -91,5 +107,12 @@ class QLearning():
 
 
 if __name__ == "__main__":
-    a0 = Action("l")
-    ql = QLearning()
+    st0 = Status(0, 1)
+    a1 = Action("r")
+    c = 0
+    for i in range(10000):
+        st1 = Status(1, 2)
+        st1.apply_action(a1)
+        if reward(st0, a1, st1) != 100.0:
+            c += 1
+    print(c)
