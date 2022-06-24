@@ -87,7 +87,7 @@ def reward(s_t: Status, a_t: Action, s_tp1: Status) -> float:
     """
     報酬
     """
-    r = 1.0
+    r = 0.0
     if s_tp1.is_goal():
         r = 100.0
     return r
@@ -124,22 +124,28 @@ class QLearning():
         """
         # 開始状態
         st_now = Status(1, 0)
-        best_action = self._calc_next_action(st_now)
-        # print(best_action)
-        st_next = st_now.copy()
-        st_next.apply_action(best_action)
-        # print(st_next)
-        # 現在の状態でとった行動のQ値
-        q_now = self.q_table[str(best_action)][str(st_now)]
-        # print(q_now)
-        # 即時報酬
-        imm_reward = reward(st_now, best_action, st_next)
-        # print(imm_reward)
-        q_next_max = self.q_table.loc[str(st_next)].max()
-        # print(q_next_max)
-        self.q_table[str(best_action)][str(st_now)] = q_now + LEARNING_RATE * \
-            (imm_reward + TIME_DISCOUNT_RATE * q_next_max - q_now)
-        print(self.q_table)
+        while not st_now.is_goal():
+            best_action = self._calc_next_action(st_now)
+            # print(best_action)
+            st_next = st_now.copy()
+            st_next.apply_action(best_action)
+            print(st_now, best_action, st_next)
+            # print(st_next)
+            # 現在の状態でとった行動のQ値
+            q_now = self.q_table[str(best_action)][str(st_now)]
+            # print(q_now)
+            # 即時報酬
+            imm_reward = reward(st_now, best_action, st_next)
+            # print(imm_reward)
+            if st_now.is_goal():
+                q_next_max = 0
+            else:
+                q_next_max = self.q_table.loc[str(st_next)].max()
+            # print(q_next_max)
+            self.q_table[str(best_action)][str(st_now)] = q_now + LEARNING_RATE * \
+                (imm_reward + TIME_DISCOUNT_RATE * q_next_max - q_now)
+            print(self.q_table)
+            st_now = st_next
 
 
 if __name__ == "__main__":
