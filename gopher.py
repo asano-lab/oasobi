@@ -157,4 +157,4 @@ class QLearning():
 
 if __name__ == "__main__":
     ql = QLearning()
-    ql.mainloop(10)
+    ql.mainloop(100)
