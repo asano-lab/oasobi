@@ -101,7 +101,9 @@ class QLearning():
     def __init__(self):
         all_status = [str(Status(i, j)) for i in range(X_MIN, X_MAX + 1)
                       for j in range(Y_MIN, Y_MAX + 1)]
-        self.q_table = pd.DataFrame(np.zeros((len(all_status), len(ALL_ACTIONS))),
+        # initial_array = np.zeros((len(all_status), len(ALL_ACTIONS)))
+        initial_array = np.random.random((len(all_status), len(ALL_ACTIONS)))
+        self.q_table = pd.DataFrame(initial_array,
                                     columns=ALL_ACTIONS, index=all_status)
         print(self.q_table)
 
@@ -121,10 +123,16 @@ class QLearning():
         ゲームを1回行う
         """
         # 開始状態
-        st = Status(1, 0)
-        pass
+        st_now = Status(1, 0)
+        best_action = self._calc_next_action(st_now)
+        print(best_action)
+        st_next = st_now.copy()
+        st_next.apply_action(best_action)
+        print(st_next)
+        q_next_max = self.q_table.loc[str(st_next)].max()
+        print(q_next_max)
 
 
 if __name__ == "__main__":
     ql = QLearning()
-    print(ql._calc_next_action(Status(1, 0)))
+    ql.one_game()
