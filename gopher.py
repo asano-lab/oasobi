@@ -9,6 +9,18 @@ class Status():
         return f"({self.x},{self.y})"
 
 
+class Action():
+    def __init__(self, direction: str):
+        """
+        u, d, r, l
+        """
+        self.direction = direction
+
+    def __str__(self):
+        return self.direction
+
+
 if __name__ == "__main__":
-    st0 = Status(2, 3)
-    print(st0)
+    s0 = Status(0, 1)
+    a0 = Action("r")
+    print(s0, a0)
