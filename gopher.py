@@ -73,7 +73,7 @@ def reward(s_t: Status, a_t: Action, s_tp1: Status) -> float:
 
 
 if __name__ == "__main__":
-    a0 = Action("r")
+    a0 = Action("l")
     c = 0
     for i in range(10000):
         s0 = Status(2, 0)
