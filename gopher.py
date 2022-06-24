@@ -12,7 +12,7 @@ SUCCESS_RATE = 0.99
 TIME_DISCOUNT_RATE = 0.9
 
 # 学習率
-LEARNING_RATE = 0.3
+LEARNING_RATE = 0.2
 
 X_MIN = 0
 X_MAX = 2
@@ -101,8 +101,8 @@ class QLearning():
     def __init__(self):
         all_status = [str(Status(i, j)) for i in range(X_MIN, X_MAX + 1)
                       for j in range(Y_MIN, Y_MAX + 1)]
-        # initial_array = np.zeros((len(all_status), len(ALL_ACTIONS)))
-        initial_array = np.random.random((len(all_status), len(ALL_ACTIONS)))
+        initial_array = np.zeros((len(all_status), len(ALL_ACTIONS)))
+        # initial_array = np.random.random((len(all_status), len(ALL_ACTIONS)))
         self.q_table = pd.DataFrame(initial_array,
                                     columns=ALL_ACTIONS, index=all_status)
         print(self.q_table)
@@ -125,12 +125,21 @@ class QLearning():
         # 開始状態
         st_now = Status(1, 0)
         best_action = self._calc_next_action(st_now)
-        print(best_action)
+        # print(best_action)
         st_next = st_now.copy()
         st_next.apply_action(best_action)
-        print(st_next)
+        # print(st_next)
+        # 現在の状態でとった行動のQ値
+        q_now = self.q_table[str(best_action)][str(st_now)]
+        # print(q_now)
+        # 即時報酬
+        imm_reward = reward(st_now, best_action, st_next)
+        # print(imm_reward)
         q_next_max = self.q_table.loc[str(st_next)].max()
-        print(q_next_max)
+        # print(q_next_max)
+        self.q_table[str(best_action)][str(st_now)] = q_now + LEARNING_RATE * \
+            (imm_reward + TIME_DISCOUNT_RATE * q_next_max - q_now)
+        print(self.q_table)
 
 
 if __name__ == "__main__":
