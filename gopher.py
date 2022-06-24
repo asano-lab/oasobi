@@ -18,9 +18,9 @@ LEARNING_RATE = 0.2
 EPSILON = 0.3
 
 X_MIN = 0
-X_MAX = 2
+X_MAX = 3
 Y_MIN = 0
-Y_MAX = 2
+Y_MAX = 3
 
 ALL_ACTIONS = ("u", "d", "r", "l")
 
