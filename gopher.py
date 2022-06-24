@@ -14,6 +14,9 @@ TIME_DISCOUNT_RATE = 0.9
 # 学習率
 LEARNING_RATE = 0.2
 
+# ランダムな行動をする確率
+EPSILON = 0.3
+
 X_MIN = 0
 X_MAX = 2
 Y_MIN = 0
@@ -111,6 +114,9 @@ class QLearning():
         """
         Qテーブルと現在の状態から次の行動を決定
         """
+        # 冒険
+        if rd.random() < EPSILON:
+            return Action(rd.choice(ALL_ACTIONS))
         st_series = self.q_table.loc[str(st)]
         # 最良の手を選択
         best_actions_idx = [i for i, j in enumerate(
@@ -157,4 +163,4 @@ class QLearning():
 
 if __name__ == "__main__":
     ql = QLearning()
-    ql.mainloop(100)
+    ql.mainloop(1000)
