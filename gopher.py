@@ -101,18 +101,22 @@ class QLearning():
     def __init__(self):
         all_status = [str(Status(i, j)) for i in range(X_MIN, X_MAX + 1)
                       for j in range(Y_MIN, Y_MAX + 1)]
-        self.q_table = pd.DataFrame(np.zeros((len(all_status), len(ALL_ACTIONS))),
+        self.q_table = pd.DataFrame(np.random.random((len(all_status), len(ALL_ACTIONS))),
                                     columns=ALL_ACTIONS, index=all_status)
         print(self.q_table)
 
+    def calc_next_action(self, st):
+        """
+        Qテーブルと現在の状態から次の行動を決定
+        """
+        st_series = self.q_table.loc[str(st)]
+        # 最良の手を選択
+        best_actions_idx = [i for i, j in enumerate(
+            st_series) if j == st_series.max()]
+        # 最良の手が複数あれば抽選
+        return ALL_ACTIONS[rd.choice(best_actions_idx)]
+
 
 if __name__ == "__main__":
-    st0 = Status(0, 1)
-    a1 = Action("r")
-    c = 0
-    for i in range(10000):
-        st1 = Status(1, 2)
-        st1.apply_action(a1)
-        if reward(st0, a1, st1) != 100.0:
-            c += 1
-    print(c)
+    ql = QLearning()
+    print(ql.calc_next_action(Status(1, 0)))
