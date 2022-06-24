@@ -108,16 +108,13 @@ class QLearning():
     def _calc_next_action(self, st: Status):
         """
         Qテーブルと現在の状態から次の行動を決定
-        Qテーブル更新のために点も返す
         """
         st_series = self.q_table.loc[str(st)]
-        # Q値の最大値
-        q_max = st_series.max()
         # 最良の手を選択
         best_actions_idx = [i for i, j in enumerate(
-            st_series) if j == q_max]
+            st_series) if j == st_series.max()]
         # 最良の手が複数あれば抽選
-        return Action(ALL_ACTIONS[rd.choice(best_actions_idx)]), q_max
+        return Action(ALL_ACTIONS[rd.choice(best_actions_idx)])
 
     def one_game(self):
         """
