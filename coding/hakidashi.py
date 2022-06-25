@@ -24,8 +24,10 @@ for i in range(k):
         # print(f"A_i=\n{A_i}")
         # print(f"A=\n{A}")
         G_copy = A_i * G_copy % 2
-        print(f"掃き出し{i + 1}回目")
-        print(G_copy)
+        # print(f"掃き出し{i + 1}回目")
+        # print(G_copy)
 
 print(A)
 print(A * G % 2)
+
+print(G[:,:k].T)
