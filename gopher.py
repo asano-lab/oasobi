@@ -161,12 +161,12 @@ class QLearning():
         ゲームを繰り返してQテーブル更新
         """
         for i in range(loop_num):
-            print(f"ループ{i}")
+            # print(f"ループ{i}")
             self.one_game()
             print(self.q_table)
     
 
 if __name__ == "__main__":
-    pd.options.display.precision = 2
+    pd.options.display.precision = 1
     ql = QLearning()
     ql.mainloop(1000)
