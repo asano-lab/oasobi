@@ -6,7 +6,10 @@ import pandas as pd
 
 # 移動の成功率
 # 失敗した場合その場にとどまる
-SUCCESS_RATE = 0.99
+SUCCESS_RATE = 1.0
+
+# 特定のマスは, 一定確率でゴールに行く
+LUCKY_RATE = 0.3
 
 # 時間割引率
 TIME_DISCOUNT_RATE = 0.9
@@ -73,6 +76,11 @@ class Status():
         if self.x == X_MAX and self.y == Y_MAX:
             done = True
             reward = 100.0
+        # ラッキー
+        if self.x == X_MIN and self.y == Y_MIN:
+            if rd.random() < LUCKY_RATE:
+                done = True
+                reward = 100.0
         return reward, done
 
 
@@ -130,7 +138,7 @@ class QLearning():
             # print(best_action)
             st_next = st_now.copy()
             reward, done = st_next.apply_action(best_action)
-            print(st_now, best_action, st_next)
+            # print(st_now, best_action, st_next)
             # print(st_next)
             # 現在の状態でとった行動のQ値
             q_now = self.q_table[str(best_action)][str(st_now)]
@@ -145,7 +153,7 @@ class QLearning():
             # print(q_next_max)
             self.q_table[str(best_action)][str(st_now)] = q_now + LEARNING_RATE * \
                 (reward + TIME_DISCOUNT_RATE * q_next_max - q_now)
-            print(self.q_table)
+            # print(self.q_table)
             st_now = st_next
 
     def mainloop(self, loop_num):
@@ -155,8 +163,10 @@ class QLearning():
         for i in range(loop_num):
             print(f"ループ{i}")
             self.one_game()
+            print(self.q_table)
     
 
 if __name__ == "__main__":
+    pd.options.display.precision = 2
     ql = QLearning()
-    ql.mainloop(100)
+    ql.mainloop(1000)
