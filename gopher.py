@@ -15,6 +15,7 @@ TIME_DISCOUNT_RATE = 0.9
 LEARNING_RATE = 0.2
 
 # ランダムな行動をする確率
+# ε-Greedy法
 EPSILON = 0.3
 
 X_MIN = 0
@@ -66,12 +67,14 @@ class Status():
                 self.x -= 1
             self.x = max(X_MIN, min(X_MAX, self.x))
             self.y = max(Y_MIN, min(Y_MAX, self.y))
+        
+        done = False
+        reward = 0.0
+        if self.x == X_MAX and self.y == Y_MAX:
+            done = True
+            reward = 100.0
+        return reward, done
 
-    def is_goal(self):
-        """
-        ゴールかどうか
-        """
-        return self.x == X_MAX and self.y == Y_MAX
 
     def copy(self):
         return Status(self.x, self.y)
@@ -85,15 +88,6 @@ class Status():
     def __str__(self):
         return f"({self.x},{self.y})"
 
-
-def reward(s_t: Status, a_t: Action, s_tp1: Status) -> float:
-    """
-    報酬
-    """
-    r = 0.0
-    if s_tp1.is_goal():
-        r = 100.0
-    return r
 
 
 class QLearning():
@@ -130,26 +124,27 @@ class QLearning():
         """
         # 開始状態
         st_now = Status(1, 0)
-        while not st_now.is_goal():
+        done = False
+        while not done:
             best_action = self._calc_next_action(st_now)
             # print(best_action)
             st_next = st_now.copy()
-            st_next.apply_action(best_action)
+            reward, done = st_next.apply_action(best_action)
             print(st_now, best_action, st_next)
             # print(st_next)
             # 現在の状態でとった行動のQ値
             q_now = self.q_table[str(best_action)][str(st_now)]
             # print(q_now)
             # 即時報酬
-            imm_reward = reward(st_now, best_action, st_next)
             # print(imm_reward)
-            if st_now.is_goal():
+            # 終端状態
+            if done:
                 q_next_max = 0
             else:
                 q_next_max = self.q_table.loc[str(st_next)].max()
             # print(q_next_max)
             self.q_table[str(best_action)][str(st_now)] = q_now + LEARNING_RATE * \
-                (imm_reward + TIME_DISCOUNT_RATE * q_next_max - q_now)
+                (reward + TIME_DISCOUNT_RATE * q_next_max - q_now)
             print(self.q_table)
             st_now = st_next
 
@@ -158,8 +153,9 @@ class QLearning():
         ゲームを繰り返してQテーブル更新
         """
         for i in range(loop_num):
+            print(f"ループ{i}")
             self.one_game()
-
+    
 
 if __name__ == "__main__":
     ql = QLearning()
