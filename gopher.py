@@ -9,7 +9,7 @@ import pandas as pd
 SUCCESS_RATE = 1.0
 
 # 特定のマスは, 一定確率でゴールに行く
-LUCKY_RATE = 0.4
+LUCKY_RATE = -0.1
 
 # 時間割引率
 TIME_DISCOUNT_RATE = 0.9
