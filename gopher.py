@@ -19,7 +19,7 @@ LEARNING_RATE = 0.2
 
 # ランダムな行動をする確率
 # ε-Greedy法
-EPSILON = 0.3
+EPSILON = -0.1
 
 X_MIN = 0
 X_MAX = 2
@@ -104,7 +104,7 @@ class QLearning():
     """
 
     def __init__(self):
-        all_status = [str(Status(i, j)) for i in range(X_MIN, X_MAX + 1)
+        all_status = [str(Status(j, i)) for i in range(X_MIN, X_MAX + 1)
                       for j in range(Y_MIN, Y_MAX + 1)]
         initial_array = np.zeros((len(all_status), len(ALL_ACTIONS)))
         # initial_array = np.random.random((len(all_status), len(ALL_ACTIONS)))
@@ -135,6 +135,7 @@ class QLearning():
         done = False
         while not done:
             best_action = self._calc_next_action(st_now)
+            print(best_action, end=" ")
             # print(best_action)
             st_next = st_now.copy()
             reward, done = st_next.apply_action(best_action)
@@ -155,6 +156,7 @@ class QLearning():
                 (reward + TIME_DISCOUNT_RATE * q_next_max - q_now)
             # print(self.q_table)
             st_now = st_next
+        print()
 
     def mainloop(self, loop_num):
         """
@@ -164,6 +166,7 @@ class QLearning():
             # print(f"ループ{i}")
             self.one_game()
             print(self.q_table)
+            input("next: ")
     
 
 if __name__ == "__main__":
