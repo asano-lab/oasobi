@@ -4,7 +4,7 @@
 
 !*Makefile
 geckodriver.log
-/.ipynb_checkpoints
+.ipynb_checkpoints
 /cgi-bin/*.exe
 /rubik_dat
 /test_dir
