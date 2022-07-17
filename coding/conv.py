@@ -40,14 +40,16 @@ class MyCircuit:
             moji += f"sr{i}: {j}\n"
         return moji
 
+def create_state_transition_dict():
+    """
+    状態遷移の辞書を作成
+    """
+    c = MyCircuit()
+    # 状態のビット数
+    v = sum(len(i) for i in c.sr)
+    st_tr_dic = {i : {} for i in range(1 << v)}
+    print(st_tr_dic)
+
 if __name__ == "__main__":
     c = MyCircuit()
-    print(c)
-    print(c.transition([1, 1]))
-    print(c)
-    print(c.transition([1, 1]))
-    print(c)
-    print(c.transition([1, 0]))
-    print(c)
-    print(c.transition([0, 0]))
-    print(c)
+    create_state_transition_dict()
