@@ -1,4 +1,4 @@
-
+import numpy as np
 
 class MyCircuit:
 
@@ -12,10 +12,11 @@ class MyCircuit:
             [[1, 0], [1, 0, 1]]
         ]
     
-    def transition(self, u):
-        w = []
+    def transition(self, u_list):
+        w_list = []
         for g_list in self.g:
-            print(g_list)
+            for i, u in enumerate(u_list):
+                print(u, self.sr[i], g_list[i])
         pass
 
 if __name__ == "__main__":
