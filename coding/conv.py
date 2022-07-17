@@ -82,17 +82,18 @@ def to_adjacency_matrix(st_tr_dic: dict):
     重み付き有効グラフとする
     重みは出力のハミング重み
     """
-    m = np.zeros([len(st_tr_dic)] * 2, dtype="u1")
+    m = np.zeros([len(st_tr_dic)] * 2)
     for src, child_dic in st_tr_dic.items():
         for dst, uw in child_dic.items():
-            # 自分に戻る遷移があるとおかしい?
-            # if src == dst:
-            #     continue
-            m[src][dst] = sum(uw[1])
+            weight = sum(uw[1])
+            if weight == 0:
+                weight = 1e-5
+            m[src][dst] = weight
     return m
 
 if __name__ == "__main__":
     d = create_state_transition_dict()
     m = to_adjacency_matrix(d)
     print(m)
-    print(shortest_path(m, indices=0, return_predecessors=False))
+    saitan = shortest_path(m, method="D", return_predecessors=False)
+    print(saitan.astype("u1"))
