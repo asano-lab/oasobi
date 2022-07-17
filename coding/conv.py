@@ -6,7 +6,10 @@ class MyCircuit:
     def __init__(self, status_num=0):
         # シフトレジスタ
         self.sr = [[0], [0, 0]]
+        # メモリ数
         self.v = sum(len(i) for i in self.sr)
+        # 同時入力数??
+        self.u_len = len(self.sr)
         # 生成系列
         self.g = [
             [[1, 1], [0, 0, 0]],
@@ -61,8 +64,11 @@ def create_state_transition_dict():
     状態遷移の辞書を作成
     """
     c = MyCircuit(1)
-    print(c)
+    # 全状態
     st_tr_dic = {i : {} for i in range(1 << c.v)}
+    # 全入力パターン
+    act_list = [[int(j) for j in format(i, f"0{c.u_len}b")] for i in range(1 << c.u_len)]
+    print(act_list)
     print(st_tr_dic)
 
 if __name__ == "__main__":
