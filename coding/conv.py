@@ -68,8 +68,9 @@ def create_state_transition_dict():
     st_tr_dic = {i : {} for i in range(1 << c.v)}
     # 全入力パターン
     act_list = [[int(j) for j in format(i, f"0{c.u_len}b")] for i in range(1 << c.u_len)]
-    print(act_list)
-    print(st_tr_dic)
+    for st in st_tr_dic.keys():
+        c = MyCircuit(st)
+        print(c)
 
 if __name__ == "__main__":
     create_state_transition_dict()
