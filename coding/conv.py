@@ -43,7 +43,12 @@ class MyCircuit:
         """
         シフトレジスタの中身を指定した状態に対応させる
         """
-        print(format(status_num, f"0{self.v}b"))
+        idx = 0
+        st_bin_str = format(status_num, f"0{self.v}b")
+        for i in range(len(self.sr)):
+            for j in range(len(self.sr[i])):
+                self.sr[i][j] = int(st_bin_str[idx])
+                idx += 1
     
     def __str__(self):
         moji = f"S_{self.status_num}\n"
@@ -55,7 +60,8 @@ def create_state_transition_dict():
     """
     状態遷移の辞書を作成
     """
-    c = MyCircuit(4)
+    c = MyCircuit(1)
+    print(c)
     st_tr_dic = {i : {} for i in range(1 << c.v)}
     print(st_tr_dic)
 
