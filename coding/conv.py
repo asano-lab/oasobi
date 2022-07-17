@@ -12,6 +12,7 @@ class MyCircuit:
             [[0, 1], [0, 1, 1]],
             [[1, 0], [1, 0, 1]]
         ]
+        self.status_num = self._calc_status_num()
     
     def transition(self, u_list):
         """
@@ -27,9 +28,13 @@ class MyCircuit:
             w_list.append(w % 2)
         for i in range(len(self.sr)):
             self.sr[i] = [u_list[i]] + self.sr[i][:-1]
-        print(w_list)
-        print(self.sr)
-        print(list(itertools.chain.from_iterable(self.sr)))
+        self.status_num = self._calc_status_num()
+        
+    
+    def _calc_status_num(self):
+        flat_sr = "".join([str(i) for i in itertools.chain.from_iterable(self.sr)])
+        print(int(flat_sr, 2))
+        return 0
 
 if __name__ == "__main__":
     c = MyCircuit()
