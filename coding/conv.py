@@ -1,4 +1,5 @@
 import numpy as np
+from scipy.sparse.csgraph import shortest_path
 import itertools
 
 class MyCircuit:
@@ -84,9 +85,14 @@ def to_adjacency_matrix(st_tr_dic: dict):
     m = np.zeros([len(st_tr_dic)] * 2, dtype="u1")
     for src, child_dic in st_tr_dic.items():
         for dst, uw in child_dic.items():
+            # 自分に戻る遷移があるとおかしい?
+            # if src == dst:
+            #     continue
             m[src][dst] = sum(uw[1])
-    print(m)
+    return m
 
 if __name__ == "__main__":
     d = create_state_transition_dict()
-    to_adjacency_matrix(d)
+    m = to_adjacency_matrix(d)
+    print(m)
+    print(shortest_path(m, indices=0, return_predecessors=False))
