@@ -24,7 +24,10 @@ class MyCircuit:
                 g_vec = np.array(g_list[i])
                 w += np.dot(sr_vec, g_vec)
             w_list.append(w % 2)
+        for i in range(len(self.sr)):
+            self.sr[i] = [u_list[i]] + self.sr[i][:-1]
         print(w_list)
+        print(self.sr)
 
 if __name__ == "__main__":
     c = MyCircuit()
