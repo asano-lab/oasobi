@@ -29,12 +29,25 @@ class MyCircuit:
         for i in range(len(self.sr)):
             self.sr[i] = [u_list[i]] + self.sr[i][:-1]
         self.status_num = self._calc_status_num()
+        return w_list
     
     def _calc_status_num(self):
         return int("".join([str(i) for i in itertools.chain.from_iterable(self.sr)]), 2)
+    
+    def __str__(self):
+        moji = f"S_{self.status_num}\n"
+        for i, j in enumerate(self.sr):
+            moji += f"sr{i}: {j}\n"
+        return moji
 
 if __name__ == "__main__":
     c = MyCircuit()
-    print(c.status_num)
-    c.transition([1, 1])
-    print(c.status_num)
+    print(c)
+    print(c.transition([1, 1]))
+    print(c)
+    print(c.transition([1, 1]))
+    print(c)
+    print(c.transition([1, 0]))
+    print(c)
+    print(c.transition([0, 0]))
+    print(c)
