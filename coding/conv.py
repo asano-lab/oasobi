@@ -73,7 +73,17 @@ def create_state_transition_dict():
             c = MyCircuit(st)
             w_list = c.transition(u_list)
             st_tr_dic[st][c.status_num] = [u_list, w_list]
-    print(st_tr_dic)
+    return st_tr_dic
+
+def to_adjacency_matrix(st_tr_dic: dict):
+    """
+    状態遷移の辞書から隣接行列作成
+    重み付き有効グラフとする
+    重みは出力のハミング重み
+    """
+    m = np.zeros([len(st_tr_dic)] * 2, dtype="u1")
+    print(m)
 
 if __name__ == "__main__":
-    create_state_transition_dict()
+    d = create_state_transition_dict()
+    to_adjacency_matrix(d)
