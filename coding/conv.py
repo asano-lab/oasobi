@@ -13,13 +13,18 @@ class MyCircuit:
         ]
     
     def transition(self, u_list):
+        """
+        状態遷移
+        """
         w_list = []
         for g_list in self.g:
+            w = 0
             for i, u in enumerate(u_list):
                 sr_vec = np.array([u] + self.sr[i])
                 g_vec = np.array(g_list[i])
-                print(sr_vec, g_vec, np.dot(sr_vec, g_vec))
-        pass
+                w += np.dot(sr_vec, g_vec)
+            w_list.append(w % 2)
+        print(w_list)
 
 if __name__ == "__main__":
     c = MyCircuit()
