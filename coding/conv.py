@@ -1,4 +1,5 @@
 import numpy as np
+import itertools
 
 class MyCircuit:
 
@@ -28,6 +29,7 @@ class MyCircuit:
             self.sr[i] = [u_list[i]] + self.sr[i][:-1]
         print(w_list)
         print(self.sr)
+        print(list(itertools.chain.from_iterable(self.sr)))
 
 if __name__ == "__main__":
     c = MyCircuit()
