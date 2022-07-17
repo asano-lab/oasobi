@@ -91,9 +91,26 @@ def to_adjacency_matrix(st_tr_dic: dict):
             m[src][dst] = weight
     return m
 
+def get_path(src, dst, p):
+    sp = []
+    p_row = p[src]
+    i = dst
+    while i != src and i >= 0:
+        sp.append(i)
+        i = p_row[i]
+    if i < 0:
+        sp = []
+    else:
+        sp.append(i)
+    return sp[::-1]
+    
+
 if __name__ == "__main__":
     d = create_state_transition_dict()
     m = to_adjacency_matrix(d)
-    print(m)
-    saitan = shortest_path(m, method="D", return_predecessors=False)
-    print(saitan.astype("u1"))
+    # print(m)
+    saitan_w, saitan_p = shortest_path(m, method="D", return_predecessors=True)
+    saitan_w = saitan_w.astype("u1")
+    print(saitan_w)
+    print(saitan_p)
+    print(get_path(2, 6, saitan_p))
