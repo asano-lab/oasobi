@@ -16,7 +16,9 @@ class MyCircuit:
         w_list = []
         for g_list in self.g:
             for i, u in enumerate(u_list):
-                print(u, self.sr[i], g_list[i])
+                sr_vec = np.array([u] + self.sr[i])
+                g_vec = np.array(g_list[i])
+                print(sr_vec, g_vec, np.dot(sr_vec, g_vec))
         pass
 
 if __name__ == "__main__":
