@@ -82,6 +82,9 @@ def to_adjacency_matrix(st_tr_dic: dict):
     重みは出力のハミング重み
     """
     m = np.zeros([len(st_tr_dic)] * 2, dtype="u1")
+    for src, child_dic in st_tr_dic.items():
+        for dst, uw in child_dic.items():
+            m[src][dst] = sum(uw[1])
     print(m)
 
 if __name__ == "__main__":
