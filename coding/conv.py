@@ -3,15 +3,17 @@ import itertools
 
 class MyCircuit:
 
-    def __init__(self):
+    def __init__(self, status_num=0):
         # シフトレジスタ
         self.sr = [[0], [0, 0]]
+        self.v = sum(len(i) for i in self.sr)
         # 生成系列
         self.g = [
             [[1, 1], [0, 0, 0]],
             [[0, 1], [0, 1, 1]],
             [[1, 0], [1, 0, 1]]
         ]
+        self._set_sr(status_num)
         self.status_num = self._calc_status_num()
     
     def transition(self, u_list):
@@ -32,7 +34,16 @@ class MyCircuit:
         return w_list
     
     def _calc_status_num(self):
+        """
+        レジスタの中身から状態番号計算
+        """
         return int("".join([str(i) for i in itertools.chain.from_iterable(self.sr)]), 2)
+    
+    def _set_sr(self, status_num):
+        """
+        シフトレジスタの中身を指定した状態に対応させる
+        """
+        print(format(status_num, f"0{self.v}b"))
     
     def __str__(self):
         moji = f"S_{self.status_num}\n"
@@ -44,12 +55,9 @@ def create_state_transition_dict():
     """
     状態遷移の辞書を作成
     """
-    c = MyCircuit()
-    # 状態のビット数
-    v = sum(len(i) for i in c.sr)
-    st_tr_dic = {i : {} for i in range(1 << v)}
+    c = MyCircuit(4)
+    st_tr_dic = {i : {} for i in range(1 << c.v)}
     print(st_tr_dic)
 
 if __name__ == "__main__":
-    c = MyCircuit()
     create_state_transition_dict()
