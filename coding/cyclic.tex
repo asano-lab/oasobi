@@ -140,20 +140,23 @@ $g(x)=1+x^2+x^3$の(7,4)巡回符号の符号化回路
 受信語が$r(x)=x^2+x^4+x^5$の場合の
 回路の動作を表\ref{table:syndrome-behavior}に示す。
 \begin{table}[hbtp]
-  \caption{$u(x)=1+x^2$を入れたときの動作}
+  \caption{$r(x)=x^2+x^4+x^5$を入れたときの動作}
   \label{table:syndrome-behavior}
   \centering
-  \begin{tabular}{cc|ccc|c}
-    & 入力 & $b_0$ & $b_1$ & $b_2$ & 出力 \\ \hline
-    & - & 0 & 0 & 0 & - \\
-    & 0 & 0 & 0 & 0 & 0 \\
-    SW1: 閉 & 1 & 1 & 0 & 1 & 1 \\
-    SW2: 上 & 0 & 1 & 1 & 1 & 0 \\
-    & 1 & 0 & 1 & 1 & 1 \\ \hline
-    SW1: 開 & - & 0 & 0 & 1 & 1 \\
-    SW2: 下 & - & 0 & 0 & 0 & 1 \\
-    & - & 0 & 0 & 0 & 0
+  \begin{tabular}{c|ccc}
+    入力 & $s_0$ & $s_1$ & $s_2$ \\ \hline
+    - & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 \\
+    1 & 1 & 0 & 0 \\
+    1 & 1 & 1 & 0 \\
+    0 & 0 & 1 & 1 \\
+    1 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0
   \end{tabular}
 \end{table}
+シンドロームが最終的に0になったので誤りなし。
+また、$r(x)=x^2g(x)$であることからも、
+誤りがないことが分かる。
 
 \end{document}
