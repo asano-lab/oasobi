@@ -55,7 +55,7 @@
 復号結果は以下の通り。
 
 \begin{table}[hbtp]
-  \caption{標準アレイ}
+  \caption{復号結果}
   \label{table:decoded}
   \centering
   \begin{tabular}{|cc|}
@@ -66,5 +66,22 @@
     110011 & 110010 \\ \hline
   \end{tabular}
 \end{table}
+
+\section{(8, 4)組織符号}
+\begin{eqnarray*}
+  p_0 &= u_1 + u_2 + u_3 \\
+  p_1 &= u_0 + u_1 + u_2 \\
+  p_2 &= u_0 + u_1 + u_3 \\
+  p_3 &= u_0 + u_2 + u_3
+\end{eqnarray*}
+\subsection{生成行列}
+\begin{equation*}
+  \begin{bmatrix}
+    1 & 0 & 0 & 0 & 0 & 1 & 1 & 1 \\
+    0 & 1 & 0 & 0 & 1 & 1 & 1 & 0 \\
+    0 & 0 & 1 & 0 & 1 & 1 & 0 & 1 \\
+    0 & 0 & 0 & 1 & 1 & 0 & 1 & 1
+  \end{bmatrix}
+\end{equation*}
 
 \end{document}
