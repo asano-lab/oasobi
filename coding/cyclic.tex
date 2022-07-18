@@ -212,5 +212,28 @@ $(1+x+x^2+ \cdots + x^{n-1})$の因数である。
 $g(x)$で割り切れる多項式は符号語なので、
 $(1+x+x^2+ \cdots + x^{n-1})$ (ベクトル表現: 111...1)も符号語である。
 
+\subsection*{補足}
+\begin{equation}
+  \label{eq1}
+  1+x^n=a(x)g(x)
+\end{equation}
+であり、$(1+x)$が$g(x)$の因数でない。つまり
+\begin{equation}
+  \label{eq2}
+  g(x) \neq (1+x)b(x)
+\end{equation}
+なので、
+
+\begin{table*}[hbtp]
+  \label{table:hissan}
+  \centering
+  \begin{tabular}{ccccccccc}
+    & $s(x)$ & = & 1 & $+x$ & $+x^2$ & $+\cdots$ & $+x^{n-1}$ & \\
+    +) & $xs(x)$ & = & & $x$ & $+x^2$ & $+\cdots$ & $+x^{n-1}$ & $+x^{n}$ \\ \hline
+    & $(1+x)s(x)$ & = & 1 & & & & & $+x^n$
+  \end{tabular}
+\end{table*}
+
+\subsection{$(1+x^i)$が$g(x)$で割り切れる一番小さい値$i$が$n$である場合、 最小ハミング距離が3以上であることを示せ。}
 
 \end{document}
