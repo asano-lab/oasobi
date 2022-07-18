@@ -213,14 +213,16 @@ $g(x)$で割り切れる多項式は符号語なので、
 $(1+x+x^2+ \cdots + x^{n-1})$ (ベクトル表現: 111...1)も符号語である。
 
 \subsection*{補足}
-\begin{equation}
+\begin{eqnarray*}
   \label{eq1}
-  1+x^n=a(x)g(x)
-\end{equation}
-であり、$(1+x)$が$g(x)$の因数でない。つまり
+  1+x^n&=&(1+x)(1+x+x^2+ \cdots + x^{n-1})\\
+  &=&(1+x)a(x)b(x)c(x) \cdots
+\end{eqnarray*}
+であり、$(1+x)$が$g(x)$の因数でない。つまり$g(x)$は$(1+x)$で
+割り切れず、
 \begin{equation}
   \label{eq2}
-  g(x) \neq (1+x)b(x)
+  g(x) \neq (1+x)q(x)
 \end{equation}
 なので、
 
