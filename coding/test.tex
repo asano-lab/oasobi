@@ -218,6 +218,66 @@ $p=0.01$のとき、誤りを検出できない確率は
 より、生成行列${\bm G}$と等しくなる。
 
 \section{(7,4)ハミング符号の復号誤り率の上限}
+BSCにおける復号誤り率の上限は
+\begin{equation*}
+  P_{\rm max}(E) = \Sigma_{i=t+1}^{n}
+  \begin{pmatrix}
+    n \\ i
+  \end{pmatrix}
+  p^i(1-p)^{n-i}
+\end{equation*}
+なので、(7,4)ハミング符号の場合
+\begin{equation*}
+  P_{\rm max}(E) = \Sigma_{i=2}^{7}
+  \begin{pmatrix}
+    n \\ i
+  \end{pmatrix}
+  p^i(1-p)^{7-i}
+\end{equation*}
+である。二項定理より、
+\begin{eqnarray*}
+  1^n&=&((1-p)+p)^n=\Sigma_{i=0}^n
+  \begin{pmatrix}
+    n \\ i
+  \end{pmatrix}
+  p^i(1-p)^{n-i} \\
+  &=&\Sigma_{i=0}^{t}
+  \begin{pmatrix}
+    n \\ i
+  \end{pmatrix}
+  p^i(1-p)^{n-i}+
+  \Sigma_{i=t+1}^{n}
+  \begin{pmatrix}
+    n \\ i
+  \end{pmatrix}
+  p^i(1-p)^{n-i}
+\end{eqnarray*}
+となるので、
+\begin{eqnarray*}
+  P_{\rm max}(E)&=&\Sigma_{i=2}^{7}
+  \begin{pmatrix}
+    n \\ i
+  \end{pmatrix}
+  p^i(1-p)^{7-i}
+  =1-\Sigma_{i=0}^{1}
+  \begin{pmatrix}
+    n \\ i
+  \end{pmatrix}
+  p^i(1-p)^{7-i} \\
+  &=& 1-\left(
+    1p^0(1-p)^{7}+7p^1(1-p)^{6}
+  \right)=1-(1-p)^6(1-6p)
+\end{eqnarray*}
+と簡略化できる。これを$10^{-5} \leq p \leq 10^{-1}$の範囲で
+プロットしたものが図\ref{fig:error-max}である。
 
+\begin{figure}[htbp]
+  \begin{center}
+  \includegraphics[scale=0.5]{figures/test.pdf}
+  \end{center}
+  \caption{(7,4)ハミング符号の復号誤り率の上限
+  \label{fig:error-max}
+  }
+\end{figure}
 
 \end{document}
