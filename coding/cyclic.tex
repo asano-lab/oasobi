@@ -170,4 +170,20 @@ $g(x)=1+x^2+x^3$の(7,4)巡回符号の符号化回路
   }
 \end{figure}
 
+復号回路では$x^{n-1}$のシンドロームだけ探せばよいので、
+\[
+  x^{14}=(1+x+x^4)(1+x+x^2+x^4+x^6+x^7+x^8+x^{11})+(1+x^3)
+\]
+より、$1+x^3$で1になる論理回路を使う。
+復号回路を図\ref{fig:hamming15-11-decoding}に示す。
+\begin{figure}[htbp]
+  \begin{center}
+  \includegraphics[scale=0.6]{figures/hamming15-11-decoding.pdf}
+  \end{center}
+  \caption{$g(x)=1+x+x^4$の(15, 11)ハミング符号の復号回路
+  \label{fig:hamming15-11-decoding}
+  }
+\end{figure}
+
+
 \end{document}
