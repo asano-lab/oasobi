@@ -127,4 +127,33 @@ $g(x)=1+x^2+x^3$の(7,4)巡回符号の符号化回路
   \end{tabular}
 \end{table}
 
+\subsection{シンドローム計算回路}
+シンドローム計算回路を図\ref{fig:calc-syndrome-circuit}に示す。
+\begin{figure}[htbp]
+  \begin{center}
+  \includegraphics[scale=1.0]{figures/calc-syndrome-cyclic-7-4.pdf}
+  \end{center}
+  \caption{シンドローム計算回路
+  \label{fig:calc-syndrome-circuit}
+  }
+\end{figure}
+受信語が$r(x)=x^2+x^4+x^5$の場合の
+回路の動作を表\ref{table:syndrome-behavior}に示す。
+\begin{table}[hbtp]
+  \caption{$u(x)=1+x^2$を入れたときの動作}
+  \label{table:syndrome-behavior}
+  \centering
+  \begin{tabular}{cc|ccc|c}
+    & 入力 & $b_0$ & $b_1$ & $b_2$ & 出力 \\ \hline
+    & - & 0 & 0 & 0 & - \\
+    & 0 & 0 & 0 & 0 & 0 \\
+    SW1: 閉 & 1 & 1 & 0 & 1 & 1 \\
+    SW2: 上 & 0 & 1 & 1 & 1 & 0 \\
+    & 1 & 0 & 1 & 1 & 1 \\ \hline
+    SW1: 開 & - & 0 & 0 & 1 & 1 \\
+    SW2: 下 & - & 0 & 0 & 0 & 1 \\
+    & - & 0 & 0 & 0 & 0
+  \end{tabular}
+\end{table}
+
 \end{document}
