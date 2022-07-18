@@ -2,7 +2,7 @@
 
 
 % 数式
-\usepackage{amsmath,amsfonts}
+\usepackage{amsmath,amsfonts, amssymb}
 \usepackage{bm}
 % 画像
 \usepackage[dvipdfmx]{graphicx}
@@ -279,5 +279,42 @@ BSCにおける復号誤り率の上限は
   \label{fig:error-max}
   }
 \end{figure}
+
+\section{$d_{\rm min} \geq 2t+1$の(n,k)線形符号の場合}
+符号長$n$の符号で、各誤りビット数の誤りパターン数を整理すると
+表\ref{table:error-bits-num}になる。なお、
+${}_nC_t$は$\binom{n}{t}$
+と同じ意味なので、$\binom{n}{t}$に統一する。
+\begin{table}[hbtp]
+  \caption{誤りビット数と誤りパターン数}
+  \label{table:error-bits-num}
+  \centering
+  \begin{tabular}{|cc|}
+    \hline
+    誤りビット数 & 誤りパターン数 \\ \hline \hline
+    0 & $\binom{n}{0}$ \\ \hline
+    1 & $\binom{n}{1}$ \\ \hline 
+    2 & $\binom{n}{2}$ \\ \hline 
+    $\vdots$ & $\vdots$ \\ \hline
+    $t$ & $\binom{n}{t}$ \\ \hline
+    $\vdots$ & $\vdots$ \\ \hline
+    $n$ & $\binom{n}{n}$ \\ \hline
+  \end{tabular}
+\end{table}
+表\ref{table:error-bits-num}より、$t$ビット以下の誤りパターン数は
+\[
+  % \Sigma_{i=0}^{t}{\binom{n}{i}}
+  \binom{n}{0}+\binom{n}{1}+\binom{n}{2}+\cdots \binom{n}{t}
+\]
+である。
+$d_{\rm min} \geq 2t+1$の符号は$t$ビット以下の誤りを全て
+訂正可能であり、(n,k)線形符号が訂正可能な誤りパターン数は
+$2^{n-k}$なので、
+\begin{eqnarray*}
+  % 2^{n-k} \geq \Sigma_{i=0}^{t}{\binom{n}{i}}
+  2^{n-k} \geq \binom{n}{0}+\binom{n}{1}+\binom{n}{2}+\cdots \binom{n}{t} \\
+  \therefore n-k \geq \log_2\left(\binom{n}{0}+\binom{n}{1}+\binom{n}{2}+\cdots \binom{n}{t}\right)
+\end{eqnarray*}
+
 
 \end{document}
