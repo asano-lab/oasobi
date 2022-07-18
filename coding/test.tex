@@ -60,7 +60,7 @@
   \centering
   \begin{tabular}{|cc|}
     \hline
-    受信語 & 復号結果 \\ \hline
+    受信語 & 復号結果 \\ \hline \hline
     101110 & 001111 \\ \hline
     010101 & 111101 \\ \hline
     110011 & 110010 \\ \hline
@@ -93,5 +93,36 @@
     1 & 0 & 1 & 1 & 0 & 0 & 0 & 1
   \end{bmatrix}
 \end{equation*}
+
+\subsection{最小ハミング距離}
+
+\begin{table}[hbtp]
+  \caption{情報源と符号の対応}
+  \label{table:all-code}
+  \centering
+  \begin{tabular}{|cc|}
+    \hline
+    情報源 & 符号 \\ \hline \hline
+    0000 & 00000000 \\ \hline
+    0001 & 00011011 \\ \hline
+    0010 & 00101101 \\ \hline
+    0011 & 00110110 \\ \hline
+    0100 & 01001110 \\ \hline
+    0101 & 01010101 \\ \hline
+    0110 & 01100011 \\ \hline
+    0111 & 01111000 \\ \hline
+    1000 & 10000111 \\ \hline
+    1001 & 10011100 \\ \hline
+    1010 & 10101010 \\ \hline
+    1011 & 10110001 \\ \hline
+    1100 & 11001001 \\ \hline
+    1101 & 11010010 \\ \hline
+    1110 & 11100100 \\ \hline
+    1111 & 11111111 \\ \hline
+  \end{tabular}
+\end{table}
+
+0ベクトル以外の符号の最小ハミング重みが4なので、
+最小ハミング距離は4である。
 
 \end{document}
