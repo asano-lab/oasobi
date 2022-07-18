@@ -76,6 +76,7 @@
 \end{eqnarray*}
 \subsection{生成行列}
 \begin{equation*}
+  {\bm G}=
   \begin{bmatrix}
     1 & 0 & 0 & 0 & 0 & 1 & 1 & 1 \\
     0 & 1 & 0 & 0 & 1 & 1 & 1 & 0 \\
@@ -87,6 +88,7 @@
 \subsection{パリティ検査行列}
 \begin{equation}
   \label{eq:parity-check-matrix}
+  {\bm H}=
   \begin{bmatrix}
     0 & 1 & 1 & 1 & 1 & 0 & 0 & 0 \\
     1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 \\
@@ -123,6 +125,7 @@
   \end{tabular}
 \end{table}
 
+表\ref{table:all-code}より、
 0ベクトル以外の符号の最小ハミング重みが4なので、
 最小ハミング距離は4である。
 
@@ -190,5 +193,28 @@ $p=0.01$のとき、誤りを検出できない確率は
   &\simeq& 1.345 \times 10^{-7}
 \end{eqnarray*}
 
+\subsection{双対符号}
+\eqref{eq:parity-check-matrix}の検査行列${\bm H}$を組織符号に変換すると、
+\begin{equation*}
+  \begin{bmatrix}
+    0 & 1 & 1 & 1 \\
+    1 & 1 & 1 & 0 \\
+    1 & 1 & 0 & 1 \\
+    1 & 0 & 1 & 1
+  \end{bmatrix}
+  \begin{bmatrix}
+    0 & 1 & 1 & 1 & 1 & 0 & 0 & 0 \\
+    1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 \\
+    1 & 1 & 0 & 1 & 0 & 0 & 1 & 0 \\
+    1 & 0 & 1 & 1 & 0 & 0 & 0 & 1
+  \end{bmatrix}=
+  \begin{bmatrix}
+    1 & 0 & 0 & 0 & 0 & 1 & 1 & 1 \\
+    0 & 1 & 0 & 0 & 1 & 1 & 1 & 0 \\
+    0 & 0 & 1 & 0 & 1 & 1 & 0 & 1 \\
+    0 & 0 & 0 & 1 & 1 & 0 & 1 & 1
+  \end{bmatrix}
+\end{equation*}
+より、生成行列${\bm G}$と等しくなる。
 
 \end{document}
