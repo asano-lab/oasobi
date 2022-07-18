@@ -125,4 +125,23 @@
 0ベクトル以外の符号の最小ハミング重みが4なので、
 最小ハミング距離は4である。
 
+\subsection{訂正できる誤りパターン}
+訂正できる誤りパターン数は、0誤りを含むと
+\begin{equation*}
+  2^{n-k}=2^{8-4}=2^4=16
+\end{equation*}
+である。誤りパターンは表\ref{table:error-pattern}のように選択できる。
+
+\begin{table}[hbtp]
+  \caption{訂正できる誤りパターンの一例}
+  \label{table:error-pattern}
+  \centering
+  \begin{tabular}{cccc}
+    00000000 & 00000001 & 00000010 & 00000100 \\
+    00001000 & 00010000 & 00100000 & 01000000 \\
+    10000000 & 00000011 & 00000110 & 00001010 \\
+    00010010 & 00100010 & 01000010 & 10000010
+  \end{tabular}
+\end{table}
+
 \end{document}
