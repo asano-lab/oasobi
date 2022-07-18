@@ -144,4 +144,31 @@
   \end{tabular}
 \end{table}
 
+\subsection{符号化回路}
+
+% 図はPDFで作りましょう！
+\begin{figure}[htbp]
+  \begin{center}
+  % サイズはそのまま
+  \includegraphics[scale=0.7]{figures/circuit001.pdf}
+  \end{center}
+  \caption{符号化回路
+  \label{fig:pm1}
+  }
+\end{figure}
+
+\subsection{重み分布と誤りを検出できない確率}
+表\ref{table:all-code}より、重み分布は表\ref{table:weight-dist}となる。
+
+\begin{table}[hbtp]
+  \caption{重み分布}
+  \label{table:weight-dist}
+  \centering
+  \begin{tabular}{|c|ccc|}
+    \hline
+    $i$ & 0 & 4 & 8 \\ \hline
+    $A_i$ & 1 & 14 & 16 \\ \hline
+  \end{tabular}
+\end{table}
+
 \end{document}
