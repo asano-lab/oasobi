@@ -95,5 +95,36 @@ $g(x)$を展開すると$1+x+x^2+x^4$となり、
   \end{bmatrix}
 \]
 
+\section{$g(x)=1+x^2+x^3$の(7,4)巡回符号}
+\subsection{符号化回路とその動作}
+$g(x)=1+x^2+x^3$の(7,4)巡回符号の符号化回路
+を図\ref{fig:encoding-circuit}に示す。
+\begin{figure}[htbp]
+  \begin{center}
+  \includegraphics[scale=1.0]{figures/cyclic7-4-encoding.pdf}
+  \end{center}
+  \caption{符号化回路
+  \label{fig:encoding-circuit}
+  }
+\end{figure}
+この回路に入力情報$u(x)=1+x^2$を
+入れたときの動作を表\ref{table:circuit-behavior}に示す。
+情報の長さは4なので、入力の順番は0101である。
+\begin{table}[hbtp]
+  \caption{$u(x)=1+x^2$を入れたときの動作}
+  \label{table:circuit-behavior}
+  \centering
+  \begin{tabular}{cc|ccc|c}
+    & 入力 & $b_0$ & $b_1$ & $b_2$ & 出力 \\ \hline
+    & - & 0 & 0 & 0 & - \\
+    & 0 & 0 & 0 & 0 & 0 \\
+    SW1: 閉 & 1 & 1 & 0 & 1 & 1 \\
+    SW2: 上 & 0 & 1 & 1 & 1 & 0 \\
+    & 1 & 0 & 1 & 1 & 1 \\ \hline
+    SW1: 開 & - & 0 & 0 & 1 & 1 \\
+    SW2: 下 & - & 0 & 0 & 0 & 1 \\
+    & - & 0 & 0 & 0 & 0
+  \end{tabular}
+\end{table}
 
 \end{document}
