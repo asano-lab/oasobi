@@ -167,8 +167,16 @@
   \begin{tabular}{|c|ccc|}
     \hline
     $i$ & 0 & 4 & 8 \\ \hline
-    $A_i$ & 1 & 14 & 16 \\ \hline
+    $A_i$ & 1 & 14 & 1 \\ \hline
   \end{tabular}
 \end{table}
+
+$p=0.01$のとき、誤りを検出できない確率は
+\begin{eqnarray*}
+  P_U(E) &=& \Sigma_{i=1}^{n}{A_ip^i(1-p)^{n-i}} \\
+  &=& 14p^4(1-p)^4+1p^8(1-p)^0 \\
+  &\simeq& 1.345 \times 10^{-7}
+\end{eqnarray*}
+
 
 \end{document}
