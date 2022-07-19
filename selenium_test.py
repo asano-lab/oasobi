@@ -9,12 +9,11 @@ from selenium.webdriver.chrome import service as fs
 from selenium.webdriver.chrome.options import Options
 
 options = Options()
-options.add_argument("--headless")
+# options.add_argument("--headless")
 
 CHROMEDRIVER = "/usr/lib/chromium-browser/chromedriver"
 CHROME_SERVICE = fs.Service(executable_path=CHROMEDRIVER)
 browser = webdriver.Chrome(service=CHROME_SERVICE, options=options)
-
 
 
 time.sleep(1)
