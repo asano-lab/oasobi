@@ -7,8 +7,8 @@ from selenium import webdriver
 from selenium.webdriver.chrome import service as fs
 
 CHROMEDRIVER = "/usr/lib/chromium-browser/chromedriver"
-chrome_service = fs.Service(executable_path=CHROMEDRIVER)
-browser = webdriver.Chrome(service=chrome_service)
+CHROME_SERVICE = fs.Service(executable_path=CHROMEDRIVER)
+browser = webdriver.Chrome(service=CHROME_SERVICE)
 
 # browser = webdriver.Chrome()
 # browser.get("https://www.google.com/")
