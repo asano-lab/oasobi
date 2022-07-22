@@ -18,12 +18,11 @@ browser.get("https://www.google.com/")
 
 # q = browser.find_element(By.XPATH, "/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/input")
 q = browser.find_element(By.NAME, "q")
-q.send_keys("あいうえお")
-btn = browser.find_element(By.XPATH, "/html/body/div[1]/div[3]/form/div[1]/div[1]/div[3]/center/input[1]")
-# print(browser.page_source)
+q.send_keys("あいうえお\n")
+
+# btn = browser.find_element(By.XPATH, "/html/body/div[1]/div[3]/form/div[1]/div[1]/div[3]/center/input[1]")
+# btn = browser.find_element(By.NAME, "btnk")
+# btn.click()
 
 time.sleep(1)
 browser.quit()
-
-# browser = webdriver.Chrome()
-# browser.get("https://www.google.com/")
