@@ -1,10 +1,9 @@
-#! /usr/bin/env python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import sys
 import time
-# sys.path.append('/home/pi/.local/lib/python3.5/site-packages/')
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome import service as fs
 from selenium.webdriver.chrome.options import Options
 
@@ -15,6 +14,8 @@ CHROMEDRIVER = "/usr/lib/chromium-browser/chromedriver"
 CHROME_SERVICE = fs.Service(executable_path=CHROMEDRIVER)
 browser = webdriver.Chrome(service=CHROME_SERVICE, options=options)
 
+browser.get("https://www.google.com/")
+print(browser.page_source)
 
 time.sleep(1)
 browser.quit()
