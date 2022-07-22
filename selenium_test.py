@@ -15,8 +15,11 @@ CHROME_SERVICE = fs.Service(executable_path=CHROMEDRIVER)
 browser = webdriver.Chrome(service=CHROME_SERVICE, options=options)
 
 browser.get("https://www.google.com/")
-q = browser.find_element(By.XPATH, "/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/input")
 
+# q = browser.find_element(By.XPATH, "/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/input")
+q = browser.find_element(By.NAME, "q")
+q.send_keys("あいうえお")
+btn = browser.find_element(By.XPATH, "/html/body/div[1]/div[3]/form/div[1]/div[1]/div[3]/center/input[1]")
 # print(browser.page_source)
 
 time.sleep(1)
