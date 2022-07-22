@@ -20,3 +20,13 @@ network={
         psk="パスフレーズ"
 }
 ```
+
+```:/etc/dhcpd.conf
+(略)
+interface wlan0
+    static ip_address=192.168.4.1/24
+    nohook wpa_supplicant
+
+interface wlan1
+        env wpa_supplicant_conf=/etc/wpa_supplicant/wpa_supplicant-wlan1.conf
+```
