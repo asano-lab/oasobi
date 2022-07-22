@@ -36,3 +36,16 @@ interface wlan1
 # Enable IPv4 routing
 net.ipv4.ip_forward=1
 ```
+```:/etc/dnsmasq.conf
+# Listening interface
+interface=wlan0
+
+# Pool of IP addresses served via DHCP
+dhcp-range=192.168.4.2,192.168.4.20,255.255.255.0,24h
+
+# Local wireless DNS domain
+domain=wlan
+
+# Alias for this router
+address=/gw.wlan/192.168.4.1
+```
