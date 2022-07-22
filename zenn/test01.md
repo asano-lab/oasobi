@@ -36,6 +36,12 @@ interface wlan1
 # Enable IPv4 routing
 net.ipv4.ip_forward=1
 ```
+
+外付けWi-FiモジュールからIPマスカレードして出ていくように設定
+```bash
+sudo iptables -t nat -A POSTROUTING -o wlan1 -j MASQUERADE
+```
+
 ```:/etc/dnsmasq.conf
 # Listening interface
 interface=wlan0
