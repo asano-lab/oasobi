@@ -15,7 +15,9 @@ CHROME_SERVICE = fs.Service(executable_path=CHROMEDRIVER)
 browser = webdriver.Chrome(service=CHROME_SERVICE, options=options)
 
 browser.get("https://www.google.com/")
-print(browser.page_source)
+q = browser.find_element(By.XPATH, "/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/input")
+
+# print(browser.page_source)
 
 time.sleep(1)
 browser.quit()
