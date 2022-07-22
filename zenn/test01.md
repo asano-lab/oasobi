@@ -42,16 +42,15 @@ net.ipv4.ip_forward=1
 sudo iptables -t nat -A POSTROUTING -o wlan1 -j MASQUERADE
 ```
 
+よくわからないけどなんかうまくいったファイルの中身
 ```:/etc/dnsmasq.conf
-# Listening interface
 interface=wlan0
-
-# Pool of IP addresses served via DHCP
 dhcp-range=192.168.4.2,192.168.4.20,255.255.255.0,24h
-
-# Local wireless DNS domain
 domain=wlan
-
-# Alias for this router
 address=/gw.wlan/192.168.4.1
+
+interface=eth0
+dhcp-range=192.168.5.2,192.168.5.20,255.255.255.0,24h
+domain=eth
+address=/gw.eth/192.168.5.1
 ```
