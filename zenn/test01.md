@@ -1,3 +1,4 @@
+[ほぼこれと同じ](https://www.raspberrypi.com/documentation/computers/configuration.html#setting-up-a-routed-wireless-access-point)
 # 環境
 - ラズパイ3B+
 - wifiモジュール
@@ -16,8 +17,8 @@ update_config=1
 country=JP
 
 network={
-        ssid="ネットワーク名"
-        psk="パスフレーズ"
+    ssid="ネットワーク名"
+    psk="パスフレーズ"
 }
 ```
 
@@ -28,5 +29,10 @@ interface wlan0
     nohook wpa_supplicant
 
 interface wlan1
-        env wpa_supplicant_conf=/etc/wpa_supplicant/wpa_supplicant-wlan1.conf
+    env wpa_supplicant_conf=/etc/wpa_supplicant/wpa_supplicant-wlan1.conf
+```
+
+```:/etc/sysctl.d/routed-ap.conf
+# Enable IPv4 routing
+net.ipv4.ip_forward=1
 ```
