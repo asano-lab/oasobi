@@ -22,6 +22,9 @@ network={
 }
 ```
 
+`wpa_passphrase 'ネットワーク名' 'パスフレーズ'`を実行することで、
+パスフレーズを暗号化できる
+
 ```:/etc/dhcpd.conf
 (略)
 interface wlan0
@@ -30,6 +33,9 @@ interface wlan0
 
 interface wlan1
     env wpa_supplicant_conf=/etc/wpa_supplicant/wpa_supplicant-wlan1.conf
+
+interface eth0
+        static ip_address=192.168.5.1/24
 ```
 
 ```:/etc/sysctl.d/routed-ap.conf
