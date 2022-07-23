@@ -18,7 +18,10 @@ browser.get("https://www.google.com/")
 
 # q = browser.find_element(By.XPATH, "/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/input")
 q = browser.find_element(By.NAME, "q")
-q.send_keys("http://abehiroshi.la.coocan.jp/\n")
+q.send_keys("あいうえお\n")
+
+r = browser.find_element(By.XPATH, "/html/body/div[7]/div/div[10]/div/div[2]/div[2]/div/div/div[3]/div/div/div[1]/div/a")
+r.click()
 
 print(browser.page_source)
 
