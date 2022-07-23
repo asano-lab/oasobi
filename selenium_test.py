@@ -8,7 +8,7 @@ from selenium.webdriver.chrome import service as fs
 from selenium.webdriver.chrome.options import Options
 
 options = Options()
-options.add_argument("--headless")
+# options.add_argument("--headless")
 
 CHROMEDRIVER = "/usr/lib/chromium-browser/chromedriver"
 CHROME_SERVICE = fs.Service(executable_path=CHROMEDRIVER)
@@ -18,7 +18,7 @@ browser.get("https://www.google.com/")
 
 # q = browser.find_element(By.XPATH, "/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/input")
 q = browser.find_element(By.NAME, "q")
-q.send_keys("あいうえお\n")
+q.send_keys("http://abehiroshi.la.coocan.jp/\n")
 
 print(browser.page_source)
 
