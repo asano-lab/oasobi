@@ -32,7 +32,16 @@ try:
     print("既にログインしています")
     logout_button.click()
 except WebDriverException:
-    pass
+    user_input = browser.find_element(
+        By.XPATH,
+        "/html/body/div[2]/div/div/div/div/div/div/div/div/div[3]/form/div[1]/div[3]/div[2]/input"
+    )
+    pass_input = browser.find_element(
+        By.XPATH,
+        "/html/body/div[2]/div/div/div/div/div/div/div/div/div[3]/form/div[2]/div/div[2]/input"
+    )
+    user_input.send_keys("abc")
+    pass_input.send_keys("def")
 
 # q = browser.find_element(By.XPATH, "/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/input")
 # q = browser.find_element(By.NAME, "q")
