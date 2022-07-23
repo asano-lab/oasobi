@@ -27,21 +27,26 @@ try:
         By.XPATH,
         "/html/body/div[2]/div/div/div/div/div/div/div/div/div[2]/div/a"
     )
-    # print(browser.page_source)
     print(logout_button.get_attribute("innerText"))
     print("既にログインしています")
     logout_button.click()
 except WebDriverException:
-    user_input = browser.find_element(
-        By.XPATH,
-        "/html/body/div[2]/div/div/div/div/div/div/div/div/div[3]/form/div[1]/div[3]/div[2]/input"
-    )
-    pass_input = browser.find_element(
-        By.XPATH,
-        "/html/body/div[2]/div/div/div/div/div/div/div/div/div[3]/form/div[2]/div/div[2]/input"
-    )
-    user_input.send_keys("abc")
-    pass_input.send_keys("def")
+    # user_input = browser.find_element(
+    #     By.XPATH,
+    #     "/html/body/div[2]/div/div/div/div/div/div/div/div/div[3]/form/div[1]/div[3]/div[2]/input"
+    # )
+    user_input = browser.find_element(By.ID, "EntryUserId")
+    # pswd_input = browser.find_element(
+    #     By.XPATH,
+    #     "/html/body/div[2]/div/div/div/div/div/div/div/div/div[3]/form/div[2]/div/div[2]/input"
+    # )
+    pswd_input = browser.find_element(By.ID, "EntryPassword")
+    with open("private/flets_info.txt", "r") as f:
+        user, pswd = f.readlines()
+        user_input.send_keys(user)
+        pswd_input.send_keys(pswd)
+    login_btn = browser.find_element(By.ID, "login_btn")
+    login_btn.click()
 
 # q = browser.find_element(By.XPATH, "/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/input")
 # q = browser.find_element(By.NAME, "q")
@@ -53,5 +58,7 @@ except WebDriverException:
 # s = browser.find_element(By.XPATH, "/html/body/div/div/div[3]/main/div[2]/div[4]/div[1]/p")
 # print(s.get_attribute("innerText"))
 
-time.sleep(1)
+time.sleep(3)
+print(browser.page_source)
+
 browser.quit()
