@@ -22,14 +22,16 @@ except WebDriverException:
 
 # ログインページにアクセス
 browser.get("https://wifi.e-flets.jp")
+res = 0
 try:
     logout_button = browser.find_element(
         By.XPATH,
         "/html/body/div[2]/div/div/div/div/div/div/div/div/div[2]/div/a"
     )
-    print(logout_button.get_attribute("innerText"))
-    print("既にログインしています")
-    logout_button.click()
+    # print(logout_button.get_attribute("innerText"))
+    # print("既にログインしています")
+    # logout_button.click()
+    res = -1
 except WebDriverException:
     user_input = browser.find_element(By.ID, "EntryUserId")
     pswd_input = browser.find_element(By.ID, "EntryPassword")
@@ -39,18 +41,7 @@ except WebDriverException:
         pswd_input.send_keys(pswd)
     login_btn = browser.find_element(By.ID, "login_btn")
     login_btn.click()
+finally:
+    browser.quit()
+    exit(res)
 
-# q = browser.find_element(By.XPATH, "/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/input")
-# q = browser.find_element(By.NAME, "q")
-# q.send_keys("あいうえお\n")
-
-# r = browser.find_element(By.XPATH, "/html/body/div[7]/div/div[10]/div/div[2]/div[2]/div/div/div[3]/div/div/div[1]/div/a")
-# r.click()
-
-# s = browser.find_element(By.XPATH, "/html/body/div/div/div[3]/main/div[2]/div[4]/div[1]/p")
-# print(s.get_attribute("innerText"))
-
-time.sleep(10)
-print(browser.page_source)
-
-browser.quit()
