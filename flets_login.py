@@ -20,14 +20,19 @@ except WebDriverException:
     options.add_argument("--headless")
     browser = webdriver.Chrome(service=CHROME_SERVICE, options=options)
 
+# ログインページにアクセス
 browser.get("https://wifi.e-flets.jp")
-logout_button = browser.find_element(
-    By.XPATH,
-    "/html/body/div[2]/div/div/div/div/div/div/div/div/div[2]/div/a"
-)
-# print(browser.page_source)
-print(logout_button.get_attribute("innerText"))
-logout_button.click()
+try:
+    logout_button = browser.find_element(
+        By.XPATH,
+        "/html/body/div[2]/div/div/div/div/div/div/div/div/div[2]/div/a"
+    )
+    # print(browser.page_source)
+    print(logout_button.get_attribute("innerText"))
+    print("既にログインしています")
+    logout_button.click()
+except WebDriverException:
+    pass
 
 # q = browser.find_element(By.XPATH, "/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/input")
 # q = browser.find_element(By.NAME, "q")
