@@ -31,15 +31,7 @@ try:
     print("既にログインしています")
     logout_button.click()
 except WebDriverException:
-    # user_input = browser.find_element(
-    #     By.XPATH,
-    #     "/html/body/div[2]/div/div/div/div/div/div/div/div/div[3]/form/div[1]/div[3]/div[2]/input"
-    # )
     user_input = browser.find_element(By.ID, "EntryUserId")
-    # pswd_input = browser.find_element(
-    #     By.XPATH,
-    #     "/html/body/div[2]/div/div/div/div/div/div/div/div/div[3]/form/div[2]/div/div[2]/input"
-    # )
     pswd_input = browser.find_element(By.ID, "EntryPassword")
     with open("private/flets_info.txt", "r") as f:
         user, pswd = f.readlines()
@@ -58,7 +50,7 @@ except WebDriverException:
 # s = browser.find_element(By.XPATH, "/html/body/div/div/div[3]/main/div[2]/div[4]/div[1]/p")
 # print(s.get_attribute("innerText"))
 
-time.sleep(3)
+time.sleep(10)
 print(browser.page_source)
 
 browser.quit()
