@@ -20,17 +20,21 @@ except WebDriverException:
     options.add_argument("--headless")
     browser = webdriver.Chrome(service=CHROME_SERVICE, options=options)
 
-browser.get("https://www.google.com/")
+browser.get("https://wifi.e-flets.jp")
+# logout_button = browser.find_element(By.CLASS_NAME, "btn btn-entry-common btn-block")
+logout_button = browser.find_element(By.XPATH, "/html/body/div[2]/div/div/div/div/div/div/div/div/div[2]/div/a")
+print(browser.page_source)
+print(logout_button.get_attribute("innerText"))
 
 # q = browser.find_element(By.XPATH, "/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/input")
-q = browser.find_element(By.NAME, "q")
-q.send_keys("あいうえお\n")
+# q = browser.find_element(By.NAME, "q")
+# q.send_keys("あいうえお\n")
 
-r = browser.find_element(By.XPATH, "/html/body/div[7]/div/div[10]/div/div[2]/div[2]/div/div/div[3]/div/div/div[1]/div/a")
-r.click()
+# r = browser.find_element(By.XPATH, "/html/body/div[7]/div/div[10]/div/div[2]/div[2]/div/div/div[3]/div/div/div[1]/div/a")
+# r.click()
 
-s = browser.find_element(By.XPATH, "/html/body/div/div/div[3]/main/div[2]/div[4]/div[1]/p")
-print(s.get_attribute("innerText"))
+# s = browser.find_element(By.XPATH, "/html/body/div/div/div[3]/main/div[2]/div[4]/div[1]/p")
+# print(s.get_attribute("innerText"))
 
 time.sleep(1)
 browser.quit()
