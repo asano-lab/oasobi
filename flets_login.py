@@ -21,10 +21,13 @@ except WebDriverException:
     browser = webdriver.Chrome(service=CHROME_SERVICE, options=options)
 
 browser.get("https://wifi.e-flets.jp")
-# logout_button = browser.find_element(By.CLASS_NAME, "btn btn-entry-common btn-block")
-logout_button = browser.find_element(By.XPATH, "/html/body/div[2]/div/div/div/div/div/div/div/div/div[2]/div/a")
-print(browser.page_source)
+logout_button = browser.find_element(
+    By.XPATH,
+    "/html/body/div[2]/div/div/div/div/div/div/div/div/div[2]/div/a"
+)
+# print(browser.page_source)
 print(logout_button.get_attribute("innerText"))
+logout_button.click()
 
 # q = browser.find_element(By.XPATH, "/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/input")
 # q = browser.find_element(By.NAME, "q")
