@@ -41,6 +41,7 @@ except WebDriverException:
         pswd_input.send_keys(pswd)
     login_btn = browser.find_element(By.ID, "login_btn")
     login_btn.click()
+    time.sleep(10)
 finally:
     browser.quit()
     exit(res)
