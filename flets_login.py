@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import time
+import re
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome import service as fs
@@ -10,6 +11,7 @@ from selenium.common.exceptions import WebDriverException
 
 CHROMEDRIVER = "/usr/lib/chromium-browser/chromedriver"
 CHROME_SERVICE = fs.Service(executable_path=CHROMEDRIVER)
+FLETS_LOGIN_URL = "https://wifi.e-flets.jp"
 
 try:
     # GUIが使える場合
@@ -21,16 +23,20 @@ except WebDriverException:
     browser = webdriver.Chrome(service=CHROME_SERVICE, options=options)
 
 # ログインページにアクセス
-browser.get("https://wifi.e-flets.jp")
+try:
+    browser.get(FLETS_LOGIN_URL)
+except WebDriverException:
+    print(f"unable to access '{FLETS_LOGIN_URL}'")
+    exit(1)
+
 res = 0
 try:
+    # ログアウトボタンを発見
     logout_button = browser.find_element(
         By.XPATH,
         "/html/body/div[2]/div/div/div/div/div/div/div/div/div[2]/div/a"
     )
-    # print(logout_button.get_attribute("innerText"))
-    # print("既にログインしています")
-    # logout_button.click()
+    print("you are already logged in")
     res = -1
 except WebDriverException:
     user_input = browser.find_element(By.ID, "EntryUserId")
@@ -41,8 +47,13 @@ except WebDriverException:
         pswd_input.send_keys(pswd)
     login_btn = browser.find_element(By.ID, "login_btn")
     login_btn.click()
-    time.sleep(10)
+    for i in range(30):
+        time.sleep(1)
+        if re.search("ユーザ認証完了", browser.page_source) is not None:
+            print("login was successful")
+            break
+    else:
+        print("login may have failed")
 finally:
     browser.quit()
     exit(res)
-
