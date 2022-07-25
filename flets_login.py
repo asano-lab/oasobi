@@ -83,10 +83,10 @@ except WebDriverException:
     for i in range(30):
         time.sleep(1)
         if re.search("ユーザ認証完了", browser.page_source) is not None:
-            print("login was successful")
+            send_line_notify_width_date("login was successful", line_token)
             break
     else:
-        print("login may have failed")
+        send_line_notify_width_date("login may have failed", line_token)
 finally:
     browser.quit()
     exit(res)
