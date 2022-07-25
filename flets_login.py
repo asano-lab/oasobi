@@ -3,6 +3,8 @@
 
 import time
 import re
+import requests
+import datetime
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome import service as fs
@@ -13,6 +15,35 @@ CHROMEDRIVER = "/usr/lib/chromium-browser/chromedriver"
 CHROME_SERVICE = fs.Service(executable_path=CHROMEDRIVER)
 FLETS_INFO_PATH = "/home/sonoda/.secret/flets_info.txt"
 FLETS_LOGIN_URL = "https://wifi.e-flets.jp"
+
+# 平文で保存してある
+TOKEN_PATH = "/home/sonoda/.secret/line_token01.txt"
+
+LINE_NOTIFY_API = "https://notify-api.line.me/api/notify"
+
+t_delta = datetime.timedelta(hours=9)  # 9時間
+JST = datetime.timezone(t_delta, "JST")  # UTCから9時間差の「JST」タイムゾーン
+
+with open(TOKEN_PATH, "r", encoding="UTF-8") as f:
+    line_token = f.read().split("\n")[1]
+
+
+def send_line_notify(notification_message, token):
+    """
+    LINEに通知する
+    """
+    line_notify_token = token
+    headers = {"Authorization": f"Bearer {line_notify_token}"}
+    data = {"message": f"{notification_message}"}
+    requests.post(LINE_NOTIFY_API, headers=headers, data=data)
+
+
+def send_line_notify_width_date(notification_message: str, token: str):
+    m = f"{datetime.datetime.now(JST)}: {notification_message}"
+    # 標準出力も
+    print(m)
+    send_line_notify(m, token)
+
 
 try:
     # GUIが使える場合
@@ -37,7 +68,8 @@ try:
         By.XPATH,
         "/html/body/div[2]/div/div/div/div/div/div/div/div/div[2]/div/a"
     )
-    print("you are already logged in")
+    # print("you are already logged in")
+    send_line_notify_width_date("you are already logged in", line_token)
     res = -1
 except WebDriverException:
     user_input = browser.find_element(By.ID, "EntryUserId")
