@@ -11,6 +11,7 @@ from selenium.common.exceptions import WebDriverException
 
 CHROMEDRIVER = "/usr/lib/chromium-browser/chromedriver"
 CHROME_SERVICE = fs.Service(executable_path=CHROMEDRIVER)
+FLETS_INFO_PATH = "/home/sonoda/.secret/flets_info.txt"
 FLETS_LOGIN_URL = "https://wifi.e-flets.jp"
 
 try:
@@ -41,7 +42,7 @@ try:
 except WebDriverException:
     user_input = browser.find_element(By.ID, "EntryUserId")
     pswd_input = browser.find_element(By.ID, "EntryPassword")
-    with open("home/sonoda/.secret/flets-info.txt", "r", encoding="UTF-8") as f:
+    with open(FLETS_INFO_PATH, "r", encoding="UTF-8") as f:
         user, pswd = f.readlines()
         user_input.send_keys(user)
         pswd_input.send_keys(pswd)
