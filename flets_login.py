@@ -18,7 +18,6 @@ FLETS_LOGIN_URL = "https://wifi.e-flets.jp"
 
 # 平文で保存してある
 TOKEN_PATH = "/home/sonoda/.secret/line_token01.txt"
-
 LINE_NOTIFY_API = "https://notify-api.line.me/api/notify"
 
 t_delta = datetime.timedelta(hours=9)  # 9時間

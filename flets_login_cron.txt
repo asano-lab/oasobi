@@ -1,0 +1,1 @@
+*/1 * * * * sonoda /home/sonoda/GitHub/oasobi/flets_login.py >> /home/sonoda/cron.log
