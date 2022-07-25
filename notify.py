@@ -7,9 +7,9 @@ TOKEN_PATH = "/home/sonoda/.secret/line_token01.txt"
 
 def main():
     with open(TOKEN_PATH, "r", encoding="UTF-8") as f:
-        line_token = f.read().split("\n")[0]
+        line_token = f.read().split("\n")[1]
     print(line_token)
-    send_line_notify("てすとてすと", line_token)
+    # send_line_notify("てすとてすと", line_token)
 
 def send_line_notify(notification_message, token):
     """

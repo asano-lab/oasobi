@@ -35,7 +35,7 @@ try:
 except WebDriverException:
     user_input = browser.find_element(By.ID, "EntryUserId")
     pswd_input = browser.find_element(By.ID, "EntryPassword")
-    with open("private/flets_info.txt", "r") as f:
+    with open("home/sonoda/.secret/flets-info.txt", "r", encoding="UTF-8") as f:
         user, pswd = f.readlines()
         user_input.send_keys(user)
         pswd_input.send_keys(pswd)
