@@ -24,13 +24,14 @@ class MyThread(threading.Thread):
 def main():
     th_list = []
     t0 = time.time()
-    for i in range(10):
-        tmp_th = MyThread()
-        tmp_th.start()
-        th_list.append(tmp_th)
-        print(threading.active_count())
-    while threading.active_count() > 1:
-        time.sleep(0.1)
+    fibo(30)
+    # for i in range(10):
+    #     tmp_th = MyThread()
+    #     tmp_th.start()
+    #     th_list.append(tmp_th)
+    #     print(threading.active_count())
+    # while threading.active_count() > 1:
+    #     time.sleep(0.1)
     print(time.time() - t0)
 
 if __name__ == "__main__":
