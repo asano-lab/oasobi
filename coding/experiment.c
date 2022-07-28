@@ -10,6 +10,9 @@
 // 1回の試行におけるループ数
 #define NUM_LOOP 10000
 
+// 忘れないように定義しておく
+#define builtin_popcount(x) __builtin_popcount(x)
+
 #define timeval_to_double(tv) \
     (((double)(tv).tv_sec + (double)(tv).tv_usec * 1e-6))
 
@@ -25,7 +28,7 @@
 // 各ビットのエラー率が一定の通信路
 // 引数はチャンネルの入力, 入力長, エラー率
 // エラー率は, 予め RAND_MAX で乗算された int 型とする
-#define channelNoise(x, nc, e_prob_int) ((x) ^ makeErrorBits(nc, e_prob_int))
+#define binary_simmetric_channel(x, nc, e_prob_int) ((x) ^ makeErrorBits(nc, e_prob_int))
 
 // (7, 4)ハミング符号の符号化関数
 // 入力は4ビット, 出力は7ビットに固定
@@ -149,7 +152,7 @@ int compareErrorProb(int loop, int e_prob_int, FILE *fpw) {
         tmsg = rand4Bit();
 
         // 符号化なし
-        rmsg = channelNoise(tmsg, 4, e_prob_int);
+        rmsg = binary_simmetric_channel(tmsg, 4, e_prob_int);
         // エラー数のカウント
         if (tmsg != rmsg) {
             ne_err++;
@@ -157,7 +160,7 @@ int compareErrorProb(int loop, int e_prob_int, FILE *fpw) {
         
         // (3, 1)繰り返し符号
         tcode = encRepCode3(tmsg, 4);
-        rcode = channelNoise(tcode, 12, e_prob_int);
+        rcode = binary_simmetric_channel(tcode, 12, e_prob_int);
         rmsg = decRepCode3(rcode, 4);
         if (tmsg != rmsg) {
             rep_err++;
@@ -165,7 +168,7 @@ int compareErrorProb(int loop, int e_prob_int, FILE *fpw) {
         
         // (4, 7)ハミング符号
         tcode = encHamCode7_4(tmsg);
-        rcode = channelNoise(tcode, 7, e_prob_int);
+        rcode = binary_simmetric_channel(tcode, 7, e_prob_int);
         rmsg = decHamCode7_4(rcode);
         if (tmsg != rmsg) {
             ham_err++;
@@ -180,40 +183,36 @@ int compareErrorProb(int loop, int e_prob_int, FILE *fpw) {
 
 // ビットエラー率の比較
 // エラー率は, 予め RAND_MAX で乗算された int 型とする
-int compareBER(int loop, int e_prob_int, FILE *fpw) {
+int compareBER(int loop, int r_max_int, FILE *fpw) {
     int i;
     u_int tmsg, tcode, rcode, rmsg;
-    int ne_err = 0, rep_err = 0, ham_err = 0;
+    // 誤りビット数の総計
+    int ne_bes = 0, rep_bes = 0, ham_bes = 0;
     for (i = 0; i < loop; i++) {
         // メッセージは乱数で作って共有
         tmsg = rand4Bit();
 
         // 符号化なし
-        rmsg = channelNoise(tmsg, 4, e_prob_int);
-        // エラー数のカウント
-        if (tmsg != rmsg) {
-            ne_err++;
-        }
+        rmsg = binary_simmetric_channel(tmsg, 4, r_max_int);
+        // エラービット数のカウント
+        ne_bes += builtin_popcount(tmsg ^ rmsg);
         
         // (3, 1)繰り返し符号
         tcode = encRepCode3(tmsg, 4);
-        rcode = channelNoise(tcode, 12, e_prob_int);
+        rcode = binary_simmetric_channel(tcode, 12, r_max_int);
         rmsg = decRepCode3(rcode, 4);
-        if (tmsg != rmsg) {
-            rep_err++;
-        }
+        rep_bes += builtin_popcount(tmsg ^ rmsg);
         
         // (4, 7)ハミング符号
         tcode = encHamCode7_4(tmsg);
-        rcode = channelNoise(tcode, 7, e_prob_int);
+        rcode = binary_simmetric_channel(tcode, 7, r_max_int);
         rmsg = decHamCode7_4(rcode);
-        if (tmsg != rmsg) {
-            ham_err++;
-        }
+        ham_bes += builtin_popcount(tmsg ^ rmsg);
     }
     // printf("%d %d %d\n", ne_err, rep_err, ham_err);
+    // fprintf(stdout, "%d %d %d\r\n", ne_bes, rep_bes, ham_bes);
     // 改行コードを windows に合わせる
-    fprintf(fpw, "%d %d %d\r\n", ne_err, rep_err, ham_err);
+    fprintf(fpw, "%d %d %d\r\n", ne_bes, rep_bes, ham_bes);
 
     return 0;
 }
@@ -225,27 +224,18 @@ int main(int argc, char **argv) {
     }
     struct timeval tv0, tv1;
     u_char tmsg, rmsg, e_vec;
-    int ret, r_max_int, e_bits_sum, loop;
+    int ret, r_max_int, loop;
     double e_prob, e_prob_true;
-    e_prob = 1e-9;
+    e_prob = 1e-3;
     ret = gettimeofday(&tv0, NULL);
     seed = time(NULL) & 0xffffffff;
 
-    e_bits_sum = 0;
-    loop = 1e6;
+    loop = 1e8;
     r_max_int = RAND_MAX * e_prob;
     // 量子化誤差を見る
     e_prob_true = (double)r_max_int / (double)RAND_MAX;
     printf("%.20e, %.20e, %d\n", e_prob, e_prob_true, r_max_int);
-    for (int i = 0; i < loop; i++) {
-        tmsg = rand4Bit();
-        rmsg = channelNoise(tmsg, 4, r_max_int);
-        e_vec = tmsg ^ rmsg;
-        e_bits_sum += __builtin_popcount(e_vec);
-        // printf("%d\n", e_bits);
-    }
-    // sleep(1);
-    printf("%d\n", e_bits_sum);
+    compareBER(loop, r_max_int, stdout);
     ret = gettimeofday(&tv1, NULL);
     printf("%f\n", timeval_to_double(tv1) - timeval_to_double(tv0));
     return ret;

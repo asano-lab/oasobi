@@ -477,6 +477,7 @@ compareErrorProb:
 	.cfi_endproc
 .LFE13:
 	.size	compareErrorProb, .-compareErrorProb
+	.globl	__popcountdi2
 	.globl	compareBER
 	.type	compareBER, @function
 compareBER:
@@ -499,7 +500,7 @@ compareBER:
 	movl	$0, -36(%rbp)
 	movl	$0, -48(%rbp)
 	jmp	.L47
-.L51:
+.L48:
 	leaq	seed(%rip), %rdi
 	call	rand_r@PLT
 	andl	$15, %eax
@@ -511,10 +512,11 @@ compareBER:
 	xorl	-32(%rbp), %eax
 	movl	%eax, -28(%rbp)
 	movl	-32(%rbp), %eax
-	cmpl	-28(%rbp), %eax
-	je	.L48
-	addl	$1, -44(%rbp)
-.L48:
+	xorl	-28(%rbp), %eax
+	movl	%eax, %eax
+	movq	%rax, %rdi
+	call	__popcountdi2@PLT
+	addl	%eax, -44(%rbp)
 	movl	-32(%rbp), %eax
 	movl	$4, %esi
 	movl	%eax, %edi
@@ -532,10 +534,11 @@ compareBER:
 	call	decRepCode3
 	movl	%eax, -28(%rbp)
 	movl	-32(%rbp), %eax
-	cmpl	-28(%rbp), %eax
-	je	.L49
-	addl	$1, -40(%rbp)
-.L49:
+	xorl	-28(%rbp), %eax
+	movl	%eax, %eax
+	movq	%rax, %rdi
+	call	__popcountdi2@PLT
+	addl	%eax, -40(%rbp)
 	movl	-32(%rbp), %eax
 	leal	0(,%rax,8), %ebx
 	movl	-32(%rbp), %eax
@@ -554,15 +557,16 @@ compareBER:
 	call	decHamCode7_4
 	movl	%eax, -28(%rbp)
 	movl	-32(%rbp), %eax
-	cmpl	-28(%rbp), %eax
-	je	.L50
-	addl	$1, -36(%rbp)
-.L50:
+	xorl	-28(%rbp), %eax
+	movl	%eax, %eax
+	movq	%rax, %rdi
+	call	__popcountdi2@PLT
+	addl	%eax, -36(%rbp)
 	addl	$1, -48(%rbp)
 .L47:
 	movl	-48(%rbp), %eax
 	cmpl	-52(%rbp), %eax
-	jl	.L51
+	jl	.L48
 	movl	-36(%rbp), %esi
 	movl	-40(%rbp), %ecx
 	movl	-44(%rbp), %edx
@@ -586,10 +590,7 @@ compareBER:
 	.string	"\345\274\225\346\225\260\344\270\215\350\266\263"
 .LC5:
 	.string	"%.20e, %.20e, %d\n"
-	.globl	__popcountdi2
-.LC6:
-	.string	"%d\n"
-.LC8:
+.LC7:
 	.string	"%f\n"
 	.text
 	.globl	main
@@ -603,19 +604,19 @@ main:
 	.cfi_offset 6, -16
 	movq	%rsp, %rbp
 	.cfi_def_cfa_register 6
-	subq	$112, %rsp
-	movl	%edi, -100(%rbp)
-	movq	%rsi, -112(%rbp)
+	subq	$96, %rsp
+	movl	%edi, -84(%rbp)
+	movq	%rsi, -96(%rbp)
 	movq	%fs:40, %rax
 	movq	%rax, -8(%rbp)
 	xorl	%eax, %eax
-	cmpl	$1, -100(%rbp)
-	jg	.L54
+	cmpl	$1, -84(%rbp)
+	jg	.L51
 	leaq	.LC2(%rip), %rdi
 	call	puts@PLT
 	movl	$-1, %eax
-	jmp	.L58
-.L54:
+	jmp	.L53
+.L51:
 	movsd	.LC3(%rip), %xmm0
 	movsd	%xmm0, -64(%rbp)
 	leaq	-48(%rbp), %rax
@@ -626,8 +627,7 @@ main:
 	movl	$0, %edi
 	call	time@PLT
 	movl	%eax, seed(%rip)
-	movl	$0, -84(%rbp)
-	movl	$1000000, -72(%rbp)
+	movl	$100000000, -72(%rbp)
 	movsd	-64(%rbp), %xmm1
 	movsd	.LC4(%rip), %xmm0
 	mulsd	%xmm1, %xmm0
@@ -646,37 +646,12 @@ main:
 	leaq	.LC5(%rip), %rdi
 	movl	$2, %eax
 	call	printf@PLT
-	movl	$0, -80(%rbp)
-	jmp	.L56
-.L57:
-	leaq	seed(%rip), %rdi
-	call	rand_r@PLT
-	andl	$15, %eax
-	movb	%al, -87(%rbp)
-	movl	-68(%rbp), %eax
-	movl	%eax, %esi
-	movl	$4, %edi
-	call	makeErrorBits
-	xorb	-87(%rbp), %al
-	movb	%al, -86(%rbp)
-	movzbl	-87(%rbp), %eax
-	xorb	-86(%rbp), %al
-	movb	%al, -85(%rbp)
-	movzbl	-85(%rbp), %eax
-	movl	%eax, %eax
-	movq	%rax, %rdi
-	call	__popcountdi2@PLT
-	addl	%eax, -84(%rbp)
-	addl	$1, -80(%rbp)
-.L56:
-	movl	-80(%rbp), %eax
-	cmpl	-72(%rbp), %eax
-	jl	.L57
-	movl	-84(%rbp), %eax
-	movl	%eax, %esi
-	leaq	.LC6(%rip), %rdi
-	movl	$0, %eax
-	call	printf@PLT
+	movq	stdout(%rip), %rdx
+	movl	-68(%rbp), %ecx
+	movl	-72(%rbp), %eax
+	movl	%ecx, %esi
+	movl	%eax, %edi
+	call	compareBER
 	leaq	-32(%rbp), %rax
 	movl	$0, %esi
 	movq	%rax, %rdi
@@ -686,27 +661,27 @@ main:
 	cvtsi2sdq	%rax, %xmm1
 	movq	-24(%rbp), %rax
 	cvtsi2sdq	%rax, %xmm2
-	movsd	.LC7(%rip), %xmm0
+	movsd	.LC6(%rip), %xmm0
 	mulsd	%xmm2, %xmm0
 	addsd	%xmm1, %xmm0
 	movq	-48(%rbp), %rax
 	cvtsi2sdq	%rax, %xmm2
 	movq	-40(%rbp), %rax
 	cvtsi2sdq	%rax, %xmm3
-	movsd	.LC7(%rip), %xmm1
+	movsd	.LC6(%rip), %xmm1
 	mulsd	%xmm3, %xmm1
 	addsd	%xmm2, %xmm1
 	subsd	%xmm1, %xmm0
-	leaq	.LC8(%rip), %rdi
+	leaq	.LC7(%rip), %rdi
 	movl	$1, %eax
 	call	printf@PLT
 	movl	-76(%rbp), %eax
-.L58:
+.L53:
 	movq	-8(%rbp), %rcx
 	xorq	%fs:40, %rcx
-	je	.L59
+	je	.L54
 	call	__stack_chk_fail@PLT
-.L59:
+.L54:
 	leave
 	.cfi_def_cfa 7, 8
 	ret
@@ -716,14 +691,14 @@ main:
 	.section	.rodata
 	.align 8
 .LC3:
-	.long	3894859413
-	.long	1041313291
+	.long	3539053052
+	.long	1062232653
 	.align 8
 .LC4:
 	.long	4290772992
 	.long	1105199103
 	.align 8
-.LC7:
+.LC6:
 	.long	2696277389
 	.long	1051772663
 	.ident	"GCC: (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0"
