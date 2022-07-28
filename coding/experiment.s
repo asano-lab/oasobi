@@ -588,9 +588,11 @@ compareBER:
 	.section	.rodata
 .LC2:
 	.string	"\345\274\225\346\225\260\344\270\215\350\266\263"
-.LC5:
+.LC3:
+	.string	"%d\n"
+.LC6:
 	.string	"%.20e, %.20e, %d\n"
-.LC7:
+.LC8:
 	.string	"%f\n"
 	.text
 	.globl	main
@@ -617,24 +619,36 @@ main:
 	movl	$-1, %eax
 	jmp	.L53
 .L51:
-	movsd	.LC3(%rip), %xmm0
+	movq	-96(%rbp), %rax
+	addq	$8, %rax
+	movq	(%rax), %rax
+	movl	$0, %esi
+	movq	%rax, %rdi
+	call	strtod@PLT
+	cvttsd2sil	%xmm0, %eax
+	movl	%eax, -76(%rbp)
+	movl	-76(%rbp), %eax
+	movl	%eax, %esi
+	leaq	.LC3(%rip), %rdi
+	movl	$0, %eax
+	call	printf@PLT
+	movsd	.LC4(%rip), %xmm0
 	movsd	%xmm0, -64(%rbp)
 	leaq	-48(%rbp), %rax
 	movl	$0, %esi
 	movq	%rax, %rdi
 	call	gettimeofday@PLT
-	movl	%eax, -76(%rbp)
+	movl	%eax, -72(%rbp)
 	movl	$0, %edi
 	call	time@PLT
 	movl	%eax, seed(%rip)
-	movl	$100000000, -72(%rbp)
 	movsd	-64(%rbp), %xmm1
-	movsd	.LC4(%rip), %xmm0
+	movsd	.LC5(%rip), %xmm0
 	mulsd	%xmm1, %xmm0
 	cvttsd2sil	%xmm0, %eax
 	movl	%eax, -68(%rbp)
 	cvtsi2sdl	-68(%rbp), %xmm0
-	movsd	.LC4(%rip), %xmm1
+	movsd	.LC5(%rip), %xmm1
 	divsd	%xmm1, %xmm0
 	movsd	%xmm0, -56(%rbp)
 	movl	-68(%rbp), %edx
@@ -643,12 +657,12 @@ main:
 	movl	%edx, %esi
 	movapd	%xmm0, %xmm1
 	movq	%rax, %xmm0
-	leaq	.LC5(%rip), %rdi
+	leaq	.LC6(%rip), %rdi
 	movl	$2, %eax
 	call	printf@PLT
 	movq	stdout(%rip), %rdx
 	movl	-68(%rbp), %ecx
-	movl	-72(%rbp), %eax
+	movl	-76(%rbp), %eax
 	movl	%ecx, %esi
 	movl	%eax, %edi
 	call	compareBER
@@ -656,26 +670,26 @@ main:
 	movl	$0, %esi
 	movq	%rax, %rdi
 	call	gettimeofday@PLT
-	movl	%eax, -76(%rbp)
+	movl	%eax, -72(%rbp)
 	movq	-32(%rbp), %rax
 	cvtsi2sdq	%rax, %xmm1
 	movq	-24(%rbp), %rax
 	cvtsi2sdq	%rax, %xmm2
-	movsd	.LC6(%rip), %xmm0
+	movsd	.LC7(%rip), %xmm0
 	mulsd	%xmm2, %xmm0
 	addsd	%xmm1, %xmm0
 	movq	-48(%rbp), %rax
 	cvtsi2sdq	%rax, %xmm2
 	movq	-40(%rbp), %rax
 	cvtsi2sdq	%rax, %xmm3
-	movsd	.LC6(%rip), %xmm1
+	movsd	.LC7(%rip), %xmm1
 	mulsd	%xmm3, %xmm1
 	addsd	%xmm2, %xmm1
 	subsd	%xmm1, %xmm0
-	leaq	.LC7(%rip), %rdi
+	leaq	.LC8(%rip), %rdi
 	movl	$1, %eax
 	call	printf@PLT
-	movl	-76(%rbp), %eax
+	movl	-72(%rbp), %eax
 .L53:
 	movq	-8(%rbp), %rcx
 	xorq	%fs:40, %rcx
@@ -690,15 +704,15 @@ main:
 	.size	main, .-main
 	.section	.rodata
 	.align 8
-.LC3:
+.LC4:
 	.long	3539053052
 	.long	1062232653
 	.align 8
-.LC4:
+.LC5:
 	.long	4290772992
 	.long	1105199103
 	.align 8
-.LC6:
+.LC7:
 	.long	2696277389
 	.long	1051772663
 	.ident	"GCC: (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0"

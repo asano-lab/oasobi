@@ -226,11 +226,12 @@ int main(int argc, char **argv) {
     u_char tmsg, rmsg, e_vec;
     int ret, r_max_int, loop;
     double e_prob, e_prob_true;
+    loop = strtod(argv[1], NULL);
+    printf("%d\n", loop);
     e_prob = 1e-3;
     ret = gettimeofday(&tv0, NULL);
     seed = time(NULL) & 0xffffffff;
 
-    loop = 1e8;
     r_max_int = RAND_MAX * e_prob;
     // 量子化誤差を見る
     e_prob_true = (double)r_max_int / (double)RAND_MAX;
