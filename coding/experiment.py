@@ -7,16 +7,18 @@ import numpy as np
 
 
 class MyThread(threading.Thread):
-    def __init__(self, e_prob, count, name=""):
+    def __init__(self, e_prob, count, fnamea, name=""):
         super().__init__()
-        self.name = name
         self.e_prob = e_prob
         self.count = count
-        self.fname = f"dat/bes_p{self.e_prob:.4e}_s{self.count}.csv"
+        self.fnamea = fnamea
+        self.name = name
         self.daemon = True
     
     def run(self):
-        subprocess.run(["./experiment", self.fname, f"{self.e_prob}", f"{self.count}"])
+        print(f"{self.name} start.")
+        subprocess.run(["./experiment", self.fnamea, f"{self.e_prob}", f"{self.count}"])
+        print(f"{self.name} stop.")
 
 def main():
     parser = argparse.ArgumentParser(description="符号の実験")
@@ -27,10 +29,13 @@ def main():
 
     th_list = []
     t0 = time.time()
-    for i in range(1):
-        tmp_th = MyThread(0.01, args.count, str(i))
-        tmp_th.run()
-        th_list.append(tmp_th)
+    e_prob_arr = [0.01]
+    for e_prob in e_prob_arr:
+        fnamew = f"dat/bes_p{e_prob:.4e}_c{args.count}.csv"
+        for j in range(10):
+            tmp_th = MyThread(e_prob, args.count, fnamew, f"th{e_prob:.4e}_{j}")
+            tmp_th.run()
+            th_list.append(tmp_th)
     while threading.active_count() > 1:
         time.sleep(1)
     print(time.time() - t0)
