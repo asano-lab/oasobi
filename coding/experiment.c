@@ -178,17 +178,22 @@ int main(int argc, char **argv) {
         puts("引数不足");
         return -1;
     }
+    u_char tmsg;
     int r;
     // seed = time(NULL) & 0xffffffff;
     seed = 1;
     printf("%x\n", seed);
 
-    r = rand_r(&seed);
-    printBin32(r);
-    int a = __builtin_popcount(r);
-    printf("%d\n", a);
+    // r = rand_r(&seed);
+    // printBin32(r);
+    // int a = __builtin_popcount(r);
+    // printf("%d\n", a);
+    // for (int i = 0; i < 10; i++) {
+    //     printf("%u, %f\n", seed, randDouble());
+    // }
     for (int i = 0; i < 10; i++) {
-        printf("%u, %f\n", seed, randDouble());
+        tmsg = rand4Bit();
+        printBinN(tmsg, 4);
     }
     return 0;
 }
