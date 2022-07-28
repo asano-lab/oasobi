@@ -34,6 +34,8 @@
 // テスト用のパス
 #define test_path_format "./test/e_prob%02d.txt"
 
+u_int seed;
+
 // 32ビットのバイナリ表示
 void printBin32(u_int x) {
     for (int i = 31; i >= 0; i--) {
@@ -171,42 +173,17 @@ int compareErrorProb(int loop, int e_prob_int, FILE *fpw) {
     return 0;
 }
 
-int main(void) {
-    int i, j, e_prob_int;
-    FILE *fpw;
-    char fnamew[FILENAME_MAX];
-    srand((unsigned)time(NULL));
+int main(int argc, char **argv) {
+    if (argc < 2) {
+        puts("引数不足");
+        return -1;
+    }
+    seed = time(NULL) & 0xffffffff;
+    printf("%x\n", seed);
 
     int a = __builtin_popcount(0xffff);
-    // int a = 2;
+
     printf("%d\n", a);
 
-    // 0% から 50% まで 5% ずつ (計11通り) 動かす
-    for (i = 0; i < 0; i++) {
-        // ファイル名は % 表示
-        snprintf(fnamew, FILENAME_MAX, path_format, i * 5);
-        // snprintf(fnamew, FILENAME_MAX, test_path_format, i * 5);
-        if ((fpw = fopen(fnamew, "w")) == NULL) {
-            printf("\a%s can't be opened.\n", fnamew);
-            return -1;
-        }
-        // エラーにする乱数の最大値を設定.
-        // 0も稀に出るので, 確率0は負の値とする.
-        if (i == 0) {
-            e_prob_int = -1;
-        }
-        else {
-            e_prob_int = i * 0.05 * RAND_MAX;
-        }
-        // printf("%10d / %10d = %+.11f\n", e_prob_int, RAND_MAX, (double)e_prob_int / RAND_MAX);
-        // printBin32(e_prob_int);
-        // タイトルを付ける
-        fprintf(fpw, "nothing repetition hamming\n");
-        for (j = 0; j < NUM_SAMPLE; j++) {
-            compareErrorProb(NUM_LOOP, e_prob_int, fpw);
-        }
-        
-        fclose(fpw);
-    }
     return 0;
 }
