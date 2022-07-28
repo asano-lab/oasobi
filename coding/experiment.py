@@ -42,6 +42,5 @@ def main():
     print(time.time() - t0)
 
 if __name__ == "__main__":
-    # print(args.count)
     main()
     # print(np.logspace(-6, -0.5, 12))
