@@ -6,12 +6,14 @@ from pytz import timezone
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 def decode_lat_lon(sr: pd.Series) -> pd.Series:
     """
     緯度経度を度数に変換
     """
     tmp = sr.astype(float)
     return (tmp / 100).astype(int) + (tmp % 100) / 60
+
 
 # 地球の長半径 (km)
 R = 6378.137
@@ -23,22 +25,24 @@ LOG_LIST = [
     "log/matsumoto-nagano-100318.log"
 ]
 
+
 def calc_dist_ellipse_height(df_3d):
     use_columns = list(df_3d.columns)
 
-    df_3d_mem = df_3d[use_columns][1:].copy() # 先頭削除
-    df_3d_prev = df_3d[use_columns][:-1].copy() # 末尾削除
+    df_3d_mem = df_3d[use_columns][1:].copy()  # 先頭削除
+    df_3d_prev = df_3d[use_columns][:-1].copy()  # 末尾削除
 
     for uc in use_columns:
         df_3d_mem[uc + "_prev"] = list(df_3d_prev[uc])
 
     df_3d_mem["dist_3d"] = np.sqrt(
-        (df_3d_mem["x"] - df_3d_mem["x_prev"]) ** 2 + 
-        (df_3d_mem["y"] - df_3d_mem["y_prev"]) ** 2 + 
+        (df_3d_mem["x"] - df_3d_mem["x_prev"]) ** 2 +
+        (df_3d_mem["y"] - df_3d_mem["y_prev"]) ** 2 +
         (df_3d_mem["z"] - df_3d_mem["z_prev"]) ** 2
     )
     # print(df_3d_mem)
     return df_3d_mem["dist_3d"].sum()
+
 
 def main():
     example_lat, example_lon = 0.636, 2.408
@@ -67,19 +71,18 @@ def main():
     print(rot_matrix)
 
     # Figureを追加
-    fig = plt.figure(figsize = (8, 8))
+    fig = plt.figure(figsize=(8, 8))
 
     # 3DAxesを追加
     ax = fig.add_subplot(111, projection='3d')
 
     # Axesのタイトルを設定
-    ax.set_title("plot 3D", size = 20)
+    ax.set_title("plot 3D", size=20)
 
     # 軸ラベルを設定
-    ax.set_xlabel("x", size = 14)
-    ax.set_ylabel("y", size = 14)
-    ax.set_zlabel("z", size = 14)
-
+    ax.set_xlabel("x", size=14)
+    ax.set_ylabel("y", size=14)
+    ax.set_zlabel("z", size=14)
 
     # 軸目盛を設定
     # ax.set_xticks([-1.0, -0.5, 0.0, 0.5, 1.0])
@@ -148,15 +151,15 @@ def main():
 
         use_columns = list(df_3d.columns)
 
-        df_3d_mem = df_3d[use_columns][1:].copy() # 先頭削除
-        df_3d_prev = df_3d[use_columns][:-1].copy() # 末尾削除
+        df_3d_mem = df_3d[use_columns][1:].copy()  # 先頭削除
+        df_3d_prev = df_3d[use_columns][:-1].copy()  # 末尾削除
 
         for uc in use_columns:
             df_3d_mem[uc + "_prev"] = list(df_3d_prev[uc])
 
         df_3d_mem["dist_3d"] = np.sqrt(
-            (df_3d_mem["x"] - df_3d_mem["x_prev"]) ** 2 + 
-            (df_3d_mem["y"] - df_3d_mem["y_prev"]) ** 2 + 
+            (df_3d_mem["x"] - df_3d_mem["x_prev"]) ** 2 +
+            (df_3d_mem["y"] - df_3d_mem["y_prev"]) ** 2 +
             (df_3d_mem["z"] - df_3d_mem["z_prev"]) ** 2
         )
 
@@ -165,7 +168,8 @@ def main():
 
         xyz_matrix = np.matrix(df_3d).T
         xyz_matrix_rotated = rot_matrix * xyz_matrix
-        df_3d_rotated = pd.DataFrame(xyz_matrix_rotated.T, columns=["x", "y", "z"])
+        df_3d_rotated = pd.DataFrame(
+            xyz_matrix_rotated.T, columns=["x", "y", "z"])
 
         # 高さを最小値基準とする
         df_3d_rotated_mapped = df_3d_rotated.copy()
@@ -173,13 +177,15 @@ def main():
         df_3d_rotated_mapped
 
         # print(df_3d_rotated_mapped)
-        print(f"回転行列をかけた後の総移動距離: {calc_dist_ellipse_height(df_3d_rotated_mapped):.5f}")
+        print(
+            f"回転行列をかけた後の総移動距離: {calc_dist_ellipse_height(df_3d_rotated_mapped):.5f}")
 
         # 曲線を描画
         ax.plot(*df_3d_rotated_mapped.values.T.tolist(), label=LOG)
-        
+
     ax.legend()
     plt.show()
+
 
 if __name__ == "__main__":
     main()
