@@ -226,23 +226,21 @@ int main(int argc, char **argv) {
     struct timeval tv0, tv1;
     u_char tmsg, rmsg, e_vec;
     int ret, r_max_int, e_bits_sum, loop;
-    double e_prob = 0.1;
+    double e_prob, e_prob_true;
+    e_prob = 1e-9;
     ret = gettimeofday(&tv0, NULL);
     seed = time(NULL) & 0xffffffff;
-    // seed = 1;
-    // printf("%x\n", seed);
 
     e_bits_sum = 0;
     loop = 1e6;
     r_max_int = RAND_MAX * e_prob;
+    // 量子化誤差を見る
+    e_prob_true = (double)r_max_int / (double)RAND_MAX;
+    printf("%.20e, %.20e, %d\n", e_prob, e_prob_true, r_max_int);
     for (int i = 0; i < loop; i++) {
         tmsg = rand4Bit();
         rmsg = channelNoise(tmsg, 4, r_max_int);
         e_vec = tmsg ^ rmsg;
-        // printBinN(tmsg, 4);
-        // printBinN(rmsg, 4);
-        // printBinN(e_vec, 4);
-
         e_bits_sum += __builtin_popcount(e_vec);
         // printf("%d\n", e_bits);
     }
