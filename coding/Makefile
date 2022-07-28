@@ -1,15 +1,19 @@
 GCCFLAGS = -Wall -Wextra -O3
 RM = rm -rf
 EXECUTABLES = experiment
+CC = gcc
 
 .PHONY: all
 all: $(EXECUTABLES)
 
-.c.o:
-	gcc -c $< $(GCCFLAGS)
+.c.s:
+	$(CC) -S $<
+
+experiment.o: experiment.s
+	as -o $@ $^
 
 experiment: experiment.o
-	gcc -o $@ $^ $(GCCFLAGS)
+	$(CC) -o $@ $^ $(GCCFLAGS)
 
 .PHONY: clean
 clean:
