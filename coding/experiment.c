@@ -178,12 +178,14 @@ int main(int argc, char **argv) {
         puts("引数不足");
         return -1;
     }
+    int r;
     seed = time(NULL) & 0xffffffff;
     printf("%x\n", seed);
 
-    int a = __builtin_popcount(0xffff);
+    r = rand_r(&seed);
+    printBin32(r);
+    int a = __builtin_popcount(r);
 
     printf("%d\n", a);
-
     return 0;
 }
