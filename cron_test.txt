@@ -1,1 +1,0 @@
-*/1 * * * * sonoda /home/sonoda/GitHub/oasobi/notify.py >> /home/sonoda/cron.log
