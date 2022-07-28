@@ -14,25 +14,25 @@ def fibo(x):
     return y
 
 class MyThread(threading.Thread):
-    def __init__(self):
+    def __init__(self, name=""):
         super().__init__()
-        
+        self.setName(name)
         # self.daemon = True
     
     def run(self):
-        print(fibo(30))
+        print(self.name, fibo(31))
 
 def main():
     th_list = []
     t0 = time.time()
-    for _ in range(50):
-        print(fibo(31))
-    #     tmp_th = MyThread()
-    #     tmp_th.start()
-    #     th_list.append(tmp_th)
-    #     # print(end=f"{threading.active_count()},", flush=True)
-    # while threading.active_count() > 1:
-    #     time.sleep(0.1)
+    for i in range(50):
+        # print(fibo(31))
+        tmp_th = MyThread(name=str(i))
+        tmp_th.start()
+        th_list.append(tmp_th)
+        # print(end=f"{threading.active_count()},", flush=True)
+    while threading.active_count() > 1:
+        time.sleep(0.1)
     print()
     print(time.time() - t0)
 
