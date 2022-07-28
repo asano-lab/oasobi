@@ -18,6 +18,7 @@ class MyThread(threading.Thread):
     def run(self):
         print(f"{self.name} start.")
         subprocess.run(["./experiment", self.fnamea, f"{self.e_prob}", f"{self.count}"])
+        # time.sleep(1)
         print(f"{self.name} stop.")
 
 def main():
@@ -34,7 +35,7 @@ def main():
         fnamew = f"dat/bes_p{e_prob:.4e}_c{args.count}.csv"
         for j in range(10):
             tmp_th = MyThread(e_prob, args.count, fnamew, f"th{e_prob:.4e}_{j}")
-            tmp_th.run()
+            tmp_th.start()
             th_list.append(tmp_th)
     while threading.active_count() > 1:
         time.sleep(1)

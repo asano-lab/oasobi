@@ -234,14 +234,14 @@ int main(int argc, char **argv) {
     e_prob = strtod(argv[2], NULL);
     loop = strtol(argv[3], NULL, 10);
 
-    printf("%d\n", loop);
+    // printf("%d\n", loop);
     ret = gettimeofday(&tv0, NULL);
     seed = time(NULL) & 0xffffffff;
 
     r_max_int = RAND_MAX * e_prob;
     // 量子化誤差を見る
     e_prob_true = (double)r_max_int / (double)RAND_MAX;
-    printf("%.20e, %.20e, %d\n", e_prob, e_prob_true, r_max_int);
+    // printf("%.20e, %.20e, %d\n", e_prob, e_prob_true, r_max_int);
     compareBER(loop, r_max_int, fnamea);
     ret = gettimeofday(&tv1, NULL);
     printf("%f\n", timeval_to_double(tv1) - timeval_to_double(tv0));
