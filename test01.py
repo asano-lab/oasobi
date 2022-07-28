@@ -9,12 +9,15 @@ TZ_TOKYO = timezone("Asia/Tokyo")
 
 
 def internet_on():
+    """
+    インターネットに接続しているかどうか
+    """
+    res = True
     try:
         urllib.request.urlopen("https://www.google.com", timeout=1)
-        return True
     except URLError:
-        return False
-
+        res = False
+    return res
 
 def main():
     t0 = datetime.datetime.now(tz=TZ_TOKYO)
