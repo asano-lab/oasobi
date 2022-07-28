@@ -3,6 +3,7 @@ import subprocess
 import threading
 import argparse
 import time
+import numpy as np
 
 def fibo(x):
     if x <= 0:
@@ -25,15 +26,6 @@ class MyThread(threading.Thread):
 def main():
     th_list = []
     t0 = time.time()
-    for i in range(50):
-        # print(fibo(31))
-        tmp_th = MyThread(name=str(i))
-        tmp_th.start()
-        th_list.append(tmp_th)
-        # print(end=f"{threading.active_count()},", flush=True)
-    while threading.active_count() > 1:
-        time.sleep(0.1)
-    print()
     print(time.time() - t0)
 
 if __name__ == "__main__":
@@ -41,4 +33,5 @@ if __name__ == "__main__":
     parser.add_argument("-c", "--count", help="ループ数", type=int, default=10000)
     args = parser.parse_args()
     # print(args.count)
-    main()
+    # main()
+    print(np.logspace(-6, -0.5, 12))
