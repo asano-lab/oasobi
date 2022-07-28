@@ -16,6 +16,7 @@ def fibo(x):
 class MyThread(threading.Thread):
     def __init__(self):
         super().__init__()
+        
         # self.daemon = True
     
     def run(self):
@@ -24,8 +25,8 @@ class MyThread(threading.Thread):
 def main():
     th_list = []
     t0 = time.time()
-    for _ in range(100):
-        print(fibo(30))
+    for _ in range(50):
+        print(fibo(31))
     #     tmp_th = MyThread()
     #     tmp_th.start()
     #     th_list.append(tmp_th)
