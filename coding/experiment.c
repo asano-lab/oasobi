@@ -178,8 +178,9 @@ int main(int argc, char **argv) {
         puts("引数不足");
         return -1;
     }
-    u_char tmsg;
-    int r;
+    u_char tmsg, rmsg;
+    int r, r_max_int;
+    double e_prob = 0.1;
     // seed = time(NULL) & 0xffffffff;
     seed = 1;
     printf("%x\n", seed);
@@ -191,8 +192,11 @@ int main(int argc, char **argv) {
     // for (int i = 0; i < 10; i++) {
     //     printf("%u, %f\n", seed, randDouble());
     // }
+    r_max_int = RAND_MAX * e_prob;
     for (int i = 0; i < 10; i++) {
         tmsg = rand4Bit();
+        printBinN(tmsg, 4);
+        rmsg = channelNoise(tmsg, 4, r_max_int);
         printBinN(tmsg, 4);
     }
     return 0;
