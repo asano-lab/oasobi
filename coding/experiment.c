@@ -177,8 +177,12 @@ int main(void) {
     char fnamew[FILENAME_MAX];
     srand((unsigned)time(NULL));
 
+    int a = __builtin_popcount(0xffff);
+    // int a = 2;
+    printf("%d\n", a);
+
     // 0% から 50% まで 5% ずつ (計11通り) 動かす
-    for (i = 0; i < 11; i++) {
+    for (i = 0; i < 0; i++) {
         // ファイル名は % 表示
         snprintf(fnamew, FILENAME_MAX, path_format, i * 5);
         // snprintf(fnamew, FILENAME_MAX, test_path_format, i * 5);
