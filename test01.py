@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 import datetime
 from pytz import timezone
-import pings
 import urllib.request
 from urllib.error import URLError
+
+
+TZ_TOKYO = timezone("Asia/Tokyo")
 
 
 def internet_on():
@@ -12,9 +14,6 @@ def internet_on():
         return True
     except URLError:
         return False
-
-
-TZ_TOKYO = timezone("Asia/Tokyo")
 
 
 def main():
