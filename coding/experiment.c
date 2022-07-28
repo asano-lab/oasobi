@@ -178,7 +178,7 @@ int main(int argc, char **argv) {
         puts("引数不足");
         return -1;
     }
-    u_char tmsg, rmsg;
+    u_char tmsg, rmsg, e_vec;
     int r, r_max_int;
     double e_prob = 0.1;
     // seed = time(NULL) & 0xffffffff;
@@ -197,7 +197,9 @@ int main(int argc, char **argv) {
         tmsg = rand4Bit();
         printBinN(tmsg, 4);
         rmsg = channelNoise(tmsg, 4, r_max_int);
-        printBinN(tmsg, 4);
+        printBinN(rmsg, 4);
+        e_vec = tmsg ^ rmsg;
+        printBinN(e_vec, 4);
     }
     return 0;
 }
