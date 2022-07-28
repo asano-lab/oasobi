@@ -1,12 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <sys/time.h>
 
 // サンプル数の設定
 #define NUM_SAMPLE 100
 
 // 1回の試行におけるループ数
 #define NUM_LOOP 10000
+
+#define timeval_to_double(tv) \
+    (((double)(tv).tv_sec + (double)(tv).tv_usec * 1e-6))
 
 // 指定したビットを取得
 #define getBit(x, n) (((x) >> (n)) & 1)
@@ -178,15 +182,17 @@ int main(int argc, char **argv) {
         puts("引数不足");
         return -1;
     }
+    struct timeval tv0, tv1;
     u_char tmsg, rmsg, e_vec;
-    int r, r_max_int, e_bits_sum, loop;
+    int ret, r_max_int, e_bits_sum, loop;
     double e_prob = 0.1;
+    ret = gettimeofday(&tv0, NULL);
     seed = time(NULL) & 0xffffffff;
     // seed = 1;
-    printf("%x\n", seed);
+    // printf("%x\n", seed);
 
     e_bits_sum = 0;
-    loop = 1e6;
+    loop = 1e9;
     r_max_int = RAND_MAX * e_prob;
     for (int i = 0; i < loop; i++) {
         tmsg = rand4Bit();
@@ -200,5 +206,7 @@ int main(int argc, char **argv) {
         // printf("%d\n", e_bits);
     }
     printf("%d\n", e_bits_sum);
+    ret = gettimeofday(&tv1, NULL);
+    printf("%f\n", timeval_to_double(tv1) - timeval_to_double(tv0));
     return 0;
 }
