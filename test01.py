@@ -1,10 +1,9 @@
-import matplotlib.pyplot as plt
+#!/usr/bin/env python3
 import datetime
 import numpy as np
 import pandas as pd
 from pytz import timezone
 import numpy as np
-import matplotlib.pyplot as plt
 
 TZ_TOKYO = timezone("Asia/Tokyo")
 
@@ -12,9 +11,7 @@ TZ_TOKYO = timezone("Asia/Tokyo")
 def main():
     t0 = datetime.datetime.now(tz=TZ_TOKYO)
     print(t0)
-
-    lambda x: timezone("UTC").localize(
-        datetime.datetime.strptime(x, "%d%m%y%H%M%S")).astimezone()
+    print(t0.tzinfo)
 
 
 if __name__ == "__main__":
