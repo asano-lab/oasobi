@@ -232,7 +232,7 @@ int main(int argc, char **argv) {
     char *fnamea;
     fnamea = argv[1];
     e_prob = strtod(argv[2], NULL);
-    loop = strtod(argv[3], NULL);
+    loop = strtol(argv[3], NULL, 10);
 
     printf("%d\n", loop);
     ret = gettimeofday(&tv0, NULL);

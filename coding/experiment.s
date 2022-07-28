@@ -657,10 +657,10 @@ main:
 	movq	-112(%rbp), %rax
 	addq	$24, %rax
 	movq	(%rax), %rax
+	movl	$10, %edx
 	movl	$0, %esi
 	movq	%rax, %rdi
-	call	strtod@PLT
-	cvttsd2sil	%xmm0, %eax
+	call	strtol@PLT
 	movl	%eax, -84(%rbp)
 	movl	-84(%rbp), %eax
 	movl	%eax, %esi
