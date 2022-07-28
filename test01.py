@@ -1,7 +1,13 @@
 #!/usr/bin/env python3
 import datetime
 from pytz import timezone
-import numpy as np
+import pings
+
+p = pings.Ping()  # Pingオブジェクト作成
+res = p.ping("google.com")  # googleを監視
+
+res.print_messages()
+print(res.is_reached())
 
 TZ_TOKYO = timezone("Asia/Tokyo")
 
