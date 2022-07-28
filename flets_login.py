@@ -20,9 +20,12 @@ CHROME_SERVICE = fs.Service(executable_path=CHROMEDRIVER)
 FLETS_INFO_PATH = "/home/sonoda/.secret/flets_info.txt"
 FLETS_LOGIN_URL = "https://wifi.e-flets.jp"
 
+GOOGLE_URL = "https://www.google.com"
+
 # 平文で保存してある
 TOKEN_PATH = "/home/sonoda/.secret/line_token01.txt"
 LINE_NOTIFY_API = "https://notify-api.line.me/api/notify"
+
 
 t_delta = datetime.timedelta(hours=9)  # 9時間
 JST = datetime.timezone(t_delta, "JST")  # UTCから9時間差の「JST」タイムゾーン
@@ -33,7 +36,7 @@ def internet_on():
     """
     res = True
     try:
-        urlopen("https://www.google.com", timeout=1)
+        urlopen(GOOGLE_URL, timeout=1)
     except URLError:
         res = False
     return res
