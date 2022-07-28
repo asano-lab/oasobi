@@ -10,6 +10,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome import service as fs
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import WebDriverException
+from urllib.request import urlopen
+from urllib.error import URLError
+
 
 CHROMEDRIVER = "/usr/lib/chromium-browser/chromedriver"
 CHROME_SERVICE = fs.Service(executable_path=CHROMEDRIVER)
@@ -24,6 +27,16 @@ LINE_NOTIFY_API = "https://notify-api.line.me/api/notify"
 t_delta = datetime.timedelta(hours=9)  # 9時間
 JST = datetime.timezone(t_delta, "JST")  # UTCから9時間差の「JST」タイムゾーン
 
+def internet_on():
+    """
+    インターネットに接続しているかどうか
+    """
+    res = True
+    try:
+        urlopen("https://www.google.com", timeout=1)
+    except URLError:
+        res = False
+    return res
 
 def send_line_notify(notification_message, token):
     """
@@ -47,6 +60,13 @@ def concat_now(moji: str) -> str:
 def main():
     with open(TOKEN_PATH, "r", encoding="UTF-8") as f:
         line_token = f.read().split("\n")[1]
+    # インターネットに接続していれば確実にログインしている
+    if internet_on():
+        notification_message = concat_now("you are already logged in")
+        # send_line_notify(notification_message, line_token)
+        # ログイン済みの通知はうざいのでログだけ残す
+        print(notification_message)
+        return -1
     try:
         # GUIが使える場合
         browser = webdriver.Chrome(service=CHROME_SERVICE)
