@@ -14,15 +14,19 @@ def fibo(x):
 class MyThread(threading.Thread):
     def __init__(self):
         super().__init__()
-        self.daemon = True
+        # self.daemon = True
     
     def run(self):
-        print(fibo(35))
+        print(fibo(34))
 
 def main():
-    th1 = MyThread()
-    th1.start()
-    th1.join()
+    th_list = []
+    for i in range(10):
+        tmp_th = MyThread()
+        tmp_th.start()
+        th_list.append(tmp_th)
+        print(threading.active_count())
+    print("終わるまで待機")
 
 if __name__ == "__main__":
     main()
