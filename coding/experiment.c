@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <sys/time.h>
+#include <unistd.h>
 
 // サンプル数の設定
 #define NUM_SAMPLE 100
@@ -245,8 +246,9 @@ int main(int argc, char **argv) {
         e_bits_sum += __builtin_popcount(e_vec);
         // printf("%d\n", e_bits);
     }
+    sleep(1);
     printf("%d\n", e_bits_sum);
     ret = gettimeofday(&tv1, NULL);
     printf("%f\n", timeval_to_double(tv1) - timeval_to_double(tv0));
-    return 0;
+    return ret;
 }

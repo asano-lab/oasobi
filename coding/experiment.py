@@ -4,4 +4,4 @@ import time
 
 subprocess.run(["make", "experiment"])
 subprocess.run(["./experiment", "0"])
-# print("あいうえお")
+print("あいうえお")
