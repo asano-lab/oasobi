@@ -179,23 +179,26 @@ int main(int argc, char **argv) {
         return -1;
     }
     u_char tmsg, rmsg, e_vec;
-    int r, r_max_int, e_bits;
+    int r, r_max_int, e_bits_sum, loop;
     double e_prob = 0.1;
-    // seed = time(NULL) & 0xffffffff;
-    seed = 1;
+    seed = time(NULL) & 0xffffffff;
+    // seed = 1;
     printf("%x\n", seed);
 
+    e_bits_sum = 0;
+    loop = 1e6;
     r_max_int = RAND_MAX * e_prob;
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < loop; i++) {
         tmsg = rand4Bit();
         rmsg = channelNoise(tmsg, 4, r_max_int);
         e_vec = tmsg ^ rmsg;
         // printBinN(tmsg, 4);
         // printBinN(rmsg, 4);
-        printBinN(e_vec, 4);
+        // printBinN(e_vec, 4);
 
-        e_bits = __builtin_popcount(e_vec);
-        printf("%d\n", e_bits);
+        e_bits_sum += __builtin_popcount(e_vec);
+        // printf("%d\n", e_bits);
     }
+    printf("%d\n", e_bits_sum);
     return 0;
 }
