@@ -1,585 +1,1166 @@
 	.file	"experiment.c"
 	.text
-	.section	.rodata
+	.section	.rodata.str1.1,"aMS",@progbits,1
 .LC0:
 	.string	"%d"
 	.text
+	.p2align 4
 	.globl	printBin32
 	.type	printBin32, @function
 printBin32:
-.LFB6:
+.LFB39:
 	.cfi_startproc
 	endbr64
-	pushq	%rbp
+	pushq	%r12
 	.cfi_def_cfa_offset 16
-	.cfi_offset 6, -16
-	movq	%rsp, %rbp
-	.cfi_def_cfa_register 6
-	subq	$32, %rsp
-	movl	%edi, -20(%rbp)
-	movl	$31, -4(%rbp)
-	jmp	.L2
-.L3:
-	movl	-4(%rbp), %eax
-	movl	-20(%rbp), %edx
-	shrx	%eax, %edx, %eax
-	andl	$1, %eax
-	movl	%eax, %esi
-	leaq	.LC0(%rip), %rdi
-	movl	$0, %eax
-	call	printf@PLT
-	decl	-4(%rbp)
+	.cfi_offset 12, -16
+	leaq	.LC0(%rip), %r12
+	pushq	%rbp
+	.cfi_def_cfa_offset 24
+	.cfi_offset 6, -24
+	movl	%edi, %ebp
+	pushq	%rbx
+	.cfi_def_cfa_offset 32
+	.cfi_offset 3, -32
+	movl	$31, %ebx
+	.p2align 4,,10
+	.p2align 3
 .L2:
-	cmpl	$0, -4(%rbp)
-	jns	.L3
+	shrx	%ebx, %ebp, %edx
+	movq	%r12, %rsi
+	andl	$1, %edx
+	movl	$1, %edi
+	xorl	%eax, %eax
+	decl	%ebx
+	call	__printf_chk@PLT
+	cmpl	$-1, %ebx
+	jne	.L2
+	popq	%rbx
+	.cfi_def_cfa_offset 24
+	popq	%rbp
+	.cfi_def_cfa_offset 16
+	movq	stdout(%rip), %rsi
 	movl	$10, %edi
-	call	putchar@PLT
-	nop
-	leave
-	.cfi_def_cfa 7, 8
-	ret
+	popq	%r12
+	.cfi_def_cfa_offset 8
+	jmp	putc@PLT
 	.cfi_endproc
-.LFE6:
+.LFE39:
 	.size	printBin32, .-printBin32
+	.p2align 4
 	.globl	printBinN
 	.type	printBinN, @function
 printBinN:
-.LFB7:
+.LFB40:
 	.cfi_startproc
 	endbr64
-	pushq	%rbp
+	pushq	%r12
 	.cfi_def_cfa_offset 16
-	.cfi_offset 6, -16
-	movq	%rsp, %rbp
-	.cfi_def_cfa_register 6
-	subq	$32, %rsp
-	movl	%edi, -20(%rbp)
-	movl	%esi, -24(%rbp)
-	movl	-24(%rbp), %eax
-	decl	%eax
-	movl	%eax, -4(%rbp)
-	jmp	.L5
-.L6:
-	movl	-4(%rbp), %eax
-	movl	-20(%rbp), %edx
-	shrx	%eax, %edx, %eax
-	andl	$1, %eax
-	movl	%eax, %esi
-	leaq	.LC0(%rip), %rdi
-	movl	$0, %eax
-	call	printf@PLT
-	decl	-4(%rbp)
-.L5:
-	cmpl	$0, -4(%rbp)
-	jns	.L6
+	.cfi_offset 12, -16
+	pushq	%rbp
+	.cfi_def_cfa_offset 24
+	.cfi_offset 6, -24
+	pushq	%rbx
+	.cfi_def_cfa_offset 32
+	.cfi_offset 3, -32
+	decl	%esi
+	js	.L7
+	movl	%edi, %ebp
+	movl	%esi, %ebx
+	leaq	.LC0(%rip), %r12
+	.p2align 4,,10
+	.p2align 3
+.L8:
+	shrx	%ebx, %ebp, %edx
+	movq	%r12, %rsi
+	andl	$1, %edx
+	movl	$1, %edi
+	xorl	%eax, %eax
+	decl	%ebx
+	call	__printf_chk@PLT
+	cmpl	$-1, %ebx
+	jne	.L8
+.L7:
+	popq	%rbx
+	.cfi_def_cfa_offset 24
+	popq	%rbp
+	.cfi_def_cfa_offset 16
+	movq	stdout(%rip), %rsi
 	movl	$10, %edi
-	call	putchar@PLT
-	nop
-	leave
-	.cfi_def_cfa 7, 8
-	ret
+	popq	%r12
+	.cfi_def_cfa_offset 8
+	jmp	putc@PLT
 	.cfi_endproc
-.LFE7:
+.LFE40:
 	.size	printBinN, .-printBinN
+	.p2align 4
 	.globl	makeErrorBits
 	.type	makeErrorBits, @function
 makeErrorBits:
-.LFB8:
+.LFB41:
 	.cfi_startproc
 	endbr64
-	pushq	%rbp
+	testl	%edi, %edi
+	jle	.L14
+	pushq	%r13
 	.cfi_def_cfa_offset 16
-	.cfi_offset 6, -16
-	movq	%rsp, %rbp
-	.cfi_def_cfa_register 6
-	subq	$32, %rsp
-	movl	%edi, -20(%rbp)
-	movl	%esi, -24(%rbp)
-	movl	$0, -8(%rbp)
-	movl	$0, -4(%rbp)
-	jmp	.L8
-.L9:
-	sall	-8(%rbp)
+	.cfi_offset 13, -16
+	xorl	%eax, %eax
+	movl	%esi, %r13d
+	pushq	%r12
+	.cfi_def_cfa_offset 24
+	.cfi_offset 12, -24
+	movl	%edi, %r12d
+	pushq	%rbp
+	.cfi_def_cfa_offset 32
+	.cfi_offset 6, -32
+	xorl	%ebp, %ebp
+	pushq	%rbx
+	.cfi_def_cfa_offset 40
+	.cfi_offset 3, -40
+	subq	$8, %rsp
+	.cfi_def_cfa_offset 48
+	.p2align 4,,10
+	.p2align 3
+.L13:
+	leal	(%rax,%rax), %ebx
 	call	rand@PLT
-	cmpl	%eax, -24(%rbp)
-	setge	%al
+	cmpl	%r13d, %eax
+	setle	%al
 	movzbl	%al, %eax
-	orl	%eax, -8(%rbp)
-	incl	-4(%rbp)
-.L8:
-	movl	-4(%rbp), %eax
-	cmpl	-20(%rbp), %eax
-	jl	.L9
-	movl	-8(%rbp), %eax
-	leave
-	.cfi_def_cfa 7, 8
+	incl	%ebp
+	orl	%ebx, %eax
+	cmpl	%ebp, %r12d
+	jne	.L13
+	addq	$8, %rsp
+	.cfi_def_cfa_offset 40
+	popq	%rbx
+	.cfi_def_cfa_offset 32
+	popq	%rbp
+	.cfi_def_cfa_offset 24
+	popq	%r12
+	.cfi_def_cfa_offset 16
+	popq	%r13
+	.cfi_def_cfa_offset 8
+	ret
+	.p2align 4,,10
+	.p2align 3
+.L14:
+	.cfi_restore 3
+	.cfi_restore 6
+	.cfi_restore 12
+	.cfi_restore 13
+	xorl	%eax, %eax
 	ret
 	.cfi_endproc
-.LFE8:
+.LFE41:
 	.size	makeErrorBits, .-makeErrorBits
+	.p2align 4
 	.globl	encRepCode3
 	.type	encRepCode3, @function
 encRepCode3:
-.LFB9:
+.LFB42:
 	.cfi_startproc
 	endbr64
-	pushq	%rbp
-	.cfi_def_cfa_offset 16
-	.cfi_offset 6, -16
-	movq	%rsp, %rbp
-	.cfi_def_cfa_register 6
-	movl	%edi, -20(%rbp)
-	movl	%esi, -24(%rbp)
-	movl	$0, -16(%rbp)
-	movl	$0, -12(%rbp)
-	jmp	.L12
-.L15:
-	movl	-12(%rbp), %eax
-	movl	-20(%rbp), %edx
-	shrx	%eax, %edx, %eax
-	andl	$1, %eax
-	movl	%eax, -4(%rbp)
-	movl	$0, -8(%rbp)
-	jmp	.L13
-.L14:
-	movl	-12(%rbp), %edx
-	movl	%edx, %eax
-	addl	%eax, %eax
-	addl	%eax, %edx
-	movl	-8(%rbp), %eax
-	addl	%edx, %eax
-	movl	-4(%rbp), %edx
+	testl	%esi, %esi
+	jle	.L27
+	leal	-1(%rsi), %eax
+	cmpl	$6, %eax
+	jbe	.L28
+	movl	%esi, %edx
+	vmovd	%edi, %xmm7
+	vmovdqa	.LC1(%rip), %ymm3
+	vmovdqa	.LC2(%rip), %ymm6
+	vmovdqa	.LC3(%rip), %ymm4
+	vmovdqa	.LC4(%rip), %ymm5
+	shrl	$3, %edx
+	vpbroadcastd	%xmm7, %ymm7
+	xorl	%eax, %eax
+	vpxor	%xmm8, %xmm8, %xmm8
+	.p2align 4,,10
+	.p2align 3
+.L24:
+	vmovdqa	%ymm3, %ymm2
+	vpsrlvd	%ymm2, %ymm7, %ymm0
+	vpslld	$1, %ymm2, %ymm1
+	vpand	%ymm4, %ymm0, %ymm0
+	vpaddd	%ymm2, %ymm1, %ymm1
+	vpsllvd	%ymm1, %ymm0, %ymm9
+	vpaddd	%ymm4, %ymm1, %ymm2
+	vpaddd	%ymm5, %ymm1, %ymm1
+	vpsllvd	%ymm2, %ymm0, %ymm2
+	vpsllvd	%ymm1, %ymm0, %ymm0
+	vpor	%ymm9, %ymm2, %ymm2
+	vpor	%ymm8, %ymm0, %ymm0
+	incl	%eax
+	vpaddd	%ymm6, %ymm3, %ymm3
+	vpor	%ymm0, %ymm2, %ymm8
+	cmpl	%edx, %eax
+	jne	.L24
+	vextracti128	$0x1, %ymm8, %xmm0
+	vpor	%xmm0, %xmm8, %xmm0
+	vpsrldq	$8, %xmm0, %xmm1
+	vpor	%xmm1, %xmm0, %xmm0
+	vpsrldq	$4, %xmm0, %xmm1
+	vpor	%xmm1, %xmm0, %xmm0
+	movl	%esi, %ecx
+	vmovd	%xmm0, %eax
+	andl	$-8, %ecx
+	testb	$7, %sil
+	je	.L32
+	vzeroupper
+.L23:
+	leal	(%rcx,%rcx,2), %r9d
+	leal	1(%r9), %edx
+	shrx	%ecx, %edi, %r8d
+	andl	$1, %r8d
+	shlx	%r9d, %r8d, %r10d
+	shlx	%edx, %r8d, %edx
+	orl	%r10d, %edx
+	orl	%edx, %eax
+	addl	$2, %r9d
+	leal	1(%rcx), %edx
+	shlx	%r9d, %r8d, %r8d
+	orl	%r8d, %eax
+	cmpl	%edx, %esi
+	jle	.L31
+	leal	(%rdx,%rdx,2), %r9d
+	shrx	%edx, %edi, %r8d
+	leal	1(%r9), %edx
+	andl	$1, %r8d
+	shlx	%r9d, %r8d, %r10d
+	shlx	%edx, %r8d, %edx
+	orl	%r10d, %edx
+	orl	%edx, %eax
+	addl	$2, %r9d
+	leal	2(%rcx), %edx
+	shlx	%r9d, %r8d, %r8d
+	orl	%r8d, %eax
+	cmpl	%edx, %esi
+	jle	.L31
+	leal	(%rdx,%rdx,2), %r9d
+	shrx	%edx, %edi, %r8d
+	leal	1(%r9), %edx
+	andl	$1, %r8d
+	shlx	%r9d, %r8d, %r10d
+	shlx	%edx, %r8d, %edx
+	orl	%r10d, %edx
+	orl	%edx, %eax
+	addl	$2, %r9d
+	leal	3(%rcx), %edx
+	shlx	%r9d, %r8d, %r8d
+	orl	%r8d, %eax
+	cmpl	%edx, %esi
+	jle	.L31
+	leal	(%rdx,%rdx,2), %r9d
+	shrx	%edx, %edi, %r8d
+	leal	1(%r9), %edx
+	andl	$1, %r8d
+	shlx	%r9d, %r8d, %r10d
+	shlx	%edx, %r8d, %edx
+	orl	%r10d, %edx
+	orl	%edx, %eax
+	addl	$2, %r9d
+	leal	4(%rcx), %edx
+	shlx	%r9d, %r8d, %r8d
+	orl	%r8d, %eax
+	cmpl	%edx, %esi
+	jle	.L31
+	leal	(%rdx,%rdx,2), %r9d
+	shrx	%edx, %edi, %r8d
+	leal	1(%r9), %edx
+	andl	$1, %r8d
+	shlx	%r9d, %r8d, %r10d
+	shlx	%edx, %r8d, %edx
+	orl	%r10d, %edx
+	orl	%edx, %eax
+	addl	$2, %r9d
+	leal	5(%rcx), %edx
+	shlx	%r9d, %r8d, %r8d
+	orl	%r8d, %eax
+	cmpl	%edx, %esi
+	jle	.L31
+	leal	(%rdx,%rdx,2), %r9d
+	shrx	%edx, %edi, %r8d
+	leal	1(%r9), %edx
+	andl	$1, %r8d
+	shlx	%r9d, %r8d, %r10d
+	shlx	%edx, %r8d, %edx
+	orl	%r10d, %edx
+	orl	%edx, %eax
+	addl	$2, %r9d
+	addl	$6, %ecx
+	shlx	%r9d, %r8d, %r8d
+	orl	%r8d, %eax
+	cmpl	%ecx, %esi
+	jle	.L31
+	leal	(%rcx,%rcx,2), %esi
+	shrx	%ecx, %edi, %edx
+	leal	1(%rsi), %ecx
+	andl	$1, %edx
+	shlx	%ecx, %edx, %ecx
+	shlx	%esi, %edx, %edi
+	orl	%edi, %ecx
+	orl	%eax, %ecx
+	leal	2(%rsi), %eax
 	shlx	%eax, %edx, %eax
-	orl	%eax, -16(%rbp)
-	incl	-8(%rbp)
-.L13:
-	cmpl	$2, -8(%rbp)
-	jle	.L14
-	incl	-12(%rbp)
-.L12:
-	movl	-12(%rbp), %eax
-	cmpl	-24(%rbp), %eax
-	jl	.L15
-	movl	-16(%rbp), %eax
-	popq	%rbp
-	.cfi_def_cfa 7, 8
+	orl	%ecx, %eax
 	ret
+.L27:
+	xorl	%eax, %eax
+.L31:
+	ret
+.L32:
+	vzeroupper
+	ret
+.L28:
+	xorl	%ecx, %ecx
+	xorl	%eax, %eax
+	jmp	.L23
 	.cfi_endproc
-.LFE9:
+.LFE42:
 	.size	encRepCode3, .-encRepCode3
+	.p2align 4
 	.globl	decRepCode3
 	.type	decRepCode3, @function
 decRepCode3:
-.LFB10:
+.LFB43:
 	.cfi_startproc
 	endbr64
-	pushq	%rbp
+	pushq	%r12
 	.cfi_def_cfa_offset 16
-	.cfi_offset 6, -16
-	movq	%rsp, %rbp
-	.cfi_def_cfa_register 6
-	movl	%edi, -20(%rbp)
-	movl	%esi, -24(%rbp)
-	movl	$0, -16(%rbp)
-	movl	$0, -12(%rbp)
-	jmp	.L18
-.L22:
-	movl	$0, -4(%rbp)
-	movl	$0, -8(%rbp)
-	jmp	.L19
-.L20:
-	movl	-12(%rbp), %edx
-	movl	%edx, %eax
-	addl	%eax, %eax
-	addl	%eax, %edx
-	movl	-8(%rbp), %eax
-	addl	%edx, %eax
-	movl	-20(%rbp), %edx
-	shrx	%eax, %edx, %eax
-	andl	$1, %eax
-	movl	%eax, %edx
-	movl	-4(%rbp), %eax
-	addl	%edx, %eax
-	movl	%eax, -4(%rbp)
-	incl	-8(%rbp)
-.L19:
-	cmpl	$2, -8(%rbp)
-	jle	.L20
-	cmpl	$1, -4(%rbp)
-	jle	.L21
-	movl	-12(%rbp), %eax
-	movl	$1, %edx
-	shlx	%eax, %edx, %eax
-	orl	%eax, -16(%rbp)
-.L21:
-	incl	-12(%rbp)
-.L18:
-	movl	-12(%rbp), %eax
-	cmpl	-24(%rbp), %eax
-	jl	.L22
-	movl	-16(%rbp), %eax
-	popq	%rbp
-	.cfi_def_cfa 7, 8
+	.cfi_offset 12, -16
+	testl	%esi, %esi
+	jle	.L37
+	xorl	%r9d, %r9d
+	xorl	%r10d, %r10d
+	xorl	%r12d, %r12d
+	movl	$1, %r11d
+	.p2align 4,,10
+	.p2align 3
+.L36:
+	leal	2(%r9), %ecx
+	leal	1(%r9), %edx
+	shrx	%ecx, %edi, %ecx
+	shrx	%edx, %edi, %edx
+	andl	$1, %ecx
+	andl	$1, %edx
+	leal	(%rcx,%rdx), %ecx
+	shrx	%r9d, %edi, %edx
+	andl	$1, %edx
+	addl	%ecx, %edx
+	shlx	%r10d, %r11d, %eax
+	movl	%r12d, %ecx
+	orl	%r12d, %eax
+	cmpl	$1, %edx
+	cmova	%eax, %ecx
+	incl	%r10d
+	movl	%ecx, %r12d
+	addl	$3, %r9d
+	cmpl	%r10d, %esi
+	jne	.L36
+	movl	%r12d, %eax
+	popq	%r12
+	.cfi_remember_state
+	.cfi_def_cfa_offset 8
+	ret
+.L37:
+	.cfi_restore_state
+	xorl	%r12d, %r12d
+	movl	%r12d, %eax
+	popq	%r12
+	.cfi_def_cfa_offset 8
 	ret
 	.cfi_endproc
-.LFE10:
+.LFE43:
 	.size	decRepCode3, .-decRepCode3
+	.p2align 4
 	.globl	makeParityHamCode7_4
 	.type	makeParityHamCode7_4, @function
 makeParityHamCode7_4:
-.LFB11:
+.LFB44:
 	.cfi_startproc
 	endbr64
-	pushq	%rbp
-	.cfi_def_cfa_offset 16
-	.cfi_offset 6, -16
-	movq	%rsp, %rbp
-	.cfi_def_cfa_register 6
-	movl	%edi, -20(%rbp)
-	movl	-20(%rbp), %eax
-	shrl	$3, %eax
-	andl	$1, %eax
-	movb	%al, -8(%rbp)
-	movl	-20(%rbp), %eax
+	movl	%edi, %esi
+	shrl	%esi
+	movl	%edi, %edx
+	movl	%edi, %eax
+	shrl	$3, %edx
 	shrl	$2, %eax
-	andl	$1, %eax
-	movb	%al, -7(%rbp)
-	movl	-20(%rbp), %eax
-	shrl	%eax
-	andl	$1, %eax
-	movb	%al, -6(%rbp)
-	movl	-20(%rbp), %eax
-	andl	$1, %eax
-	movb	%al, -5(%rbp)
-	movzbl	-8(%rbp), %eax
-	xorb	-6(%rbp), %al
-	xorb	-5(%rbp), %al
-	movzbl	%al, %eax
-	sall	$2, %eax
-	movl	%eax, -4(%rbp)
-	movzbl	-8(%rbp), %eax
-	xorb	-7(%rbp), %al
-	xorb	-5(%rbp), %al
-	movzbl	%al, %eax
-	addl	%eax, %eax
-	orl	%eax, -4(%rbp)
-	movzbl	-8(%rbp), %eax
-	xorb	-7(%rbp), %al
-	xorb	-6(%rbp), %al
-	movzbl	%al, %eax
-	orl	%eax, -4(%rbp)
-	movl	-4(%rbp), %eax
-	popq	%rbp
-	.cfi_def_cfa 7, 8
+	movl	%esi, %ecx
+	xorl	%edx, %ecx
+	xorl	%eax, %edx
+	xorl	%edi, %ecx
+	xorl	%edx, %edi
+	andl	$1, %ecx
+	andl	$1, %edi
+	sall	$2, %ecx
+	leal	(%rdi,%rdi), %eax
+	xorl	%esi, %edx
+	orl	%ecx, %eax
+	andl	$1, %edx
+	orl	%edx, %eax
 	ret
 	.cfi_endproc
-.LFE11:
+.LFE44:
 	.size	makeParityHamCode7_4, .-makeParityHamCode7_4
+	.p2align 4
 	.globl	decHamCode7_4
 	.type	decHamCode7_4, @function
 decHamCode7_4:
-.LFB12:
+.LFB45:
 	.cfi_startproc
 	endbr64
-	pushq	%rbp
-	.cfi_def_cfa_offset 16
-	.cfi_offset 6, -16
-	movq	%rsp, %rbp
-	.cfi_def_cfa_register 6
-	subq	$24, %rsp
-	movl	%edi, -20(%rbp)
-	movl	-20(%rbp), %eax
+	movl	%edi, %r8d
+	shrl	$4, %r8d
+	movl	%edi, %edx
+	shrl	$6, %edx
+	movl	%edi, %eax
+	movl	%r8d, %ecx
 	shrl	$3, %eax
-	movl	%eax, %edi
-	call	makeParityHamCode7_4
-	movl	-20(%rbp), %edx
-	andl	$7, %edx
-	xorl	%edx, %eax
-	cmpl	$7, %eax
-	ja	.L27
-	movl	%eax, %eax
-	leaq	0(,%rax,4), %rdx
-	leaq	.L29(%rip), %rax
-	movl	(%rdx,%rax), %eax
-	movslq	%eax, %rdx
-	leaq	.L29(%rip), %rax
-	addq	%rdx, %rax
-	notrack jmp	*%rax
-	.section	.rodata
-	.align 4
-	.align 4
-.L29:
-	.long	.L36-.L29
-	.long	.L35-.L29
-	.long	.L34-.L29
-	.long	.L33-.L29
-	.long	.L32-.L29
-	.long	.L31-.L29
-	.long	.L30-.L29
-	.long	.L28-.L29
-	.text
-.L36:
-	movl	$0, -4(%rbp)
-	jmp	.L37
-.L28:
-	movl	$64, -4(%rbp)
-	jmp	.L37
-.L33:
-	movl	$32, -4(%rbp)
-	jmp	.L37
-.L31:
-	movl	$16, -4(%rbp)
-	jmp	.L37
-.L30:
-	movl	$8, -4(%rbp)
-	jmp	.L37
-.L32:
-	movl	$4, -4(%rbp)
-	jmp	.L37
-.L34:
-	movl	$2, -4(%rbp)
-	jmp	.L37
-.L35:
-	movl	$1, -4(%rbp)
-	jmp	.L37
-.L27:
-	movl	$127, -4(%rbp)
-	nop
-.L37:
-	movl	-20(%rbp), %eax
-	xorl	-4(%rbp), %eax
+	xorl	%edx, %ecx
+	xorl	%eax, %ecx
+	andl	$1, %ecx
+	leal	0(,%rcx,4), %esi
+	movl	%edi, %ecx
+	shrl	$5, %ecx
+	xorl	%ecx, %edx
+	movl	%edx, %ecx
+	xorl	%eax, %ecx
+	andl	$1, %ecx
+	addl	%ecx, %ecx
+	xorl	%r8d, %edx
+	orl	%esi, %ecx
+	andl	$1, %edx
+	orl	%ecx, %edx
+	movl	%edi, %ecx
+	andl	$7, %ecx
+	xorl	%ecx, %edx
+	decl	%edx
+	cmpl	$6, %edx
+	ja	.L43
+	leaq	CSWTCH.13(%rip), %rax
+	xorl	(%rax,%rdx,4), %edi
+	movl	%edi, %eax
 	shrl	$3, %eax
-	leave
-	.cfi_def_cfa 7, 8
+.L43:
 	ret
 	.cfi_endproc
-.LFE12:
+.LFE45:
 	.size	decHamCode7_4, .-decHamCode7_4
-	.section	.rodata
-.LC1:
+	.section	.rodata.str1.1
+.LC5:
 	.string	"%d %d %d\r\n"
 	.text
+	.p2align 4
 	.globl	compareErrorProb
 	.type	compareErrorProb, @function
 compareErrorProb:
-.LFB13:
+.LFB46:
 	.cfi_startproc
 	endbr64
-	pushq	%rbp
+	pushq	%r15
 	.cfi_def_cfa_offset 16
-	.cfi_offset 6, -16
-	movq	%rsp, %rbp
-	.cfi_def_cfa_register 6
+	.cfi_offset 15, -16
+	pushq	%r14
+	.cfi_def_cfa_offset 24
+	.cfi_offset 14, -24
+	pushq	%r13
+	.cfi_def_cfa_offset 32
+	.cfi_offset 13, -32
+	pushq	%r12
+	.cfi_def_cfa_offset 40
+	.cfi_offset 12, -40
+	pushq	%rbp
+	.cfi_def_cfa_offset 48
+	.cfi_offset 6, -48
 	pushq	%rbx
+	.cfi_def_cfa_offset 56
+	.cfi_offset 3, -56
 	subq	$56, %rsp
-	.cfi_offset 3, -24
-	movl	%edi, -52(%rbp)
-	movl	%esi, -56(%rbp)
-	movq	%rdx, -64(%rbp)
-	movl	$0, -44(%rbp)
-	movl	$0, -40(%rbp)
-	movl	$0, -36(%rbp)
-	movl	$0, -48(%rbp)
-	jmp	.L40
-.L44:
+	.cfi_def_cfa_offset 112
+	movl	%edi, 36(%rsp)
+	movq	%rdx, 40(%rsp)
+	testl	%edi, %edi
+	jle	.L57
+	movl	$0, 32(%rsp)
+	movl	$0, 28(%rsp)
+	movl	$0, 24(%rsp)
+	movl	$0, 12(%rsp)
+	movl	%esi, %r15d
+	.p2align 4,,10
+	.p2align 3
+.L56:
 	call	rand@PLT
 	andl	$15, %eax
-	movl	%eax, -32(%rbp)
-	movl	-56(%rbp), %eax
+	movl	%eax, %r12d
+	movl	$4, %ebp
+	xorl	%r13d, %r13d
+	.p2align 4,,10
+	.p2align 3
+.L46:
+	call	rand@PLT
+	addl	%r13d, %r13d
+	cmpl	%eax, %r15d
+	setge	%al
+	movzbl	%al, %eax
+	orl	%eax, %r13d
+	decl	%ebp
+	jne	.L46
+	cmpl	$1, %r13d
+	movl	%r12d, %ecx
+	sbbl	$-1, 24(%rsp)
+	andl	$1, %ecx
+	leal	(%rcx,%rcx), %ebx
+	leal	0(,%rcx,4), %esi
+	movl	%r12d, %r14d
+	shrl	$3, %r14d
+	orl	%esi, %ebx
+	orl	%ecx, %ebx
+	movl	%r14d, %ecx
+	sall	$9, %ecx
+	orl	%ecx, %ebx
+	movl	%r12d, %eax
+	movl	%r14d, %ecx
+	shrl	%eax
+	sall	$10, %ecx
+	movl	%eax, %edx
+	orl	%ecx, %ebx
+	movl	%r14d, %ecx
+	andl	$1, %edx
+	sall	$11, %ecx
+	orl	%ecx, %ebx
+	leal	0(,%rdx,8), %ecx
+	orl	%ecx, %ebx
+	movl	%eax, 16(%rsp)
+	movl	%edx, %ecx
+	movl	%r12d, %eax
+	shrl	$2, %eax
+	sall	$4, %ecx
+	sall	$5, %edx
+	movl	%eax, 20(%rsp)
+	orl	%ecx, %ebx
+	andl	$1, %eax
+	orl	%edx, %ebx
+	movl	%eax, %edx
+	sall	$6, %edx
+	orl	%edx, %ebx
+	movl	%eax, %edx
+	sall	$7, %edx
+	orl	%edx, %ebx
+	sall	$8, %eax
+	orl	%eax, %ebx
+	movl	$12, %r13d
+	.p2align 4,,10
+	.p2align 3
+.L48:
+	call	rand@PLT
+	addl	%ebp, %ebp
+	cmpl	%eax, %r15d
+	setge	%al
+	movzbl	%al, %eax
+	orl	%eax, %ebp
+	decl	%r13d
+	jne	.L48
+	xorl	%ebx, %ebp
+	movl	%ebp, %eax
+	shrl	%eax
+	andl	$1, %eax
+	movl	%eax, %ecx
+	movl	%ebp, %eax
+	shrl	$2, %eax
+	andl	$1, %eax
+	addl	%ecx, %eax
+	movl	%ebp, %ecx
+	andl	$1, %ecx
+	addl	%ecx, %eax
+	cmpl	$1, %eax
+	movl	%ebp, %esi
+	seta	%al
+	movl	%ebp, %ecx
+	shrl	$3, %esi
+	movl	%esi, %edi
+	shrl	$4, %ecx
+	andl	$1, %edi
+	andl	$1, %ecx
+	leal	(%rdi,%rcx), %esi
+	movl	%ebp, %ecx
+	shrl	$5, %ecx
+	movzbl	%al, %eax
+	andl	$1, %ecx
+	addl	%esi, %ecx
 	movl	%eax, %esi
-	movl	$4, %edi
-	call	makeErrorBits
-	xorl	-32(%rbp), %eax
-	movl	%eax, -28(%rbp)
-	movl	-32(%rbp), %eax
-	cmpl	-28(%rbp), %eax
-	je	.L41
-	incl	-44(%rbp)
-.L41:
-	movl	-32(%rbp), %eax
-	movl	$4, %esi
-	movl	%eax, %edi
-	call	encRepCode3
-	movl	%eax, -24(%rbp)
-	movl	-56(%rbp), %eax
+	orl	$2, %esi
+	cmpl	$1, %ecx
+	cmova	%esi, %eax
+	movl	%ebp, %esi
+	shrl	$6, %esi
+	movl	%ebp, %ecx
+	movl	%esi, %edi
+	shrl	$7, %ecx
+	andl	$1, %edi
+	andl	$1, %ecx
+	leal	(%rdi,%rcx), %esi
+	movl	%ebp, %ecx
+	shrl	$8, %ecx
+	andl	$1, %ecx
+	addl	%esi, %ecx
 	movl	%eax, %esi
-	movl	$12, %edi
-	call	makeErrorBits
-	xorl	-24(%rbp), %eax
-	movl	%eax, -20(%rbp)
-	movl	-20(%rbp), %eax
-	movl	$4, %esi
-	movl	%eax, %edi
-	call	decRepCode3
-	movl	%eax, -28(%rbp)
-	movl	-32(%rbp), %eax
-	cmpl	-28(%rbp), %eax
-	je	.L42
-	incl	-40(%rbp)
-.L42:
-	movl	-32(%rbp), %eax
-	leal	0(,%rax,8), %ebx
-	movl	-32(%rbp), %eax
-	movl	%eax, %edi
-	call	makeParityHamCode7_4
-	orl	%ebx, %eax
-	movl	%eax, -24(%rbp)
-	movl	-56(%rbp), %eax
-	movl	%eax, %esi
-	movl	$7, %edi
-	call	makeErrorBits
-	xorl	-24(%rbp), %eax
-	movl	%eax, -20(%rbp)
-	movl	-20(%rbp), %eax
-	movl	%eax, %edi
-	call	decHamCode7_4
-	movl	%eax, -28(%rbp)
-	movl	-32(%rbp), %eax
-	cmpl	-28(%rbp), %eax
-	je	.L43
-	incl	-36(%rbp)
-.L43:
-	incl	-48(%rbp)
-.L40:
-	movl	-48(%rbp), %eax
-	cmpl	-52(%rbp), %eax
-	jl	.L44
-	movl	-36(%rbp), %esi
-	movl	-40(%rbp), %ecx
-	movl	-44(%rbp), %edx
-	movq	-64(%rbp), %rax
-	movl	%esi, %r8d
-	leaq	.LC1(%rip), %rsi
-	movq	%rax, %rdi
-	movl	$0, %eax
-	call	fprintf@PLT
-	movl	$0, %eax
+	orl	$4, %esi
+	cmpl	$1, %ecx
+	movl	%ebp, %ecx
+	cmova	%esi, %eax
+	shrl	$9, %ecx
+	movl	%ecx, %esi
+	movl	%ebp, %ecx
+	shrl	$10, %ecx
+	andl	$1, %esi
+	andl	$1, %ecx
+	shrl	$11, %ebp
+	addl	%esi, %ecx
+	andl	$1, %ebp
+	addl	%ecx, %ebp
+	movl	%eax, %ecx
+	orl	$8, %ecx
+	cmpl	$1, %ebp
+	cmova	%ecx, %eax
+	movl	16(%rsp), %edi
+	movzbl	20(%rsp), %ecx
+	cmpl	%eax, %r12d
+	setne	%al
+	movl	%edi, %esi
+	xorl	%r14d, %ecx
+	xorl	%edi, %r14d
+	movzbl	%al, %eax
+	xorl	%ecx, %esi
+	xorl	%r12d, %r14d
+	addl	%eax, 28(%rsp)
+	andl	$1, %esi
+	leal	0(,%r12,8), %eax
+	andl	$1, %r14d
+	xorl	%r12d, %ecx
+	orl	%eax, %esi
+	andl	$1, %ecx
+	leal	0(,%r14,4), %eax
+	orl	%esi, %eax
+	addl	%ecx, %ecx
+	orl	%ecx, %eax
+	movl	%eax, %ebp
+	movl	$7, %ebx
+	.p2align 4,,10
+	.p2align 3
+.L53:
+	call	rand@PLT
+	addl	%r13d, %r13d
+	cmpl	%eax, %r15d
+	setge	%al
+	movzbl	%al, %eax
+	orl	%eax, %r13d
+	decl	%ebx
+	jne	.L53
+	xorl	%r13d, %ebp
+	movl	%ebp, %esi
+	shrl	$4, %esi
+	movl	%ebp, %eax
+	shrl	$6, %eax
+	movl	%ebp, %edx
+	movl	%esi, %ecx
+	shrl	$3, %edx
+	xorl	%eax, %ecx
+	xorl	%edx, %ecx
+	andl	$1, %ecx
+	leal	0(,%rcx,4), %edi
+	movl	%ebp, %ecx
+	shrl	$5, %ecx
+	xorl	%ecx, %eax
+	movl	%eax, %ecx
+	xorl	%edx, %ecx
+	andl	$1, %ecx
+	addl	%ecx, %ecx
+	xorl	%esi, %eax
+	orl	%edi, %ecx
+	andl	$1, %eax
+	orl	%ecx, %eax
+	movl	%ebp, %ecx
+	andl	$7, %ecx
+	xorl	%ecx, %eax
+	decl	%eax
+	cmpl	$6, %eax
+	ja	.L54
+	leaq	CSWTCH.13(%rip), %rdi
+	movl	(%rdi,%rax,4), %edx
+	xorl	%ebp, %edx
+	shrl	$3, %edx
+.L54:
+	xorl	%eax, %eax
+	cmpl	%edx, %r12d
+	setne	%al
+	incl	12(%rsp)
+	addl	%eax, 32(%rsp)
+	movl	12(%rsp), %eax
+	cmpl	%eax, 36(%rsp)
+	jne	.L56
+.L45:
+	movl	32(%rsp), %r9d
+	movl	28(%rsp), %r8d
+	movl	24(%rsp), %ecx
+	movq	40(%rsp), %rdi
+	leaq	.LC5(%rip), %rdx
+	movl	$1, %esi
+	xorl	%eax, %eax
+	call	__fprintf_chk@PLT
 	addq	$56, %rsp
+	.cfi_remember_state
+	.cfi_def_cfa_offset 56
 	popq	%rbx
+	.cfi_def_cfa_offset 48
 	popq	%rbp
-	.cfi_def_cfa 7, 8
+	.cfi_def_cfa_offset 40
+	popq	%r12
+	.cfi_def_cfa_offset 32
+	popq	%r13
+	.cfi_def_cfa_offset 24
+	popq	%r14
+	.cfi_def_cfa_offset 16
+	xorl	%eax, %eax
+	popq	%r15
+	.cfi_def_cfa_offset 8
 	ret
+.L57:
+	.cfi_restore_state
+	movl	$0, 32(%rsp)
+	movl	$0, 28(%rsp)
+	movl	$0, 24(%rsp)
+	jmp	.L45
 	.cfi_endproc
-.LFE13:
+.LFE46:
 	.size	compareErrorProb, .-compareErrorProb
-	.section	.rodata
-.LC2:
+	.section	.rodata.str1.1
+.LC6:
 	.string	"./dat/e_prob%02d.txt"
-.LC3:
-	.string	"w"
-.LC4:
-	.string	"\007%s can't be opened.\n"
 .LC7:
+	.string	"w"
+.LC8:
+	.string	"\007%s can't be opened.\n"
+.LC11:
 	.string	"nothing repetition hamming\n"
-	.text
+	.section	.text.startup,"ax",@progbits
+	.p2align 4
 	.globl	main
 	.type	main, @function
 main:
-.LFB14:
+.LFB47:
 	.cfi_startproc
 	endbr64
-	pushq	%rbp
+	pushq	%r15
 	.cfi_def_cfa_offset 16
-	.cfi_offset 6, -16
-	movq	%rsp, %rbp
-	.cfi_def_cfa_register 6
+	.cfi_offset 15, -16
+	pushq	%r14
+	.cfi_def_cfa_offset 24
+	.cfi_offset 14, -24
+	pushq	%r13
+	.cfi_def_cfa_offset 32
+	.cfi_offset 13, -32
+	pushq	%r12
+	.cfi_def_cfa_offset 40
+	.cfi_offset 12, -40
+	pushq	%rbp
+	.cfi_def_cfa_offset 48
+	.cfi_offset 6, -48
+	pushq	%rbx
+	.cfi_def_cfa_offset 56
+	.cfi_offset 3, -56
 	subq	$4096, %rsp
+	.cfi_def_cfa_offset 4152
 	orq	$0, (%rsp)
-	subq	$48, %rsp
+	subq	$72, %rsp
+	.cfi_def_cfa_offset 4224
+	xorl	%edi, %edi
 	movq	%fs:40, %rax
-	movq	%rax, -8(%rbp)
+	movq	%rax, 4152(%rsp)
 	xorl	%eax, %eax
-	movl	$0, %edi
 	call	time@PLT
-	movl	%eax, %edi
+	movq	%rax, %rdi
 	call	srand@PLT
-	movl	$0, -4132(%rbp)
-	jmp	.L47
-.L54:
-	movl	-4132(%rbp), %edx
-	movl	%edx, %eax
-	sall	$2, %eax
-	addl	%eax, %edx
-	leaq	-4112(%rbp), %rax
-	movl	%edx, %ecx
-	leaq	.LC2(%rip), %rdx
+	leaq	48(%rsp), %rax
+	movl	$0, 36(%rsp)
+	movq	%rax, 40(%rsp)
+	.p2align 4,,10
+	.p2align 3
+.L82:
+	movl	36(%rsp), %eax
+	movq	40(%rsp), %rbx
+	leal	(%rax,%rax,4), %r9d
+	leaq	.LC6(%rip), %r8
+	movl	$4096, %ecx
+	movl	$1, %edx
 	movl	$4096, %esi
-	movq	%rax, %rdi
-	movl	$0, %eax
-	call	snprintf@PLT
-	leaq	-4112(%rbp), %rax
-	leaq	.LC3(%rip), %rsi
-	movq	%rax, %rdi
+	movq	%rbx, %rdi
+	xorl	%eax, %eax
+	call	__snprintf_chk@PLT
+	leaq	.LC7(%rip), %rsi
+	movq	%rbx, %rdi
 	call	fopen@PLT
-	movq	%rax, -4120(%rbp)
-	cmpq	$0, -4120(%rbp)
-	jne	.L48
-	leaq	-4112(%rbp), %rax
-	movq	%rax, %rsi
-	leaq	.LC4(%rip), %rdi
-	movl	$0, %eax
-	call	printf@PLT
-	movl	$-1, %eax
-	jmp	.L55
-.L48:
-	cmpl	$0, -4132(%rbp)
-	jne	.L50
-	movl	$-1, -4124(%rbp)
-	jmp	.L51
-.L50:
-	vcvtsi2sdl	-4132(%rbp), %xmm0, %xmm0
-	vmovsd	.LC5(%rip), %xmm1
-	vmulsd	%xmm1, %xmm0, %xmm0
-	vmovsd	.LC6(%rip), %xmm1
-	vmulsd	%xmm1, %xmm0, %xmm0
+	movq	%rax, 24(%rsp)
+	testq	%rax, %rax
+	je	.L95
+	movl	36(%rsp), %eax
+	movl	$-1, (%rsp)
+	testl	%eax, %eax
+	je	.L68
+	vxorpd	%xmm1, %xmm1, %xmm1
+	vcvtsi2sdl	%eax, %xmm1, %xmm0
+	vmulsd	.LC9(%rip), %xmm0, %xmm0
+	vmulsd	.LC10(%rip), %xmm0, %xmm0
 	vcvttsd2sil	%xmm0, %eax
-	movl	%eax, -4124(%rbp)
-.L51:
-	movq	-4120(%rbp), %rax
-	movq	%rax, %rcx
+	movl	%eax, (%rsp)
+.L68:
+	movq	24(%rsp), %rcx
 	movl	$27, %edx
 	movl	$1, %esi
-	leaq	.LC7(%rip), %rdi
+	leaq	.LC11(%rip), %rdi
 	call	fwrite@PLT
-	movl	$0, -4128(%rbp)
-	jmp	.L52
-.L53:
-	movq	-4120(%rbp), %rdx
-	movl	-4124(%rbp), %eax
+	movl	$100, 32(%rsp)
+	.p2align 4,,10
+	.p2align 3
+.L69:
+	movl	$10000, 20(%rsp)
+	xorl	%r13d, %r13d
+	xorl	%ebp, %ebp
+	xorl	%r12d, %r12d
+	.p2align 4,,10
+	.p2align 3
+.L80:
+	call	rand@PLT
+	andl	$15, %eax
+	movl	%eax, %r14d
+	movl	$4, %r15d
+	xorl	%ebx, %ebx
+	.p2align 4,,10
+	.p2align 3
+.L70:
+	call	rand@PLT
+	addl	%ebx, %ebx
+	cmpl	%eax, (%rsp)
+	setge	%al
+	movzbl	%al, %eax
+	orl	%eax, %ebx
+	decl	%r15d
+	jne	.L70
+	cmpl	$1, %ebx
+	movl	%r14d, %r9d
+	sbbl	$-1, %r12d
+	andl	$1, %r9d
+	leal	(%r9,%r9), %ebx
+	leal	0(,%r9,4), %r10d
+	movl	%r14d, %edx
+	shrl	$3, %edx
+	orl	%r10d, %ebx
+	orl	%r9d, %ebx
+	movl	%edx, %r9d
+	sall	$9, %r9d
+	orl	%r9d, %ebx
+	movl	%r14d, %edi
+	movl	%edx, %r9d
+	sall	$10, %r9d
+	shrl	%edi
+	orl	%r9d, %ebx
+	movl	%edi, %r8d
+	movl	%edx, %r9d
+	andl	$1, %r8d
+	sall	$11, %r9d
+	orl	%r9d, %ebx
+	movl	%r14d, %esi
+	leal	0(,%r8,8), %r9d
+	orl	%r9d, %ebx
+	shrl	$2, %esi
+	movl	%r8d, %r9d
+	movl	%esi, %eax
+	sall	$4, %r9d
+	andl	$1, %eax
+	sall	$5, %r8d
+	orl	%r9d, %ebx
+	orl	%r8d, %ebx
+	movl	%eax, %r8d
+	sall	$6, %r8d
+	orl	%r8d, %ebx
+	movl	%eax, %r8d
+	sall	$7, %r8d
+	orl	%r8d, %ebx
+	sall	$8, %eax
+	orl	%eax, %ebx
+	movl	$12, %r8d
+	.p2align 4,,10
+	.p2align 3
+.L72:
+	movl	%edx, 16(%rsp)
+	movl	%esi, 12(%rsp)
+	movl	%edi, 8(%rsp)
+	movl	%r8d, 4(%rsp)
+	call	rand@PLT
+	addl	%r15d, %r15d
+	cmpl	%eax, (%rsp)
+	setge	%al
+	movl	4(%rsp), %r8d
+	movzbl	%al, %eax
+	orl	%eax, %r15d
+	decl	%r8d
+	movl	8(%rsp), %edi
+	movl	12(%rsp), %esi
+	movl	16(%rsp), %edx
+	jne	.L72
+	xorl	%ebx, %r15d
+	movl	%r15d, %eax
+	shrl	%eax
+	andl	$1, %eax
+	movl	%eax, %r9d
+	movl	%r15d, %eax
+	shrl	$2, %eax
+	andl	$1, %eax
+	addl	%r9d, %eax
+	movl	%r15d, %r9d
+	andl	$1, %r9d
+	addl	%r9d, %eax
+	cmpl	$1, %eax
+	movl	%r15d, %r10d
+	seta	%al
+	movl	%r15d, %r9d
+	shrl	$3, %r10d
+	movl	%r10d, %r11d
+	shrl	$4, %r9d
+	andl	$1, %r11d
+	andl	$1, %r9d
+	leal	(%r11,%r9), %r10d
+	movl	%r15d, %r9d
+	shrl	$5, %r9d
+	movzbl	%al, %eax
+	andl	$1, %r9d
+	addl	%r10d, %r9d
+	movl	%eax, %r10d
+	orl	$2, %r10d
+	cmpl	$1, %r9d
+	cmova	%r10d, %eax
+	movl	%r15d, %r10d
+	shrl	$6, %r10d
+	movl	%r15d, %r9d
+	movl	%r10d, %r11d
+	shrl	$7, %r9d
+	andl	$1, %r9d
+	andl	$1, %r11d
+	leal	(%r11,%r9), %r10d
+	movl	%r15d, %r9d
+	shrl	$8, %r9d
+	andl	$1, %r9d
+	addl	%r10d, %r9d
+	movl	%eax, %r10d
+	orl	$4, %r10d
+	movl	%r15d, %ebx
+	cmpl	$1, %r9d
+	cmova	%r10d, %eax
+	shrl	$9, %ebx
+	andl	$1, %ebx
+	movl	%ebx, %r9d
+	movl	%r15d, %ebx
+	shrl	$10, %ebx
+	andl	$1, %ebx
+	shrl	$11, %r15d
+	addl	%r9d, %ebx
+	andl	$1, %r15d
+	addl	%ebx, %r15d
+	movl	%eax, %r9d
+	orl	$8, %r9d
+	cmpl	$1, %r15d
+	cmova	%r9d, %eax
+	movl	%edx, %ebx
+	cmpl	%eax, %r14d
+	setne	%al
+	xorl	%edx, %esi
+	xorl	%edi, %ebx
+	xorl	%r14d, %ebx
+	xorl	%esi, %edi
+	andl	$1, %ebx
+	andl	$1, %edi
+	leal	0(,%r14,8), %edx
+	xorl	%r14d, %esi
+	sall	$2, %ebx
+	orl	%edx, %edi
+	andl	$1, %esi
+	movzbl	%al, %eax
+	movl	$7, %r15d
+	orl	%edi, %ebx
+	addl	%esi, %esi
+	orl	%esi, %ebx
+	addl	%eax, %ebp
+	movl	%r15d, %eax
+	movl	%r13d, %r15d
+	movl	%r12d, %r13d
+	movl	%ebx, %r12d
+	movl	%eax, %ebx
+	.p2align 4,,10
+	.p2align 3
+.L77:
+	leal	(%r8,%r8), %eax
+	movl	%eax, 4(%rsp)
+	call	rand@PLT
+	xorl	%r8d, %r8d
+	cmpl	%eax, (%rsp)
+	setge	%r8b
+	orl	4(%rsp), %r8d
+	decl	%ebx
+	jne	.L77
+	movl	%r12d, %ebx
+	xorl	%r8d, %ebx
+	movl	%ebx, %eax
+	shrl	$4, %eax
+	movl	%ebx, %edx
+	shrl	$6, %edx
 	movl	%eax, %esi
-	movl	$10000, %edi
-	call	compareErrorProb
-	incl	-4128(%rbp)
-.L52:
-	cmpl	$99, -4128(%rbp)
-	jle	.L53
-	movq	-4120(%rbp), %rax
-	movq	%rax, %rdi
+	movl	%ebx, %r8d
+	shrl	$3, %r8d
+	xorl	%edx, %esi
+	xorl	%r8d, %esi
+	andl	$1, %esi
+	leal	0(,%rsi,4), %edi
+	movl	%ebx, %esi
+	shrl	$5, %esi
+	xorl	%esi, %edx
+	movl	%edx, %esi
+	xorl	%r8d, %esi
+	andl	$1, %esi
+	xorl	%edx, %eax
+	addl	%esi, %esi
+	orl	%edi, %esi
+	andl	$1, %eax
+	movl	%ebx, %edx
+	orl	%esi, %eax
+	andl	$7, %edx
+	xorl	%edx, %eax
+	decl	%eax
+	movl	%r13d, %r12d
+	movl	%r15d, %r13d
+	cmpl	$6, %eax
+	ja	.L78
+	leaq	CSWTCH.13(%rip), %rcx
+	xorl	(%rcx,%rax,4), %ebx
+	shrl	$3, %ebx
+	movl	%ebx, %r8d
+.L78:
+	xorl	%eax, %eax
+	cmpl	%r8d, %r14d
+	setne	%al
+	addl	%eax, %r13d
+	decl	20(%rsp)
+	jne	.L80
+	movq	24(%rsp), %rdi
+	xorl	%eax, %eax
+	movl	%r13d, %r9d
+	movl	%ebp, %r8d
+	movl	%r12d, %ecx
+	leaq	.LC5(%rip), %rdx
+	movl	$1, %esi
+	call	__fprintf_chk@PLT
+	decl	32(%rsp)
+	jne	.L69
+	movq	24(%rsp), %rdi
 	call	fclose@PLT
-	incl	-4132(%rbp)
-.L47:
-	cmpl	$10, -4132(%rbp)
-	jle	.L54
-	movl	$0, %eax
-.L55:
-	movq	-8(%rbp), %rcx
+	incl	36(%rsp)
+	movl	36(%rsp), %eax
+	cmpl	$11, %eax
+	jne	.L82
+	xorl	%eax, %eax
+.L65:
+	movq	4152(%rsp), %rcx
 	xorq	%fs:40, %rcx
-	je	.L56
-	call	__stack_chk_fail@PLT
-.L56:
-	leave
-	.cfi_def_cfa 7, 8
+	jne	.L96
+	addq	$4168, %rsp
+	.cfi_remember_state
+	.cfi_def_cfa_offset 56
+	popq	%rbx
+	.cfi_def_cfa_offset 48
+	popq	%rbp
+	.cfi_def_cfa_offset 40
+	popq	%r12
+	.cfi_def_cfa_offset 32
+	popq	%r13
+	.cfi_def_cfa_offset 24
+	popq	%r14
+	.cfi_def_cfa_offset 16
+	popq	%r15
+	.cfi_def_cfa_offset 8
 	ret
+.L95:
+	.cfi_restore_state
+	movq	40(%rsp), %rdx
+	leaq	.LC8(%rip), %rsi
+	movl	$1, %edi
+	call	__printf_chk@PLT
+	orl	$-1, %eax
+	jmp	.L65
+.L96:
+	call	__stack_chk_fail@PLT
 	.cfi_endproc
-.LFE14:
+.LFE47:
 	.size	main, .-main
 	.section	.rodata
+	.align 16
+	.type	CSWTCH.13, @object
+	.size	CSWTCH.13, 28
+CSWTCH.13:
+	.long	1
+	.long	2
+	.long	32
+	.long	4
+	.long	16
+	.long	8
+	.long	64
+	.section	.rodata.cst32,"aM",@progbits,32
+	.align 32
+.LC1:
+	.long	0
+	.long	1
+	.long	2
+	.long	3
+	.long	4
+	.long	5
+	.long	6
+	.long	7
+	.align 32
+.LC2:
+	.long	8
+	.long	8
+	.long	8
+	.long	8
+	.long	8
+	.long	8
+	.long	8
+	.long	8
+	.align 32
+.LC3:
+	.long	1
+	.long	1
+	.long	1
+	.long	1
+	.long	1
+	.long	1
+	.long	1
+	.long	1
+	.align 32
+.LC4:
+	.long	2
+	.long	2
+	.long	2
+	.long	2
+	.long	2
+	.long	2
+	.long	2
+	.long	2
+	.section	.rodata.cst8,"aM",@progbits,8
 	.align 8
-.LC5:
+.LC9:
 	.long	2576980378
 	.long	1068079513
 	.align 8
-.LC6:
+.LC10:
 	.long	4290772992
 	.long	1105199103
 	.ident	"GCC: (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0"
