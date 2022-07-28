@@ -183,7 +183,7 @@ int compareErrorProb(int loop, int e_prob_int, FILE *fpw) {
 
 // ビットエラー率の比較
 // エラー率は, 予め RAND_MAX で乗算された int 型とする
-int compareBER(int loop, int r_max_int, FILE *fpw) {
+int compareBER(int loop, int r_max_int, const char *fnamea) {
     int i;
     u_int tmsg, tcode, rcode, rmsg;
     // 誤りビット数の総計
@@ -209,16 +209,19 @@ int compareBER(int loop, int r_max_int, FILE *fpw) {
         rmsg = decHamCode7_4(rcode);
         ham_bes += builtin_popcount(tmsg ^ rmsg);
     }
-    // printf("%d %d %d\n", ne_err, rep_err, ham_err);
     // fprintf(stdout, "%d %d %d\r\n", ne_bes, rep_bes, ham_bes);
-    // 改行コードを windows に合わせる
-    fprintf(fpw, "%d %d %d\r\n", ne_bes, rep_bes, ham_bes);
 
+    FILE *fp;
+    if ((fp = fopen(fnamea, "a")) == NULL) {
+        printf("'%s' を開けません\n", fnamea);
+    }
+    fprintf(fp, "%d,%d,%d\n", ne_bes, rep_bes, ham_bes);
+    fclose(fp);
     return 0;
 }
 
 int main(int argc, char **argv) {
-    if (argc < 2) {
+    if (argc < 4) {
         puts("引数不足");
         return -1;
     }
@@ -226,9 +229,12 @@ int main(int argc, char **argv) {
     u_char tmsg, rmsg, e_vec;
     int ret, r_max_int, loop;
     double e_prob, e_prob_true;
-    loop = strtod(argv[1], NULL);
+    char *fnamea;
+    fnamea = argv[1];
+    e_prob = strtod(argv[2], NULL);
+    loop = strtod(argv[3], NULL);
+
     printf("%d\n", loop);
-    e_prob = 1e-3;
     ret = gettimeofday(&tv0, NULL);
     seed = time(NULL) & 0xffffffff;
 
@@ -236,7 +242,7 @@ int main(int argc, char **argv) {
     // 量子化誤差を見る
     e_prob_true = (double)r_max_int / (double)RAND_MAX;
     printf("%.20e, %.20e, %d\n", e_prob, e_prob_true, r_max_int);
-    compareBER(loop, r_max_int, stdout);
+    compareBER(loop, r_max_int, fnamea);
     ret = gettimeofday(&tv1, NULL);
     printf("%f\n", timeval_to_double(tv1) - timeval_to_double(tv0));
     return ret;
