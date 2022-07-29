@@ -45,12 +45,13 @@ def t_test_R(d1, d2):
 
 def main():
     parser = argparse.ArgumentParser(description="符号の実験")
-    parser.add_argument("-c", "--count", help="1試行あたりのループ数",
-                        type=int, default=10000)
+    parser.add_argument("time", help="時刻の一部")
     args = parser.parse_args()
 
-    fnamer_list = glob.glob(f"dat/*c{args.count}.csv")
-    # print(fnamer_list)
+    fnamer_list = glob.glob(f"dat/*{args.time}*.csv")
+
+    print(fnamer_list)
+    return
     fnamer_dict = {}
     for fnamer in fnamer_list:
         mg = re.findall(r'p([0-9\.e\-]+)_c', fnamer)
