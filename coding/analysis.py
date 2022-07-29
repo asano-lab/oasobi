@@ -81,8 +81,9 @@ def main():
                     alpha=0.95, df=deg_free, loc=sample_mean, scale=sample_std
                 )
                 print(sample_mean)
-                print(error_interval)
-                sample_error = error_interval[1]
+                print(error_interval[1] - sample_mean,
+                      sample_mean - error_interval[0])
+                sample_error = error_interval[1] - sample_mean
             else:
                 sample_mean = np.nan
                 sample_error = np.nan
