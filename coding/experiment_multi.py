@@ -42,16 +42,15 @@ def main():
     if not os.path.isdir(DAT_DIR):
         os.mkdir(DAT_DIR)
 
+    # 識別子
     timestamp = datetime.datetime.now(JST).strftime("%y%m%d%H%M%S")
-    print(timestamp)
-    return -1
 
     th_list = []
     t0 = time.time()
     # 検証する誤り率の配列
     e_prob_arr = np.logspace(-6, -0.5, 12)
     for e_prob in e_prob_arr:
-        fnamew = f"dat/bes_p{e_prob:.4e}_c{args.count}.csv"
+        fnamew = f"dat/bes_p{e_prob:.4e}_c{args.count}_{timestamp}.csv"
         with open(fnamew, "w", encoding="UTF-8") as f:
             print("nothing,repetition,hamming", file=f)
         for j in range(args.samples):
