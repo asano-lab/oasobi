@@ -13,10 +13,12 @@ def main():
     args = parser.parse_args()
 
     fnamer_list = glob.glob(f"dat/*c{args.count}.csv")
-    print(fnamer_list)
+    # print(fnamer_list)
+    fnamer_dict = {}
     for fnamer in fnamer_list:
         mg = re.findall(r'p([0-9\.e\-]+)_c', fnamer)
-        print(mg)
+        fnamer_dict[fnamer] = float(mg[0])
+    print(fnamer_dict)
 
 if __name__ == "__main__":
     main()
