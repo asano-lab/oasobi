@@ -75,10 +75,11 @@ def main():
             if validity_sr[col]:
                 sample_mean = e_prob_df[col].mean()
                 sem = stats.sem(e_prob_df[col])
-                deg_free = e_prob_df[col].size - 1
+                sample_count = e_prob_df[col].size
+                print(sem, e_prob_df[col].std() / np.sqrt(sample_count))
                 # print(deg_free)
                 error_interval = stats.t.interval(
-                    alpha=0.95, df=deg_free, loc=0, scale=sem
+                    alpha=0.95, df=sample_count-1, loc=0, scale=sem
                 )
                 # print(sample_mean)
                 # print(error_interval[1] - sample_mean,
