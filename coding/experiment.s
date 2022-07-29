@@ -612,8 +612,6 @@ compareBER:
 	.section	.rodata
 .LC5:
 	.string	"\345\274\225\346\225\260\344\270\215\350\266\263"
-.LC6:
-	.string	"seed=%u\n"
 	.text
 	.globl	main
 	.type	main, @function
@@ -668,18 +666,13 @@ main:
 	movq	-40(%rbp), %rdx
 	addl	%edx, %eax
 	movl	%eax, seed(%rip)
-	movl	seed(%rip), %eax
-	movl	%eax, %esi
-	leaq	.LC6(%rip), %rdi
-	movl	$0, %eax
-	call	printf@PLT
 	movsd	-64(%rbp), %xmm1
-	movsd	.LC7(%rip), %xmm0
+	movsd	.LC6(%rip), %xmm0
 	mulsd	%xmm1, %xmm0
 	cvttsd2sil	%xmm0, %eax
 	movl	%eax, -76(%rbp)
 	cvtsi2sdl	-76(%rbp), %xmm0
-	movsd	.LC7(%rip), %xmm1
+	movsd	.LC6(%rip), %xmm1
 	divsd	%xmm1, %xmm0
 	movsd	%xmm0, -56(%rbp)
 	movq	-72(%rbp), %rdx
@@ -708,7 +701,7 @@ main:
 	.size	main, .-main
 	.section	.rodata
 	.align 8
-.LC7:
+.LC6:
 	.long	4290772992
 	.long	1105199103
 	.ident	"GCC: (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0"
