@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import datetime
 import os
 import subprocess
 import threading
@@ -8,6 +9,8 @@ import numpy as np
 
 SRC_DIR = os.path.abspath(os.path.dirname(__file__))
 DAT_DIR = f"{SRC_DIR}/dat/"
+
+JST = datetime.timezone(datetime.timedelta(hours=+9), "JST")
 
 
 class ExpThred(threading.Thread):
@@ -38,6 +41,10 @@ def main():
 
     if not os.path.isdir(DAT_DIR):
         os.mkdir(DAT_DIR)
+
+    timestamp = datetime.datetime.now(JST).strftime("%y%m%d%H%M%S")
+    print(timestamp)
+    return -1
 
     th_list = []
     t0 = time.time()

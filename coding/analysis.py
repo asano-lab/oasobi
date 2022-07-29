@@ -78,8 +78,8 @@ def main():
                 # 標準誤差
                 sem = stats.sem(e_prob_df[col])
                 sample_count = e_prob_df[col].size
-                print("sem =", sem,
-                      e_prob_df[col].std() / np.sqrt(sample_count))
+                # print("sem =", sem,
+                #       e_prob_df[col].std() / np.sqrt(sample_count))
                 # print(deg_free)
                 error_interval = stats.t.interval(
                     alpha=0.95, df=sample_count-1, loc=0, scale=sem
