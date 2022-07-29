@@ -16,9 +16,17 @@ r = pyper.R(use_pandas=True)
 def t_test_R(d1, d2):
     r.assign("d1", d1)
     r.assign("d2", d2)
-    print(r("summary(d1)"))
-    print(r("summary(d2)"))
-    print(r("t.test(d1)"))
+    # print(r("summary(d1)"))
+    # print(r("summary(d2)"))
+    d1_t_result = r("t.test(d1)")
+    print(d1_t_result)
+    mg = re.findall(
+        r'interval.*\n ([\d\.]+) ([\d\.]+).*\n.*sample.*', d1_t_result)
+    if mg:
+        le = float(mg[0][0])
+        ue = float(mg[0][1])
+        print(le, ue)
+    # print(d1_t_result.split(" "))
 
 
 def main():
@@ -73,7 +81,7 @@ def main():
     ax.set_yscale("log")
     ax.grid()
 
-    plt.show()
+    # plt.show()
 
 
 if __name__ == "__main__":
