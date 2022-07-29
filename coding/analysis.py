@@ -17,7 +17,7 @@ def main():
     fnamer_dict = {}
     for fnamer in fnamer_list:
         mg = re.findall(r'p([0-9\.e\-]+)_c', fnamer)
-        fnamer_dict[fnamer] = float(mg[0])
+        fnamer_dict[mg[0]] = fnamer
     print(fnamer_dict)
 
 if __name__ == "__main__":
