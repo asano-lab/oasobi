@@ -19,13 +19,18 @@ def t_test_R(d1, d2):
     # print(r("summary(d1)"))
     # print(r("summary(d2)"))
     d1_t_result = r("t.test(d1)")
-    print(d1_t_result)
-    mg = re.findall(
-        r'interval.*\n ([\d\.]+) ([\d\.]+).*\n.*sample.*', d1_t_result)
-    if mg:
-        le = float(mg[0][0])
-        ue = float(mg[0][1])
-        print(le, ue)
+    # print(d1_t_result)
+    mg1 = re.findall(
+        r'interval:\n *([e\d\.\-]+) ([e\d\.\-]+).*\nsample', d1_t_result)
+    mg2 = re.findall(r'mean of x.*\n *([e\d\.\-]+)', d1_t_result)
+    sample_mean = float(mg2[0])
+    if mg1:
+        le = float(mg1[0][0])
+        ue = float(mg1[0][1])
+    else:
+        le = np.nan
+        ue = np.nan
+    print(sample_mean, le, ue)
     # print(d1_t_result.split(" "))
 
 
