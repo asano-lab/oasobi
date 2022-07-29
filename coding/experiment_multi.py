@@ -1,9 +1,15 @@
 #!/usr/bin/env python3
+import os
 import subprocess
 import threading
 import argparse
 import time
 import numpy as np
+
+SRC_DIR = os.path.abspath(os.path.dirname(__file__))
+DAT_DIR = f"{SRC_DIR}/dat/"
+print(DAT_DIR)
+exit()
 
 
 class ExpThred(threading.Thread):
@@ -14,20 +20,26 @@ class ExpThred(threading.Thread):
         self.fnamea = fnamea
         self.name = name
         self.daemon = True
-    
+
     def run(self):
         print(f"{self.name} start.")
         t0 = time.time()
-        subprocess.run(["./experiment", self.fnamea, f"{self.e_prob}", f"{self.count}"])
+        subprocess.run(["./experiment", self.fnamea,
+                       f"{self.e_prob}", f"{self.count}"])
         print(f"{self.name} stop. ({time.time() - t0:.2f} sec)")
+
 
 def main():
     parser = argparse.ArgumentParser(description="符号の実験")
-    parser.add_argument("-c", "--count", help="1試行あたりのループ数", type=int, default=10000)
+    parser.add_argument("-c", "--count", help="1試行あたりのループ数",
+                        type=int, default=10000)
     parser.add_argument("-s", "--samples", help="試行回数", type=int, default=10)
     args = parser.parse_args()
 
     subprocess.run(["make", "experiment"])
+
+    if os.path.isdir():
+        pass
 
     th_list = []
     t0 = time.time()
@@ -38,12 +50,14 @@ def main():
         with open(fnamew, "w", encoding="UTF-8") as f:
             print("nothing,repetition,hamming", file=f)
         for j in range(10):
-            tmp_th = ExpThred(e_prob, args.count, fnamew, f"th{e_prob:.4e}_{j}")
+            tmp_th = ExpThred(e_prob, args.count, fnamew,
+                              f"th{e_prob:.4e}_{j}")
             tmp_th.start()
             th_list.append(tmp_th)
     while threading.active_count() > 1:
         time.sleep(1)
     print(time.time() - t0)
+
 
 if __name__ == "__main__":
     main()
