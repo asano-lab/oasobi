@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include <sys/time.h>
+#include <time.h>
 #include <unistd.h>
 
 // サンプル数の設定
@@ -28,7 +28,8 @@
 // 各ビットのエラー率が一定の通信路
 // 引数はチャンネルの入力, 入力長, エラー率
 // エラー率は, 予め RAND_MAX で乗算された int 型とする
-#define binary_simmetric_channel(x, nc, e_prob_int) ((x) ^ makeErrorBits(nc, e_prob_int))
+#define binary_simmetric_channel(x, nc, e_prob_int) \
+    ((x) ^ makeErrorBits(nc, e_prob_int))
 
 // (7, 4)ハミング符号の符号化関数
 // 入力は4ビット, 出力は7ビットに固定
@@ -128,15 +129,33 @@ u_int decHamCode7_4(u_int rsv) {
     // パリティを再計算し, 受信パリティと比較
     // シンドロームからエラー位置の特定
     switch (makeParityHamCode7_4(rsv >> 3) ^ (rsv & 0b111)) {
-        case 0b000: err = 0b0000000; break;
-        case 0b111: err = 0b1000000; break;
-        case 0b011: err = 0b0100000; break;
-        case 0b101: err = 0b0010000; break;
-        case 0b110: err = 0b0001000; break;
-        case 0b100: err = 0b0000100; break;
-        case 0b010: err = 0b0000010; break;
-        case 0b001: err = 0b0000001; break;
-        default   : err = 0b1111111; break; // でたらめ
+        case 0b000:
+            err = 0b0000000;
+            break;
+        case 0b111:
+            err = 0b1000000;
+            break;
+        case 0b011:
+            err = 0b0100000;
+            break;
+        case 0b101:
+            err = 0b0010000;
+            break;
+        case 0b110:
+            err = 0b0001000;
+            break;
+        case 0b100:
+            err = 0b0000100;
+            break;
+        case 0b010:
+            err = 0b0000010;
+            break;
+        case 0b001:
+            err = 0b0000001;
+            break;
+        default:
+            err = 0b1111111;
+            break;  // でたらめ
     }
     return (rsv ^ err) >> 3;
 }
@@ -157,7 +176,7 @@ int compareErrorProb(int loop, int e_prob_int, FILE *fpw) {
         if (tmsg != rmsg) {
             ne_err++;
         }
-        
+
         // (3, 1)繰り返し符号
         tcode = encRepCode3(tmsg, 4);
         rcode = binary_simmetric_channel(tcode, 12, e_prob_int);
@@ -165,7 +184,7 @@ int compareErrorProb(int loop, int e_prob_int, FILE *fpw) {
         if (tmsg != rmsg) {
             rep_err++;
         }
-        
+
         // (4, 7)ハミング符号
         tcode = encHamCode7_4(tmsg);
         rcode = binary_simmetric_channel(tcode, 7, e_prob_int);
@@ -183,12 +202,11 @@ int compareErrorProb(int loop, int e_prob_int, FILE *fpw) {
 
 // ビットエラー率の比較
 // エラー率は, 予め RAND_MAX で乗算された int 型とする
-int compareBER(int loop, int r_max_int, const char *fnamea) {
-    int i;
+int compareBER(long loop, int r_max_int, const char *fnamea) {
     u_int tmsg, tcode, rcode, rmsg;
     // 誤りビット数の総計
     int ne_bes = 0, rep_bes = 0, ham_bes = 0;
-    for (i = 0; i < loop; i++) {
+    for (long i = 0; i < loop; i++) {
         // メッセージは乱数で作って共有
         tmsg = rand4Bit();
 
@@ -196,13 +214,13 @@ int compareBER(int loop, int r_max_int, const char *fnamea) {
         rmsg = binary_simmetric_channel(tmsg, 4, r_max_int);
         // エラービット数のカウント
         ne_bes += builtin_popcount(tmsg ^ rmsg);
-        
+
         // (3, 1)繰り返し符号
         tcode = encRepCode3(tmsg, 4);
         rcode = binary_simmetric_channel(tcode, 12, r_max_int);
         rmsg = decRepCode3(rcode, 4);
         rep_bes += builtin_popcount(tmsg ^ rmsg);
-        
+
         // (4, 7)ハミング符号
         tcode = encHamCode7_4(tmsg);
         rcode = binary_simmetric_channel(tcode, 7, r_max_int);
@@ -227,15 +245,14 @@ int main(int argc, char **argv) {
     }
     struct timeval tv0, tv1;
     u_char tmsg, rmsg, e_vec;
-    int ret, r_max_int, loop;
+    long loop;
+    int ret, r_max_int;
     double e_prob, e_prob_true;
     char *fnamea;
     fnamea = argv[1];
     e_prob = strtod(argv[2], NULL);
     loop = strtol(argv[3], NULL, 10);
 
-    // seed = time(NULL) & 0xffffffff;
-    // printf("%d\n", loop);
     ret = gettimeofday(&tv0, NULL);
     seed = (tv0.tv_sec * 1000000UL + tv0.tv_usec) & 0xffffffff;
     // printf("seed=%u\n", seed);
