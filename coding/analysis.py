@@ -13,16 +13,13 @@ import pyper
 r = pyper.R(use_pandas=True)
 
 
-def t_test_R(d1, d2):
-    r.assign("d1", d1)
-    r.assign("d2", d2)
-    # print(r("summary(d1)"))
-    # print(r("summary(d2)"))
-    d1_t_result = r("t.test(d1)")
-    # print(d1_t_result)
+def t_test_single(d):
+    r.assign("d", d)
+    t_result = r("t.test(d)")
+    print(t_result)
     mg1 = re.findall(
-        r'interval:\n *([e\d\.\-]+) ([e\d\.\-]+).*\nsample', d1_t_result)
-    mg2 = re.findall(r'mean of x.*\n *([e\d\.\-]+)', d1_t_result)
+        r'interval:\n *([e\d\.\-]+) ([e\d\.\-]+).*\nsample', t_result)
+    mg2 = re.findall(r'mean of x.*\n *([e\d\.\-]+)', t_result)
     sample_mean = float(mg2[0])
     if mg1:
         le = float(mg1[0][0])
@@ -31,7 +28,12 @@ def t_test_R(d1, d2):
         le = np.nan
         ue = np.nan
     print(sample_mean, le, ue)
-    # print(d1_t_result.split(" "))
+
+
+def t_test_R(d1, d2):
+    r.assign("d1", d1)
+    r.assign("d2", d2)
+    t_test_single(d1)
 
 
 def main():
