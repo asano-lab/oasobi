@@ -6,7 +6,7 @@ import time
 import numpy as np
 
 
-class MyThread(threading.Thread):
+class ExpThred(threading.Thread):
     def __init__(self, e_prob, count, fnamea, name=""):
         super().__init__()
         self.e_prob = e_prob
@@ -33,8 +33,10 @@ def main():
     e_prob_arr = [0.01]
     for e_prob in e_prob_arr:
         fnamew = f"dat/bes_p{e_prob:.4e}_c{args.count}.csv"
+        with open(fnamew, "w", encoding="UTF-8") as f:
+            print("nothing,repetition,hamming", file=f)
         for j in range(10):
-            tmp_th = MyThread(e_prob, args.count, fnamew, f"th{e_prob:.4e}_{j}")
+            tmp_th = ExpThred(e_prob, args.count, fnamew, f"th{e_prob:.4e}_{j}")
             tmp_th.start()
             th_list.append(tmp_th)
     while threading.active_count() > 1:
