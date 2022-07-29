@@ -25,20 +25,21 @@ def t_test_single(d):
     if mg1:
         le = float(mg1[0][0])
         ue = float(mg1[0][1])
+        print(ue - sample_mean, sample_mean - le)
+        sample_error = ue - sample_mean
     else:
-        le = np.nan
-        ue = np.nan
+        sample_error = np.nan
     if mg3:
         p_value = float(mg3[0])
     else:
         p_value = np.nan
-    print(sample_mean, le, ue, p_value)
+    return (sample_mean, sample_error, p_value)
 
 
 def t_test_R(d1, d2):
     r.assign("d1", d1)
     r.assign("d2", d2)
-    t_test_single(d1)
+    print(t_test_single(d1))
 
 
 def main():
@@ -73,10 +74,14 @@ def main():
             # print(sample_var)
             if validity_sr[col]:
                 sample_mean = e_prob_df[col].mean()
-                sample_var = stats.tvar(e_prob_df[col])
-                error_interval = stats.norm.interval(
-                    alpha=0.95, loc=0, scale=np.sqrt(sample_var/e_prob_df[col].size)
+                sample_std = e_prob_df[col].std()
+                deg_free = e_prob_df[col].size - 1
+                # print(deg_free)
+                error_interval = stats.t.interval(
+                    alpha=0.95, df=deg_free, loc=sample_mean, scale=sample_std
                 )
+                print(sample_mean)
+                print(error_interval)
                 sample_error = error_interval[1]
             else:
                 sample_mean = np.nan
