@@ -19,6 +19,8 @@ def main():
         mg = re.findall(r'p([0-9\.e\-]+)_c', fnamer)
         fnamer_dict[mg[0]] = fnamer
     print(fnamer_dict)
+    x = sorted(fnamer_dict.keys(), key=float)
+    print(x)
 
 if __name__ == "__main__":
     main()
