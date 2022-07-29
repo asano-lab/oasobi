@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
+import re
 import glob
 import subprocess
-import threading
 import argparse
 import time
 import numpy as np
@@ -14,6 +14,9 @@ def main():
 
     fnamer_list = glob.glob(f"dat/*c{args.count}.csv")
     print(fnamer_list)
+    for fnamer in fnamer_list:
+        mg = re.findall(r'p([0-9\.e\-]+)_c', fnamer)
+        print(mg)
 
 if __name__ == "__main__":
     main()
