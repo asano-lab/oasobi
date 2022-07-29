@@ -5,7 +5,7 @@ import subprocess
 import argparse
 import time
 import numpy as np
-
+import pyper
 
 def main():
     parser = argparse.ArgumentParser(description="符号の実験")
@@ -18,9 +18,10 @@ def main():
     for fnamer in fnamer_list:
         mg = re.findall(r'p([0-9\.e\-]+)_c', fnamer)
         fnamer_dict[mg[0]] = fnamer
-    print(fnamer_dict)
-    x = sorted(fnamer_dict.keys(), key=float)
-    print(x)
+    # print(fnamer_dict)
+    sorted_keys = sorted(fnamer_dict.keys(), key=float)
+    p_bsc = [float(i) for i in sorted_keys]
+    print(p_bsc)
 
 if __name__ == "__main__":
     main()
