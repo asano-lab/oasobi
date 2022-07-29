@@ -38,23 +38,24 @@ def main():
         # print(e_prob_df)
         validity_sr = (e_prob_df != 0).any()
         for col in e_prob_df.columns:
-            sample_mean = e_prob_df[col].mean()
-            sample_var = stats.tvar(e_prob_df[col])
-            col_dict[col]["mean"].append(sample_mean)
             # print(sample_var)
             if validity_sr[col]:
+                sample_mean = e_prob_df[col].mean()
+                sample_var = stats.tvar(e_prob_df[col])
                 error_interval = stats.norm.interval(
                     alpha=0.95, loc=0, scale=np.sqrt(sample_var/e_prob_df[col].size)
                 )
                 sample_error = error_interval[1]
             else:
+                sample_mean = np.nan
                 sample_error = np.nan
+            col_dict[col]["mean"].append(sample_mean)
             col_dict[col]["error"].append(sample_error)
 
     print(col_dict)
     fig = plt.figure(figsize=(8, 5))
     ax = fig.add_subplot(1, 1, 1)
-    ax.plot(p_bsc, col_dict["nothing"]["mean"])
+    ax.plot(p_bsc, col_dict["repetition"]["mean"])
     ax.set_xscale("log")
     ax.set_yscale("log")
     plt.show()
