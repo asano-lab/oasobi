@@ -7,6 +7,7 @@ import time
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from scipy import stats
 
 
 def main():
@@ -36,12 +37,20 @@ def main():
         e_prob_df = fnamer_dict[k]["df"]
         # print(e_prob_df)
         validity_sr = (e_prob_df != 0).any()
-        # print(validity_df)
         for col in e_prob_df.columns:
-            mean = e_prob_df[col].mean()
-            col_dict[col]["mean"].append(mean)
-            # print(col)
-            print(validity_sr[col])
+            sample_mean = e_prob_df[col].mean()
+            sample_var = stats.tvar(e_prob_df[col])
+            col_dict[col]["mean"].append(sample_mean)
+            # print(sample_var)
+            if validity_sr[col]:
+                error_interval = stats.norm.interval(
+                    alpha=0.95, loc=0, scale=np.sqrt(sample_var/e_prob_df[col].size)
+                )
+                sample_error = error_interval[1]
+            else:
+                sample_error = np.nan
+            col_dict[col]["error"].append(sample_error)
+
     print(col_dict)
 
 
