@@ -25,7 +25,7 @@ def t_test_single(d):
     if mg1:
         le = float(mg1[0][0])
         ue = float(mg1[0][1])
-        print(ue - sample_mean, sample_mean - le)
+        # print(ue - sample_mean, sample_mean - le)
         # 丸め誤差があるので平均を取る?
         sample_error = (ue - le) / 2
     else:
@@ -50,15 +50,13 @@ def main():
 
     fnamer_list = glob.glob(f"dat/*{args.time}*.csv")
 
-    print(fnamer_list)
-    return
     fnamer_dict = {}
     for fnamer in fnamer_list:
-        mg = re.findall(r'p([0-9\.e\-]+)_c', fnamer)
+        mg = re.findall(r'p([0-9\.e\-]+)_c(\d+)_', fnamer)
         tmp_dict = {}
         tmp_dict["path"] = fnamer
-        tmp_dict["df"] = pd.read_csv(fnamer) / (4 * args.count)
-        fnamer_dict[mg[0]] = tmp_dict
+        tmp_dict["df"] = pd.read_csv(fnamer) / (4 * int(mg[0][1]))
+        fnamer_dict[mg[0][0]] = tmp_dict
     # print(fnamer_dict)
     sorted_keys = sorted(fnamer_dict.keys(), key=float)
     p_bsc = [float(i) for i in sorted_keys]
