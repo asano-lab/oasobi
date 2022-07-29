@@ -103,16 +103,16 @@ def main():
     fig = plt.figure(figsize=(8, 5))
     ax = fig.add_subplot(1, 1, 1)
 
-    ax.scatter(p_bsc, col_dict["repetition"]["mean"])
+    # ax.scatter(p_bsc, col_dict["repetition"]["mean"])
 
-    for i, k in enumerate(col_dict):
-        print(i, k)
+    for i, col in enumerate(col_dict):
+        ax.scatter(p_bsc, col_dict[col]["mean"], color=COLORS[i])
 
     ax.set_xscale("log")
     ax.set_yscale("log")
     ax.grid()
 
-    # plt.show()
+    plt.show()
 
 
 if __name__ == "__main__":
