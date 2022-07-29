@@ -234,9 +234,11 @@ int main(int argc, char **argv) {
     e_prob = strtod(argv[2], NULL);
     loop = strtol(argv[3], NULL, 10);
 
+    // seed = time(NULL) & 0xffffffff;
     // printf("%d\n", loop);
     ret = gettimeofday(&tv0, NULL);
-    seed = time(NULL) & 0xffffffff;
+    seed = (tv0.tv_sec * 1000000UL + tv0.tv_usec) & 0xffffffff;
+    printf("seed=%u\n", seed);
 
     r_max_int = RAND_MAX * e_prob;
     // 量子化誤差を見る

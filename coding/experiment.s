@@ -612,7 +612,9 @@ compareBER:
 	.section	.rodata
 .LC5:
 	.string	"\345\274\225\346\225\260\344\270\215\350\266\263"
-.LC8:
+.LC6:
+	.string	"seed=%u\n"
+.LC9:
 	.string	"%f\n"
 	.text
 	.globl	main
@@ -663,16 +665,23 @@ main:
 	movq	%rax, %rdi
 	call	gettimeofday@PLT
 	movl	%eax, -80(%rbp)
-	movl	$0, %edi
-	call	time@PLT
+	movq	-48(%rbp), %rax
+	imull	$1000000, %eax, %eax
+	movq	-40(%rbp), %rdx
+	addl	%edx, %eax
 	movl	%eax, seed(%rip)
+	movl	seed(%rip), %eax
+	movl	%eax, %esi
+	leaq	.LC6(%rip), %rdi
+	movl	$0, %eax
+	call	printf@PLT
 	movsd	-64(%rbp), %xmm1
-	movsd	.LC6(%rip), %xmm0
+	movsd	.LC7(%rip), %xmm0
 	mulsd	%xmm1, %xmm0
 	cvttsd2sil	%xmm0, %eax
 	movl	%eax, -76(%rbp)
 	cvtsi2sdl	-76(%rbp), %xmm0
-	movsd	.LC6(%rip), %xmm1
+	movsd	.LC7(%rip), %xmm1
 	divsd	%xmm1, %xmm0
 	movsd	%xmm0, -56(%rbp)
 	movq	-72(%rbp), %rdx
@@ -690,18 +699,18 @@ main:
 	cvtsi2sdq	%rax, %xmm1
 	movq	-24(%rbp), %rax
 	cvtsi2sdq	%rax, %xmm2
-	movsd	.LC7(%rip), %xmm0
+	movsd	.LC8(%rip), %xmm0
 	mulsd	%xmm2, %xmm0
 	addsd	%xmm1, %xmm0
 	movq	-48(%rbp), %rax
 	cvtsi2sdq	%rax, %xmm2
 	movq	-40(%rbp), %rax
 	cvtsi2sdq	%rax, %xmm3
-	movsd	.LC7(%rip), %xmm1
+	movsd	.LC8(%rip), %xmm1
 	mulsd	%xmm3, %xmm1
 	addsd	%xmm2, %xmm1
 	subsd	%xmm1, %xmm0
-	leaq	.LC8(%rip), %rdi
+	leaq	.LC9(%rip), %rdi
 	movl	$1, %eax
 	call	printf@PLT
 	movl	-80(%rbp), %eax
@@ -719,11 +728,11 @@ main:
 	.size	main, .-main
 	.section	.rodata
 	.align 8
-.LC6:
+.LC7:
 	.long	4290772992
 	.long	1105199103
 	.align 8
-.LC7:
+.LC8:
 	.long	2696277389
 	.long	1051772663
 	.ident	"GCC: (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0"
