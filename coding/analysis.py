@@ -74,16 +74,16 @@ def main():
             # print(sample_var)
             if validity_sr[col]:
                 sample_mean = e_prob_df[col].mean()
-                sample_std = e_prob_df[col].std()
+                sem = stats.sem(e_prob_df[col])
                 deg_free = e_prob_df[col].size - 1
                 # print(deg_free)
                 error_interval = stats.t.interval(
-                    alpha=0.95, df=deg_free, loc=sample_mean, scale=sample_std
+                    alpha=0.95, df=deg_free, loc=0, scale=sem
                 )
-                print(sample_mean)
-                print(error_interval[1] - sample_mean,
-                      sample_mean - error_interval[0])
-                sample_error = error_interval[1] - sample_mean
+                # print(sample_mean)
+                # print(error_interval[1] - sample_mean,
+                #       sample_mean - error_interval[0])
+                sample_error = error_interval[1]
             else:
                 sample_mean = np.nan
                 sample_error = np.nan
