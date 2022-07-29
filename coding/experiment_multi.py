@@ -23,14 +23,16 @@ class ExpThred(threading.Thread):
 
 def main():
     parser = argparse.ArgumentParser(description="符号の実験")
-    parser.add_argument("-c", "--count", help="ループ数", type=int, default=10000)
+    parser.add_argument("-c", "--count", help="1試行あたりのループ数", type=int, default=10000)
+    parser.add_argument("-s", "--samples", help="試行回数", type=int, default=10)
     args = parser.parse_args()
 
     subprocess.run(["make", "experiment"])
 
     th_list = []
     t0 = time.time()
-    e_prob_arr = [0.01]
+    # 検証する誤り率の配列
+    e_prob_arr = np.logspace(-6, -0.5, 12)
     for e_prob in e_prob_arr:
         fnamew = f"dat/bes_p{e_prob:.4e}_c{args.count}.csv"
         with open(fnamew, "w", encoding="UTF-8") as f:
@@ -45,4 +47,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    # print(np.logspace(-6, -0.5, 12))
