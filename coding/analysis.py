@@ -8,7 +8,12 @@ import numpy as np
 
 
 def main():
-    print(glob.glob("dat/*"))
+    parser = argparse.ArgumentParser(description="符号の実験")
+    parser.add_argument("-c", "--count", help="1試行あたりのループ数", type=int, default=10000)
+    args = parser.parse_args()
+
+    fnamer_list = glob.glob(f"dat/*c{args.count}.csv")
+    print(fnamer_list)
 
 if __name__ == "__main__":
     main()
