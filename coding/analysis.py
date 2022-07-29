@@ -22,22 +22,23 @@ def main():
         mg = re.findall(r'p([0-9\.e\-]+)_c', fnamer)
         tmp_dict = {}
         tmp_dict["path"] = fnamer
-        tmp_dict["df"] = pd.read_csv(fnamer) / (args.count * 4)
+        tmp_dict["df"] = pd.read_csv(fnamer) / (4 * args.count)
         fnamer_dict[mg[0]] = tmp_dict
     # print(fnamer_dict)
     sorted_keys = sorted(fnamer_dict.keys(), key=float)
     p_bsc = [float(i) for i in sorted_keys]
     # print(p_bsc)
     col_list = tmp_dict["df"].columns.tolist()
-    fig, axes = plt.subplots(3, 4)
-    for col in col_list:
-        mean_list = []
-        error_list = []
-        for k in sorted_keys:
-            e_prob_sr = fnamer_dict[k]["df"][col]
-            mean = e_prob_sr.mean()
-            mean_list.append(mean)
-        print(mean_list)
+
+    col_dict = {i: {"mean": [], "error": []} for i in col_list}
+
+    fig = plt.figure(figsize=(12, 8))
+    for i, k in enumerate(sorted_keys):
+        ax = fig.add_subplot(3, 4, i + 1)
+        e_prob_df = fnamer_dict[k]["df"]
+        e_prob_list = e_prob_df.T.values.tolist()
+        ax.hist(e_prob_list, bins=100)
+
     plt.show()
 
 
