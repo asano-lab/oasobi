@@ -8,8 +8,6 @@ import numpy as np
 
 SRC_DIR = os.path.abspath(os.path.dirname(__file__))
 DAT_DIR = f"{SRC_DIR}/dat/"
-print(DAT_DIR)
-exit()
 
 
 class ExpThred(threading.Thread):
@@ -38,8 +36,8 @@ def main():
 
     subprocess.run(["make", "experiment"])
 
-    if os.path.isdir():
-        pass
+    if not os.path.isdir(DAT_DIR):
+        os.mkdir(DAT_DIR)
 
     th_list = []
     t0 = time.time()
