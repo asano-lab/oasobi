@@ -35,6 +35,7 @@ def main():
     parser.add_argument("-c", "--count", help="1試行あたりのループ数",
                         type=int, default=10000)
     parser.add_argument("-s", "--samples", help="試行回数", type=int, default=10)
+    parser.add_argument("-T", "--threads", type=int)
     args = parser.parse_args()
 
     subprocess.run(["make", "experiment"])
@@ -44,6 +45,9 @@ def main():
 
     # 識別子
     timestamp = datetime.datetime.now(JST).strftime("%y%m%d%H%M%S")
+
+    print(os.cpu_count())
+    return -1
 
     th_list = []
     t0 = time.time()
