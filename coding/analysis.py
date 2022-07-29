@@ -35,9 +35,12 @@ def main():
     fig = plt.figure(figsize=(12, 8))
     for i, k in enumerate(sorted_keys):
         e_prob_df = fnamer_dict[k]["df"]
-        print(e_prob_df)
-        validity_df = (e_prob_df != 0).any()
-        print(validity_df)
+        # print(e_prob_df)
+        validity_sr = (e_prob_df != 0).any()
+        # print(validity_df)
+        for col in e_prob_df.columns:
+            print(col)
+            print(validity_sr[col])
 
 
 if __name__ == "__main__":
