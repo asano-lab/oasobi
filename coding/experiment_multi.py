@@ -77,6 +77,8 @@ def main():
 
     # 識別子
     timestamp = datetime.datetime.now(JST).strftime("%y%m%d%H%M%S")
+    save_dir = f"{DAT_DIR}/{timestamp}"
+    os.mkdir(save_dir)
 
     th_list = []
     t0 = time.time()
@@ -85,7 +87,7 @@ def main():
 
     for e_prob in e_prob_arr:
         count = round(args.expected / (4 * e_prob))
-        fnamew = f"dat/bes_p{e_prob:.4e}_c{count}_{timestamp}.csv"
+        fnamew = f"{save_dir}/bes_p{e_prob:.4e}_c{count}.csv"
         with open(fnamew, "w", encoding="UTF-8") as f:
             print("nothing,repetition,hamming", file=f)
         for j in range(args.samples):
