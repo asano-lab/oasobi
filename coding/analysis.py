@@ -20,6 +20,7 @@ def t_test_single(d):
     mg1 = re.findall(
         r'interval:\n *([e\d\.\-]+) ([e\d\.\-]+).*\nsample', t_result)
     mg2 = re.findall(r'mean of x.*\n *([e\d\.\-]+)', t_result)
+    mg3 = re.findall(r'p-value [<=] ([e\d\.\-]+)', t_result)
     sample_mean = float(mg2[0])
     if mg1:
         le = float(mg1[0][0])
@@ -27,7 +28,11 @@ def t_test_single(d):
     else:
         le = np.nan
         ue = np.nan
-    print(sample_mean, le, ue)
+    if mg3:
+        p_value = float(mg3[0])
+    else:
+        p_value = np.nan
+    print(sample_mean, le, ue, p_value)
 
 
 def t_test_R(d1, d2):
