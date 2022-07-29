@@ -26,7 +26,9 @@ def main():
     p_bsc = [float(i) for i in sorted_keys]
     print(p_bsc)
     for k in sorted_keys:
-        print(fnamer_dict[k]["df"])
+        e_prob_df = fnamer_dict[k]["df"] / (args.count * 4)
+        # print()
+        print(e_prob_df)
 
 if __name__ == "__main__":
     main()
