@@ -13,6 +13,7 @@ DAT_DIR = f"{SRC_DIR}/dat/"
 JST = datetime.timezone(datetime.timedelta(hours=+9), "JST")
 CPU_COUNT = os.cpu_count()
 
+
 class RangeCheck(object):
     def __init__(self, low_limit=None, high_limit=None, vtype="integer"):
         self.min = low_limit
@@ -38,6 +39,7 @@ class RangeCheck(object):
         l2 = f" {low} <= x <= {high}"
         return iter((l1, l2))
 
+
 class ExpThred(threading.Thread):
     def __init__(self, e_prob, count, fnamea, name=""):
         super().__init__()
@@ -57,10 +59,15 @@ class ExpThred(threading.Thread):
 
 def main():
     parser = argparse.ArgumentParser(description="符号の実験")
-    parser.add_argument("-c", "--count", help="1試行あたりのループ数",
-                        type=int, default=10000)
+    parser.add_argument(
+        "-E", "--expected",
+        help="符号なしでビット誤り数の期待値が一定になるようにループ数を動的に変える (デフォルト)",
+        type=int, choices=RangeCheck(low_limit=4), default=400)
     parser.add_argument("-s", "--samples", help="試行回数", type=int, default=10)
-    parser.add_argument("-T", "--threads", help="同時に動かすスレッド数 (メインは含まない)", type=int, choices=RangeCheck(low_limit=1), default=0x7fffffff)
+    parser.add_argument("--static", help="静的にループ数を指定したい場合",
+                        type=int)
+    parser.add_argument("-T", "--threads", help="同時に動かすスレッド数. メインは含まず, デフォルトは制限なし.",
+                        type=int, choices=RangeCheck(low_limit=1), default=0x7fffffff)
     args = parser.parse_args()
 
     subprocess.run(["make", "experiment"])
@@ -71,17 +78,18 @@ def main():
     # 識別子
     timestamp = datetime.datetime.now(JST).strftime("%y%m%d%H%M%S")
 
-
     th_list = []
     t0 = time.time()
     # 検証する誤り率の配列
     e_prob_arr = np.logspace(-6, -0.5, 12)
+
     for e_prob in e_prob_arr:
-        fnamew = f"dat/bes_p{e_prob:.4e}_c{args.count}_{timestamp}.csv"
+        count = round(args.expected / (4 * e_prob))
+        fnamew = f"dat/bes_p{e_prob:.4e}_c{count}_{timestamp}.csv"
         with open(fnamew, "w", encoding="UTF-8") as f:
             print("nothing,repetition,hamming", file=f)
         for j in range(args.samples):
-            tmp_th = ExpThred(e_prob, args.count, fnamew,
+            tmp_th = ExpThred(e_prob, count, fnamew,
                               f"th{e_prob:.4e}_{j}")
             tmp_th.start()
             th_list.append(tmp_th)
