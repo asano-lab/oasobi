@@ -47,7 +47,7 @@ def main():
         fnamew = f"dat/bes_p{e_prob:.4e}_c{args.count}.csv"
         with open(fnamew, "w", encoding="UTF-8") as f:
             print("nothing,repetition,hamming", file=f)
-        for j in range(10):
+        for j in range(args.samples):
             tmp_th = ExpThred(e_prob, args.count, fnamew,
                               f"th{e_prob:.4e}_{j}")
             tmp_th.start()
