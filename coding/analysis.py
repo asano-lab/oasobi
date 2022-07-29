@@ -34,12 +34,10 @@ def main():
 
     fig = plt.figure(figsize=(12, 8))
     for i, k in enumerate(sorted_keys):
-        ax = fig.add_subplot(3, 4, i + 1)
         e_prob_df = fnamer_dict[k]["df"]
-        e_prob_list = e_prob_df.T.values.tolist()
-        ax.hist(e_prob_list[0])
-
-    plt.show()
+        print(e_prob_df)
+        validity_df = (e_prob_df != 0).any()
+        print(validity_df)
 
 
 if __name__ == "__main__":
