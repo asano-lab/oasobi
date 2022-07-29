@@ -13,9 +13,12 @@ import pyper
 r = pyper.R(use_pandas=True)
 
 
-def t_test_R(df: pd.DataFrame):
-    r.assign("p_df", df)
-    print(r("p_df"))
+def t_test_R(d1, d2):
+    r.assign("d1", d1)
+    r.assign("d2", d2)
+    print(r("summary(d1)"))
+    print(r("summary(d2)"))
+    print(r("t.test(d1)"))
 
 
 def main():
@@ -43,7 +46,7 @@ def main():
 
     for i, k in enumerate(sorted_keys):
         e_prob_df = fnamer_dict[k]["df"]
-        t_test_R(e_prob_df)
+        t_test_R(e_prob_df["repetition"], e_prob_df["hamming"])
         # print(e_prob_df)
         validity_sr = (e_prob_df != 0).any()
         for col in e_prob_df.columns:
