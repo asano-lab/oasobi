@@ -32,15 +32,17 @@ def main():
 
     col_dict = {i: {"mean": [], "error": []} for i in col_list}
 
-    fig = plt.figure(figsize=(12, 8))
     for i, k in enumerate(sorted_keys):
         e_prob_df = fnamer_dict[k]["df"]
         # print(e_prob_df)
         validity_sr = (e_prob_df != 0).any()
         # print(validity_df)
         for col in e_prob_df.columns:
-            print(col)
+            mean = e_prob_df[col].mean()
+            col_dict[col]["mean"].append(mean)
+            # print(col)
             print(validity_sr[col])
+    print(col_dict)
 
 
 if __name__ == "__main__":
