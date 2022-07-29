@@ -52,6 +52,12 @@ def main():
             col_dict[col]["error"].append(sample_error)
 
     print(col_dict)
+    fig = plt.figure(figsize=(8, 5))
+    ax = fig.add_subplot(1, 1, 1)
+    ax.plot(p_bsc, col_dict["nothing"]["mean"])
+    ax.set_xscale("log")
+    ax.set_yscale("log")
+    plt.show()
 
 
 if __name__ == "__main__":
