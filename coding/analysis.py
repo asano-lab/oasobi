@@ -12,11 +12,16 @@ import pyper
 
 r = pyper.R(use_pandas=True)
 
+COLORS = [
+    "#1f77b4", "#ffa500", "#32cd32", "#fa8072",
+    "#20b2aa", "#adff2f", "#800080", "#8b4513"
+]
+
 
 def t_test_single(d):
     r.assign("d", d)
     t_result = r("t.test(d)")
-    print(t_result)
+    # print(t_result)
     mg1 = re.findall(
         r'interval:\n *([e\d\.\-]+) ([e\d\.\-]+).*\nsample', t_result)
     mg2 = re.findall(r'mean of x.*\n *([e\d\.\-]+)', t_result)
@@ -40,7 +45,10 @@ def t_test_single(d):
 def t_test_R(d1, d2):
     r.assign("d1", d1)
     r.assign("d2", d2)
-    print(t_test_single(d1))
+    # print(t_test_single(d1))
+    # print(t_test_single(d2))
+    t_result = r("t.test(d1, d2)")
+    print(t_result)
 
 
 def main():
@@ -77,9 +85,9 @@ def main():
                 # 標準誤差
                 sem = stats.sem(e_prob_df[col])
                 sample_count = e_prob_df[col].size
-                print(f"sem = {sem}")
-                print(
-                    f"sqrt(V/n) = {np.sqrt(e_prob_df[col].var() / sample_count)}")
+                # print(f"sem = {sem}")
+                # print(
+                #     f"sqrt(V/n) = {np.sqrt(e_prob_df[col].var() / sample_count)}")
 
                 error_interval = stats.t.interval(
                     alpha=0.95, df=sample_count-1, loc=0, scale=sem
@@ -96,6 +104,10 @@ def main():
     ax = fig.add_subplot(1, 1, 1)
 
     ax.scatter(p_bsc, col_dict["repetition"]["mean"])
+
+    for i, k in enumerate(col_dict):
+        print(i, k)
+
     ax.set_xscale("log")
     ax.set_yscale("log")
     ax.grid()
