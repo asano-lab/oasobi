@@ -26,7 +26,8 @@ def t_test_single(d):
         le = float(mg1[0][0])
         ue = float(mg1[0][1])
         print(ue - sample_mean, sample_mean - le)
-        sample_error = ue - sample_mean
+        # 丸め誤差があるので平均を取る?
+        sample_error = (ue - le) / 2
     else:
         sample_error = np.nan
     if mg3:
@@ -74,16 +75,15 @@ def main():
             # print(sample_var)
             if validity_sr[col]:
                 sample_mean = e_prob_df[col].mean()
+                # 標準誤差
                 sem = stats.sem(e_prob_df[col])
                 sample_count = e_prob_df[col].size
-                print(sem, e_prob_df[col].std() / np.sqrt(sample_count))
+                print("sem =", sem,
+                      e_prob_df[col].std() / np.sqrt(sample_count))
                 # print(deg_free)
                 error_interval = stats.t.interval(
                     alpha=0.95, df=sample_count-1, loc=0, scale=sem
                 )
-                # print(sample_mean)
-                # print(error_interval[1] - sample_mean,
-                #       sample_mean - error_interval[0])
                 sample_error = error_interval[1]
             else:
                 sample_mean = np.nan
