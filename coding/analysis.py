@@ -8,6 +8,14 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from scipy import stats
+import pyper
+
+r = pyper.R(use_pandas=True)
+
+
+def t_test_R(df: pd.DataFrame):
+    r.assign("p_df", df)
+    print(r("p_df"))
 
 
 def main():
@@ -35,6 +43,7 @@ def main():
 
     for i, k in enumerate(sorted_keys):
         e_prob_df = fnamer_dict[k]["df"]
+        t_test_R(e_prob_df)
         # print(e_prob_df)
         validity_sr = (e_prob_df != 0).any()
         for col in e_prob_df.columns:
@@ -55,9 +64,12 @@ def main():
     print(col_dict)
     fig = plt.figure(figsize=(8, 5))
     ax = fig.add_subplot(1, 1, 1)
-    ax.plot(p_bsc, col_dict["repetition"]["mean"])
+
+    ax.scatter(p_bsc, col_dict["repetition"]["mean"])
     ax.set_xscale("log")
     ax.set_yscale("log")
+    ax.grid()
+
     plt.show()
 
 
