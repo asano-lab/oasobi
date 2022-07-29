@@ -37,7 +37,7 @@ def main():
         ax = fig.add_subplot(3, 4, i + 1)
         e_prob_df = fnamer_dict[k]["df"]
         e_prob_list = e_prob_df.T.values.tolist()
-        ax.hist(e_prob_list, bins=100)
+        ax.hist(e_prob_list[0])
 
     plt.show()
 
