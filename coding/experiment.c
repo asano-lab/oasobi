@@ -246,6 +246,6 @@ int main(int argc, char **argv) {
     // printf("%.20e, %.20e, %d\n", e_prob, e_prob_true, r_max_int);
     compareBER(loop, r_max_int, fnamea);
     ret = gettimeofday(&tv1, NULL);
-    printf("%f\n", timeval_to_double(tv1) - timeval_to_double(tv0));
+    // printf("%f\n", timeval_to_double(tv1) - timeval_to_double(tv0));
     return ret;
 }

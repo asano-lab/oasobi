@@ -614,8 +614,6 @@ compareBER:
 	.string	"\345\274\225\346\225\260\344\270\215\350\266\263"
 .LC6:
 	.string	"seed=%u\n"
-.LC9:
-	.string	"%f\n"
 	.text
 	.globl	main
 	.type	main, @function
@@ -695,24 +693,6 @@ main:
 	movq	%rax, %rdi
 	call	gettimeofday@PLT
 	movl	%eax, -80(%rbp)
-	movq	-32(%rbp), %rax
-	cvtsi2sdq	%rax, %xmm1
-	movq	-24(%rbp), %rax
-	cvtsi2sdq	%rax, %xmm2
-	movsd	.LC8(%rip), %xmm0
-	mulsd	%xmm2, %xmm0
-	addsd	%xmm1, %xmm0
-	movq	-48(%rbp), %rax
-	cvtsi2sdq	%rax, %xmm2
-	movq	-40(%rbp), %rax
-	cvtsi2sdq	%rax, %xmm3
-	movsd	.LC8(%rip), %xmm1
-	mulsd	%xmm3, %xmm1
-	addsd	%xmm2, %xmm1
-	subsd	%xmm1, %xmm0
-	leaq	.LC9(%rip), %rdi
-	movl	$1, %eax
-	call	printf@PLT
 	movl	-80(%rbp), %eax
 .L54:
 	movq	-8(%rbp), %rcx
@@ -731,10 +711,6 @@ main:
 .LC7:
 	.long	4290772992
 	.long	1105199103
-	.align 8
-.LC8:
-	.long	2696277389
-	.long	1051772663
 	.ident	"GCC: (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0"
 	.section	.note.GNU-stack,"",@progbits
 	.section	.note.gnu.property,"a"

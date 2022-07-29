@@ -17,9 +17,9 @@ class ExpThred(threading.Thread):
     
     def run(self):
         print(f"{self.name} start.")
+        t0 = time.time()
         subprocess.run(["./experiment", self.fnamea, f"{self.e_prob}", f"{self.count}"])
-        # time.sleep(1)
-        print(f"{self.name} stop.")
+        print(f"{self.name} stop. ({time.time() - t0:.2f} sec)")
 
 def main():
     parser = argparse.ArgumentParser(description="符号の実験")
