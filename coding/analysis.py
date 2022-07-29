@@ -6,10 +6,13 @@ import argparse
 import time
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
+
 
 def main():
     parser = argparse.ArgumentParser(description="符号の実験")
-    parser.add_argument("-c", "--count", help="1試行あたりのループ数", type=int, default=10000)
+    parser.add_argument("-c", "--count", help="1試行あたりのループ数",
+                        type=int, default=10000)
     args = parser.parse_args()
 
     fnamer_list = glob.glob(f"dat/*c{args.count}.csv")
@@ -19,13 +22,14 @@ def main():
         mg = re.findall(r'p([0-9\.e\-]+)_c', fnamer)
         tmp_dict = {}
         tmp_dict["path"] = fnamer
-        tmp_dict["df"] = pd.read_csv(fnamer) / (args.count * 4) 
+        tmp_dict["df"] = pd.read_csv(fnamer) / (args.count * 4)
         fnamer_dict[mg[0]] = tmp_dict
     # print(fnamer_dict)
     sorted_keys = sorted(fnamer_dict.keys(), key=float)
     p_bsc = [float(i) for i in sorted_keys]
     # print(p_bsc)
     col_list = tmp_dict["df"].columns.tolist()
+    fig, axes = plt.subplots(3, 4)
     for col in col_list:
         mean_list = []
         error_list = []
@@ -34,6 +38,8 @@ def main():
             mean = e_prob_sr.mean()
             mean_list.append(mean)
         print(mean_list)
+    plt.show()
+
 
 if __name__ == "__main__":
     main()
