@@ -240,7 +240,7 @@ int compareBER(long loop, int r_max_int, const char *fnamea) {
 
 int main(int argc, char **argv) {
     if (argc < 4) {
-        puts("引数不足");
+        puts("experiment 出力ファイル名 エラー率 ループ数");
         return -1;
     }
     struct timeval tv0, tv1;
