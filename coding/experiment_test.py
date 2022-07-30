@@ -10,7 +10,7 @@ def main():
     p_bsc = np.power(10, -4.0-1/4)
     # ev = 2000
     # count = round(ev / p_bsc / 4)
-    count = int(1e10)
+    count = int(1e8)
 
     test_path = "test.csv"
 

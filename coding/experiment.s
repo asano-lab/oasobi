@@ -105,9 +105,11 @@ makeErrorBits:
 	jmp	.L8
 .L9:
 	sall	-8(%rbp)
-	call	rand@PLT
-	cmpl	%eax, -24(%rbp)
-	setge	%al
+	call	random@PLT
+	movl	-24(%rbp), %edx
+	movslq	%edx, %rdx
+	cmpq	%rdx, %rax
+	setle	%al
 	movzbl	%al, %eax
 	orl	%eax, -8(%rbp)
 	addl	$1, -4(%rbp)
@@ -395,7 +397,7 @@ compareErrorProb:
 	movl	$0, -48(%rbp)
 	jmp	.L40
 .L44:
-	call	rand@PLT
+	call	random@PLT
 	andl	$15, %eax
 	movl	%eax, -32(%rbp)
 	movl	-56(%rbp), %eax
@@ -507,7 +509,7 @@ compareBER:
 	movq	$0, -32(%rbp)
 	jmp	.L47
 .L48:
-	call	rand@PLT
+	call	random@PLT
 	andl	$15, %eax
 	movl	%eax, -48(%rbp)
 	movl	-76(%rbp), %eax
@@ -664,6 +666,9 @@ main:
 	movq	-40(%rbp), %rdx
 	addl	%edx, %eax
 	movl	%eax, seed(%rip)
+	movl	seed(%rip), %eax
+	movl	%eax, %edi
+	call	srandom@PLT
 	movsd	-72(%rbp), %xmm1
 	movsd	.LC6(%rip), %xmm0
 	mulsd	%xmm1, %xmm0
