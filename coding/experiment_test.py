@@ -7,9 +7,10 @@ import numpy as np
 def main():
     subprocess.run(["make", "experiment"])
 
-    p_bsc = np.power(10, -4.0)
-    ev = 4000000
-    count = round(ev / p_bsc / 4)
+    p_bsc = np.power(10, -4.0-1/4)
+    # ev = 2000
+    # count = round(ev / p_bsc / 4)
+    count = int(1e10)
 
     test_path = "test.csv"
 

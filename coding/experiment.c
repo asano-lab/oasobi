@@ -20,10 +20,10 @@
 #define getBit(x, n) (((x) >> (n)) & 1)
 
 // double型の乱数を生成 [0.0, 1.0]
-#define randDouble() ((double)rand_r(&seed) / RAND_MAX)
+#define randDouble() ((double)rand() / RAND_MAX)
 
 // 4ビットの乱数を生成
-#define rand4Bit() (rand_r(&seed) & 0b1111)
+#define rand4Bit() (rand() & 0b1111)
 
 // 各ビットのエラー率が一定の通信路
 // 引数はチャンネルの入力, 入力長, エラー率
@@ -71,7 +71,7 @@ u_int makeErrorBits(int n, int e_prob_int) {
         // 比較演算で得られるブール値をそのまま加える
         // 乱数がエラー率以下なら1, それ以外は0
         // int 型にする際, 小数点以下切り捨てなので等号含む
-        err |= (rand_r(&seed) <= e_prob_int);
+        err |= (rand() <= e_prob_int);
     }
     return err;
 }
