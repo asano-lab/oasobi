@@ -85,8 +85,7 @@ def main():
     # 検証する誤り率の配列
     # e_prob_arr = np.logspace(-6, -0.5, 12)
     e_prob_arr = np.logspace(-5.5, -0.5, 11)
-    print(e_prob_arr)
-    return
+    # print(e_prob_arr)
 
     for e_prob in e_prob_arr:
         count = round(args.expected / (4 * e_prob))
