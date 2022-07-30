@@ -7,7 +7,7 @@ import numpy as np
 def main():
     subprocess.run(["make", "experiment"])
 
-    p_bsc = np.power(10, -4 - 1 / 4)
+    p_bsc = np.power(10, -4.0)
     ev = 4000000
     count = round(ev / p_bsc / 4)
 
