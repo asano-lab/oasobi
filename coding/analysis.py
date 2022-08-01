@@ -54,6 +54,10 @@ def t_test_R(d1, d2):
     print(t_result)
 
 
+def hamming7_4_theoretical(p):
+    return p ** 2 * (-12 * p ** 3 + 30 * p ** 2 - 26 * p + 9)
+
+
 def main():
     parser = argparse.ArgumentParser(description="符号の実験")
     parser.add_argument("time", help="時刻の一部")
@@ -71,7 +75,7 @@ def main():
         fnamer_dict[mg[0][0]] = tmp_dict
     # print(fnamer_dict)
     sorted_keys = sorted(fnamer_dict.keys(), key=float)
-    p_bsc = [float(i) for i in sorted_keys]
+    p_bsc = np.array([float(i) for i in sorted_keys])
     # print(p_bsc)
     col_list = tmp_dict["df"].columns.tolist()
 
@@ -110,7 +114,10 @@ def main():
     # ax.scatter(p_bsc, col_dict["repetition"]["mean"])
 
     for i, col in enumerate(col_dict):
-        ax.scatter(p_bsc, col_dict[col]["mean"], color=COLORS[i])
+        color = COLORS[i]
+        ax.scatter(p_bsc, col_dict[col]["mean"], color=color)
+        if col == "hamming":
+            ax.plot(p_bsc, hamming7_4_theoretical(p_bsc), color=color)
 
     ax.set_xscale("log")
     ax.set_yscale("log")
