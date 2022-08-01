@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import itertools
 import os
 import re
 import glob
@@ -51,7 +52,7 @@ def t_test_R(d1, d2):
     # print(t_test_single(d1))
     # print(t_test_single(d2))
     t_result = r("t.test(d1, d2)")
-    print(t_result)
+    return t_result
 
 
 def hamming7_4theoretical(p):
@@ -66,8 +67,8 @@ def main():
     parser.add_argument("time", help="時刻の一部")
     args = parser.parse_args()
 
-    dir_list = glob.glob(f"{DAT_DIR}/*{args.time}*")
-    fnamer_list = glob.glob(f"{dir_list[0]}/*")
+    dat_dir_time = os.path.abspath(glob.glob(f"{DAT_DIR}/*{args.time}*")[0])
+    fnamer_list = glob.glob(f"{dat_dir_time}/bes*")
 
     fnamer_dict = {}
     for fnamer in fnamer_list:
@@ -84,9 +85,17 @@ def main():
 
     col_dict = {i: {"mean": [], "error": []} for i in col_list}
 
+    col_comb_list = list(itertools.combinations(col_list, 2))
+
     for i, k in enumerate(sorted_keys):
         e_prob_df = fnamer_dict[k]["df"]
-        t_test_R(e_prob_df["repetition"], e_prob_df["hamming"])
+        print("#" * 100)
+        print(k)
+        for col0, col1 in col_comb_list:
+            fnamea_test = f"{dat_dir_time}/t_test_{col0}_{col1}.txt"
+            moji = t_test_R(e_prob_df[col0], e_prob_df[col1])
+            print(fnamea_test)
+            # print(moji)
         # print(e_prob_df)
         validity_sr = (e_prob_df != 0).any()
         for col in e_prob_df.columns:
@@ -110,7 +119,7 @@ def main():
             col_dict[col]["mean"].append(sample_mean)
             col_dict[col]["error"].append(sample_error)
 
-    print(col_dict)
+    # print(col_dict)
     fig = plt.figure(figsize=(8, 5))
     ax = fig.add_subplot(1, 1, 1)
 
