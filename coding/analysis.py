@@ -115,15 +115,22 @@ def main():
     ax = fig.add_subplot(1, 1, 1)
 
     # ax.scatter(p_bsc, col_dict["repetition"]["mean"])
+    p_bsc_many = np.logspace(-8, 0, 1000)
 
     for i, col in enumerate(col_dict):
         color = COLORS[i]
         # ax.scatter(p_bsc, col_dict[col]["mean"], color=color, s=10)
         ax.errorbar(p_bsc, col_dict[col]["mean"], col_dict[col]["error"], color=color, fmt="o", markersize=4, capsize=4)
         if col == "hamming":
-            ax.plot(p_bsc, hamming7_4theoretical(p_bsc), color=color, linestyle=":")
+            ax.plot(p_bsc_many, hamming7_4theoretical(p_bsc_many), color=color, linestyle=":")
         elif col == "repetition":
-            ax.plot(p_bsc, repetition3_1theoretical(p_bsc), color=color, linestyle=":")
+            ax.plot(p_bsc_many, repetition3_1theoretical(p_bsc_many), color=color, linestyle=":")
+        else:
+            ax.plot(p_bsc_many, p_bsc_many, color=color, linestyle=":")
+    
+    ax.set_xlim(np.logspace(-6, np.log10(0.5), 2))
+    ax.set_ylim(np.logspace(-11.2, 0, 2))
+    # ax.set_ylim(np.logspace(-1, 0, 2))
 
     ax.set_xscale("log")
     ax.set_yscale("log")
