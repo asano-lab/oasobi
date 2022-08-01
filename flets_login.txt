@@ -1,0 +1,1 @@
+*/10 * * * * sonoda /home/sonoda/flets_login.py >> /home/sonoda/cron.log
