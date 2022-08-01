@@ -65,8 +65,7 @@ def main():
         line_token = f.read().split("\n")[1]
     # インターネットに接続していれば確実にログインしている
     if internet_on():
-        notification_message = concat_now("you are already logged in")
-        # send_line_notify(notification_message, line_token)
+        notification_message = concat_now(f"successfully connected to '{GOOGLE_URL}'")
         # ログイン済みの通知はうざいのでログだけ残す
         print(notification_message)
         return -1
@@ -84,6 +83,7 @@ def main():
         browser.get(FLETS_LOGIN_URL)
     except WebDriverException:
         notification_message = concat_now(f"unable to access '{FLETS_LOGIN_URL}'")
+        # 送信不能
         print(notification_message)
         return 1
 
@@ -95,7 +95,8 @@ def main():
             "/html/body/div[2]/div/div/div/div/div/div/div/div/div[2]/div/a"
         )
         notification_message = concat_now("you are already logged in")
-        send_line_notify(notification_message, line_token)
+        # ログイン済みの通知はうざいのでログだけ残す
+        print(notification_message)
         res = -1
     except WebDriverException:
         user_input = browser.find_element(By.ID, "EntryUserId")
