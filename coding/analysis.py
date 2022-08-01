@@ -115,9 +115,10 @@ def main():
 
     for i, col in enumerate(col_dict):
         color = COLORS[i]
-        ax.scatter(p_bsc, col_dict[col]["mean"], color=color)
+        # ax.scatter(p_bsc, col_dict[col]["mean"], color=color, s=10)
+        ax.errorbar(p_bsc, col_dict[col]["mean"], col_dict[col]["error"], color=color, fmt="o", markersize=4, capsize=4)
         if col == "hamming":
-            ax.plot(p_bsc, hamming7_4_theoretical(p_bsc), color=color)
+            ax.plot(p_bsc, hamming7_4_theoretical(p_bsc), color=color, linestyle=":")
 
     ax.set_xscale("log")
     ax.set_yscale("log")
