@@ -61,12 +61,10 @@ def main():
 
     dir_list = glob.glob(f"{DAT_DIR}/*{args.time}*")
     fnamer_list = glob.glob(f"{dir_list[0]}/*")
-    print(fnamer_list)
-    return
 
     fnamer_dict = {}
     for fnamer in fnamer_list:
-        mg = re.findall(r'p([0-9\.e\-]+)_c(\d+)_', fnamer)
+        mg = re.findall(r'p([0-9\.e\-]+)_c(\d+).csv', fnamer)
         tmp_dict = {}
         tmp_dict["path"] = fnamer
         tmp_dict["df"] = pd.read_csv(fnamer) / (4 * int(mg[0][1]))
