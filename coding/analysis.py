@@ -89,13 +89,18 @@ def main():
 
     for i, k in enumerate(sorted_keys):
         e_prob_df = fnamer_dict[k]["df"]
-        print("#" * 100)
-        print(k)
         for col0, col1 in col_comb_list:
             fnamea_test = f"{dat_dir_time}/t_test_{col0}_{col1}.txt"
             moji = t_test_R(e_prob_df[col0], e_prob_df[col1])
-            print(fnamea_test)
-            # print(moji)
+            if i == 0:
+                open_mode = "w"
+            else:
+                open_mode = "a"
+            with open(fnamea_test, open_mode, encoding="UTF-8") as f:
+                print(f"p = {k}", file=f)
+                print(moji, file=f)
+                print("#" * 100, file=f)
+            
         # print(e_prob_df)
         validity_sr = (e_prob_df != 0).any()
         for col in e_prob_df.columns:
