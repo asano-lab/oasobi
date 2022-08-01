@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 import re
 import glob
 import subprocess
@@ -17,6 +18,8 @@ COLORS = [
     "#20b2aa", "#adff2f", "#800080", "#8b4513"
 ]
 
+SRC_DIR = os.path.abspath(os.path.dirname(__file__))
+DAT_DIR = SRC_DIR + "/dat"
 
 def t_test_single(d):
     r.assign("d", d)
@@ -56,7 +59,10 @@ def main():
     parser.add_argument("time", help="時刻の一部")
     args = parser.parse_args()
 
-    fnamer_list = glob.glob(f"dat/*{args.time}*.csv")
+    dir_list = glob.glob(f"{DAT_DIR}/*{args.time}*")
+    fnamer_list = glob.glob(f"{dir_list[0]}/*")
+    print(fnamer_list)
+    return
 
     fnamer_dict = {}
     for fnamer in fnamer_list:
