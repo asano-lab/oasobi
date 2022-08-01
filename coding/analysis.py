@@ -54,9 +54,12 @@ def t_test_R(d1, d2):
     print(t_result)
 
 
-def hamming7_4_theoretical(p):
+def hamming7_4theoretical(p):
     return p ** 2 * (-12 * p ** 3 + 30 * p ** 2 - 26 * p + 9)
 
+
+def repetition3_1theoretical(p):
+    return p ** 2 * (3 - 2 * p)
 
 def main():
     parser = argparse.ArgumentParser(description="符号の実験")
@@ -118,7 +121,9 @@ def main():
         # ax.scatter(p_bsc, col_dict[col]["mean"], color=color, s=10)
         ax.errorbar(p_bsc, col_dict[col]["mean"], col_dict[col]["error"], color=color, fmt="o", markersize=4, capsize=4)
         if col == "hamming":
-            ax.plot(p_bsc, hamming7_4_theoretical(p_bsc), color=color, linestyle=":")
+            ax.plot(p_bsc, hamming7_4theoretical(p_bsc), color=color, linestyle=":")
+        elif col == "repetition":
+            ax.plot(p_bsc, repetition3_1theoretical(p_bsc), color=color, linestyle=":")
 
     ax.set_xscale("log")
     ax.set_yscale("log")
