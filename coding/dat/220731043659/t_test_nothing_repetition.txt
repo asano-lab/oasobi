@@ -1,0 +1,176 @@
+p = 3.1623e-06
+try({t.test(d1, d2)})
+
+	Welch Two Sample t-test
+
+data:  d1 and d2
+t = 1061.9, df = 9.0001, p-value < 2.2e-16
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 3.157343e-06 3.170824e-06
+sample estimates:
+   mean of x    mean of y 
+3.164096e-06 1.264911e-11 
+
+
+####################################################################################################
+p = 1.0000e-05
+try({t.test(d1, d2)})
+
+	Welch Two Sample t-test
+
+data:  d1 and d2
+t = 1014.4, df = 9.0003, p-value < 2.2e-16
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 9.975764e-06 1.002036e-05
+sample estimates:
+  mean of x   mean of y 
+9.99829e-06 2.30000e-10 
+
+
+####################################################################################################
+p = 3.1623e-05
+try({t.test(d1, d2)})
+
+	Welch Two Sample t-test
+
+data:  d1 and d2
+t = 1595, df = 9.0043, p-value < 2.2e-16
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 3.153625e-05 3.162582e-05
+sample estimates:
+   mean of x    mean of y 
+3.158426e-05 3.225523e-09 
+
+
+####################################################################################################
+p = 1.0000e-04
+try({t.test(d1, d2)})
+
+	Welch Two Sample t-test
+
+data:  d1 and d2
+t = 782.97, df = 9.0017, p-value < 2.2e-16
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 9.964009e-05 1.002175e-04
+sample estimates:
+ mean of x  mean of y 
+9.9958e-05 2.9200e-08 
+
+
+####################################################################################################
+p = 3.1623e-04
+try({t.test(d1, d2)})
+
+	Welch Two Sample t-test
+
+data:  d1 and d2
+t = 1062.6, df = 9.0106, p-value < 2.2e-16
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 0.0003149507 0.0003162943
+sample estimates:
+   mean of x    mean of y 
+3.159163e-04 2.937756e-07 
+
+
+####################################################################################################
+p = 1.0000e-03
+try({t.test(d1, d2)})
+
+	Welch Two Sample t-test
+
+data:  d1 and d2
+t = 766.82, df = 9.0408, p-value < 2.2e-16
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 0.0009936879 0.0009995641
+sample estimates:
+  mean of x   mean of y 
+0.000999541 0.000002915 
+
+
+####################################################################################################
+p = 3.1623e-03
+try({t.test(d1, d2)})
+
+	Welch Two Sample t-test
+
+data:  d1 and d2
+t = 1118.1, df = 9.2046, p-value < 2.2e-16
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 0.003129893 0.003142541
+sample estimates:
+   mean of x    mean of y 
+3.165788e-03 2.957046e-05 
+
+
+####################################################################################################
+p = 1.0000e-02
+try({t.test(d1, d2)})
+
+	Welch Two Sample t-test
+
+data:  d1 and d2
+t = 773.84, df = 9.2386, p-value < 2.2e-16
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 0.009687101 0.009743679
+sample estimates:
+ mean of x  mean of y 
+0.01000924 0.00029385 
+
+
+####################################################################################################
+p = 3.1623e-02
+try({t.test(d1, d2)})
+
+	Welch Two Sample t-test
+
+data:  d1 and d2
+t = 1140.8, df = 11.215, p-value < 2.2e-16
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 0.02866864 0.02877922
+sample estimates:
+  mean of x   mean of y 
+0.031662891 0.002938959 
+
+
+####################################################################################################
+p = 1.0000e-01
+try({t.test(d1, d2)})
+
+	Welch Two Sample t-test
+
+data:  d1 and d2
+t = 1129.5, df = 17.552, p-value < 2.2e-16
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 0.07163785 0.07190535
+sample estimates:
+mean of x mean of y 
+0.0999125 0.0281409 
+
+
+####################################################################################################
+p = 3.1623e-01
+try({t.test(d1, d2)})
+
+	Welch Two Sample t-test
+
+data:  d1 and d2
+t = 227.26, df = 13.581, p-value < 2.2e-16
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 0.07883014 0.08033666
+sample estimates:
+mean of x mean of y 
+0.3163113 0.2367279 
+
+
+####################################################################################################

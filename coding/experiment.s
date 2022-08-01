@@ -105,10 +105,11 @@ makeErrorBits:
 	jmp	.L8
 .L9:
 	sall	-8(%rbp)
-	leaq	seed(%rip), %rdi
-	call	rand_r@PLT
-	cmpl	%eax, -24(%rbp)
-	setge	%al
+	call	random@PLT
+	movl	-24(%rbp), %edx
+	movslq	%edx, %rdx
+	cmpq	%rdx, %rax
+	setle	%al
 	movzbl	%al, %eax
 	orl	%eax, -8(%rbp)
 	addl	$1, -4(%rbp)
@@ -396,8 +397,7 @@ compareErrorProb:
 	movl	$0, -48(%rbp)
 	jmp	.L40
 .L44:
-	leaq	seed(%rip), %rdi
-	call	rand_r@PLT
+	call	random@PLT
 	andl	$15, %eax
 	movl	%eax, -32(%rbp)
 	movl	-56(%rbp), %eax
@@ -498,99 +498,98 @@ compareBER:
 	movq	%rsp, %rbp
 	.cfi_def_cfa_register 6
 	pushq	%rbx
-	subq	$72, %rsp
+	subq	$88, %rsp
 	.cfi_offset 3, -24
-	movl	%edi, -68(%rbp)
-	movl	%esi, -72(%rbp)
-	movq	%rdx, -80(%rbp)
-	movl	$0, -52(%rbp)
-	movl	$0, -48(%rbp)
-	movl	$0, -44(%rbp)
+	movq	%rdi, -72(%rbp)
+	movl	%esi, -76(%rbp)
+	movq	%rdx, -88(%rbp)
+	movl	$0, -60(%rbp)
 	movl	$0, -56(%rbp)
+	movl	$0, -52(%rbp)
+	movq	$0, -32(%rbp)
 	jmp	.L47
 .L48:
-	leaq	seed(%rip), %rdi
-	call	rand_r@PLT
+	call	random@PLT
 	andl	$15, %eax
-	movl	%eax, -40(%rbp)
-	movl	-72(%rbp), %eax
+	movl	%eax, -48(%rbp)
+	movl	-76(%rbp), %eax
 	movl	%eax, %esi
 	movl	$4, %edi
 	call	makeErrorBits
+	xorl	-48(%rbp), %eax
+	movl	%eax, -44(%rbp)
+	movl	-48(%rbp), %eax
+	xorl	-44(%rbp), %eax
+	movl	%eax, %eax
+	movq	%rax, %rdi
+	call	__popcountdi2@PLT
+	addl	%eax, -60(%rbp)
+	movl	-48(%rbp), %eax
+	movl	$4, %esi
+	movl	%eax, %edi
+	call	encRepCode3
+	movl	%eax, -40(%rbp)
+	movl	-76(%rbp), %eax
+	movl	%eax, %esi
+	movl	$12, %edi
+	call	makeErrorBits
 	xorl	-40(%rbp), %eax
 	movl	%eax, -36(%rbp)
-	movl	-40(%rbp), %eax
-	xorl	-36(%rbp), %eax
+	movl	-36(%rbp), %eax
+	movl	$4, %esi
+	movl	%eax, %edi
+	call	decRepCode3
+	movl	%eax, -44(%rbp)
+	movl	-48(%rbp), %eax
+	xorl	-44(%rbp), %eax
+	movl	%eax, %eax
+	movq	%rax, %rdi
+	call	__popcountdi2@PLT
+	addl	%eax, -56(%rbp)
+	movl	-48(%rbp), %eax
+	leal	0(,%rax,8), %ebx
+	movl	-48(%rbp), %eax
+	movl	%eax, %edi
+	call	makeParityHamCode7_4
+	orl	%ebx, %eax
+	movl	%eax, -40(%rbp)
+	movl	-76(%rbp), %eax
+	movl	%eax, %esi
+	movl	$7, %edi
+	call	makeErrorBits
+	xorl	-40(%rbp), %eax
+	movl	%eax, -36(%rbp)
+	movl	-36(%rbp), %eax
+	movl	%eax, %edi
+	call	decHamCode7_4
+	movl	%eax, -44(%rbp)
+	movl	-48(%rbp), %eax
+	xorl	-44(%rbp), %eax
 	movl	%eax, %eax
 	movq	%rax, %rdi
 	call	__popcountdi2@PLT
 	addl	%eax, -52(%rbp)
-	movl	-40(%rbp), %eax
-	movl	$4, %esi
-	movl	%eax, %edi
-	call	encRepCode3
-	movl	%eax, -32(%rbp)
-	movl	-72(%rbp), %eax
-	movl	%eax, %esi
-	movl	$12, %edi
-	call	makeErrorBits
-	xorl	-32(%rbp), %eax
-	movl	%eax, -28(%rbp)
-	movl	-28(%rbp), %eax
-	movl	$4, %esi
-	movl	%eax, %edi
-	call	decRepCode3
-	movl	%eax, -36(%rbp)
-	movl	-40(%rbp), %eax
-	xorl	-36(%rbp), %eax
-	movl	%eax, %eax
-	movq	%rax, %rdi
-	call	__popcountdi2@PLT
-	addl	%eax, -48(%rbp)
-	movl	-40(%rbp), %eax
-	leal	0(,%rax,8), %ebx
-	movl	-40(%rbp), %eax
-	movl	%eax, %edi
-	call	makeParityHamCode7_4
-	orl	%ebx, %eax
-	movl	%eax, -32(%rbp)
-	movl	-72(%rbp), %eax
-	movl	%eax, %esi
-	movl	$7, %edi
-	call	makeErrorBits
-	xorl	-32(%rbp), %eax
-	movl	%eax, -28(%rbp)
-	movl	-28(%rbp), %eax
-	movl	%eax, %edi
-	call	decHamCode7_4
-	movl	%eax, -36(%rbp)
-	movl	-40(%rbp), %eax
-	xorl	-36(%rbp), %eax
-	movl	%eax, %eax
-	movq	%rax, %rdi
-	call	__popcountdi2@PLT
-	addl	%eax, -44(%rbp)
-	addl	$1, -56(%rbp)
+	addq	$1, -32(%rbp)
 .L47:
-	movl	-56(%rbp), %eax
-	cmpl	-68(%rbp), %eax
+	movq	-32(%rbp), %rax
+	cmpq	-72(%rbp), %rax
 	jl	.L48
-	movq	-80(%rbp), %rax
+	movq	-88(%rbp), %rax
 	leaq	.LC2(%rip), %rsi
 	movq	%rax, %rdi
 	call	fopen@PLT
 	movq	%rax, -24(%rbp)
 	cmpq	$0, -24(%rbp)
 	jne	.L49
-	movq	-80(%rbp), %rax
+	movq	-88(%rbp), %rax
 	movq	%rax, %rsi
 	leaq	.LC3(%rip), %rdi
 	movl	$0, %eax
 	call	printf@PLT
 .L49:
-	movl	-44(%rbp), %esi
-	movl	-48(%rbp), %ecx
-	movl	-52(%rbp), %edx
+	movl	-52(%rbp), %esi
+	movl	-56(%rbp), %ecx
+	movl	-60(%rbp), %edx
 	movq	-24(%rbp), %rax
 	movl	%esi, %r8d
 	leaq	.LC4(%rip), %rsi
@@ -601,7 +600,7 @@ compareBER:
 	movq	%rax, %rdi
 	call	fclose@PLT
 	movl	$0, %eax
-	addq	$72, %rsp
+	addq	$88, %rsp
 	popq	%rbx
 	popq	%rbp
 	.cfi_def_cfa 7, 8
@@ -610,10 +609,9 @@ compareBER:
 .LFE14:
 	.size	compareBER, .-compareBER
 	.section	.rodata
+	.align 8
 .LC5:
-	.string	"\345\274\225\346\225\260\344\270\215\350\266\263"
-.LC8:
-	.string	"%f\n"
+	.string	"experiment \345\207\272\345\212\233\343\203\225\343\202\241\343\202\244\343\203\253\345\220\215 \343\202\250\343\203\251\343\203\274\347\216\207 \343\203\253\343\203\274\343\203\227\346\225\260"
 	.text
 	.globl	main
 	.type	main, @function
@@ -641,7 +639,7 @@ main:
 .L52:
 	movq	-112(%rbp), %rax
 	movq	8(%rax), %rax
-	movq	%rax, -72(%rbp)
+	movq	%rax, -80(%rbp)
 	movq	-112(%rbp), %rax
 	addq	$16, %rax
 	movq	(%rax), %rax
@@ -649,7 +647,7 @@ main:
 	movq	%rax, %rdi
 	call	strtod@PLT
 	movq	%xmm0, %rax
-	movq	%rax, -64(%rbp)
+	movq	%rax, -72(%rbp)
 	movq	-112(%rbp), %rax
 	addq	$24, %rax
 	movq	(%rax), %rax
@@ -657,54 +655,41 @@ main:
 	movl	$0, %esi
 	movq	%rax, %rdi
 	call	strtol@PLT
-	movl	%eax, -84(%rbp)
+	movq	%rax, -64(%rbp)
 	leaq	-48(%rbp), %rax
 	movl	$0, %esi
 	movq	%rax, %rdi
 	call	gettimeofday@PLT
-	movl	%eax, -80(%rbp)
-	movl	$0, %edi
-	call	time@PLT
+	movl	%eax, -88(%rbp)
+	movq	-48(%rbp), %rax
+	imull	$1000000, %eax, %eax
+	movq	-40(%rbp), %rdx
+	addl	%edx, %eax
 	movl	%eax, seed(%rip)
-	movsd	-64(%rbp), %xmm1
+	movl	seed(%rip), %eax
+	movl	%eax, %edi
+	call	srandom@PLT
+	movsd	-72(%rbp), %xmm1
 	movsd	.LC6(%rip), %xmm0
 	mulsd	%xmm1, %xmm0
 	cvttsd2sil	%xmm0, %eax
-	movl	%eax, -76(%rbp)
-	cvtsi2sdl	-76(%rbp), %xmm0
+	movl	%eax, -84(%rbp)
+	cvtsi2sdl	-84(%rbp), %xmm0
 	movsd	.LC6(%rip), %xmm1
 	divsd	%xmm1, %xmm0
 	movsd	%xmm0, -56(%rbp)
-	movq	-72(%rbp), %rdx
-	movl	-76(%rbp), %ecx
-	movl	-84(%rbp), %eax
+	movq	-80(%rbp), %rdx
+	movl	-84(%rbp), %ecx
+	movq	-64(%rbp), %rax
 	movl	%ecx, %esi
-	movl	%eax, %edi
+	movq	%rax, %rdi
 	call	compareBER
 	leaq	-32(%rbp), %rax
 	movl	$0, %esi
 	movq	%rax, %rdi
 	call	gettimeofday@PLT
-	movl	%eax, -80(%rbp)
-	movq	-32(%rbp), %rax
-	cvtsi2sdq	%rax, %xmm1
-	movq	-24(%rbp), %rax
-	cvtsi2sdq	%rax, %xmm2
-	movsd	.LC7(%rip), %xmm0
-	mulsd	%xmm2, %xmm0
-	addsd	%xmm1, %xmm0
-	movq	-48(%rbp), %rax
-	cvtsi2sdq	%rax, %xmm2
-	movq	-40(%rbp), %rax
-	cvtsi2sdq	%rax, %xmm3
-	movsd	.LC7(%rip), %xmm1
-	mulsd	%xmm3, %xmm1
-	addsd	%xmm2, %xmm1
-	subsd	%xmm1, %xmm0
-	leaq	.LC8(%rip), %rdi
-	movl	$1, %eax
-	call	printf@PLT
-	movl	-80(%rbp), %eax
+	movl	%eax, -88(%rbp)
+	movl	-88(%rbp), %eax
 .L54:
 	movq	-8(%rbp), %rcx
 	xorq	%fs:40, %rcx
@@ -722,10 +707,6 @@ main:
 .LC6:
 	.long	4290772992
 	.long	1105199103
-	.align 8
-.LC7:
-	.long	2696277389
-	.long	1051772663
 	.ident	"GCC: (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0"
 	.section	.note.GNU-stack,"",@progbits
 	.section	.note.gnu.property,"a"
