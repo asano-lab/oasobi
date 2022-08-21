@@ -3,4 +3,6 @@ import os
 
 DIRNAME = "/home/sonoda/backups"
 
-print(os.listdir(DIRNAME))
+fname_list = [os.path.join(DIRNAME, i) for i in os.listdir(DIRNAME)]
+fname_list.sort(key=os.path.getmtime)
+print(fname_list)
