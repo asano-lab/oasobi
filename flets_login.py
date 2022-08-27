@@ -13,7 +13,8 @@ if __name__ == "__main__":
     from urllib.error import URLError
     from urllib.request import urlopen
     from selenium.common.exceptions import WebDriverException
-    from selenium.webdriver.chrome.options import Options
+    from selenium.webdriver.chrome.options import Options as ChromeOptions
+    from selenium.webdriver.firefox.options import Options as FirefoxOptions
     from selenium.webdriver.chrome import service as fs
     from selenium.webdriver.common.by import By
     from selenium import webdriver
@@ -25,8 +26,6 @@ if __name__ == "__main__":
 else:
     exit()
 
-CHROMEDRIVER = "/usr/lib/chromium-browser/chromedriver"
-CHROME_SERVICE = fs.Service(executable_path=CHROMEDRIVER)
 
 PRIVATE_DIR = "./private"
 
@@ -89,14 +88,25 @@ def main():
         # ログイン済みの通知はうざいのでログだけ残す
         print(notification_message)
         return -1
+
+    # GUIが使える場合
     try:
-        # GUIが使える場合
-        browser = webdriver.Chrome(service=CHROME_SERVICE)
+        if args.browser == "Firefox":
+            options = FirefoxOptions()
+            options.binary_location = "/usr/bin/firefox"
+            browser = webdriver.Firefox(options=options)
+        else:
+            options = ChromeOptions()
+            chrome_service = fs.Service(
+                executable_path="/usr/lib/chromium-browser/chromedriver")
+            browser = webdriver.Chrome(service=chrome_service)
     except WebDriverException:
         # GUIが使えない場合
-        options = Options()
         options.add_argument("--headless")
-        browser = webdriver.Chrome(service=CHROME_SERVICE, options=options)
+        if args.browser == "Firefox":
+            browser = webdriver.Firefox(options=options)
+        else:
+            browser = webdriver.Chrome(service=chrome_service, options=options)
 
     # ログインページにアクセス
     try:
@@ -111,7 +121,7 @@ def main():
     res = 0
     try:
         # ログアウトボタンを発見
-        logout_button = browser.find_element(
+        browser.find_element(
             By.XPATH,
             "/html/body/div[2]/div/div/div/div/div/div/div/div/div[2]/div/a"
         )
