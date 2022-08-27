@@ -8,6 +8,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="家のWi-Fiにログインするためのプログラム")
 
     parser.add_argument("-b", "--browser", help="ブラウザ", default="Chromium")
+    parser.add_argument("--headless",
+                        help="ヘッドレスモード", action="store_true")
     args = parser.parse_args()
 
     from urllib.error import URLError
@@ -79,6 +81,8 @@ def concat_now(moji: str) -> str:
 
 
 def main():
+    headless = args.headless
+
     with open(TOKEN_PATH, "r", encoding="UTF-8") as f:
         line_token = f.read().split("\n")[1]
     # インターネットに接続していれば確実にログインしている
@@ -90,23 +94,33 @@ def main():
         return -1
 
     # GUIが使える場合
-    try:
+    if not args.headless:
+        try:
+            if args.browser == "Firefox":
+                options = FirefoxOptions()
+                options.binary_location = "/usr/bin/firefox"
+                browser = webdriver.Firefox(options=options)
+            else:
+                chrome_service = fs.Service(
+                    executable_path="/usr/lib/chromium-browser/chromedriver")
+                browser = webdriver.Chrome(service=chrome_service)
+        except WebDriverException:
+            headless = True
+
+    # GUIを使わない, 使えない場合
+    if headless:
         if args.browser == "Firefox":
             options = FirefoxOptions()
             options.binary_location = "/usr/bin/firefox"
+            options.add_argument("--headless")
             browser = webdriver.Firefox(options=options)
         else:
-            options = ChromeOptions()
             chrome_service = fs.Service(
                 executable_path="/usr/lib/chromium-browser/chromedriver")
-            browser = webdriver.Chrome(service=chrome_service)
-    except WebDriverException:
-        # GUIが使えない場合
-        options.add_argument("--headless")
-        if args.browser == "Firefox":
-            browser = webdriver.Firefox(options=options)
-        else:
-            browser = webdriver.Chrome(service=chrome_service, options=options)
+            options = ChromeOptions()
+            options.add_argument("--headless")
+            browser = webdriver.Chrome(
+                service=chrome_service, options=options)
 
     # ログインページにアクセス
     try:
