@@ -1,34 +1,52 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import time
-import re
-import requests
-import datetime
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome import service as fs
-from selenium.webdriver.chrome.options import Options
-from selenium.common.exceptions import WebDriverException
-from urllib.request import urlopen
-from urllib.error import URLError
 
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(description="家のWi-Fiにログインするためのプログラム")
+
+    parser.add_argument("-b", "--browser", help="ブラウザ", default="Chromium")
+    args = parser.parse_args()
+
+    from urllib.error import URLError
+    from urllib.request import urlopen
+    from selenium.common.exceptions import WebDriverException
+    from selenium.webdriver.chrome.options import Options
+    from selenium.webdriver.chrome import service as fs
+    from selenium.webdriver.common.by import By
+    from selenium import webdriver
+    import datetime
+    import requests
+    import re
+    import time
+    import os
+else:
+    exit()
 
 CHROMEDRIVER = "/usr/lib/chromium-browser/chromedriver"
 CHROME_SERVICE = fs.Service(executable_path=CHROMEDRIVER)
 
-FLETS_INFO_PATH = "/home/sonoda/.secret/flets_info.txt"
+PRIVATE_DIR = "./private"
+
+
+FLETS_INFO_PATH = os.path.abspath(os.path.join(PRIVATE_DIR, "flets_info.txt"))
+
+
 FLETS_LOGIN_URL = "https://wifi.e-flets.jp"
 
 GOOGLE_URL = "https://www.google.com"
 
 # 平文で保存してある
-TOKEN_PATH = "/home/sonoda/.secret/line_token01.txt"
+# TOKEN_PATH = "/home/sonoda/.secret/line_token01.txt"
+TOKEN_PATH = os.path.abspath(os.path.join(PRIVATE_DIR, "line_token01.txt"))
 LINE_NOTIFY_API = "https://notify-api.line.me/api/notify"
 
 
 t_delta = datetime.timedelta(hours=9)  # 9時間
 JST = datetime.timezone(t_delta, "JST")  # UTCから9時間差の「JST」タイムゾーン
+
 
 def internet_on():
     """
@@ -40,6 +58,7 @@ def internet_on():
     except URLError:
         res = False
     return res
+
 
 def send_line_notify(notification_message, token):
     """
@@ -65,7 +84,8 @@ def main():
         line_token = f.read().split("\n")[1]
     # インターネットに接続していれば確実にログインしている
     if internet_on():
-        notification_message = concat_now(f"successfully connected to '{GOOGLE_URL}'")
+        notification_message = concat_now(
+            f"successfully connected to '{GOOGLE_URL}'")
         # ログイン済みの通知はうざいのでログだけ残す
         print(notification_message)
         return -1
@@ -82,7 +102,8 @@ def main():
     try:
         browser.get(FLETS_LOGIN_URL)
     except WebDriverException:
-        notification_message = concat_now(f"unable to access '{FLETS_LOGIN_URL}'")
+        notification_message = concat_now(
+            f"unable to access '{FLETS_LOGIN_URL}'")
         # 送信不能
         print(notification_message)
         return 1
@@ -119,6 +140,7 @@ def main():
     finally:
         browser.quit()
         return res
+
 
 if __name__ == "__main__":
     main()
