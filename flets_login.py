@@ -40,7 +40,6 @@ FLETS_LOGIN_URL = "https://wifi.e-flets.jp"
 GOOGLE_URL = "https://www.google.com"
 
 # 平文で保存してある
-# TOKEN_PATH = "/home/sonoda/.secret/line_token01.txt"
 TOKEN_PATH = os.path.abspath(os.path.join(PRIVATE_DIR, "line_token01.txt"))
 LINE_NOTIFY_API = "https://notify-api.line.me/api/notify"
 
