@@ -29,6 +29,8 @@ def send_line_notify(notification_message, token):
     line_notify_token = token
     headers = {"Authorization": f"Bearer {line_notify_token}"}
     data = {"message": f"{notification_message}"}
+    # print(headers)
+    # print(data)
     requests.post(LINE_NOTIFY_API, headers=headers, data=data)
 
 
@@ -41,7 +43,7 @@ def concat_now(moji: str) -> str:
 
 def main():
     with open(TOKEN_PATH, "r", encoding="UTF-8") as f:
-        line_token = f.read().split("\n")[1]
+        line_token = f.read()
     notification_message = concat_now("active")
     send_line_notify(notification_message, line_token)
 
