@@ -43,7 +43,7 @@ def concat_now(moji: str) -> str:
 
 def main():
     with open(TOKEN_PATH, "r", encoding="UTF-8") as f:
-        line_token = f.read()
+        line_token = f.read().split("\n")[0]
     notification_message = concat_now("active")
     send_line_notify(notification_message, line_token)
 
