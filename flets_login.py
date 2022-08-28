@@ -10,6 +10,8 @@ if __name__ == "__main__":
     parser.add_argument("-b", "--browser", help="ブラウザ", default="Chromium")
     parser.add_argument("--headless",
                         help="ヘッドレスモード", action="store_true")
+    parser.add_argument("--debug",
+                        help="デバッグモード (めっちゃ通知する)", action="store_true")
     args = parser.parse_args()
 
     from urllib.error import URLError
@@ -83,13 +85,17 @@ def main():
     headless = args.headless
 
     with open(TOKEN_PATH, "r", encoding="UTF-8") as f:
-        line_token = f.read().split("\n")[1]
+        line_token = f.read()
     # インターネットに接続していれば確実にログインしている
     if internet_on():
         notification_message = concat_now(
             f"successfully connected to '{GOOGLE_URL}'")
-        # ログイン済みの通知はうざいのでログだけ残す
-        print(notification_message)
+        if args.debug:
+            send_line_notify(notification_message, line_token)
+        else:
+            # ログイン済みの通知はうざいのでログだけ残す
+            print(notification_message)
+
         return -1
 
     # GUIが使える場合
