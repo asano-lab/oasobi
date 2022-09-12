@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <sys/time.h>
+#include <math.h>
 
 #define N 100000
 
@@ -9,7 +10,7 @@ int main(void) {
     struct timeval t0, t1;
     double t0_sec, t1_sec;
 
-    int i, j, n;
+    u_int i, j, n, sqrt_n;
     u_int prime_numbers[N];
     bool prime_flag;
     prime_numbers[0] = 2;
@@ -17,12 +18,16 @@ int main(void) {
     gettimeofday(&t0, NULL);
     i = 1;
     for (n = 3; i < N; n++) {
+        sqrt_n = sqrt(n) + 1;
         // printf("%d: ", n);
         prime_flag = true;
         for (j = 0; j < i; j++) {
             if (n % prime_numbers[j] == 0) {
                 // printf("smallest prime factor is %d\n", prime_numbers[j]);
                 prime_flag = false;
+                break;
+            }
+            if (prime_numbers[j] > sqrt_n) {
                 break;
             }
         }

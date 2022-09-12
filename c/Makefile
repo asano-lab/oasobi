@@ -1,5 +1,5 @@
 CC = gcc
-GCCFLAGS = -Wall -Wextra -O3
+GCCFLAGS = -Wall -Wextra -O3 -lm
 
 EXES = opt primality_test
 
