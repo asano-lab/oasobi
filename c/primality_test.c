@@ -17,6 +17,7 @@ int main(void) {
 
     gettimeofday(&t0, NULL);
     i = 1;
+    printf("%d,%d\n", 1, 2);
     for (n = 3; i < N; n++) {
         sqrt_n = sqrt(n) + 1;
         // printf("%d: ", n);
@@ -32,18 +33,18 @@ int main(void) {
             }
         }
         if (prime_flag) {
-            printf("%d,", n);
             // printf("prime number\n");
             prime_numbers[i++] = n;
+            printf("%d,%d\n", i, n);
         }
     }
-    putchar(10);
+    // putchar(10);
     gettimeofday(&t1, NULL);
 
     t0_sec = (double)t0.tv_sec + (double)t0.tv_usec * 1e-6;
     t1_sec = (double)t1.tv_sec + (double)t1.tv_usec * 1e-6;
 
-    printf("%d\n", prime_numbers[N - 1]);
-    printf("%f\n", t1_sec - t0_sec);
+    // printf("%d\n", prime_numbers[N - 1]);
+    // printf("%f\n", t1_sec - t0_sec);
     return 0;
 }
