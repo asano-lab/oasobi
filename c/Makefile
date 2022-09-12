@@ -1,7 +1,7 @@
 CC = gcc
 GCCFLAGS = -Wall -Wextra -O3
 
-EXES = opt
+EXES = opt primality_test
 
 .PHONY: all
 all: $(EXES)
@@ -9,8 +9,11 @@ all: $(EXES)
 primality_test.s: primality_test.c
 	$(CC) -S $< $(GCCFLAGS)
 
-opt: opt.o
-	gcc -o $@ $^
+primality_test.o: primality_test.s
+	as -o $@ $<
+
+primality_test: primality_test.o
+	$(CC) -o $@ $^ $(GCCFLAGS)
 
 .PHONY: clean
 clean:
