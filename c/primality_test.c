@@ -4,7 +4,7 @@
 #include <sys/time.h>
 #include <math.h>
 
-#define N 100000
+#define N 1000
 
 int main(void) {
     struct timeval t0, t1;
@@ -32,11 +32,12 @@ int main(void) {
             }
         }
         if (prime_flag) {
-            // printf("%d\n", n);
+            printf("%d,", n);
             // printf("prime number\n");
             prime_numbers[i++] = n;
         }
     }
+    putchar(10);
     gettimeofday(&t1, NULL);
 
     t0_sec = (double)t0.tv_sec + (double)t0.tv_usec * 1e-6;

@@ -5,6 +5,8 @@
 	.string	"%d\n"
 .LC5:
 	.string	"%f\n"
+.LC6:
+	.string	"%d,"
 	.section	.text.startup,"ax",@progbits
 	.p2align 4
 	.globl	main
@@ -13,34 +15,29 @@ main:
 .LFB39:
 	.cfi_startproc
 	endbr64
-	pushq	%r12
+	pushq	%r13
 	.cfi_def_cfa_offset 16
-	.cfi_offset 12, -16
-	pushq	%rbp
-	.cfi_def_cfa_offset 24
-	.cfi_offset 6, -24
-	pushq	%rbx
-	.cfi_def_cfa_offset 32
-	.cfi_offset 3, -32
-	leaq	-397312(%rsp), %r11
-	.cfi_def_cfa 11, 397344
-.LPSRL0:
-	subq	$4096, %rsp
-	orq	$0, (%rsp)
-	cmpq	%r11, %rsp
-	jne	.LPSRL0
-	.cfi_def_cfa_register 7
-	subq	$2752, %rsp
-	.cfi_def_cfa_offset 400096
+	.cfi_offset 13, -16
 	xorl	%esi, %esi
-	movl	$3, %ebx
-	movl	$1, %ebp
+	pushq	%r12
+	.cfi_def_cfa_offset 24
+	.cfi_offset 12, -24
+	movl	$3, %r12d
+	pushq	%rbp
+	.cfi_def_cfa_offset 32
+	.cfi_offset 6, -32
+	pushq	%rbx
+	.cfi_def_cfa_offset 40
+	.cfi_offset 3, -40
+	movl	$1, %ebx
+	subq	$4072, %rsp
+	.cfi_def_cfa_offset 4112
 	movq	%fs:40, %rax
-	movq	%rax, 400056(%rsp)
+	movq	%rax, 4056(%rsp)
 	xorl	%eax, %eax
 	leaq	16(%rsp), %rdi
 	movl	$2, 48(%rsp)
-	leaq	48(%rsp), %r12
+	leaq	48(%rsp), %r13
 	call	gettimeofday@PLT
 	movsd	.LC0(%rip), %xmm1
 	pxor	%xmm3, %xmm3
@@ -49,15 +46,15 @@ main:
 	.p2align 3
 .L2:
 	addsd	%xmm2, %xmm1
-	movl	%ebp, %r9d
-	movq	%r12, %rsi
-	leaq	(%r12,%r9,4), %r8
+	movl	%ebx, %ebp
+	movq	%r13, %rsi
+	leaq	0(%r13,%rbp,4), %r8
 	cvttsd2siq	%xmm1, %rdi
 	.p2align 4,,10
 	.p2align 3
 .L8:
 	movl	(%rsi), %ecx
-	movl	%ebx, %eax
+	movl	%r12d, %eax
 	xorl	%edx, %edx
 	divl	%ecx
 	testl	%edx, %edx
@@ -68,13 +65,21 @@ main:
 	cmpq	%rsi, %r8
 	jne	.L8
 .L7:
-	movl	%ebx, 48(%rsp,%r9,4)
-	addl	$1, %ebp
-.L6:
+	movl	%r12d, %edx
+	leaq	.LC6(%rip), %rsi
+	xorl	%eax, %eax
 	addl	$1, %ebx
-	cmpl	$100000, %ebp
+	movl	$1, %edi
+	call	__printf_chk@PLT
+	movq	.LC2(%rip), %rax
+	movl	%r12d, 48(%rsp,%rbp,4)
+	pxor	%xmm3, %xmm3
+	movq	%rax, %xmm2
+.L6:
+	addl	$1, %r12d
+	cmpl	$1000, %ebx
 	je	.L18
-	movl	%ebx, %eax
+	movl	%r12d, %eax
 	pxor	%xmm0, %xmm0
 	cvtsi2sdq	%rax, %xmm0
 	ucomisd	%xmm0, %xmm3
@@ -91,6 +96,9 @@ main:
 	.p2align 4,,10
 	.p2align 3
 .L18:
+	movq	stdout(%rip), %rsi
+	movl	$10, %edi
+	call	putc@PLT
 	xorl	%esi, %esi
 	leaq	32(%rsp), %rdi
 	call	gettimeofday@PLT
@@ -99,7 +107,7 @@ main:
 	xorl	%eax, %eax
 	cvtsi2sdq	24(%rsp), %xmm1
 	movsd	.LC3(%rip), %xmm2
-	movl	400044(%rsp), %edx
+	movl	4044(%rsp), %edx
 	leaq	.LC4(%rip), %rsi
 	cvtsi2sdq	16(%rsp), %xmm0
 	movl	$1, %edi
@@ -120,18 +128,20 @@ main:
 	movl	$1, %edi
 	movl	$1, %eax
 	call	__printf_chk@PLT
-	movq	400056(%rsp), %rax
+	movq	4056(%rsp), %rax
 	xorq	%fs:40, %rax
 	jne	.L19
-	addq	$400064, %rsp
+	addq	$4072, %rsp
 	.cfi_remember_state
-	.cfi_def_cfa_offset 32
+	.cfi_def_cfa_offset 40
 	xorl	%eax, %eax
 	popq	%rbx
-	.cfi_def_cfa_offset 24
+	.cfi_def_cfa_offset 32
 	popq	%rbp
-	.cfi_def_cfa_offset 16
+	.cfi_def_cfa_offset 24
 	popq	%r12
+	.cfi_def_cfa_offset 16
+	popq	%r13
 	.cfi_def_cfa_offset 8
 	ret
 .L19:
