@@ -1,12 +1,10 @@
 	.file	"primality_test.c"
 	.text
 	.section	.rodata.str1.1,"aMS",@progbits,1
-.LC0:
-	.string	"%d: "
 .LC1:
-	.string	"smallest prime factor is %d\n"
+	.string	"%d\n"
 .LC2:
-	.string	"prime number"
+	.string	"%f\n"
 	.section	.text.startup,"ax",@progbits
 	.p2align 4
 	.globl	main
@@ -15,97 +13,99 @@ main:
 .LFB39:
 	.cfi_startproc
 	endbr64
-	pushq	%r14
-	.cfi_def_cfa_offset 16
-	.cfi_offset 14, -16
-	movl	$3, %r14d
-	pushq	%r13
-	.cfi_def_cfa_offset 24
-	.cfi_offset 13, -24
-	pushq	%r12
-	.cfi_def_cfa_offset 32
-	.cfi_offset 12, -32
-	pushq	%rbp
-	.cfi_def_cfa_offset 40
-	.cfi_offset 6, -40
-	leaq	.LC0(%rip), %rbp
-	pushq	%rbx
-	.cfi_def_cfa_offset 48
-	.cfi_offset 3, -48
-	movl	$1, %ebx
-	subq	$416, %rsp
-	.cfi_def_cfa_offset 464
+	leaq	-36864(%rsp), %r11
+	.cfi_def_cfa 11, 36872
+.LPSRL0:
+	subq	$4096, %rsp
+	orq	$0, (%rsp)
+	cmpq	%r11, %rsp
+	jne	.LPSRL0
+	.cfi_def_cfa_register 7
+	subq	$3208, %rsp
+	.cfi_def_cfa_offset 40080
+	xorl	%esi, %esi
 	movq	%fs:40, %rax
-	movq	%rax, 408(%rsp)
+	movq	%rax, 40056(%rsp)
 	xorl	%eax, %eax
-	movl	$2, (%rsp)
-	movq	%rsp, %r13
-	leaq	4(%rsp), %r12
+	leaq	16(%rsp), %rdi
+	movl	$2, 48(%rsp)
+	call	gettimeofday@PLT
+	movl	$3, %esi
+	movl	$1, %r8d
+	leaq	48(%rsp), %r10
+	leaq	52(%rsp), %r9
 	.p2align 4,,10
 	.p2align 3
-.L5:
-	movq	%rbp, %rsi
-	movl	%r14d, %edx
-	movl	$1, %edi
-	xorl	%eax, %eax
-	call	__printf_chk@PLT
-	leal	-1(%rbx), %eax
-	movq	%r13, %rcx
-	leaq	(%r12,%rax,4), %rsi
+.L2:
+	leal	-1(%r8), %eax
+	movq	%r10, %rcx
+	leaq	(%r9,%rax,4), %rdi
 	.p2align 4,,10
 	.p2align 3
 .L4:
-	movl	(%rcx), %r8d
-	movl	%r14d, %eax
+	movl	%esi, %eax
 	xorl	%edx, %edx
-	divl	%r8d
+	divl	(%rcx)
 	testl	%edx, %edx
-	je	.L11
+	je	.L3
 	addq	$4, %rcx
-	cmpq	%rsi, %rcx
+	cmpq	%rdi, %rcx
 	jne	.L4
-	leaq	.LC2(%rip), %rdi
-	call	puts@PLT
-	movslq	%ebx, %rax
-	addl	$1, %ebx
-	movl	%r14d, (%rsp,%rax,4)
+	movslq	%r8d, %rax
+	addl	$1, %r8d
+	movl	%esi, 48(%rsp,%rax,4)
 .L3:
-	addl	$1, %r14d
-	cmpl	$100, %ebx
-	jne	.L5
-	movq	408(%rsp), %rax
-	xorq	%fs:40, %rax
-	jne	.L12
-	addq	$416, %rsp
-	.cfi_remember_state
-	.cfi_def_cfa_offset 48
+	addl	$1, %esi
+	cmpl	$10000, %r8d
+	jne	.L2
+	xorl	%esi, %esi
+	leaq	32(%rsp), %rdi
+	call	gettimeofday@PLT
+	pxor	%xmm1, %xmm1
+	pxor	%xmm0, %xmm0
 	xorl	%eax, %eax
-	popq	%rbx
-	.cfi_def_cfa_offset 40
-	popq	%rbp
-	.cfi_def_cfa_offset 32
-	popq	%r12
-	.cfi_def_cfa_offset 24
-	popq	%r13
-	.cfi_def_cfa_offset 16
-	popq	%r14
+	cvtsi2sdq	24(%rsp), %xmm1
+	movsd	.LC0(%rip), %xmm2
+	movl	40044(%rsp), %edx
+	leaq	.LC1(%rip), %rsi
+	cvtsi2sdq	16(%rsp), %xmm0
+	movl	$1, %edi
+	mulsd	%xmm2, %xmm1
+	addsd	%xmm0, %xmm1
+	pxor	%xmm0, %xmm0
+	cvtsi2sdq	40(%rsp), %xmm0
+	movsd	%xmm1, (%rsp)
+	pxor	%xmm1, %xmm1
+	cvtsi2sdq	32(%rsp), %xmm1
+	mulsd	%xmm2, %xmm0
+	addsd	%xmm1, %xmm0
+	movsd	%xmm0, 8(%rsp)
+	call	__printf_chk@PLT
+	movsd	8(%rsp), %xmm0
+	subsd	(%rsp), %xmm0
+	leaq	.LC2(%rip), %rsi
+	movl	$1, %edi
+	movl	$1, %eax
+	call	__printf_chk@PLT
+	movq	40056(%rsp), %rax
+	xorq	%fs:40, %rax
+	jne	.L16
+	xorl	%eax, %eax
+	addq	$40072, %rsp
+	.cfi_remember_state
 	.cfi_def_cfa_offset 8
 	ret
-	.p2align 4,,10
-	.p2align 3
-.L11:
+.L16:
 	.cfi_restore_state
-	movl	%r8d, %edx
-	leaq	.LC1(%rip), %rsi
-	movl	$1, %edi
-	xorl	%eax, %eax
-	call	__printf_chk@PLT
-	jmp	.L3
-.L12:
 	call	__stack_chk_fail@PLT
 	.cfi_endproc
 .LFE39:
 	.size	main, .-main
+	.section	.rodata.cst8,"aM",@progbits,8
+	.align 8
+.LC0:
+	.long	2696277389
+	.long	1051772663
 	.ident	"GCC: (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0"
 	.section	.note.GNU-stack,"",@progbits
 	.section	.note.gnu.property,"a"
