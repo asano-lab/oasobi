@@ -1,60 +1,50 @@
 	.file	"opt.c"
 	.text
-	.section	.rodata
+	.section	.rodata.str1.1,"aMS",@progbits,1
 .LC0:
 	.string	"usage: %s <number>\n"
 .LC1:
 	.string	"%d > %d\n"
-	.text
+	.section	.text.startup,"ax",@progbits
+	.p2align 4
 	.globl	main
 	.type	main, @function
 main:
-.LFB6:
+.LFB39:
 	.cfi_startproc
 	endbr64
-	pushq	%rbp
+	subq	$8, %rsp
 	.cfi_def_cfa_offset 16
-	.cfi_offset 6, -16
-	movq	%rsp, %rbp
-	.cfi_def_cfa_register 6
-	subq	$32, %rsp
-	movl	%edi, -20(%rbp)
-	movq	%rsi, -32(%rbp)
-	cmpl	$1, -20(%rbp)
-	jg	.L2
-	movq	-32(%rbp), %rax
-	movq	(%rax), %rdx
-	movq	stderr(%rip), %rax
-	leaq	.LC0(%rip), %rsi
-	movq	%rax, %rdi
-	movl	$0, %eax
-	call	fprintf@PLT
-	movl	$1, %eax
-	jmp	.L3
-.L2:
-	movq	-32(%rbp), %rax
-	addq	$8, %rax
-	movq	(%rax), %rax
-	movl	$0, %edx
-	movl	$0, %esi
-	movq	%rax, %rdi
+	cmpl	$1, %edi
+	jle	.L6
+	movq	8(%rsi), %rdi
+	xorl	%edx, %edx
+	xorl	%esi, %esi
 	call	strtol@PLT
-	movl	%eax, -4(%rbp)
-	movl	-4(%rbp), %eax
-	leal	1(%rax), %ecx
-	movl	-4(%rbp), %eax
-	movl	%eax, %edx
-	movl	%ecx, %esi
-	leaq	.LC1(%rip), %rdi
-	movl	$0, %eax
-	call	printf@PLT
-	movl	$0, %eax
-.L3:
-	leave
-	.cfi_def_cfa 7, 8
+	leaq	.LC1(%rip), %rsi
+	movl	$1, %edi
+	movq	%rax, %rcx
+	leal	1(%rax), %edx
+	xorl	%eax, %eax
+	call	__printf_chk@PLT
+	xorl	%eax, %eax
+.L1:
+	addq	$8, %rsp
+	.cfi_remember_state
+	.cfi_def_cfa_offset 8
 	ret
+.L6:
+	.cfi_restore_state
+	movq	(%rsi), %rcx
+	movq	stderr(%rip), %rdi
+	movl	$1, %esi
+	xorl	%eax, %eax
+	leaq	.LC0(%rip), %rdx
+	call	__fprintf_chk@PLT
+	movl	$1, %eax
+	jmp	.L1
 	.cfi_endproc
-.LFE6:
+.LFE39:
 	.size	main, .-main
 	.ident	"GCC: (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0"
 	.section	.note.GNU-stack,"",@progbits
