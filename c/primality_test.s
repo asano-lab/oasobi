@@ -14,19 +14,27 @@ main:
 	pushq	%r12
 	.cfi_def_cfa_offset 16
 	.cfi_offset 12, -16
-	xorl	%esi, %esi
-	movl	$3, %r12d
 	pushq	%rbp
 	.cfi_def_cfa_offset 24
 	.cfi_offset 6, -24
 	pushq	%rbx
 	.cfi_def_cfa_offset 32
 	.cfi_offset 3, -32
+	leaq	-36864(%rsp), %r11
+	.cfi_def_cfa 11, 36896
+.LPSRL0:
+	subq	$4096, %rsp
+	orq	$0, (%rsp)
+	cmpq	%r11, %rsp
+	jne	.LPSRL0
+	.cfi_def_cfa_register 7
+	subq	$3200, %rsp
+	.cfi_def_cfa_offset 40096
+	xorl	%esi, %esi
+	movl	$3, %r12d
 	movl	$1, %ebx
-	subq	$4064, %rsp
-	.cfi_def_cfa_offset 4096
 	movq	%fs:40, %rax
-	movq	%rax, 4056(%rsp)
+	movq	%rax, 40056(%rsp)
 	xorl	%eax, %eax
 	leaq	16(%rsp), %rdi
 	movl	$2, 48(%rsp)
@@ -77,7 +85,7 @@ main:
 	movq	%rax, %xmm2
 .L6:
 	addl	$1, %r12d
-	cmpl	$1000, %ebx
+	cmpl	$10000, %ebx
 	je	.L18
 	movl	%r12d, %eax
 	pxor	%xmm0, %xmm0
@@ -99,10 +107,10 @@ main:
 	xorl	%esi, %esi
 	leaq	32(%rsp), %rdi
 	call	gettimeofday@PLT
-	movq	4056(%rsp), %rax
+	movq	40056(%rsp), %rax
 	xorq	%fs:40, %rax
 	jne	.L19
-	addq	$4064, %rsp
+	addq	$40064, %rsp
 	.cfi_remember_state
 	.cfi_def_cfa_offset 32
 	xorl	%eax, %eax

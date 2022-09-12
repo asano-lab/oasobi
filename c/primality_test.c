@@ -4,7 +4,7 @@
 #include <sys/time.h>
 #include <math.h>
 
-#define N 1000
+#define N 10000
 
 int main(void) {
     struct timeval t0, t1;
