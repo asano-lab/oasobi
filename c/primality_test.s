@@ -2,7 +2,11 @@
 	.text
 	.section	.rodata.str1.1,"aMS",@progbits,1
 .LC0:
-	.string	"%d\n"
+	.string	"%d: "
+.LC1:
+	.string	"smallest prime factor is %d\n"
+.LC2:
+	.string	"prime number"
 	.section	.text.startup,"ax",@progbits
 	.p2align 4
 	.globl	main
@@ -14,62 +18,65 @@ main:
 	pushq	%r14
 	.cfi_def_cfa_offset 16
 	.cfi_offset 14, -16
-	leaq	.LC0(%rip), %r14
+	movl	$3, %r14d
 	pushq	%r13
 	.cfi_def_cfa_offset 24
 	.cfi_offset 13, -24
 	pushq	%r12
 	.cfi_def_cfa_offset 32
 	.cfi_offset 12, -32
-	movl	$3, %r12d
 	pushq	%rbp
 	.cfi_def_cfa_offset 40
 	.cfi_offset 6, -40
+	leaq	.LC0(%rip), %rbp
 	pushq	%rbx
 	.cfi_def_cfa_offset 48
 	.cfi_offset 3, -48
 	movl	$1, %ebx
-	subq	$1040, %rsp
-	.cfi_def_cfa_offset 1088
+	subq	$416, %rsp
+	.cfi_def_cfa_offset 464
 	movq	%fs:40, %rax
-	movq	%rax, 1032(%rsp)
+	movq	%rax, 408(%rsp)
 	xorl	%eax, %eax
 	movl	$2, (%rsp)
 	movq	%rsp, %r13
-	leaq	4(%rsp), %rbp
+	leaq	4(%rsp), %r12
 	.p2align 4,,10
 	.p2align 3
-.L2:
-	leal	-1(%rbx), %eax
-	movq	%r13, %rcx
-	leaq	0(%rbp,%rax,4), %rsi
-	.p2align 4,,10
-	.p2align 3
-.L4:
-	movl	%r12d, %eax
-	xorl	%edx, %edx
-	divl	(%rcx)
-	testl	%edx, %edx
-	je	.L3
-	addq	$4, %rcx
-	cmpq	%rsi, %rcx
-	jne	.L4
-	movl	%r12d, %edx
-	movq	%r14, %rsi
+.L5:
+	movq	%rbp, %rsi
+	movl	%r14d, %edx
 	movl	$1, %edi
 	xorl	%eax, %eax
 	call	__printf_chk@PLT
+	leal	-1(%rbx), %eax
+	movq	%r13, %rcx
+	leaq	(%r12,%rax,4), %rsi
+	.p2align 4,,10
+	.p2align 3
+.L4:
+	movl	(%rcx), %r8d
+	movl	%r14d, %eax
+	xorl	%edx, %edx
+	divl	%r8d
+	testl	%edx, %edx
+	je	.L11
+	addq	$4, %rcx
+	cmpq	%rsi, %rcx
+	jne	.L4
+	leaq	.LC2(%rip), %rdi
+	call	puts@PLT
 	movslq	%ebx, %rax
 	addl	$1, %ebx
-	movl	%r12d, (%rsp,%rax,4)
+	movl	%r14d, (%rsp,%rax,4)
 .L3:
-	addl	$1, %r12d
-	cmpl	$256, %ebx
-	jne	.L2
-	movq	1032(%rsp), %rax
+	addl	$1, %r14d
+	cmpl	$100, %ebx
+	jne	.L5
+	movq	408(%rsp), %rax
 	xorq	%fs:40, %rax
-	jne	.L16
-	addq	$1040, %rsp
+	jne	.L12
+	addq	$416, %rsp
 	.cfi_remember_state
 	.cfi_def_cfa_offset 48
 	xorl	%eax, %eax
@@ -84,8 +91,17 @@ main:
 	popq	%r14
 	.cfi_def_cfa_offset 8
 	ret
-.L16:
+	.p2align 4,,10
+	.p2align 3
+.L11:
 	.cfi_restore_state
+	movl	%r8d, %edx
+	leaq	.LC1(%rip), %rsi
+	movl	$1, %edi
+	xorl	%eax, %eax
+	call	__printf_chk@PLT
+	jmp	.L3
+.L12:
 	call	__stack_chk_fail@PLT
 	.cfi_endproc
 .LFE39:
