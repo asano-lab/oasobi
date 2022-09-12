@@ -1,6 +1,28 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+#define N 256
 
 int main(void) {
-    puts("Hello World!!");
+    int i, j, n;
+    u_int prime_numbers[N];
+    bool prime_flag;
+    prime_numbers[0] = 2;
+
+    i = 1;
+    for (n = 3; i < N; n++) {
+        prime_flag = true;
+        for (j = 0; j < i; j++) {
+            if (n % prime_numbers[j] == 0) {
+                prime_flag = false;
+                break;
+            }
+        }
+        if (prime_flag) {
+            printf("%d\n", n);
+            prime_numbers[i++] = n;
+        }
+    }
     return 0;
 }
