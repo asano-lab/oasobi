@@ -13,19 +13,19 @@ main:
 .LFB39:
 	.cfi_startproc
 	endbr64
-	leaq	-36864(%rsp), %r11
-	.cfi_def_cfa 11, 36872
+	leaq	-397312(%rsp), %r11
+	.cfi_def_cfa 11, 397320
 .LPSRL0:
 	subq	$4096, %rsp
 	orq	$0, (%rsp)
 	cmpq	%r11, %rsp
 	jne	.LPSRL0
 	.cfi_def_cfa_register 7
-	subq	$3208, %rsp
-	.cfi_def_cfa_offset 40080
+	subq	$2760, %rsp
+	.cfi_def_cfa_offset 400080
 	xorl	%esi, %esi
 	movq	%fs:40, %rax
-	movq	%rax, 40056(%rsp)
+	movq	%rax, 400056(%rsp)
 	xorl	%eax, %eax
 	leaq	16(%rsp), %rdi
 	movl	$2, 48(%rsp)
@@ -56,7 +56,7 @@ main:
 	movl	%esi, 48(%rsp,%rax,4)
 .L3:
 	addl	$1, %esi
-	cmpl	$10000, %r8d
+	cmpl	$100000, %r8d
 	jne	.L2
 	xorl	%esi, %esi
 	leaq	32(%rsp), %rdi
@@ -66,7 +66,7 @@ main:
 	xorl	%eax, %eax
 	cvtsi2sdq	24(%rsp), %xmm1
 	movsd	.LC0(%rip), %xmm2
-	movl	40044(%rsp), %edx
+	movl	400044(%rsp), %edx
 	leaq	.LC1(%rip), %rsi
 	cvtsi2sdq	16(%rsp), %xmm0
 	movl	$1, %edi
@@ -87,11 +87,11 @@ main:
 	movl	$1, %edi
 	movl	$1, %eax
 	call	__printf_chk@PLT
-	movq	40056(%rsp), %rax
+	movq	400056(%rsp), %rax
 	xorq	%fs:40, %rax
 	jne	.L16
 	xorl	%eax, %eax
-	addq	$40072, %rsp
+	addq	$400072, %rsp
 	.cfi_remember_state
 	.cfi_def_cfa_offset 8
 	ret

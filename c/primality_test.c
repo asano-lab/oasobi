@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <sys/time.h>
 
-#define N 10000
+#define N 100000
 
 int main(void) {
     struct timeval t0, t1;
