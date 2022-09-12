@@ -1,13 +1,13 @@
 CC = gcc
-GCCFLAGS = -Wall -Wextra -O0
+GCCFLAGS = -Wall -Wextra -O3
 
 EXES = opt
 
 .PHONY: all
 all: $(EXES)
 
-.c.o:
-	gcc -c $<
+primality_test.s: primality_test.c
+	$(CC) -S $< $(GCCFLAGS)
 
 opt: opt.o
 	gcc -o $@ $^
