@@ -1,0 +1,42 @@
+{
+    "workbench.colorTheme": "Default High Contrast Light",
+    "editor.formatOnSave": true,
+    "latex-workshop.latex.tools": [
+        {
+            "name": "ptex2pdf(platex)",
+            "command": "ptex2pdf",
+            "args": [
+                "-l",
+                "-ot",
+                "-kanji=utf8 -synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-outdir=%OUTDIR%",
+                "%DOC%"
+            ]
+        },
+        {
+            "command": "latexmk",
+            "args": [
+                "%DOCFILE%"
+            ],
+            "name": "Run latexmk"
+        }
+    ],
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "ptex2pdf(platex)",
+            "tools": [
+                "ptex2pdf(platex)"
+            ]
+        },
+        {
+            "name": "toolchain",
+            "tools": [
+                "Run latexmk"
+            ]
+        }
+    ],
+    "latex-workshop.latex.autoBuild.run": "never",
+    "latex-workshop.message.warning.show": false
+}
