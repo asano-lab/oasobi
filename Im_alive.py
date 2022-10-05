@@ -5,15 +5,20 @@ import requests
 import datetime
 from urllib.request import urlopen
 from urllib.error import URLError
+import os
+
+
+PRIVATE_DIR = "./private"
 
 
 # 平文で保存してある
-TOKEN_PATH = "/home/sonoda/.secret/line_token01.txt"
+TOKEN_PATH = os.path.abspath(os.path.join(PRIVATE_DIR, "line_token01.txt"))
 LINE_NOTIFY_API = "https://notify-api.line.me/api/notify"
 
 
 t_delta = datetime.timedelta(hours=9)  # 9時間
 JST = datetime.timezone(t_delta, "JST")  # UTCから9時間差の「JST」タイムゾーン
+
 
 def send_line_notify(notification_message, token):
     """
@@ -24,6 +29,8 @@ def send_line_notify(notification_message, token):
     line_notify_token = token
     headers = {"Authorization": f"Bearer {line_notify_token}"}
     data = {"message": f"{notification_message}"}
+    # print(headers)
+    # print(data)
     requests.post(LINE_NOTIFY_API, headers=headers, data=data)
 
 
@@ -36,9 +43,10 @@ def concat_now(moji: str) -> str:
 
 def main():
     with open(TOKEN_PATH, "r", encoding="UTF-8") as f:
-        line_token = f.read().split("\n")[1]
+        line_token = f.read().split("\n")[0]
     notification_message = concat_now("active")
     send_line_notify(notification_message, line_token)
+
 
 if __name__ == "__main__":
     main()
