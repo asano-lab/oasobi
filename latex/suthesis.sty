@@ -1,0 +1,238 @@
+%=============================================================================
+% Shinshu University Thesis Style File
+% D. Asano 2001/2/1
+%=============================================================================
+
+%=============================================================================
+% Lengths
+%=============================================================================
+\topmargin -17.2mm
+\oddsidemargin 5.3mm \evensidemargin 5.3mm
+ \marginparwidth 68pt 
+\marginparsep 10pt 
+\headheight 12pt \headsep 25pt \footskip 30pt 
+\baselineskip7.833mm
+\textheight 24.4cm
+\textwidth 15.9cm
+
+\columnsep 10pt \columnseprule 0pt 
+
+\footnotesep 8.4pt 
+\skip\footins 10.8pt plus 4pt minus 2pt 
+\floatsep 14pt plus 2pt minus 4pt \textfloatsep 20pt plus 2pt minus 4pt
+\intextsep 14pt plus 4pt minus 4pt \dblfloatsep 14pt plus 2pt
+minus 4pt \dbltextfloatsep 20pt plus 2pt minus 4pt 
+\@fptop 0pt plus 1fil \@fpsep 10pt plus 2fil \@fpbot 0pt plus 1fil 
+\@dblfptop 0pt plus 1fil \@dblfpsep 10pt plus 2fil \@dblfpbot 0pt plus 1fil
+\marginparpush 7pt 
+
+\parskip 0pt plus 1pt
+\parindent 1zw
+\partopsep 3pt plus 2pt minus 2pt 
+\@lowpenalty 51 \@medpenalty 151 \@highpenalty 301 
+\@beginparpenalty -\@lowpenalty \@endparpenalty -\@lowpenalty \@itempenalty
+-\@lowpenalty 
+
+
+\def\@makechapterhead#1{ \vspace*{50pt} { \parindent 0pt \raggedright 
+ \ifnum \c@secnumdepth >\m@ne \huge\bf
+ \@chapapp{} \thechapter{} \@chapappii{}\par 
+ \vskip 20pt \fi \Huge \bf #1\par 
+ \nobreak \vskip 40pt } }
+
+\def\@makeschapterhead#1{ \vspace*{50pt} { \parindent 0pt \raggedright 
+ \Huge \bf #1\par 
+ \nobreak \vskip 40pt } }
+
+\def\chaptermark#1{}
+
+\setcounter{secnumdepth}{2}
+
+\def\appendix{\par
+ \setcounter{chapter}{0}
+ \setcounter{section}{0}
+ \def\@chapapp{付録}
+ \def\@chapappii{}
+ \def\thechapter{\Alph{chapter}}}
+
+\def\baselinestretch{1.4}
+
+%-----------------------------------------------------------------------------
+\def\labelenumi{(\theenumi)} 
+\def\theenumi{\arabic{enumi}} 
+\def\labelenumii{(\theenumii)}
+\def\theenumii{\alph{enumii}}
+\def\p@enumii{\theenumi.}
+\def\labelenumiii{(\theenumiii)}
+\def\theenumiii{\roman{enumiii}}
+\def\p@enumiii{\theenumi.\theenumii.}
+\def\labelenumiv{(\theenumiv)}
+\def\theenumiv{\iroha{enumiv}} 
+\def\p@enumiv{\theenumi.\theenumii.\theenumiii.}
+%-----------------------------------------------------------------------------
+
+\def\labelitemi{$\bullet$}
+\def\labelitemii{\bf --}
+\def\labelitemiii{$\ast$}
+\def\labelitemiv{$\cdot$}
+
+\def\titlepage{\@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn
+ \else \newpage \fi \thispagestyle{empty}\c@page\z@}
+\def\endtitlepage{\if@restonecol\twocolumn \else \newpage \fi}
+
+\arraycolsep 5pt \tabcolsep 6pt \arrayrulewidth .4pt \doublerulesep 2pt 
+\tabbingsep \labelsep 
+\skip\@mpfootins = \skip\footins
+\fboxsep = 3pt \fboxrule = .4pt 
+
+\def\thepart {\Roman{part}}
+\def\thechapter {\arabic{chapter}}
+\def\thesection {\thechapter.\arabic{section}}
+\def\thesubsection {\thesection.\arabic{subsection}}
+\def\thesubsubsection {\thesubsection .\arabic{subsubsection}}
+\def\theparagraph {\thesubsubsection.\arabic{paragraph}}
+\def\thesubparagraph {\theparagraph.\arabic{subparagraph}}
+\def\@chapapp{第}
+\def\@chapappii{章}
+%======================
+
+\setcounter{tocdepth}{2}
+
+%=============================================================================
+% thebibliography
+%=============================================================================
+\def\thebibliography#1{\chapter*{参考文献\markboth
+ {参 考 文 献}{参 考 文 献}}\list
+ {[\arabic{enumi}]}{\settowidth\labelwidth{[#1]}\leftmargin\labelwidth
+ \advance\leftmargin\labelsep
+ \usecounter{enumi}}
+ \def\newblock{\hskip .11em plus .33em minus .07em}
+ \sloppy
+ \sfcode`\.=1000\relax}
+\let\endthebibliography=\endlist
+ 
+\newif\if@restonecol
+\def\theindex{\@restonecoltrue\if@twocolumn\@restonecolfalse\fi
+\columnseprule \z@
+\columnsep 35pt\twocolumn[\@makeschapterhead{索 引}]
+% \@mkboth{索 引}{索 引}\thispagestyle{plain}\parindent\z@
+ \@mkboth{索 引}{索 引}\thispagestyle{headings}\parindent\z@
+ \parskip\z@ plus .3pt\relax\let\item\@idxitem}
+\def\@idxitem{\par\hangindent 40pt}
+\def\subitem{\par\hangindent 40pt \hspace*{20pt}}
+\def\subsubitem{\par\hangindent 40pt \hspace*{30pt}}
+\def\endtheindex{\if@restonecol\onecolumn\else\clearpage\fi}
+\def\indexspace{\par \vskip 10pt plus 5pt minus 3pt\relax}
+
+\def\footnoterule{\kern-3\p@ 
+ \hrule width .4\columnwidth 
+ \kern 2.6\p@} 
+\@addtoreset{footnote}{chapter} 
+\long\def\@makefntext#1{\parindent 1em\noindent 
+ \hbox to 1.8em{\hss$^{\@thefnmark}$}#1}
+
+\setcounter{topnumber}{2}
+\def\topfraction{.7}
+\setcounter{bottomnumber}{1}
+\def\bottomfraction{.3}
+\setcounter{totalnumber}{3}
+\def\textfraction{.2}
+\def\floatpagefraction{.5}
+\setcounter{dbltopnumber}{2}
+\def\dbltopfraction{.7}
+\def\dblfloatpagefraction{.5}
+
+\long\def\@makecaption#1#2{
+ \vskip 10pt 
+ \setbox\@tempboxa\hbox{#1: #2}
+ \ifdim \wd\@tempboxa >\hsize \unhbox\@tempboxa\par \else \hbox
+to\hsize{\hfil\box\@tempboxa\hfil} 
+ \fi}
+
+%---------------
+% figures
+%---------------
+\def\thefigure{\thechapter.\@arabic\c@figure}
+\def\fps@figure{tbp}
+\def\ftype@figure{1}
+\def\ext@figure{lof}
+\def\fnum@figure{図 \thefigure}
+\def\figure{\@float{figure}}
+\let\endfigure\end@float
+\@namedef{figure*}{\@dblfloat{figure}}
+\@namedef{endfigure*}{\end@dblfloat}
+%---------------
+% tables
+%---------------
+\def\thetable{\thechapter.\@arabic\c@table}
+\def\fps@table{tbp}
+\def\ftype@table{2}
+\def\ext@table{lot}
+\def\fnum@table{表 \thetable}
+\def\table{\@float{table}}
+\let\endtable\end@float
+\@namedef{table*}{\@dblfloat{table}}
+\@namedef{endtable*}{\end@dblfloat}
+%=============================================================================
+
+%=============================================================================
+% titlepage
+%=============================================================================
+\def\maketitle{{
+\def\baselinestretch{1}
+\begin{titlepage}
+  \let\footnotesize\small \let\footnoterule\relax \setcounter{page}{0}
+  \null
+  \vfil
+  \vskip 60pt
+  \begin{center}
+    {\LARGE\@thesis \par} \vskip 8em
+    {\LARGE\@title \par} \vskip 6em
+    {\large \lineskip .75em
+    \vfill 
+    \begin{tabular}{rl}
+    {\large 指導教員} & {\large\@professor \par}
+    \end{tabular}
+    \vskip 3em
+    {\large \@date \par}
+    \vskip 3em
+    \begin{tabular}[t]{c}
+      \@author
+    \end{tabular}\par}
+  \end{center}
+  \par
+  \@thanks
+  \vfil
+  \null
+  \end{titlepage}
+  \setcounter{footnote}{0} \let\thanks\relax
+  \gdef\@thanks{}\gdef\@author{}\gdef\@title{}\let\maketitle\relax}}
+
+\def\jabstract{\titlepage
+  \null
+  \noindent{\large\bf あらまし\par}
+}
+\def\endjabstract{\par\vfil\null\endtitlepage}
+\def\abstract{\titlepage
+  \null
+}
+\def\endabstract{\par\vfil\null\endtitlepage}
+%
+\def\professor#1{\gdef\@professor{#1}}
+\def\thesis#1{\gdef\@thesis{#1}}
+%=============================================================================
+
+\mark{{}{}} 
+
+%-----------------------------------------------------------------------------
+% equation style
+%
+%\def\theequation{\thechapter.\arabic{equation}}
+%
+\def\theequation{\mbox{\rm \thechapter --\arabic{equation}}}
+
+\def\maegaki{\pagestyle{empty}}
+\def\maetsuke{\newpage\pagestyle{headings}\pagenumbering{roman}\setcounter{page}{3}}
+\def\hombun{\newpage\pagestyle{headings}\pagenumbering{arabic}\setcounter{page}{1}}
+\def\shaji{\newpage\addcontentsline{toc}{chapter}{謝辞}}
+\def\bunken{\newpage\addcontentsline{toc}{chapter}{参考文献}}
