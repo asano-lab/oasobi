@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.141592653-p4.0.0-220214-2.6 (utf8.euc) (TeX Live 2022) (preloaded format=platex 2022.10.5)  5 OCT 2022 15:54
+This is e-pTeX, Version 3.141592653-p4.0.0-220214-2.6 (utf8.euc) (TeX Live 2022) (preloaded format=platex 2022.10.5)  5 OCT 2022 16:00
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -149,11 +149,6 @@ LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <17.28> not available
 (Font)              Font shape `JY1/gt/m/n' tried instead on input line 73.
 File: decode7_4_10111_no_margin-crop.pdf Graphic file (type pdf)
 <decode7_4_10111_no_margin-crop.pdf>
-
-Overfull \hbox (474.0626pt too wide) in paragraph at lines 86--87
- [] 
- []
-
 [2
 
 ] [3]
@@ -175,11 +170,7 @@ LaTeX Font Info:    Kanji font shape `JY1/gt/m/it' undefined
 (Font)              No change on input line 164.
  [7
 
-] (./suthesis-sample.aux)
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
- ) 
+] (./suthesis-sample.aux) ) 
 Here is how much of TeX's memory you used:
  1066 strings out of 478724
  17862 string characters out of 5858392
@@ -189,4 +180,4 @@ Here is how much of TeX's memory you used:
  929 hyphenation exceptions out of 8191
  55i,12n,62p,214b,340s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on suthesis-sample.dvi (12 pages, 9076 bytes).
+Output written on suthesis-sample.dvi (12 pages, 9088 bytes).
