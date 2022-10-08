@@ -133,6 +133,7 @@ def main():
                 download_button.click()
                 with open(LATEST_URL_PATH, "w") as f:
                     f.write(new_url)
+                res = 1
         else:
             with open(LATEST_URL_PATH, "w") as f:
                 f.write(new_url)
@@ -144,4 +145,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    exit(main())
