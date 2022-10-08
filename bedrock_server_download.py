@@ -124,13 +124,22 @@ def main():
                 print("already up-to-date")
             else:
                 print("bedrock server is upgradable!!")
+                agree_checkbox = browser.find_element(
+                    By.XPATH,
+                    "/html/body/div/div[1]/div[3]/div/div/div/div[1]/div/div/div/div[2]/div/div/div/div[2]/div[3]/div/label/input"
+                )
+                # browser.execute_script(
+                #     "arguments[0].setAttribute('data-bi-bhvr','REMOVE')", agree_checkbox)
+                # print(agree_checkbox.get_attribute("data-bi-bhvr"))
+                agree_checkbox.click()
+                download_button.click()
                 with open(LATEST_URL_PATH, "w") as f:
                     f.write(new_url)
         else:
             with open(LATEST_URL_PATH, "w") as f:
                 f.write(new_url)
     except WebDriverException:
-        print("ボタンがない")
+        print("エレメントがない")
     finally:
         browser.quit()
         return res
