@@ -4,13 +4,13 @@
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description="家のWi-Fiにログインするためのプログラム")
+    parser = argparse.ArgumentParser(description="統合版サーバーが更新されていたらダウンロードする")
 
     parser.add_argument("-b", "--browser", help="ブラウザ", default="Firefox")
     parser.add_argument("--headless",
                         help="ヘッドレスモード", action="store_true")
     parser.add_argument("--debug",
-                        help="デバッグモード (めっちゃ通知する)", action="store_true")
+                        help="デバッグモード", action="store_true")
     args = parser.parse_args()
 
     from urllib.error import URLError
@@ -34,7 +34,7 @@ PRIVATE_DIR = "./private"
 
 DOWNLOAD_URL = "https://www.minecraft.net/en-us/download/server/bedrock"
 
-GOOGLE_URL = "https://www.google.com"
+LATEST_URL_PATH = "bedrock_server_latest_url.txt"
 
 # 平文で保存してある
 TOKEN_PATH = os.path.abspath(os.path.join(PRIVATE_DIR, "line_token_ssb.txt"))
@@ -116,7 +116,19 @@ def main():
             By.XPATH,
             "/html/body/div/div[1]/div[3]/div/div/div/div[1]/div/div/div/div[2]/div/div/div/div[2]/div[3]/div/a"
         )
-        print(download_button.get_attribute("href"))
+        new_url = download_button.get_attribute("href")
+        if os.path.exists(LATEST_URL_PATH):
+            with open(LATEST_URL_PATH, "r") as f:
+                old_url = f.read()
+            if new_url == old_url:
+                print("already up-to-date")
+            else:
+                print("bedrock server is upgradable!!")
+                with open(LATEST_URL_PATH, "w") as f:
+                    f.write(new_url)
+        else:
+            with open(LATEST_URL_PATH, "w") as f:
+                f.write(new_url)
     except WebDriverException:
         print("ボタンがない")
     finally:
