@@ -6,7 +6,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="家のWi-Fiにログインするためのプログラム")
 
-    parser.add_argument("-b", "--browser", help="ブラウザ", default="Chromium")
+    parser.add_argument("-b", "--browser", help="ブラウザ", default="Firefox")
     parser.add_argument("--headless",
                         help="ヘッドレスモード", action="store_true")
     parser.add_argument("--debug",
@@ -112,13 +112,11 @@ def main():
     res = 0
     try:
         # ダウンロードボタンを発見
-        browser.find_element(
+        download_button = browser.find_element(
             By.XPATH,
             "/html/body/div/div[1]/div[3]/div/div/div/div[1]/div/div/div/div[2]/div/div/div/div[2]/div[3]/div/a"
         )
-        notification_message = concat_now("you are already logged in")
-        # ログイン済みの通知はうざいのでログだけ残す
-        print(notification_message)
+        print(download_button.get_attribute("href"))
     except WebDriverException:
         print("ボタンがない")
     finally:
