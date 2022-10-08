@@ -13,8 +13,6 @@ if __name__ == "__main__":
                         help="デバッグモード", action="store_true")
     args = parser.parse_args()
 
-    from urllib.error import URLError
-    from urllib.request import urlopen
     from selenium.common.exceptions import WebDriverException
     from selenium.webdriver.chrome.options import Options as ChromeOptions
     from selenium.webdriver.firefox.options import Options as FirefoxOptions
@@ -23,8 +21,6 @@ if __name__ == "__main__":
     from selenium import webdriver
     import datetime
     import requests
-    import re
-    import time
     import os
 else:
     exit()
@@ -123,10 +119,8 @@ def main():
             with open(LATEST_URL_PATH, "r") as f:
                 old_url = f.read()
             if new_url == old_url:
-                # print("already up-to-date")
                 send_line_notify(concat_now("already up-to-date"), line_token)
             else:
-                # print("bedrock server is upgradable!!")
                 send_line_notify(concat_now(
                     "bedrock server is upgradable!!"), line_token)
                 agree_checkbox = browser.find_element(
@@ -135,7 +129,6 @@ def main():
                 )
                 # browser.execute_script(
                 #     "arguments[0].setAttribute('data-bi-bhvr','REMOVE')", agree_checkbox)
-                # print(agree_checkbox.get_attribute("data-bi-bhvr"))
                 agree_checkbox.click()
                 download_button.click()
                 with open(LATEST_URL_PATH, "w") as f:
