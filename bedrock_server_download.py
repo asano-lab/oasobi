@@ -37,7 +37,9 @@ DOWNLOAD_URL = "https://www.minecraft.net/en-us/download/server/bedrock"
 LATEST_URL_PATH = "bedrock_server_latest_url.txt"
 
 # 平文で保存してある
-TOKEN_PATH = os.path.abspath(os.path.join(PRIVATE_DIR, "line_token_ssb.txt"))
+TOKEN_PATH = os.path.abspath(os.path.join(
+    PRIVATE_DIR, "line_token_minecraft.txt"))
+
 LINE_NOTIFY_API = "https://notify-api.line.me/api/notify"
 
 
@@ -67,8 +69,8 @@ def concat_now(moji: str) -> str:
 def main():
     headless = args.headless
 
-    # with open(TOKEN_PATH, "r", encoding="UTF-8") as f:
-    #     line_token = f.read()
+    with open(TOKEN_PATH, "r", encoding="UTF-8") as f:
+        line_token = f.read()
 
     # GUIが使える場合
     if not args.headless:
@@ -121,9 +123,12 @@ def main():
             with open(LATEST_URL_PATH, "r") as f:
                 old_url = f.read()
             if new_url == old_url:
-                print("already up-to-date")
+                # print("already up-to-date")
+                send_line_notify(concat_now("already up-to-date"), line_token)
             else:
-                print("bedrock server is upgradable!!")
+                # print("bedrock server is upgradable!!")
+                send_line_notify(concat_now(
+                    "bedrock server is upgradable!!"), line_token)
                 agree_checkbox = browser.find_element(
                     By.XPATH,
                     "/html/body/div/div[1]/div[3]/div/div/div/div[1]/div/div/div/div[2]/div/div/div/div[2]/div[3]/div/label/input"
