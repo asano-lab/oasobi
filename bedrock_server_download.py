@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import time
+
 if __name__ == "__main__":
     import argparse
 
@@ -65,8 +67,9 @@ def concat_now(moji: str) -> str:
 def main():
     headless = args.headless
 
-    with open(TOKEN_PATH, "r", encoding="UTF-8") as f:
-        line_token = f.read()
+    line_token=""
+    # with open(TOKEN_PATH, "r", encoding="UTF-8") as f:
+    #     line_token = f.read()
 
     # GUIが使える場合
     if not args.headless:
@@ -75,11 +78,16 @@ def main():
                 options = FirefoxOptions()
                 options.binary_location = "/usr/bin/firefox"
                 browser = webdriver.Firefox(options=options)
+            elif args.browser == "Chromium":
+                chrome_service = fs.Service(
+                    executable_path="/usr/lib/chromium-browser/chromedriver")
+                browser = webdriver.Chrome(service=chrome_service)
             else:
                 chrome_service = fs.Service(
                     executable_path="/usr/lib/chromium-browser/chromedriver")
                 browser = webdriver.Chrome(service=chrome_service)
-        except WebDriverException:
+        except WebDriverException as e:
+            print(e)
             headless = True
 
     # GUIを使わない, 使えない場合
@@ -109,6 +117,7 @@ def main():
 
     res = 0
     try:
+        time.sleep(1)
         # ダウンロードボタンを発見
         download_button = browser.find_element(
             By.XPATH,
@@ -137,7 +146,8 @@ def main():
         else:
             with open(LATEST_URL_PATH, "w") as f:
                 f.write(new_url)
-    except WebDriverException:
+    except WebDriverException as e:
+        print(e)
         print("エレメントがない")
     finally:
         browser.quit()
