@@ -83,9 +83,8 @@ def main():
                     executable_path="/usr/lib/chromium-browser/chromedriver")
                 browser = webdriver.Chrome(service=chrome_service)
             else:
-                chrome_service = fs.Service(
-                    executable_path="/usr/lib/chromium-browser/chromedriver")
-                browser = webdriver.Chrome(service=chrome_service)
+                print(args.browser)
+                return -1
         except WebDriverException as e:
             print(e)
             headless = True
@@ -117,13 +116,14 @@ def main():
 
     res = 0
     try:
-        time.sleep(1)
+        # time.sleep(1)
         # ダウンロードボタンを発見
         download_button = browser.find_element(
             By.XPATH,
             "/html/body/div/div[1]/div[3]/div/div/div/div[1]/div/div/div/div[2]/div/div/div/div[2]/div[3]/div/a"
         )
         new_url = download_button.get_attribute("href")
+        print(new_url)
         if os.path.exists(LATEST_URL_PATH):
             with open(LATEST_URL_PATH, "r") as f:
                 old_url = f.read()
