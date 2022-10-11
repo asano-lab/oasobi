@@ -16,7 +16,8 @@ if __name__ == "__main__":
 
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.firefox.options import Options
+# from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 import time
 import re
@@ -75,7 +76,7 @@ def complete_questions(driver, chapter, username, studentnumber):
 
     start_button = driver.find_element(
         by=By.XPATH, value="/html/body/center/form[1]/input[8]")
-    input(f"ユーザ名: {username}\n学籍番号: {studentnumber}\nが正しければEnterを押してください")
+    # input(f"ユーザ名: {username}\n学籍番号: {studentnumber}\nが正しければEnterを押してください")
     start_button.click()
 
     cleared = True
@@ -116,10 +117,17 @@ def main(username, studentnumber, chapter_list, browser, repeat):
     pf = platform.system()
 
     if pf == "Linux":
-        options = Options()
-        options.binary_location = "/usr/bin/firefox"
+        # options = Options()
+        # options.binary_location = "/usr/bin/firefox"
         # options.add_argument("-headless")
-        driver = webdriver.Firefox(options=options)
+        # driver = webdriver.Firefox(options=options)options = Options()
+        options = Options()
+        options.add_argument('--headless')
+        options.add_argument('--disable-gpu')
+        options.add_argument('--no-sandbox')
+        # options.add_argument('--window-size=1024,768')
+
+        driver = webdriver.Chrome(executable_path="/usr/lib/chromium-browser/chromedriver", chrome_options=options);
     else:
         env_var = [i for i in os.getenv("PATH").split(";") if os.path.isdir(i)]
         if browser == "Chrome":
