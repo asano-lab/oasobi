@@ -22,14 +22,20 @@ except WebDriverException:
 
 browser.get("https://www.google.com/")
 
-# q = browser.find_element(By.XPATH, "/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/input")
 q = browser.find_element(By.NAME, "q")
 q.send_keys("あいうえお\n")
 
-r = browser.find_element(By.XPATH, "/html/body/div[7]/div/div[10]/div/div[2]/div[2]/div/div/div[3]/div/div/div[1]/div/a")
-r.click()
+# クラス名は変わる場合あり
+element_list = browser.find_elements(By.CLASS_NAME, "LC20lb.MBeuO.DKV0Md")
+for el in element_list:
+    if "Wikipedia" in el.get_attribute("innerText"):
+        el.click()
+        break
 
-s = browser.find_element(By.XPATH, "/html/body/div/div/div[3]/main/div[2]/div[4]/div[1]/p")
+# xpathは変わる場合あり
+s = browser.find_element(
+    By.XPATH, "/html/body/div[1]/div/div[4]/main/div[2]/div[3]/div[1]/p")
+
 print(s.get_attribute("innerText"))
 
 time.sleep(1)
