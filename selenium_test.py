@@ -25,13 +25,14 @@ browser.get("https://www.google.com/")
 q = browser.find_element(By.NAME, "q")
 q.send_keys("あいうえお\n")
 
+time.sleep(0.1)
 element_list = browser.find_elements(By.CLASS_NAME, "LC20lb.MBeuO.DKV0Md")
 for el in element_list:
     if "Wikipedia" in el.get_attribute("innerText"):
         el.click()
         break
 
-
+time.sleep(0.1)
 element_list = browser.find_elements(By.CLASS_NAME, "mw-parser-output")
 for el in element_list:
     print(el.get_attribute("innerText"))
