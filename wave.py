@@ -17,10 +17,16 @@ c = fft(b)
 print(c)
 
 # you only need half of the fft list (real signal symmetry)
-d = len(c) // 2
+d = len(c) / 2
 
-fq = np.linspace(0, fs / 2.0, d - 1)
+TH = fs / 2.0
+
+d = int(d * TH / (fs / 2.0))
+
+fq = np.linspace(0, TH, d - 1)
 
 plt.plot(fq, abs(c[:(d-1)]))
 plt.yscale("log")
+plt.xscale("log")
+plt.grid(which="both")
 plt.show()
