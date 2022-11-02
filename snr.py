@@ -1,12 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-BIT_LEN = 3
+BIT_LEN = 16
 MAX_BIT = (1 << BIT_LEN) - 1
 
-GOSA_MAX = 1 / MAX_BIT / 2
-print(MAX_BIT)
-print(GOSA_MAX)
-
-x = np.linspace(0, 1, 101)
+x = np.logspace(1, np.log10(MAX_BIT), 100)
 print(x)
+
+print(x.astype("u8"))
+y = x - (x + 0.5).astype("u8")
+print(y)
