@@ -7,16 +7,11 @@ fn main() {
 
     thread::spawn(move || {
         // スレッドからやあ(hi from the thread)
-        let vals = vec![
-            String::from("hi"),
-            String::from("from"),
-            String::from("the"),
-            String::from("thread"),
-        ];
+        let vals = vec![0, 1, 2, 3];
 
         for val in vals {
             tx.send(val).unwrap();
-            thread::sleep(Duration::from_millis(1000));
+            // thread::sleep(Duration::from_millis(1000));
         }
     });
 
