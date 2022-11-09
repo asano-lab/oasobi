@@ -7,35 +7,17 @@ fn main() {
 
     let (tx, rx) = mpsc::channel();
 
-    let tx1 = mpsc::Sender::clone(&tx);
-    thread::spawn(move || {
-        let vals = vec![
-            String::from("hi"),
-            String::from("from"),
-            String::from("the"),
-            String::from("thread"),
-        ];
-
-        for val in vals {
-            tx1.send(val).unwrap();
-            thread::sleep(Duration::from_secs(1));
-        }
-    });
-
-    thread::spawn(move || {
-        // 君のためにもっとメッセージを(more messages for you)
-        let vals = vec![
-            String::from("more"),
-            String::from("messages"),
-            String::from("for"),
-            String::from("you"),
-        ];
-
-        for val in vals {
-            tx.send(val).unwrap();
-            thread::sleep(Duration::from_secs(1));
-        }
-    });
+    for i in 0..3 {
+        let txi = mpsc::Sender::clone(&tx);
+        let i_cp = i.clone();
+        thread::spawn(move || {
+            for j in 0..4 {
+                txi.send(j + i_cp * 100).unwrap();
+                thread::sleep(Duration::from_secs(1));
+            }
+        });
+    }
+    drop(tx);
 
     for received in rx {
         println!("Got: {}", received);
