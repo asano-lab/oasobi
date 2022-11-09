@@ -2,6 +2,7 @@
 !*/
 !*.*
 
+target
 !*Makefile
 geckodriver.log
 .python-version
