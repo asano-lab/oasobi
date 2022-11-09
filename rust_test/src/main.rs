@@ -7,7 +7,7 @@ fn main() {
 
     thread::spawn(move || {
         // スレッドからやあ(hi from the thread)
-        let vals = vec![0, 1, 2, 3];
+        let vals = vec![(0, 1), (2, 3)];
 
         for val in vals {
             tx.send(val).unwrap();
@@ -18,6 +18,6 @@ fn main() {
     thread::sleep(Duration::from_millis(1000));
 
     for received in rx {
-        println!("Got: {}", received);
+        println!("Got: {:?}", received);
     }
 }
