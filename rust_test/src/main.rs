@@ -42,5 +42,9 @@ fn main() {
         exact_one!() => println!("exact one"),
         two!(x) | three!(x) => println!("{}", x),
         many_or_none!() => (),
-    }
+    };
+    match 6 {
+        e @ 1..=5 => println!("got a range element {}", e),
+        _ => println!("anything"),
+    };
 }
