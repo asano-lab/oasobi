@@ -8,6 +8,14 @@ macro_rules! call_by_double {
     };
 }
 
+macro_rules! bind {
+    ($var: ident, $val: expr) => {
+        let $var = $val;
+    };
+}
+
 fn main() {
     call_by_double!(print2, 3); // -> 1, 1
+    bind!(x, 3729);
+    println!("{}", x);
 }
