@@ -20,11 +20,11 @@ macro_rules! exact_one {
 }
 
 macro_rules! two {
-    ($x: ident) => (Some($x @ 2))
+    ($x: ident) => (Some($x @ 2..=3))
 }
 
 macro_rules! three {
-    ($x: ident) => (Some($x @ 3))
+    ($x: ident) => (Some($x @ 4..=5))
 }
 
 macro_rules! many_or_none {
@@ -37,14 +37,11 @@ fn main() {
     call_by_double!(print2, 3); // -> 1, 1
     bind!(x, 3729);
     println!("{}", x);
-    println!("{:?}", exact_one!());
-    match Some(2) {
+    // println!("{:?}", exact_one!());
+    match Some(6) {
         exact_one!() => println!("exact one"),
-        two!(x) | three!(x) => println!("{}", x),
+        two!(x) => println!("a {}", x),
+        three!(x) => println!("b {}", x),
         many_or_none!() => (),
-    };
-    match 6 {
-        e @ 1..=5 => println!("got a range element {}", e),
-        _ => println!("anything"),
     };
 }
