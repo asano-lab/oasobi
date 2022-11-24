@@ -4,13 +4,25 @@ MODULE main
 VAR
     b0 : flower_dummy;
     b1 : flower(b0, b2);
-    b2 : flower(b1, b0);
+    b2 : flower(b1, b3);
+    b3 : flower(b2, b4);
+    b4 : flower(b3, b5);
+    b5 : flower(b4, b6);
+    b6 : flower(b5, b7);
+    b7 : flower(b6, b8);
+    b8 : flower(b7, b0);
 
 ASSIGN
     init(b1.bloom) := 1;
     init(b2.bloom) := 0;
+    init(b3.bloom) := 0;
+    init(b4.bloom) := 0;
+    init(b5.bloom) := 0;
+    init(b6.bloom) := 0;
+    init(b7.bloom) := 0;
+    init(b8.bloom) := 0;
 
-LTLSPEC !F (b2.bloom = 1);
+LTLSPEC !F (b8.bloom = 1);
 
 MODULE flower(left, right)
 VAR
@@ -30,3 +42,4 @@ VAR
     bloom: {0, 1};
 ASSIGN
     init(bloom) := 0;
+    next(bloom) := 0;
