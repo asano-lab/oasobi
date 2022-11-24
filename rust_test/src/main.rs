@@ -13,7 +13,7 @@ fn main() {
         thread::spawn(move || {
             for j in 0..4 {
                 txi.send(j + i_cp * 100).unwrap();
-                thread::sleep(Duration::from_secs(1));
+                thread::sleep(Duration::from_millis(500));
             }
         });
     }
