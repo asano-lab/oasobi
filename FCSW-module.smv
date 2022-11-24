@@ -1,0 +1,62 @@
+
+MODULE main
+
+VAR
+  Ship : boat;
+  Wolf : character(Ship);
+  Farmer : character(Ship);
+  Sheep : character(Ship);
+  Cabbage : character(Ship);
+
+DEFINE
+  goal := Farmer.loc = bankB & Wolf.loc = bankB & Sheep.loc = bankB & Cabbage.loc = bankB;
+
+  watch1 := (Wolf.loc = Sheep.loc) -> (Farmer.loc = Wolf.loc);  
+  watch2 := (Cabbage.loc = Sheep.loc) -> (Farmer.loc = Sheep.loc);  
+
+  crew1 := (Ship.loc = AtoB) -> (Farmer.loc = AtoB);
+  crew2 := (Ship.loc = BtoA) -> (Farmer.loc = BtoA);
+          -- If the ship is in the river, the farmer has to be on it.  
+
+  crew3 := (Ship.loc = AtoB) -> !( ((Wolf.loc  = AtoB) & (Sheep.loc   = AtoB)) |
+                               ((Wolf.loc  = AtoB) & (Cabbage.loc = AtoB)) |
+                               ((Sheep.loc = AtoB) & (Cabbage.loc = AtoB)) );
+
+  crew4 := (Ship.loc = BtoA) -> !( ((Wolf.loc  = BtoA) & (Sheep.loc   = BtoA)) |
+                               ((Wolf.loc  = BtoA) & (Cabbage.loc = BtoA)) |
+                               ((Sheep.loc = BtoA) & (Cabbage.loc = BtoA)) );
+          -- At most two figures on the ship.
+ 
+  rule   := watch1 & watch2 & crew1 & crew2 & crew3 & crew4 ;
+
+
+LTLSPEC !(rule U goal)
+
+
+MODULE character(pship)
+VAR
+  loc : {bankA, bankB, AtoB, BtoA};
+DEFINE
+  otherwise := TRUE;
+ASSIGN
+  init(loc) := bankA;
+  next(loc) := case
+    pship.loc = bankA & loc = bankA : {AtoB, bankA};
+    loc = AtoB : bankB;
+    pship.loc = bankB & loc = bankB : {BtoA, bankB};
+    loc = BtoA : bankA;
+    otherwise : loc;
+  esac;
+
+MODULE boat
+VAR
+  loc : {bankA, bankB, AtoB, BtoA};
+ASSIGN
+  init(loc) := bankA;
+  next(loc) := case
+    loc = bankA : AtoB;
+    loc = AtoB : bankB;
+    loc = bankB : BtoA;
+    loc = BtoA : bankA;
+  esac;
+--
