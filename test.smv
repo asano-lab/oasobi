@@ -22,7 +22,7 @@ ASSIGN
     init(b7.bloom) := 0;
     init(b8.bloom) := 0;
 
-LTLSPEC !F (b8.bloom = 1);
+LTLSPEC !F (b1.bloom = 1 & b2.bloom = 1 & b3.bloom = 1 & b4.bloom = 1 & b5.bloom = 1 & b6.bloom = 1 & b7.bloom = 1 & b8.bloom = 1);
 
 MODULE flower(left, right)
 VAR
