@@ -12,10 +12,10 @@ TMB = ["", "thousand", "million", "billion"]
 def main():
     # n_str = input()
     n_str = "317473891017.364289"
-    n_str = "189"
+    # n_str = "189"
     try:
         n_int = int(n_str)
-        n_dec = ""
+        n_dec = None
     except ValueError:
         m = re.match(r'(\d+)\.(\d+)', n_str)
         if m is None:
@@ -42,12 +42,17 @@ def main():
             n_1dig = n_2dig % 10
             moji_3dig += NUM_TO_WORD_2DIG[n_2dig - n_1dig] + " "
             moji_3dig += NUM_TO_WORD_2DIG[n_1dig]
-        moji = moji_3dig + " " + j + " " + moji
+        if j:
+            moji = moji_3dig + " " + j + " " + moji
+        else:
+            moji = moji_3dig
     # print(moji)
 
     # 小数部
-    for i in n_dec:
-        print(i)
+    if n_dec:
+        moji += " point"
+        for i in n_dec:
+            moji += " " + NUM_TO_WORD_2DIG[int(i)]
     print(moji)
 
 
