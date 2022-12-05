@@ -14,6 +14,7 @@ def main():
     # n_str = "317473891017.364289"
     # n_str = "189"
     # n_str = "300.3819"
+    # n_str = "1348910.18391"
     try:
         n_int = int(n_str)
         n_dec = None
@@ -37,7 +38,8 @@ def main():
             moji_3dig += NUM_TO_WORD_2DIG[n_hand] + " handred"
         n_2dig = n_3dig % 100
         if n_2dig != 0:
-            moji_3dig += " "
+            if n_hand != 0:
+                moji_3dig += " "
             if n_2dig in NUM_TO_WORD_2DIG:
                 if n_2dig != 0:
                     moji_3dig += NUM_TO_WORD_2DIG[n_2dig]
