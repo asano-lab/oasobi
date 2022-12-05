@@ -4,10 +4,12 @@ NUM_TO_WORD_2DIG = {
     30: "thirty", 40: "forty", 50: "fifty", 60: "sixty", 70: "seventy", 80: "eighty", 90: "ninety"
 }
 
+
 TMB = ["", "thousand", "million", "billion"]
 
 # n = float(input())
 n = 123456789.5
+n = 123065011
 
 # 整数部
 n_int = int(n)
@@ -18,5 +20,13 @@ for i, j in enumerate(TMB):
     n_3dig = (n_int // (1000 ** i)) % 1000
     n_hand = n_3dig // 100
     if n_hand != 0:
-        moji_3dig += NUM_TO_WORD_2DIG[n_hand] + " handred"
+        moji_3dig += NUM_TO_WORD_2DIG[n_hand] + " handred "
+    n_2dig = n_3dig % 100
+    if n_2dig in NUM_TO_WORD_2DIG:
+        if n_2dig != 0:
+            moji_3dig += NUM_TO_WORD_2DIG[n_2dig]
+    else:
+        n_1dig = n_2dig % 10
+        moji_3dig += NUM_TO_WORD_2DIG[n_2dig - n_1dig] + " "
+        moji_3dig += NUM_TO_WORD_2DIG[n_1dig]
     print(moji_3dig)
