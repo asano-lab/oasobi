@@ -10,9 +10,10 @@ TMB = ["", "thousand", "million", "billion"]
 
 
 def main():
-    # n_str = input()
-    n_str = "317473891017.364289"
+    n_str = input()
+    # n_str = "317473891017.364289"
     # n_str = "189"
+    # n_str = "300.3819"
     try:
         n_int = int(n_str)
         n_dec = None
@@ -33,17 +34,22 @@ def main():
         moji_3dig = ""
         n_hand = n_3dig // 100
         if n_hand != 0:
-            moji_3dig += NUM_TO_WORD_2DIG[n_hand] + " handred "
+            moji_3dig += NUM_TO_WORD_2DIG[n_hand] + " handred"
         n_2dig = n_3dig % 100
-        if n_2dig in NUM_TO_WORD_2DIG:
-            if n_2dig != 0:
-                moji_3dig += NUM_TO_WORD_2DIG[n_2dig]
-        else:
-            n_1dig = n_2dig % 10
-            moji_3dig += NUM_TO_WORD_2DIG[n_2dig - n_1dig] + " "
-            moji_3dig += NUM_TO_WORD_2DIG[n_1dig]
+        if n_2dig != 0:
+            moji_3dig += " "
+            if n_2dig in NUM_TO_WORD_2DIG:
+                if n_2dig != 0:
+                    moji_3dig += NUM_TO_WORD_2DIG[n_2dig]
+            else:
+                n_1dig = n_2dig % 10
+                moji_3dig += NUM_TO_WORD_2DIG[n_2dig - n_1dig] + " "
+                moji_3dig += NUM_TO_WORD_2DIG[n_1dig]
         if j:
-            moji = moji_3dig + " " + j + " " + moji
+            if moji:
+                moji = moji_3dig + " " + j + " " + moji
+            else:
+                moji = moji_3dig + " " + j
         else:
             moji = moji_3dig
     # print(moji)
