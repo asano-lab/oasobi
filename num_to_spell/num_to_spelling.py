@@ -10,8 +10,8 @@ TMB = ["", "thousand", "million", "billion"]
 
 
 def main():
-    n_str = input()
-    # n_str = "317473891017.364289"
+    # n_str = input()
+    n_str = "317473891017.364289"
     # n_str = "189"
     # n_str = "300.3819"
     # n_str = "1348910.18391"
@@ -54,6 +54,8 @@ def main():
                 moji = moji_3dig + " " + j
         else:
             moji = moji_3dig
+    if not moji:
+        moji = "zero"
     # print(moji)
 
     # 小数部
