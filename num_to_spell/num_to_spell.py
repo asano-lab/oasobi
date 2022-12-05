@@ -4,9 +4,19 @@ NUM_TO_WORD_2DIG = {
     30: "thirty", 40: "forty", 50: "fifty", 60: "sixty", 70: "seventy", 80: "eighty", 90: "ninety"
 }
 
-BMT = ["billion", "million", "thousand"]
+TMB = ["", "thousand", "million", "billion"]
 
-n = input()
+# n = float(input())
+n = 123456789.5
 
-for i, j in enumerate(BMT):
-    print(i, j)
+# 整数部
+n_int = int(n)
+print(n_int)
+moji = ""
+for i, j in enumerate(TMB):
+    moji_3dig = ""
+    n_3dig = (n_int // (1000 ** i)) % 1000
+    n_hand = n_3dig // 100
+    if n_hand != 0:
+        moji_3dig += NUM_TO_WORD_2DIG[n_hand] + " handred"
+    print(moji_3dig)
