@@ -21,7 +21,7 @@ for i in range(1000):
 y = func(x2)
 print(y)
 
-x = np.linspace(1.4, 1.5, 1000)
+x = np.linspace(x2 - 0.1, x2 + 0.1, 1000)
 y = func(x)
 
 plt.plot(x, y)
