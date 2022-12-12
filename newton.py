@@ -1,6 +1,11 @@
 import math
+import numpy as np
+import matplotlib.pyplot as plt
 
 # print((6 - math.sqrt(3)) / 3)
+
+def func(x):
+    return x ** 3 - 6 * x ** 2 + 11 * x - 6
 
 x1 = float("inf")
 x2 = 0.0
@@ -13,5 +18,13 @@ for i in range(1000):
     if x_diff < 1e-5:
         break
 
-y = x2 ** 3 - 6 * x2 ** 2 + 11 * x2 - 6
+y = func(x2)
 print(y)
+
+x = np.linspace(1.4, 1.5, 1000)
+y = func(x)
+
+plt.plot(x, y)
+plt.grid()
+plt.show()
+
