@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 import pandas as pd
 import numpy as np
+import seaborn as sns
 from scipy import stats
+import matplotlib.pyplot as plt
 
 
 def calc_interval(ds: pd.Series, alpha=0.95):
@@ -17,9 +19,13 @@ def calc_interval(ds: pd.Series, alpha=0.95):
 
 def main():
     df = pd.read_csv("kill.csv")
-    alpha = 0.99
+    sns.set()
+    # sns.displot(df["kill"])
+    sns.pairplot(df)
+    alpha = 0.95
     print(calc_interval(df["kill"], alpha=alpha))
     print(calc_interval(df["damage"], alpha=alpha))
+    plt.show()
 
 
 if __name__ == "__main__":
