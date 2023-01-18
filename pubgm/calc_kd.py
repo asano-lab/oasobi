@@ -17,8 +17,9 @@ def calc_interval(ds: pd.Series, alpha=0.95):
 
 def main():
     df = pd.read_csv("kill.csv")
-    print(calc_interval(df["kill"]))
-    print(calc_interval(df["damage"]))
+    alpha = 0.99
+    print(calc_interval(df["kill"], alpha=alpha))
+    print(calc_interval(df["damage"], alpha=alpha))
 
 
 if __name__ == "__main__":
