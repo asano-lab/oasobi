@@ -1,11 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-a = np.random.normal(0.0, 1.0, 1000)
-print(a)
+nums = np.random.normal(12_310_100, 10000, 1000)
+nums = nums.astype("int64")
+print(nums.dtype)
+print(nums)
 
 fig = plt.figure(figsize=(8, 5))
 ax = fig.add_subplot(111)
-ax.hist(a)
+ax.hist(nums)
 
 plt.show()
